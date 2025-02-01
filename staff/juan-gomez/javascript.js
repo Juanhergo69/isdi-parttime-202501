@@ -1,4 +1,5 @@
 var winNumber = Math.floor(Math.random() * 10) + 1
+var failedAttemps = 0
 while (parseInt(playerChoice) != winNumber && question != false) {
     var question = confirm('Do you want play a game?')
     if (question === true) {
@@ -23,6 +24,10 @@ while (parseInt(playerChoice) != winNumber && question != false) {
         }
     } else {
         alert('Bye Bye')
+    } if (parseInt(playerChoice) != winNumber) {
+        failedAttemps = failedAttemps + 1
+    } else {
+        alert('failedAttemps:' + failedAttemps)
     }
 }
 
