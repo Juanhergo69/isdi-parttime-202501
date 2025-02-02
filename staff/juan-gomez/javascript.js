@@ -31,6 +31,12 @@ while (parseInt(playerChoice) != winNumber && question != false) {
     }
 }
 
+/*Sobre este código querría añadir la función que, para ganar completamente el juego, se deba acertar el número tres veces, no necesariamente consecutivas.
+La idea sería manejar tres rondas ganadoras, y en cada ronda ganadora, lanzar un mensaje diferente, hasta el tercero, que diría que has completado totalmente el juego*/
+/*Sobre este código querría añadir la función que, para para perder completamente el juego, se deban cometer tres errores consecutivos. Si se gana una ronda con algún error previo,
+el contador de errores se reinciaria a 0.
+La idea sería manejar tres rondas perdedoras, y en cada ronda perdedora, lanzar un mensaje diferente, hasta el tercer fallo, que diría que has perdido la partida*/
+//Comentar con Flors estos dos puntos en la clase del Lunes.
 
 
 
