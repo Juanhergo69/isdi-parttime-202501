@@ -1,30 +1,30 @@
 var winNumber = Math.floor(Math.random() * 10) + 1
 var failedAttemps = 0
-while (parseInt(playerChoice) != winNumber && question != false) {
+while (Number(playerChoice) !== winNumber && question !== false) {
     var question = confirm('Do you want play a game?')
     if (question === true) {
         alert('Welcome to "Guess the Number"')
-        var playerChoice = parseInt(prompt('Choice your number'))
-        if (parseInt(playerChoice) === winNumber) {
+        var playerChoice = Number(prompt('Choice your number'))
+        if (Number(playerChoice) === winNumber) {
             alert('Congratulations, you win!')
-        } else if (parseInt(playerChoice) < winNumber && parseInt(playerChoice) === winNumber - 2 || parseInt(playerChoice) === winNumber - 1) {
+        } else if (Number(playerChoice) < winNumber && Number(playerChoice) === winNumber - 2 || Number(playerChoice) === winNumber - 1) {
             alert('You loose, your number is a little bit small, you are very close to win')
-        } else if (parseInt(playerChoice) < winNumber && parseInt(playerChoice) === winNumber - 5 || parseInt(playerChoice) === winNumber - 4 || parseInt(playerChoice) === winNumber - 3) {
+        } else if (Number(playerChoice) < winNumber && Number(playerChoice) === winNumber - 5 || Number(playerChoice) === winNumber - 4 || Number(playerChoice) === winNumber - 3) {
             alert('You loose, your number is small, you are close to win')
-        } else if (parseInt(playerChoice) < winNumber && parseInt(playerChoice) <= winNumber - 6) {
+        } else if (Number(playerChoice) < winNumber && Number(playerChoice) <= winNumber - 6) {
             alert('You loose, your number is so small, you are far to win')
-        } else if (parseInt(playerChoice) > winNumber && parseInt(playerChoice) === winNumber + 2 || parseInt(playerChoice) === winNumber + 1) {
+        } else if (Number(playerChoice) > winNumber && Number(playerChoice) === winNumber + 2 || Number(playerChoice) === winNumber + 1) {
             alert('You loose, your number is a little bit big, you are very close to win')
-        } else if (parseInt(playerChoice) > winNumber && parseInt(playerChoice) === winNumber + 5 || parseInt(playerChoice) === winNumber + 4 || parseInt(playerChoice) === winNumber + 3) {
+        } else if (Number(playerChoice) > winNumber && Number(playerChoice) === winNumber + 5 || Number(playerChoice) === winNumber + 4 || Number(playerChoice) === winNumber + 3) {
             alert('You loose, your number is big, you are close tu win')
-        } else if (parseInt(playerChoice) > winNumber && parseInt(playerChoice) >= winNumber + 6) {
+        } else if (Number(playerChoice) > winNumber && Number(playerChoice) >= winNumber + 6) {
             alert('You loose, your number is so big, you are far to win')
-        } else if (playerChoice != Number) {
+        } else if (Number(playerChoice) !== Number) {
             alert('Are you sure you are introducings numbers???')
         }
     } else {
         alert('Bye Bye')
-    } if (parseInt(playerChoice) != winNumber) {
+    } if (Number(playerChoice) !== winNumber) {
         failedAttemps = failedAttemps + 1
     } else {
         alert('failedAttemps:' + failedAttemps)
