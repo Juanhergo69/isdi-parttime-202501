@@ -14,7 +14,7 @@ while (Number(playerChoice) !== winNumber && question !== false && failedAttemps
         alert('You close the game, come back anytime :D')
         break
     }
-    if (isNaN(Number(playerChoice))) {
+    if (isNaN(Number(playerChoice)) || playerChoice.trim() === '') {
         alert('Are you sure you are introducings numbers???')
     } else {
         if (Number(playerChoice) === winNumber) {
@@ -37,7 +37,7 @@ while (Number(playerChoice) !== winNumber && question !== false && failedAttemps
             alert('You loose, your number is so big, you are far to win')
         }
     }
-    if (isNaN(Number(playerChoice)) || Number(playerChoice) !== winNumber) {
+    if (isNaN(Number(playerChoice)) || Number(playerChoice) !== winNumber || playerChoice.trim() === '') {
         failedAttemps++
     } if (failedAttemps === 3) {
         alert('You loose the game, try again if you dare')
