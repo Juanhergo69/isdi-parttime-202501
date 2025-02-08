@@ -88,7 +88,6 @@ while (storeWord !== hangmanWord && lifesInStock !== 0 && question !== false) {
             selectedLetterCheck(selectedLetter)
             storeWordArraytoString()
         }
-
     }
 }
 if (lifesInStock === 0) {
