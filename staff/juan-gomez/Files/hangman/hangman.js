@@ -6,7 +6,7 @@
 //Generar variable de vidas (5), que se reducirán con cada fallo cometido (lifesInStock).
 //Generar variable abecedario, que servirá de guía para reconocer los inputs del jugador (allAlphabetLetters).
 /*Generar variable abecedario en mayúsculas, que servirá de guía para reconocer los inputs en mayúsculas del jugador (allAlphabetLettersUpper),
-y permitir la transformación a Minus si el input introducido es Mayus.*/
+y permitir la transformación a minúsculas si el input introducido es mayúsculas.*/
 /*Generar un for que represente con guiones las letras de la palabra que se debe adivinar 
 (con esto generamos un array que tiene "," entre cada guión).*/
 /*Crear una función que transforme storeWordArray a un string (storeWordArraytoString)
@@ -14,13 +14,12 @@ y permitir la transformación a Minus si el input introducido es Mayus.*/
 /*Crear una función que cribe el input de parámetros, en este caso, queremos que sólo reconozca una letra, (dataInputCheck)
 da igual que sea mayúscula y minúscula. Todo lo demás, es decir, espacios vacíos o números, debe reconocerlos como error
 y lanzar un mensaje de que se está equivocando de parámetros. Si el jugador introduce un número o un espacio vacío,
-lanzará el mensaje de error y la función parará. Si introduce una letra, pasará a un for de reconocimiento, donde comprará la letra 
-elegida con el abeceario, y en el caso de introducir una letra mayúsucula se transforme en minúscula;
-(el código presenta un error cuando se ingresa 0, no lo reconoce como número)*/
+lanzará el mensaje de error y la función parará. Si introduce una letra, pasará a un for de reconocimiento, donde comparará la letra 
+elegida con el abeceario, y en el caso de introducir una letra mayúsucula se transforme en minúscula*/
 /*Crear una funcion de checkeo y actualización de storeWord, donde compararemos si la letra elegida por el usuario está o no (selectedLetterCheck)
 en hangmanWord.*/
 /*Crear un while donde se especifiquen las condiciones en las que el juego continuará funcionando. En este caso, queremos que el juego continue 
-mientras que no se adivine la palabra, o que el contador de vidas no sea 0.*/
+mientras que no se adivine la palabra, el contador de vidas no sea 0 o el jugador elija jugar*/
 //Crear un if donde se indique, que si se pierden todas las vidas, se acaba la partida//
 /*Crear varios if donde se indique, que si se aciertan todas las letras, el juego se gana. Dependiendo del total de vidas (lifesInStore) 
 que queden disponibles, lanzará un mensaje diferente*/
