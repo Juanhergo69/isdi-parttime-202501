@@ -1,0 +1,96 @@
+body {
+    padding: 10rem 10rem
+}
+
+.roof {
+    width: 0;
+    height: 0;
+    border-left: 80px solid transparent;
+    border-right: 80px solid transparent;
+    border-bottom: 100px solid #573914
+}
+
+.body {
+    height: 150px;
+    width: 160px;
+    background-color: beige;
+}
+
+.window1 {
+    height: 40px;
+    width: 40px;
+    background-color: aqua;
+    position: absolute;
+    top: 300px;
+    left: 190px;
+}
+
+.window2 {
+    height: 40px;
+    width: 40px;
+    background-color: aqua;
+    position: absolute;
+    top: 300px;
+    left: 265px;
+}
+
+.door {
+    height: 70px;
+    width: 50px;
+    background-color: #573914;
+    position: absolute;
+    top: 350px;
+    left: 222px;
+}
+
+.log {
+    height: 120px;
+    width: 30px;
+    background-color: #573914;
+    position: absolute;
+    top: 350px;
+    left: 450px;
+
+}
+
+.cup {
+    height: 150px;
+    width: 150px;
+    background-color: chartreuse;
+    border-radius: 50%;
+    position: absolute;
+    top: 220px;
+    left: 390px;
+    ;
+
+}
+
+.chimeney {
+    height: 120px;
+    width: 40px;
+    background-color: darkslategray;
+    position: absolute;
+    top: 140px;
+    left: 270px;
+    z-index: -1;
+}
+
+.smoke {
+    height: 40px;
+    width: 80px;
+    background-color: lightslategrey;
+    position: absolute;
+    border-radius: 50%;
+    top: 90px;
+    left: 270px;
+}
+
+.smoke2 {
+    height: 80px;
+    width: 160px;
+    background-color: lightslategrey;
+    position: absolute;
+    border-radius: 50%;
+    top: 5px;
+    left: 270px;
+}
