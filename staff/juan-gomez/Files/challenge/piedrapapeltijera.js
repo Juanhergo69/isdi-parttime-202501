@@ -110,13 +110,14 @@ function generateChoiceButton(_choice) { //La función genera el botón de selec
 
     button.addEventListener('click', function () { //El addEventListener permite ejecutar algo mientras se produzca algo//
         compareChoices(_choice) //En este caso, cuando se hace click sobre el botón de selección, se ejecuta la función de comparar la eleccción del jugador y la cpu//
-        renderUserChoice(_choice)
-        renderCpuChoice(_choice)
+        renderUserChoice(_choice) //En este caso, cuando se hace click sobre el botón de selección, se ejecuta la función de renderizado de la selección del jugador//
+        renderCpuChoice(_choice) //En este caso, cuando se hace click sobre el botón de selección, se ejecuta la función de renderizado de la selección de la CPU//
     })
     buttonContainer.appendChild(button); //Añadimos el botón al contenedor de botones//
 }
 
-choiceButtonContainer() //
+choiceButtonContainer() //Se ejecuta la función para generar el contenedor de botones y las posibles elecciones del jugador.
+
 
 
 
