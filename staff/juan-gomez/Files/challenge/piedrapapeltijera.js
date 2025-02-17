@@ -51,7 +51,7 @@ gameTitle.style.textShadow = '10px 10px 20px rgba(0, 0, 0, 0.5)';
 
 var gameTitleBox = document.createElement('div');
 gameTitleBox.style.width = '420px';
-gameTitleBox.style.height = '100px';
+gameTitleBox.style.height = '120px';
 gameTitleBox.style.backgroundColor = 'beige';
 gameTitleBox.style.position = 'relative';
 gameTitleBox.style.border = '1px solid black';
@@ -59,6 +59,7 @@ gameTitleBox.style.padding = '10px'; //defino el espacio del texto respecto al b
 gameTitleBox.style.textAlign = 'center';
 gameTitleBox.style.marginTop = '10px';
 gameTitleBox.style.boxShadow = '10px 10px 20px rgba(0, 0, 0, 0.5)'; //unas sombritas para la caja del titulo
+gameTitleBox.style.borderRadius = '100px';
 
 gameTitleBox.appendChild(gameTitle); //Añadimos el título del juego al div de la caja del titulo
 body.appendChild(gameTitleBox); //añadimos caja con titulo al body
@@ -108,13 +109,14 @@ function renderUserChoice(_choice) { //La función renderiza en pantalla la sele
     userChoice.style.height = '100px'; //Añadimos estilos//
     userChoice.style.width = '300px'; //Añadimos estilos//
     userChoice.style.position = 'relative' //Añadimos estilos//
-    userChoice.style.left = '200px'; //Añadimos estilos//
-    userChoice.style.top = '200px'; //Añadimos estilos//
+    userChoice.style.left = '80px'; //Añadimos estilos//
+    userChoice.style.top = '10px'; //Añadimos estilos//
+    userChoice.style.fontFamily = 'Miniver';
 
     userChoiceBox.appendChild(userChoice) //Añadimos al body el mensaje creado//
 }
 
-function renderCpuChoice(_cpuChoice) { //La función renderiza en pantalla la selección hecha por la CPU//
+function renderCpuChoice(_cpuChoice) { //La función renderiza en pantalla la selección hecha por la CPU (no funciona)//
     cpuChoiceBox.innerHTML = ''; //borra contenido anterior
     var cpuChoice = document.createElement('div') //Se crea el mensaje//
     cpuChoice.textContent = `La CPU ha elegido: ${_cpuChoice}` //Se añade lo que queremos que diga el mensaje//
@@ -123,7 +125,7 @@ function renderCpuChoice(_cpuChoice) { //La función renderiza en pantalla la se
     cpuChoice.style.width = '300px'; //Añadimos estilos//
     cpuChoice.style.position = 'relative' //Añadimos estilos//
     cpuChoice.style.left = '1500px'; //Añadimos estilos//
-    cpuChoice.style.top = '200px'; //Añadimos estilos//
+    cpuChoice.style.top = '10px'; //Añadimos estilos//
     cpuChoice.style.color = 'black';
     cpuChoice.style.fontFamily = 'Miniver';
 
@@ -172,7 +174,6 @@ function choiceButtonContainer() { //La función genera el contenedor de botones
     buttonContainer.style.gap = '2rem'; //Más estilos//
     buttonContainer.style.position = 'absolute'; //Más estilos//
     buttonContainer.style.top = '400px'; //Más estilos//
-    buttonContainer.style.borderRadius = '20px'; //redondeo los bordes de la caja
 
     for (var i = 0; i < choices.length; i++) { //El for itera sobre los elementos del array choices//
         generateChoiceButton(choices[i]) //Y a continuación ejecuta la función para generar los botones de selección en pantalla//
@@ -187,7 +188,11 @@ function generateChoiceButton(_choice) { //La función genera el botón de selec
     button.style.fontSize = '25px'; //Damos un un tamaño de fuente determinado al botón//
     button.style.height = '50px'; //Damos un altura determinada al botón//
     button.style.width = '600px'; //Damos una anchura determinada al botón//
-    button.style.borderColor = 'limegreen' //Damos un color al borde del botón//
+    button.style.borderColor = 'black' //Damos un color al borde del botón//
+    button.style.borderRadius = '20px'
+    button.style.boxShadow = '10px 10px 20px rgba(0, 0, 0, 0.5)';
+    button.style.backgroundColor = 'beige';
+    button.style.fontFamily = 'Miniver';
 
     button.addEventListener('click', function () { //El addEventListener permite ejecutar algo mientras se produzca algo//
         compareChoices(_choice) //En este caso, cuando se hace click sobre el botón de selección, se ejecuta la función de comparar la eleccción del jugador y la cpu//
