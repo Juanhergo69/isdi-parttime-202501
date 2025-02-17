@@ -1,205 +1,360 @@
-//Aquí comienza toda la parte de código Javascript del juego//
+//Lógica del juego
+var words = ['tyrion', 'eddard', 'melissandre', 'jon', 'daenerys', 'cersei', 'jaime', 'robb', 'viserys', 'barristan', 'tywin', 'arya', 'sansa', 'drogon', 'viserion', 'rhaegal', 'drogo', 'petyr', 'varys', 'stannis', 'margaery', 'roose', 'ramsay', 'davos', 'rickon', 'robert'] //Se generan los nombres a adivinar//
+var word = words[Math.floor(Math.random() * words.length)]; //Se genera aletoriedad en la selección del nombre a adivinar//
+var guessedWordArray = generateGuessedWordArray(word); //Se genera el array de la palabra a adivinar//
+var guessedWord = ''; //Almacena el patrón de la palabra pero en un string//
+var lifes = 5; //Vidas disponibles//
+var playedLetters = []; //Array vacío que contendrá las letras usadas por el jugador//
+var alphabet = 'abcdefghijklmnñopqrstuvwxyz' //String que contiene todas las letras en mínusculas (Servirá para recorrerlas en un for y determinar la posición de la letra seleccionada por el jugador)//
+var alphabetUpper = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ' //String que contiene todas las letras en mayúsculas (Servirá para recorrerlas en un for y determinar la posición de la letra seleccionada por el jugador)//
+guessedWordToString(); //completa el guessedWord (string) solo con guiones
 
-var hangmanWords = ['ukelele', 'trompeta', 'boniato', 'cangrejo', 'mastodonte'] //Generar array de palabras aleatorias//
-var hangmanWord = hangmanWords[Math.floor(Math.random() * hangmanWords.length)] //Generar función que aletoriza la palabra seleccionada según el array anterior//
-var storeWordArray = generateStoreWordArray(hangmanWord) //Almacena la palabra con entrecomillado//
-var storeWord = '' //Almacena la palabra en un string (sin entrecomillado)//
-var lifesInStock = 5 //Vidas disponibles para superar el juego//
-var usedLetters = [] //Almacena las letras que ya se han utilizado por input del usuario//
-var allAlphabetLetters = 'abcdefghijklmnñopqrstuvwxyz' //Letras del abecedario en mínusculas//
-var allAlphabetLettersUpper = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ' //Letras del abecedario en mayúsuculas//
-storeWordArraytoString() //Transforma el array en un string (para quitar las "comas")
-
-function generateStoreWordArray(_hangmanWord) { //Esta función genera el storeWordArray por primera vez (con guiones)//
-    var temporalStoreWordArray = []
-    for (var i = 0; i < _hangmanWord.length; i++) { //El for lo genera de inicio (solo guiones y espacios si es necesario)//
-        if (_hangmanWord[i] === ' ') {
-            temporalStoreWordArray[temporalStoreWordArray.length] = ' '
-        } else {
-            temporalStoreWordArray[temporalStoreWordArray.length] = '-'
-        }
-    }
-    return temporalStoreWordArray
-}
-
-function storeWordArraytoString() { //Esta función permite pasar storeWordArray a formato string, de forma que desaparezcan las comas entre las letras//
-    storeWord = ''
-    for (var i = 0; i < storeWordArray.length; i++) {
-        storeWord += storeWordArray[i]
-    }
-}
-
-function dataInputCheck(letter) { //Esta función valida el input del usuario//
-    if (letter.length !== 1 || letter.trim() === ' ' || !isNaN(letter)) {
-        alert('Try to input a single letter. Numbers and spaces void are not allowed.')
-        return
+function validateInputLetter(letter) { //La función valida el input del usuario. Si no es un sólo carácter, o es un número, alertará de que no es correcto//
+    if (letter.length !== 1 || letter === ' ' || !isNaN(letter)) { //compruebo que la letra es solo un caracter (o un numero)
+        alert('For Rhllor!!! Put only letters. Numbers or space void are not allowed.')
+        return;
     }
 
-    for (var i = 0; i < allAlphabetLetters.length; i++) { //El for itera el abecedario para comprobar que el input del usuario es una letra, y pasarlo a minúscula si es necesario//
-        if (letter === allAlphabetLetters[i] || letter === allAlphabetLettersUpper[i]) { //El if compara el input con la posición del abecedario, y si hay coincidencia, devuelve la letra en minúscula//
-            for (var j = 0; j < usedLetters.length; j++) {
-                if (usedLetters[j] === allAlphabetLetters[i]) { //El if compara si la letra del input del usuario ya se ha jugado//
-                    alert('You are repeating letters')
-                    return allAlphabetLetters[i]
+    /*iterar abecedario para comprobar que el caracter es una letra, y pasarlo a minuscula si hace falta*/
+    for (var i = 0; i < alphabet.length; i++) {
+        if (letter === alphabet[i] || letter === alphabetUpper[i]) { //comparo la misma posición en alfabeto en minusculas y en mayusculas y si hay una coincidencia, me salgo de la función devolviendo la letra en minuscula
+            //comprobar si esa letra ya se ha jugado
+            for (var j = 0; j < playedLetters.length; j++) { //comprobar si la letra se había jugado antes
+                if (playedLetters[j] === alphabet[i]) {
+                    alert('For the Ancient Gods!!! You have already tried this letter.');
+                    return alphabet[i]
                 }
             }
-            usedLetters[usedLetters.length] = allAlphabetLetters[i] //Añadimos la letra ya jugada al array de usedLetters//
+            playedLetters[playedLetters.length] = alphabet[i] //pusehamos al array de played letters la letra jugada
+            return alphabet[i]
         }
     }
-    return
+    return;
 }
 
-function selectedLetterCheck(letter) { //Esta funcion comprueba si la letra esta en hangmanWord, y si no, resta una vida//
-    var letterInWord = false
-    for (var i = 0; i < hangmanWord.length; i++) { //El for itera la palabra para comprar si la letra escogida está en la palabra//
-        if (letter === hangmanWord[i]) {
-            letterInWord = true
-            storeWordArray[i] = letter
+function checkLetterIncluded(letter) { //actualiza guessedWord si la letra esta en word y si no resta una vida
+    var isLetterInWord = false //partimos de la idea de que la letra no esta en la palabra a adivinar
+    for (var i = 0; i < word.length; i++) { //iteramos la palabra para ver si contiene la letra 
+        if (letter === word[i]) {
+            isLetterInWord = true //cambiamos la variable que partia de la idea de que la letra no esta, porque sí que esta
+            guessedWordArray[i] = letter
         }
     }
-    if (letterInWord === false) {
-        lifesInStock--
+    if (isLetterInWord === false) { //en caso de que la letra no este, resta una vida
+        lifes--
     } else {
-        storeWordArraytoString() //Después de las comprobaciones, actualizar el string.
-    }
-}
-for (var i = 0; i < hangmanWord.length; i++) {
-    if (hangmanWord[i] === ' ') {
-        storeWordArray[storeWordArray.length] = ' '
-    } else {
-        storeWordArray.push('-')
-    }
-}
-storeWordArraytoString()
-
-function gameOn(letter) { //Esta función decide como empieza y como acaba el juego//
-    if (lifesInStock === 0) {
-        alert('Game is over, you have no lifes')
-    }
-    var inputCheck = dataInputCheck(letter)
-    if (inputCheck != undefined) {
-        selectedLetterCheck(inputCheck) //Si la letra esta dentro de la palabra, se actualiza storeWordArray//
-        cleanInterface() //se limpia la interfaz de la ronda anterior//
-        renderInterface() //se genera la interfaz de la nueva ronda//
+        guessedWordToString() //actualizar el string para asegurarme de poder detectar la victoria
     }
 }
 
-function resetGame() { //Esta función resetea todas las variables del juego//
-    hangmanWord = hangmanWords[Math.floor(Math.random() * hangmanWords.length)]
-    storeWordArray = generateStoreWordArray(hangmanWord)
-    storeWordArraytoString()
-    lifesInStock = 5
-    usedLetters = []
+function generateGuessedWordArray(_word) { // genera el guessedWordArray por primera vez (con guiones)
+    var tempArr = []
+    for (var i = 0; i < _word.length; i++) { //esto lo genera de inicio (solo guiones y espacios si hacen falta)
+        if (_word[i] === ' ') {
+            tempArr[tempArr.length] = ' '
+        } else {
+            tempArr[tempArr.length] = '-'
+        }
+    }
+    return tempArr;
 }
 
-// Aquí termina toda la parte de código Javascript del juego //
-
-//**************************************************************************//
-
-// Aquí empieza toda la parte del renderizado a HTML, combinado con estilos CSS//
-
-var body = document.body //Generamos variable body para comenzar a trabajar//
-var hangmanWordContainer //Generamos variable para el contenedor de la palabra a adivinar//
-var lifesInStockContainer //Generamos variable para el contenedor de las vidas disponibles//
-var letterFormContainer //Generamos variable para el contendor de la letra//
-var playAgainButton //Generamos variable para el contenedor del botón "jugar de nuevo"//
-var userFeedbackContainer //Generamos variable para el contenedor de "casilla" para hacer input//
-var usedLetterContainer //Generamos variable para el contenedor de las letras ya usadas//
-var gameTitle = document.createElement('h1') //Generar variable de nombre de juego//
-gameTitle.textContent = 'HANGMAN' //Generar nombre del juego//
-
-
-body.style.display = 'flex' //Generamos estilo de disposición del body//
-body.style.flexDirection = 'column' //Generamos estilo de dirección del body// 
-body.style.alignItems = 'center' //Generamos estilo de alineación del body//
-body.style.gap = '2rem'; //Generamos estilo de separación del body//
-gameTitle.style.textAlign = 'center' //Generamos estilo de alineación para el título del juego//
-
-body.appendChild(gameTitle) //Añadimos el título del juego al body//
-
-function renderLetterForm() { //Esta funcion permite crear el contenedor del formulario del input del jugador y el botón de envío de input//
-    letterFormContainer = document.createElement('form') //Creamos el formulario para las letra//
-    letterFormContainer.style.display = 'flex' //Generamos estilo de disposición del formulario//
-    letterFormContainer.style.flexDirection = 'row' //Generamos estilo de dirección del formulario//
-    letterFormContainer.style.width = '100%' //Generamos estilo de anchura para el formulario//
-    letterFormContainer.style.gap = '0.5rem' //Generamos estilo de separación del formulario//
-    letterFormContainer.style.justifyContent = 'center' //Generamos estilo de justificar contenido para el formulario//
-
-    var letterInput = document.createElement('input') //Generamos variable de input para el usuario//
-    letterInput.type = 'text' //Generamos la categoría del input del jugador//
-    letterInput.minLength = 1 //Generamos longitud mínima para el input del jugador//
-    letterInput.maxLength = 1 //Generamos longitud máxima para el input del jugador//
-    letterInput.required = true //Generamos requerimiento de input para el jugador//
-    letterInput.id = 'letter' //Generamos identificacion del input del juegador//
-    letterInput.style.width = '2rem' //Generamos estilo de anchura para el input del jugador//
-
-    var submitButton = document.createElement('input') //Generamos variable de botón de envío de input//
-    submitButton.type = 'submit' //Generamos la categoría del botón de envío de input//
-
-    letterFormContainer.appendChild(letterInput) //Añadimos input del jugador al formulario//
-    letterFormContainer.appendChild(submitButton) //Añadimos botón de envío de input al formulario//
-    body.appendChild(letterFormContainer) //Añadimos el formulario (con todo lo anterior añadido) al body//
+function guessedWordToString() { //función para pasar el array a string
+    guessedWord = ''
+    for (var i = 0; i < guessedWordArray.length; i++) {
+        guessedWord += guessedWordArray[i]
+    }
 }
 
-function renderPlayAgainButton() { //Esta función permite crear el contenedor del botón para jugar de nuevo//
-    playAgainButton = document.createElement('button') //Generamos el botón de jugar de nuevo//
-    playAgainButton.textContent = 'Play Again' //Generamos el texto que tendrá contenido el botón de jugar de nuevo//
-    playAgainButton.style.width = '7rem' //Generamos el estilo de anchura del botón de jugar de nuevo//
+function playGame(letter) {
+    if (lifes <= 0) {
+        alert('For the New Gods!!! You can not play anymore, you are dead')
+        return;
+    }
+    var validatedLetter = validateInputLetter(letter)
+    if (validatedLetter !== undefined) {
+        checkLetterIncluded(validatedLetter) //guessedWordArray se actualiza si la letra esta dentro
+        //limpiamos la interfaz (porque tiene la info de la ronda anterior)
+        cleanInterface();
+        //renderizamos la interfaz de nuevo, con la info de la ronda actual
+        renderInterface();
+    }
+}
 
-    body.appendChild(playAgainButton) //Añadimos el botón de jugar de nuevo al body//
-    playAgainButton.addEventListener('click', function (event) { //Añadimos un addEventListener para que el juego reaccione a determinada acción//
-        event.preventDefault() //En este caso, queremos evitar cualquier comportamiento de consola que reinicie nuestra partida, por lo que comandamos preventDefault, para evitar que actúe de forma predeterminada//
-        resetGame() //Llamamos a la función para resetear el juego//
-        alert('Reseting game') //Mensaje indicando que se resetea el juego //
-        cleanInterface() //Llamamos a la función para limpiar la interfaz//
-        renderInterface() //Llamamos a la función para generar de nuevo la interfaz//
+//Resetea todas las variables necesarias para el juego
+function resetGame() {
+    word = words[Math.floor(Math.random() * words.length)];
+    guessedWordArray = generateGuessedWordArray(word);
+    guessedWordToString();
+    lifes = 5;
+    playedLetters = [];
+}
+
+//Empezamos a manejar el renderizado a html
+var body = document.body; //---> nos traemos el body
+var wordContainer;
+var lifesContainer;
+var letterFormContainer;
+var playAgainButton;
+var userFeedbackContainer;
+var playedLettersContainer;
+
+//Estilos del body
+body.style.display = 'flex';
+body.style.flexDirection = 'column';
+body.style.alignItems = 'center'
+body.style.gap = '2rem';
+
+//Creamos el titulo y le damos estilos
+var gameTitle = document.createElement('h1');
+gameTitle.textContent = 'GAME OF THRONES: HANGMAN GAME';
+gameTitle.style.textAlign = 'center';
+gameTitle.style.color = 'white';
+gameTitle.style.fontSize = '70px'
+
+
+//Añadimos el titulo al body
+body.appendChild(gameTitle);
+
+//Añadir al DOM el formulario que permite jugar una letra
+function renderLetterForm() {
+    //Creamos el formulario para la letra
+    letterFormContainer = document.createElement('form');
+    //estilizamos el form
+    letterFormContainer.style.display = 'flex';
+    letterFormContainer.style.flexDirection = 'row';
+    letterFormContainer.style.width = '100%';
+    letterFormContainer.style.gap = '3rem';
+    letterFormContainer.style.justifyContent = 'center';
+
+    var letterInput = document.createElement('input');
+    letterInput.type = 'text';
+    letterInput.minLength = 1;
+    letterInput.maxLength = 1;
+    letterInput.required = true;
+    letterInput.id = 'letter';
+    letterInput.style.width = '3rem'
+    letterInput.style.borderColor = 'black'
+
+    var submitButton = document.createElement('input');
+    submitButton.type = 'submit';
+    submitButton.style.backgroundColor = 'white';
+    submitButton.style.borderColor = 'black';
+    submitButton.style.fontSize = '20px';
+
+
+
+
+    letterFormContainer.appendChild(letterInput);
+    letterFormContainer.appendChild(submitButton);
+
+    //Añadimos el form al body
+    body.appendChild(letterFormContainer)
+}
+
+function renderPlayAgainButton() {
+    playAgainButton = document.createElement('button');
+    playAgainButton.textContent = 'Play Again';
+    playAgainButton.style.width = '7rem';
+    playAgainButton.style.borderColor = 'black';
+    playAgainButton.style.backgroundColor = 'white';
+
+
+    body.appendChild(playAgainButton);
+    playAgainButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        resetGame();
+        alert('reseting game')
+        cleanInterface();
+        renderInterface();
     })
 }
 
-function renderWordContainer() { //Esta función permite crear el contenedor de las letras (o cuadros vacíos) de la palabra a adivinar//
-    wordContainer = document.createElement('div') //Generamos el contenedor de letras o huecos//
-    wordContainer.style.display = 'flex' //Generamos estilo de disposición del contenedor de letras o huecos//
-    wordContainer.style.width = '100%' //Generamos estilo de anchura para el contenedor de letras o huecos//
-    wordContainer.style.flexDirection = 'row' //Generamos estilo de dirección del contenedor de letras o huecos//
-    wordContainer.style.gap = '0.5rem' //Generamos estilo de separación del contenedor de letras o huecos//
-    wordContainer.style.justifyContent = 'center' //Generamos estilo de justificar contenido para el contenedor de letras o huecos//
+function renderWordContainer() {
+    wordContainer = document.createElement('div'); //Creamos el contenedor de las letras o cuadrados vacíos//
+    wordContainer.style.width = '100%'; //Añadimos estilos//
+    wordContainer.style.display = 'flex'; //Más estilos//
+    wordContainer.style.flexDirection = 'row'; //Más estilos//
+    wordContainer.style.gap = '0.5rem'; //Más estilos//
+    wordContainer.style.justifyContent = 'center'; //Más estilos//
 
-    for (var i = 0; i < storeWordArray.length; i++) { //El for itera para crear cada cuadradito de cada letra que conforma la palabra a adivinar//
-        var letterSquare = document.createElement('div') //Generamos el hueco de cada una de las letras que conforma la palabra a adivinar//
-        letterSquare.style.height = '2rem' //Generamos estilo de altura para el cuadradito//
-        letterSquare.style.width = '2rem' //Generamos estilo de anchura para el cuadradito//
-        letterSquare.style.border = '2px dashed slategray' //Generamos estilo de borde para el cuadradito//
-        letterSquare.style.display = 'flex' //Generamos estilo de disposición del cuadradito//
-        letterSquare.style.justifyContent = 'center' //Generamos estilo de justificar contenido del cuadradito//
-        letterSquare.style.alignItems = 'center' //Generamos estilo de alineación del cuadradito//
-        if (storeWordArray[i] !== '-') { //El if nos dice que, si, según el indice del array de la palabra, lo que encuentra no es un guión....//
-            var letterContainer = document.createElement('b') //Entonces, generará la letra en negrita(b) dentro del contenedor//
-            letterContainer.textContent = storeWordArray[i].toUpperCase() //Y además, la generará en mayúsculas//
-            letterSquare.style.border = "2px solid green" //Y además, cambiará el borde del cuadrito a verde//
-            letterSquare.style.backgroundColor = "solid green" //Y además, cambiará el fondo del cuadradito a verde//
+    for (var i = 0; i < guessedWordArray.length; i++) { //El for crea cada cuadradito para espacio vacío sin adivinar, se irá rellenando conforme se acierten letras//
+        var letterSquare = document.createElement('div');
+        //le damos estilos
+        letterSquare.style.height = "6rem";
+        letterSquare.style.width = "6rem";
+        letterSquare.style.border = "2px dashed white"
+        letterSquare.style.display = "flex";
+        letterSquare.style.justifyContent = "center"
+        letterSquare.style.alignItems = "center"
+        if (guessedWordArray[i] !== '-') {
+            var letterContainer = document.createElement('b');
+            letterContainer.style.fontSize = '30px';
+            letterContainer.textContent = guessedWordArray[i].toUpperCase();
+            letterSquare.style.border = "2px solid green"
+            letterSquare.style.backgroundColor = "green"
             letterSquare.appendChild(letterContainer)
-
         }
-        wordContainer.appendChild(letterSquare) //Añadimos el hueco que ocupa cada letra, y sus condiciones, al contenedor de letras o huecos//
+        wordContainer.appendChild(letterSquare) //Añadimos el cuadradito de letras al contenedor de letras//
+    }
+    //Añadimos los contenedores al body
+    body.appendChild(wordContainer)
+}
+
+function renderLifesContainer() {
+    //Creamos un contenedor para los iconos que representan vidas
+    lifesContainer = document.createElement('div');
+    //Añadir estilos
+    lifesContainer.style.width = '100%';
+    lifesContainer.style.display = 'flex';
+    lifesContainer.style.flexDirection = 'row';
+    lifesContainer.style.gap = '1rem';
+    lifesContainer.style.justifyContent = 'center';
+
+    //Creamos un iconito para cada vida que queda
+    /* Añadir icono de google icons
+        <span class="material-symbols-outlined">
+            favorite
+        </span>
+    */
+    for (var i = 0; i < 5; i++) {
+        if (i < lifes) {
+            var lifeIcon = document.createElement('span');
+            lifeIcon.textContent = 'favorite';
+            lifeIcon.className = 'material-symbols-outlined';
+            lifeIcon.style.color = 'red';
+            //Lo añadimos al contenedor
+            lifesContainer.appendChild(lifeIcon)
+        } else {
+            var lifeIcon = document.createElement('span');
+            lifeIcon.textContent = 'skull'
+            lifeIcon.className = 'material-symbols-outlined';
+            lifeIcon.style.color = 'lightgrey'
+            //Lo añadimos al contenedor
+            lifesContainer.appendChild(lifeIcon)
+        }
+
     }
 
-    body.appendChild(wordContainer) //Añadimos el contenedor de letras o huecos al body//
-
+    //Añadimos los contenedores al body
+    body.appendChild(lifesContainer)
 }
 
-function renderLifesContainer() { //Esta función permite crear los iconos de las vidas disponibles//
-    lifesContainer = document.createElement('div') //Generamos el contenedor de las vidas//
-    lifesContainer.style.display = 'flex' //Generamos estilo de disposición del contenedor de vidas//
-    lifesContainer.flexDirection = 'row' //Generamos estilo de dirección del contenedor de vidas//
-    lifesContainer.style.width = '100%' //Generamos estilo de anchura para el contenedor de vidas//
-    lifesContainer.style.gap = '1rem' //Generamos estilo de separación del contenedor de vidas//
-    lifesContainer.style.justifyContent = 'center' //Generamos estilo de justificar contenido para el contenedor de vidas//
+function renderUserFeedback() {
+    if (lifes <= 0) { //mensaje de derrota
+        userFeedbackContainer = document.createElement('div')
+        var loseMsg = document.createElement('h2');
+        loseMsg.textContent = `The ancienct wrath of Valyria falls on you. You dead!`;
+        loseMsg.style.color = 'red';
+        loseMsg.style.textAlign = 'center'
+        userFeedbackContainer.appendChild(loseMsg);
+    } else { //En caso opuesto: msj victoria
+        userFeedbackContainer = document.createElement('div')
+        var winMsg = document.createElement('h2');
+        winMsg.textContent = `The Faith of the Seven bless you. You guessed the world!`;
+        winMsg.style.color = 'green';
+        winMsg.style.textAlign = 'center'
+        userFeedbackContainer.appendChild(winMsg);
+    }
+
+    body.appendChild(userFeedbackContainer)
 }
 
-//Añadimos icono de nuestra elección en el HTML (ver Html para ubicar)//
+function renderPlayedLettersContainer() {
+    playedLettersContainer = document.createElement('div');
+    playedLettersContainer.style.display = 'flex';
+    playedLettersContainer.style.flexDirection = 'column'
+
+    var playedLettersTitle = document.createElement('h2');
+    playedLettersTitle.textContent = 'You already tried:';
+    playedLettersTitle.style.fontSize = '30px';
+    playedLettersTitle.style.color = 'white';
+    playedLettersTitle.style.textAlign = 'center';
+
+    playedLettersContainer.appendChild(playedLettersTitle);
 
 
+    var letterSquaresContainer = document.createElement('div');
+    letterSquaresContainer.style.display = 'flex';
+    letterSquaresContainer.style.flexWrap = 'wrap';
+    letterSquaresContainer.style.gap = '0.5rem';
+
+    for (var i = 0; i < playedLetters.length; i++) {
+        var letterContainer = document.createElement('b');
+        letterContainer.style.fontSize = '30px';
+        letterContainer.style.height = "6rem";
+        letterContainer.style.width = "6rem";
+        letterContainer.style.border = "2px solid slategray"
+        letterContainer.style.display = "flex";
+        letterContainer.style.justifyContent = "center"
+        letterContainer.style.alignItems = "center"
+        letterContainer.style.backgroundColor = "lightgray"
+        letterContainer.style.textAlign = 'center';
+        letterContainer.textContent = playedLetters[i].toUpperCase()
+        letterSquaresContainer.appendChild(letterContainer)
+    }
+
+    playedLettersContainer.appendChild(letterSquaresContainer)
+
+    body.appendChild(playedLettersContainer)
+}
 
 
+//Genera la interfaz visual del juego
+function renderInterface() {
+    renderWordContainer();
+    renderLifesContainer();
 
+
+    //En caso de que se haya perdido/ganado: añadir mensaje de derrota/victoria
+    if (lifes <= 0 || guessedWord === word) {
+        renderUserFeedback();
+        renderPlayAgainButton();
+    } else { //En caso de que ninguna de las dos anteriores añadiriamos el formulario
+        renderLetterForm();
+    }
+
+    if (playedLetters.length > 0) renderPlayedLettersContainer();
+}
+
+//Limpia y elimnina todo lo relativo a la interfaz del juego
+function cleanInterface() {
+    body.removeChild(wordContainer);
+    body.removeChild(lifesContainer);
+    if (letterFormContainer) body.removeChild(letterFormContainer);
+    if (playAgainButton) body.removeChild(playAgainButton);
+    if (userFeedbackContainer) body.removeChild(userFeedbackContainer);
+    if (playedLettersContainer) body.removeChild(playedLettersContainer);
+    wordContainer = undefined;
+    lifesContainer = undefined;
+    letterFormContainer = undefined;
+    playAgainButton = undefined;
+    userFeedbackContainer = undefined;
+    playedLettersContainer = undefined;
+}
+
+//TODO añadir mensaje de "ese input no" cuando alguien intente pasar numeros o algo incorrecto
+
+
+//Renderizamos la interfaz la primera vez que entra el usuario a la pagina
+renderInterface()
+
+//función nativa de js que "escucha" la interacción del usuario con la interfaz.
+// En este caso detecta cuando alguien pulsa un botón submit. El event es el form donde este ese botón submit,
+// por eso podemos traernos "letter", porque tenemos un input con un id "letter"
+addEventListener('submit', function (event) {
+    event.preventDefault();
+    var letterValue = event.target.letter.value;
+    playGame(letterValue)
+    //event.stopImmediatePropagation() --> sirve para no llamar al mismo tipo de evento varias veces
+})
+
+var gotimg = document.createElement('img')
+gotimg.src = 'https://i.tribune.com.pk/media/images/HD-wallpaper-game-of-thrones-the-iron-throne-prett1728982405-0/HD-wallpaper-game-of-thrones-the-iron-throne-prett1728982405-0.jpg'
+gotimg.style.zIndex = -1;
+gotimg.style.position = 'absolute';
+gotimg.style.top = '0px'
+gotimg.style.height = '100%'
+gotimg.style.width = '100%'
+body.appendChild(gotimg)
 
