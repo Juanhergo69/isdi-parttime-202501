@@ -1,27 +1,23 @@
 var choices = ['Piedra', 'Papel', 'Tijera']; //Creamos variables a escoger por el usuario//
+var cpuChoice;
+
 
 function compareChoices(_choice) { //Creamos función para comparar la elección del usuario y la elección de la Cpu//  
-    var cpuChoices = choices[Math.floor(Math.random() * choices.length)] //Declaramos la variable de elección de la Cpu, con factor de aletoriedad//
-    if (_choice === cpuChoices) { //Comparamos todas las posibilidades de juego//
-        alert('Empate!')
-    } else if (_choice === 'Piedra' && cpuChoices === 'Tijera') {
-        alert('Ganas!')
-
-    } else if (_choice === 'Piedra' && cpuChoices === 'Papel') {
-        alert('Pierdes!')
-
-    } else if (_choice === 'Papel' && cpuChoices === 'Piedra') {
-        alert('Ganas!')
-
-    } else if (_choice === 'Papel' && cpuChoices === 'Tijera') {
-        alert('Pierdes!')
-
-    } else if (_choice === 'Tijera' && cpuChoices === 'Papel') {
-        alert('Ganas!')
-
-    } else if (_choice === 'Tijera' && cpuChoices === 'Piedra') {
-        alert('Pierdes!')
-
+    cpuChoice = choices[Math.floor(Math.random() * choices.length)] //Declaramos la variable de elección de la Cpu, con factor de aletoriedad//
+    if (_choice === cpuChoice) { //Comparamos todas las posibilidades de juego//
+        renderDrawResult()
+    } else if (_choice === 'Piedra' && cpuChoice === 'Tijera') {
+        renderWinResult()
+    } else if (_choice === 'Piedra' && cpuChoice === 'Papel') {
+        renderLoseResult()
+    } else if (_choice === 'Papel' && cpuChoice === 'Piedra') {
+        renderWinResult()
+    } else if (_choice === 'Papel' && cpuChoice === 'Tijera') {
+        renderLoseResult()
+    } else if (_choice === 'Tijera' && cpuChoice === 'Papel') {
+        renderWinResult()
+    } else if (_choice === 'Tijera' && cpuChoice === 'Piedra') {
+        renderLoseResult()
     }
 }
 
@@ -59,7 +55,7 @@ gameTitleBox.style.padding = '10px'; //defino el espacio del texto respecto al b
 gameTitleBox.style.textAlign = 'center';
 gameTitleBox.style.marginTop = '10px';
 gameTitleBox.style.boxShadow = '10px 10px 20px rgba(0, 0, 0, 0.5)'; //unas sombritas para la caja del titulo
-gameTitleBox.style.borderRadius = '100px';
+gameTitleBox.style.borderRadius = '20px';
 
 gameTitleBox.appendChild(gameTitle); //Añadimos el título del juego al div de la caja del titulo
 body.appendChild(gameTitleBox); //añadimos caja con titulo al body
@@ -103,33 +99,86 @@ body.appendChild(backgroundImage); //añadimos la imagen de fondo al body
 
 function renderUserChoice(_choice) { //La función renderiza en pantalla la selección hecha por el usuario//
     userChoiceBox.innerHTML = ''; //borra contenido anterior
-    var userChoice = document.createElement('div') //Se crea el mensaje//
-    userChoice.textContent = `Has elegido: ${_choice}` //Se añade lo que queremos que diga el mensaje//
-    userChoice.style.fontSize = '25px'; //Añadimos estilos//
-    userChoice.style.height = '100px'; //Añadimos estilos//
-    userChoice.style.width = '300px'; //Añadimos estilos//
-    userChoice.style.position = 'relative' //Añadimos estilos//
-    userChoice.style.left = '80px'; //Añadimos estilos//
-    userChoice.style.top = '10px'; //Añadimos estilos//
-    userChoice.style.fontFamily = 'Miniver';
+    var renderUserChoice = document.createElement('div') //Se crea el mensaje//
+    renderUserChoice.textContent = `Has elegido: ${_choice}` //Se añade lo que queremos que diga el mensaje//
+    renderUserChoice.style.fontSize = '25px'; //Añadimos estilos//
+    renderUserChoice.style.height = '100px'; //Añadimos estilos//
+    renderUserChoice.style.width = '300px'; //Añadimos estilos//
+    renderUserChoice.style.position = 'relative' //Añadimos estilos//
+    renderUserChoice.style.left = '80px'; //Añadimos estilos//
+    renderUserChoice.style.top = '10px'; //Añadimos estilos//
+    renderUserChoice.style.fontFamily = 'Miniver';
 
-    userChoiceBox.appendChild(userChoice) //Añadimos al body el mensaje creado//
+    userChoiceBox.appendChild(renderUserChoice) //Añadimos al body el mensaje creado//
 }
 
 function renderCpuChoice(_cpuChoice) { //La función renderiza en pantalla la selección hecha por la CPU (no funciona)//
-    cpuChoiceBox.innerHTML = ''; //borra contenido anterior
-    var cpuChoice = document.createElement('div') //Se crea el mensaje//
-    cpuChoice.textContent = `La CPU ha elegido: ${_cpuChoice}` //Se añade lo que queremos que diga el mensaje//
-    cpuChoice.style.fontSize = '25px'; //Añadimos estilos//
-    cpuChoice.style.height = '100px'; //Añadimos estilos//
-    cpuChoice.style.width = '300px'; //Añadimos estilos//
-    cpuChoice.style.position = 'relative' //Añadimos estilos//
-    cpuChoice.style.left = '1500px'; //Añadimos estilos//
-    cpuChoice.style.top = '10px'; //Añadimos estilos//
-    cpuChoice.style.color = 'black';
-    cpuChoice.style.fontFamily = 'Miniver';
+    cpuChoiceBox.innerHTML = ''; //borra contenido anterior//
+    var renderCpuChoice = document.createElement('div') //Se crea el mensaje//
+    renderCpuChoice.textContent = `La CPU ha elegido: ${_cpuChoice}` //Se añade lo que queremos que diga el mensaje//
+    renderCpuChoice.style.fontSize = '25px'; //Añadimos estilos//
+    renderCpuChoice.style.height = '100px'; //Añadimos estilos//
+    renderCpuChoice.style.width = '300px'; //Añadimos estilos//
+    renderCpuChoice.style.position = 'relative' //Añadimos estilos//
+    renderCpuChoice.style.left = '38px'; //Añadimos estilos//
+    renderCpuChoice.style.top = '10px'; //Añadimos estilos//
+    renderCpuChoice.style.color = 'black';
+    renderCpuChoice.style.fontFamily = 'Miniver';
 
-    cpuChoiceBox.appendChild(cpuChoice) //Añadimos al body el mensaje creado//
+
+
+    cpuChoiceBox.appendChild(renderCpuChoice) //Añadimos al body el mensaje creado//
+}
+
+function renderDrawResult() {
+    resultBox.innerHTML = '';
+    var renderDrawResult = document.createElement('div');
+    renderDrawResult.textContent = 'Empate!';
+    renderDrawResult.style.fontSize = '40px'; //Añadimos estilos//
+    renderDrawResult.style.height = '100px'; //Añadimos estilos//
+    renderDrawResult.style.width = '300px'; //Añadimos estilos//
+    renderDrawResult.style.position = 'relative' //Añadimos estilos//
+    renderDrawResult.style.left = '110px'; //Añadimos estilos//
+    renderDrawResult.style.top = '-5px'; //Añadimos estilos//
+    renderDrawResult.style.color = 'grey';
+    renderDrawResult.style.fontFamily = 'Miniver';
+
+    resultBox.appendChild(renderDrawResult)
+
+}
+
+function renderWinResult() {
+    resultBox.innerHTML = '';
+    var renderWinResult = document.createElement('div');
+    renderWinResult.textContent = 'Ganas!';
+    renderWinResult.style.fontSize = '40px'; //Añadimos estilos//
+    renderWinResult.style.height = '100px'; //Añadimos estilos//
+    renderWinResult.style.width = '300px'; //Añadimos estilos//
+    renderWinResult.style.position = 'relative' //Añadimos estilos//
+    renderWinResult.style.left = '115px'; //Añadimos estilos//
+    renderWinResult.style.top = '-5px'; //Añadimos estilos//
+    renderWinResult.style.color = 'green';
+    renderWinResult.style.fontFamily = 'Miniver';
+
+    resultBox.appendChild(renderWinResult)
+
+}
+
+function renderLoseResult() {
+    resultBox.innerHTML = '';
+    var renderLoseResult = document.createElement('div');
+    renderLoseResult.textContent = 'Pierdes!';
+    renderLoseResult.style.fontSize = '40px'; //Añadimos estilos//
+    renderLoseResult.style.height = '100px'; //Añadimos estilos//
+    renderLoseResult.style.width = '300px'; //Añadimos estilos//
+    renderLoseResult.style.position = 'relative' //Añadimos estilos//
+    renderLoseResult.style.left = '110px'; //Añadimos estilos//
+    renderLoseResult.style.top = '-5px'; //Añadimos estilos//
+    renderLoseResult.style.color = 'red';
+    renderLoseResult.style.fontFamily = 'Miniver';
+
+    resultBox.appendChild(renderLoseResult)
+
 }
 
 var userChoiceBox = document.createElement('div');
@@ -157,13 +206,26 @@ cpuChoiceBox.style.border = '1px solid black';
 cpuChoiceBox.style.borderRadius = '20px'; //redondeo los bordes de la caja
 cpuChoiceBox.style.boxShadow = '10px 10px 20px rgba(0, 0, 0, 0.5)'; //le añado sombra a la caja
 cpuChoiceBox.style.position = 'absolute';
-cpuChoiceBox.style.right = '100px';
+cpuChoiceBox.style.right = '50px';
 cpuChoiceBox.style.top = '180px';
+
+var resultBox = document.createElement('div');
+resultBox.style.width = '350px';
+resultBox.style.height = '50px';
+resultBox.style.zIndex = '-1';
+resultBox.style.backgroundColor = 'beige';
+resultBox.style.padding = '8px';
+resultBox.style.borderColor = 'black';
+resultBox.style.border = '1px solid black';
+resultBox.style.borderRadius = '20px'; //redondeo los bordes de la caja
+resultBox.style.boxShadow = '10px 10px 20px rgba(0, 0, 0, 0.5)'; //le añado sombra a la caja
+resultBox.style.position = 'absolute';
+resultBox.style.left = '774px';
+resultBox.style.top = '250px';
 
 body.appendChild(cpuChoiceBox);
 body.appendChild(userChoiceBox);
-
-//CREO QUE LA HE LIADO PORQUE NO ME APARECEN LOS MENSAJES DE CPU HA ELEGIDO 
+body.appendChild(resultBox);
 
 var buttonContainer = document.createElement('div') //Creamos contenedor de botones para selección del jugador//
 
@@ -197,7 +259,7 @@ function generateChoiceButton(_choice) { //La función genera el botón de selec
     button.addEventListener('click', function () { //El addEventListener permite ejecutar algo mientras se produzca algo//
         compareChoices(_choice) //En este caso, cuando se hace click sobre el botón de selección, se ejecuta la función de comparar la eleccción del jugador y la cpu//
         renderUserChoice(_choice) //En este caso, cuando se hace click sobre el botón de selección, se ejecuta la función de renderizado de la selección del jugador//
-        renderCpuChoice(_choice) //En este caso, cuando se hace click sobre el botón de selección, se ejecuta la función de renderizado de la selección de la CPU//
+        renderCpuChoice(cpuChoice) //En este caso, cuando se hace click sobre el botón de selección, se ejecuta la función de renderizado de la selección de la CPU//
     })
     buttonContainer.appendChild(button); //Añadimos el botón al contenedor de botones//
 }

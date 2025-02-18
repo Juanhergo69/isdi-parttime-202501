@@ -244,14 +244,14 @@ function renderUserFeedback() {
     if (lifes <= 0) { //mensaje de derrota
         userFeedbackContainer = document.createElement('div')
         var loseMsg = document.createElement('h2');
-        loseMsg.textContent = `The ancienct wrath of Valyria falls on you. You dead!`;
+        loseMsg.textContent = `The ancient wrath of Valyria falls on you. You dead!`;
         loseMsg.style.color = 'red';
         loseMsg.style.textAlign = 'center'
         userFeedbackContainer.appendChild(loseMsg);
     } else { //En caso opuesto: msj victoria
         userFeedbackContainer = document.createElement('div')
         var winMsg = document.createElement('h2');
-        winMsg.textContent = `The Faith of the Seven bless you. You guessed the world!`;
+        winMsg.textContent = `The Faith of the Seven bless you. You guessed the word!`;
         winMsg.style.color = 'green';
         winMsg.style.textAlign = 'center'
         userFeedbackContainer.appendChild(winMsg);
