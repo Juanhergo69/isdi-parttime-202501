@@ -1,0 +1,44 @@
+.title {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+    color: rgb(0, 0, 0)
+}
+
+
+@media (min-width: 720px) {
+    .title {
+        color: rgb(0, 0, 0)
+    }
+}
+
+
+@media (min-width: 1024px) {
+    .title {
+        color: rgb(0, 0, 0)
+    }
+}
+
+.buttonJoin {
+    display: flex;
+    justify-content: center;
+    background-color: aqua;
+    margin-left: 48.2%;
+}
+
+.buttonRegister {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: rgb(255, 174, 0);
+    margin-left: 40%;
+}
+
+.buttonGoToLogin {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: rgb(9, 255, 0);
+    margin-left: 55%;
+
+}
