@@ -25,7 +25,7 @@ var unshift = names.unshift('Loli') //El método unshift añade en la primera po
 console.log(unshift)
 console.log(names)
 
-var concat = names.concat(names2) //El método concat une dos arrays diferentes en uno solo. Siempre sigue el orden lógico, es decir, empezará por al array names, y continuará con el array names 2//
+/*var concat = names.concat(names2) //El método concat une dos arrays diferentes en uno solo. Siempre sigue el orden lógico, es decir, empezará por al array names, y continuará con el array names 2//
 console.log(concat)
 console.log(names.concat(names2))
 
@@ -80,7 +80,7 @@ var findIndex
 var map
 var filter
 var reduce
-var sort
+var sort*/
 
 
 
