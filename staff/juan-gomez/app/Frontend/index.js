@@ -37,12 +37,6 @@ function createButton(text, style, callback) { //La función permite crear un bo
     button.addEventListener('click', callback) //Creamos un adEventListener, en base al click realizado sobre el botón, para ejecutar el callback//
     return button; //Devolvemos button//
 }
-
-function createButtonContainer(style) { //La función permite crear un contenedor de botones, con idea de poder incluirlos según cada página de renderizada, y poder darles estilos en cojunto//
-    var buttonContainer = document.createElement('div'); //Declaramos la variable buttonContainer, y le asignamos el valor de documento html de div//
-    buttonContainer.className = style; //Constinuamos asignándole la clase, que en este caso serán los styles (estilos)//
-    return buttonContainer; //Devolvemos buttonContainer//
-}
 //**********************************************************************************************************************************************************************************************//
 //**********************************************************************************************************************************************************************************************//
 
@@ -63,7 +57,7 @@ function renderLanding() { //La función permite renderizar el Landing page, es 
 
 function navigateToRegister(previousView) { //La función permite renderizar el Register page, es decir, la página de registro. Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta//
     var registerContainer = createContainer(''); //Declaramos la variable registerContainer (contenedor de la página de registro), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
-    var registerButtonContainer = createButtonContainer(''); //Declaramos la variable registerButtonContainer (contenedor de los botones de la página de registro), y le asignamos el valor de la función createButtonContainer. Entre paréntesis, agregamos los estilos (styles) que queramos que tenga//
+    var registerButtonContainer = createContainer(''); //Declaramos la variable registerButtonContainer (contenedor de los botones de la página de registro), y le asignamos el valor de la función createButtonContainer. Entre paréntesis, agregamos los estilos (styles) que queramos que tenga//
     var registerTitle = createTextContainer('h1', 'Register', 'title'); //Declaramos la variable registerTitle (título de la página de registro), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
     var registerButton = createButton('Register', 'buttonRegister', function () { alert('not rendered yet') }) //Declaramos la variable registerButton (que será el botón para acceder al formulario de registro), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos (en este caso está incompleto, no ha creado la función de renderizado del formulario de registro//
     var toLoginButton = createButton('Go to login', 'buttonGoToLogin', function () { navigateToLogin(registerContainer) }) //Declaramos la variable toLoginButton (que será el botón para acceder a la página de logeo), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los extilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
@@ -82,7 +76,7 @@ function navigateToRegister(previousView) { //La función permite renderizar el 
 
 function navigateToLogin(previousView) { //La función permite renderizar el Login page, es decir, la página de login. Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta//
     var loginContainer = createContainer(''); //Declaramos la variable loginContainer (contenedor de la página de logeo), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
-    var loginButtonContainer = createButtonContainer(''); //Declaramos la variable loginButtonContainer (contenedor de los botones de la página de login) y le asignamos el valor de la función createButtonContainer. Entre paréntesis, agregamos los estilos (styles) que queramos que tenga//
+    var loginButtonContainer = createContainer(''); //Declaramos la variable loginButtonContainer (contenedor de los botones de la página de login) y le asignamos el valor de la función createButtonContainer. Entre paréntesis, agregamos los estilos (styles) que queramos que tenga//
     var loginTitle = createTextContainer('h1', 'Login', 'title'); //Declaramos la variable loginTitle (título de la página de logeo), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
     var loginButton = createButton('Login', 'buttonGoToLogin', function () { alert('not rendered yet') }) //Declaramos la variable loginButton (que será el botón para acceder al formulario de logeo), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos (en este caso está incompleto, no ha creado la función de renderizado del formulario de logeo//
     var toRegisterButton = createButton('Go to register', 'buttonRegister', function () { navigateToRegister(loginContainer) }) //Declaramos la variable toRegisterButton (que será el botón para acceder a la página de registro), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los extilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
