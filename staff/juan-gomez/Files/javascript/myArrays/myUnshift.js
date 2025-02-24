@@ -14,10 +14,10 @@ var nameToUnshift = 'Loli' //Declaramos variable de aquello que queremos añadir
 //DECLARAMOS UNA FUNCIÓN QUE REALIZARÍA, DE MANERA MANUAL, EL MÉTODO UNSHIFT// (Toda esta función está sacada de Google, necesito explicación para comprenderla)
 function myUnshift(array, ...elements) { //La función realizaría un unshift de forma manual, sobre un array//
     var updateLength = array.length + elements.length //Declaramos variable de actualización de nueva longitud del array//
-    for (let i = updateLength - 1; i >= elements.length; i--) { //El for itera a la inversa los elementos del array, desplazándolos hacia la derecha, para dejar hueco a los elementos que se quieran añadir al principio del array//
+    for (var i = updateLength - 1; i >= elements.length; i--) { //El for itera a la inversa los elementos del array, desplazándolos hacia la derecha, para dejar hueco a los elementos que se quieran añadir al principio del array//
         array[i] = array[i - elements.length] //Se indica que el indice del array es igual al indice del array, menos la longitud de los elementos a añadir en primera posición//
     }
-    for (let j = 0; j < elements.length; j++) { //El for itera los elementos de nueva incoporación, para posteriormente añadirlos al array//
+    for (var j = 0; j < elements.length; j++) { //El for itera los elementos de nueva incoporación, para posteriormente añadirlos al array//
         array[j] = elements[j]; //Se indica que el nuevo indice del array es igual al indice de los elementos de nueva icorporación//
     }
     return updateLength //Devolvemos la actualización de la longitud del array//
