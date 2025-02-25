@@ -39,7 +39,7 @@ var indexOf2 = names2.indexOf('Macarena') //El ejemplo de arriba muestra un par�
 console.log(names.includes('Sonia'))
 console.log(names2.includes('Macarena'))
 
-var lastIndexOf = names.lastIndexOf('Segismundo') //El método lastindexOf recorre el array desde la última posición, y comprueba si el elemento que se comanda entre paréntesis se encuentra en el array, y de estarlo, indica la posición en la que se encuentra. Si hay varios elementos en el array con el mismo elemento, solo considera el primero localizado. Si el elemento no se encuentra en el array, devolvería -1. Si hay elementos repetidos a rastrear, sólo tiene en cuenta al primero contado desde atrás, y le asigna el índice, contando justamente a partir de la siguiente posición de aparición del primer elemento igual//
+var lastIndexOf = names.lastIndexOf('Segismundo') //El método lastindexOf recorre el array desde la última posición, y comprueba si el elemento que se comanda entre paréntesis se encuentra en el array, y de estarlo, indica la posición en la que se encuentra. Si hay varios elementos en el array con el mismo elemento, solo considera el primero localizado. Si el elemento no se encuentra en el array, devolvería -1.
 var lastIndexOf2 = names2.lastIndexOf('David') //El ejemplo de arriba arrojará un valor -1, ya que ese elemento no se encuentra en el array. El ejemplo de esta línea muestra un elemento que se encuentra en el array, concretamente la posición 2 (según las líneas de código previamente escritas)//
 console.log(lastIndexOf)
 console.log(lastIndexOf2)

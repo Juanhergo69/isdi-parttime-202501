@@ -1,6 +1,5 @@
 //Método lastIndexOf//
 //El método lastIndexOf recorre el array desde la última posición, y comprueba si el elemento que se comanda entre paréntesis se encuentra en el array, y de estarlo, indica la posición en la que se encuentra. Si hay varios elementos en el array con el mismo parámetro, solo considera el primero localizado. Si el elemento no se encuentra en el array, devolvería -1//
-//Si hay elementos repetidos a rastrear, sólo tiene en cuenta al primero contado desde atrás, y le asigna el índice, contando justamente a partir de la siguiente posición de aparición del primer elemento igual//
 
 //Procedimiento de comprobación TDD//
 
