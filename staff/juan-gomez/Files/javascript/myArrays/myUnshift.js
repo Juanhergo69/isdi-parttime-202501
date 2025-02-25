@@ -34,8 +34,8 @@ var controlResult2 = myUnshift(names, nameToUnshift) //Declaramos la segunda var
 //VALIÉNDONOS DE LAS FUNCION CONSOLE.ASSERT, REALIZAMOS POR DOS VÍAS LAS COMPROBACIONES PERTINENTES, PARA AVERIGUAR SI AMBOS TEST SON SUPERADOS, O SI POR CONTRA, DEBEMOS MODIFICARLOS//
 console.assert(controlResult1 === controlResult2, 'ambos controles devuelven lo mismo. El código es correcto')
 
-for (var i = 0; i < names.length; i++) { //Con este método, el for itera todos los elementos de la longitud del array original//
-    console.assert(testNames[i] === names[i], `la posición ${i} es diferente en ambos arrays. ${testNames[i]} !== ${names[i]}`); //Con este assert comprobamos los índices del array original y del array test. Si son iguales, no lanzará ningún mensaje, pero si hay diferencias en algúna posición, las arrojaría en el mensaje escrito en consola//
+for (var i = 0; i < controlResult1.length; i++) { //Con este método, el for itera todos los elementos de la longitud de controlResult1//
+    console.assert(controlResult1[i] === controlResult2[i], `la posición ${i} es diferente en ambos arrays. ${testNames[i]} !== ${names[i]}`); //Con este assert comprobamos los índices de controlResult1 y de controlResult2. Si son iguales, no lanzará ningún mensaje, pero si hay diferencias en algúna posición, las arrojaría en el mensaje escrito en consola//
 }
 //***************************************************************************************************************************************************************//
 

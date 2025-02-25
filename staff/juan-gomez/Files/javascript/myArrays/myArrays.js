@@ -25,7 +25,7 @@ var unshift = names.unshift('Loli') //El método unshift añade en la primera po
 console.log(unshift)
 console.log(names)
 
-/*var concat = names.concat(names2) //El método concat une dos arrays diferentes en uno solo. Siempre sigue el orden lógico, es decir, empezará por al array names, y continuará con el array names 2//
+var concat = names.concat(names2) //El método concat une dos arrays diferentes en uno solo. Funciona de forma similar a la función appendChild de html. Siempre sigue el orden lógico, es decir, empezará por al array names, y continuará con el array names 2//
 console.log(concat)
 console.log(names.concat(names2))
 
@@ -34,18 +34,18 @@ var includes2 = names2.includes('Marco') //El ejemplo de arriba muestra un caso 
 console.log(includes)
 console.log(includes2)
 
-var indexOf = names.indexOf('Sonia') //El método indexOf recorre el array desde la primera posición, y comprueba si el elemento que se comanda entre paréntesis se encuentra en el array, y de estarlo, indica la posición en la que se encuentra. Si hay varios elementos en el array con el mismo elemento, solo considera el primero localizado//
+var indexOf = names.indexOf('Sonia') //El método indexOf recorre el array desde la primera posición, y comprueba si el elemento que se comanda entre paréntesis se encuentra en el array, y de estarlo, indica la posición en la que se encuentra. Si hay varios elementos en el array con el mismo parámetro, solo considera el primero localizado//
 var indexOf2 = names2.indexOf('Macarena') //El ejemplo de arriba muestra un parámetro que se encuentra en el array, concretamente, en la posición 1 (según las líneas de código previamente escritas). El ejemplo de esta línea, arrojaría valor -1, ya que este parámetro no se encuentra en el array//
 console.log(names.includes('Sonia'))
 console.log(names2.includes('Macarena'))
 
-var lastIndexOf = names.lastIndexOf('Segismundo') //El método lastindexOf recorre el array desde la última posición, y comprueba si el elemento que se comanda entre paréntesis se encuentra en el array, y de estarlo, indica la posición en la que se encuentra. Si hay varios elementos en el array con el mismo elemento, solo considera el primero localizado//
+var lastIndexOf = names.lastIndexOf('Segismundo') //El método lastindexOf recorre el array desde la última posición, y comprueba si el elemento que se comanda entre paréntesis se encuentra en el array, y de estarlo, indica la posición en la que se encuentra. Si hay varios elementos en el array con el mismo elemento, solo considera el primero localizado. Si el elemento no se encuentra en el array, devolvería -1. Si hay elementos repetidos a rastrear, sólo tiene en cuenta al primero contado desde atrás, y le asigna el índice, contando justamente a partir de la siguiente posición de aparición del primer elemento igual//
 var lastIndexOf2 = names2.lastIndexOf('David') //El ejemplo de arriba arrojará un valor -1, ya que ese elemento no se encuentra en el array. El ejemplo de esta línea muestra un elemento que se encuentra en el array, concretamente la posición 2 (según las líneas de código previamente escritas)//
 console.log(lastIndexOf)
 console.log(lastIndexOf2)
 
-var reverse = names.reverse() //El metodo reverse cambia las posiciones de todos los elementos del array, a un estado estricamente contrario. Es decir, da la vuelta al array//
-console.log(reverse)
+/*var reverse = names.reverse() //El metodo reverse cambia las posiciones de todos los elementos del array, a un estado estricamente contrario. Es decir, da la vuelta al array//
+console.log(reverse)*/
 
 var join = names.join(" + ") //El metodo join permite unir en una cadena los diferentes elementos de un array, utilizando distintos métodos de separación. En este caso, utlizará el array names, y separaré cada uno de los parámetos con un espacio, un + y otro espacio//
 console.log(join)
@@ -80,7 +80,7 @@ var findIndex
 var map
 var filter
 var reduce
-var sort*/
+var sort
 
 
 
