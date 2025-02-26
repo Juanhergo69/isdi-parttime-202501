@@ -39,3 +39,10 @@
     justify-content: center;
     background-color: rgb(9, 255, 0);
 }
+
+.buttonGoToLanding {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: aqua;
+}

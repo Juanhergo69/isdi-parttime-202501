@@ -1,5 +1,7 @@
 var body = document.body; //Traemos el body al archivo Js//
 
+var users = [] //Creamos variable de usuarios como array vacío, se irá rellenando conforme se introduzcan y guarden (base de datos de juguete pendiente de realizar)//
+
 //**********************************************************************************************************************************************************************************************//
 //LA FUNCION APPENDCHILDREN() ES MERAMENTE CURISIODIDAD, EN PRUEBAS DE RENDIMIENTO, ES PEOR QUE EL MÉTODO CLÁSICO APPENDCHILD//
 //**********************************************************************************************************************************************************************************************//
@@ -37,6 +39,85 @@ function createButton(text, style, callback) { //La función permite crear un bo
     button.addEventListener('click', callback) //Creamos un adEventListener, en base al click realizado sobre el botón, para ejecutar el callback//
     return button; //Devolvemos button//
 }
+
+function createForm(inputsArray, submitButtonText, callback) { //La función permite crear un formulario. inputsArray serán los objetos a crear ej.-->[{label: 'Email', inputType: 'email', inputPlaceholder: 'my@email.com', inputId: 'email'}, {label: 'Password....}], submitButtonText será el botón de ejecución de los inputsArray y callback sería la función de respuesta a todo lo anterior//
+    var formContainer = document.createElement('form'); //Declaramos la variable formContainer, y le asignamos el valor de documento html creado como 'div'. Será el contenedor de nuestro formulario//
+    formContainer.className = 'form' //Continuamos asignandole la clase, que en este caso será un formulario (form)//
+    for (var i = 0; i < inputsArray.length; i++) { //El for itera todos los elementos de inputsArray//
+        var input = inputsArray[i] //Declaramos la variable input, y le asignamos el valor del indice recorrido en el for sobre inputsArray//
+        var label = document.createElement('label') //Declaramos la variable label, y le asignamos el valor de documento html creado como etiqueta (label)//
+        label.htmlFor = input.inputId //Continuamos asignando a label la funcion htmlFor, que permite iterar los elementos que se asignen. ej-->input = {... inputId: 'email'}; input.inputId === 'email'//
+        label.textContent = input.label //Continuamos asignando a label el contenido de texto, que en este caso será la etiqueta (label) generada sobre el input//
+        var inputElement = document.createElement('input') //Declaramos la variable inputElement, y le asignamos el valor de documento html creado como input//
+        inputElement.type = input.inputType; //Continuamos asignando a inputElement el tipo, que será el tipo de input generado sobre el input//
+        inputElement.id = input.inputId; //Continuamos asignando a inputElement la id, que sera la id del input sobre el input//
+        inputElement.placeholder = input.inputPlaceholder //Continuamos asinando a inputElemento el placeholder, que será aquello que sirva de guía para que el usuario sepa que debe escribir ahí. Será la id del placeholder sobre el input//
+        inputElement.required = input.isRequired //Continuamos asignando a inputElement la categoría required, que servirá para que ese campo sea de obligatorio cumplimiento para seguir avanzando//
+
+        formContainer.appendChild(label) //Añadimos label a formContainer//
+        formContainer.appendChild(inputElement) //Añadimos inputElemento a formContainer//
+        body.appendChild(formContainer) //Añadimos formContainer al body//
+    }
+
+    var submitButton = document.createElement('input'); //Declaramos variable sumbitButton, y le asignamos el valor de documento html creado como input//
+    submitButton.type = 'submit'; //Continuamos asignando el tipo de submitButton, que en este caso será submit//
+    submitButton.value = submitButtonText //Continuamos asignando el valor de submitButton, que en este caso será submitButtonText//
+
+    formContainer.appendChild(submitButton) //Añadimos submitButton a formContainer//
+
+    formContainer.addEventListener('submit', function (event) { //Indicamos que, cuando se producza un submit (en este caso, que se ejecute submitButton) , se ejecutará una función sobre el evento//
+        event.preventDefault() //Para evitar comportamientos extraños, como que se reinice el renderizado, ejecutamos preventDefault sobre ese evento//
+
+        var form = event.target //Declaramos variable form, que será igual al objetivo del evento. En este caso, el objetivo del evento es el formulario creado. ej--> elemento form html al que le hemos dado submit//
+        var formData = {} //Declaramos variable formData, que se corresponderá a los datos del formulario. Se declara como un objeto vacío que se irá rellenando con la iteración del siguiente for//
+
+        for (var i = 0; i < inputsArray.length; i++) { //El for itera todos los elementos que se han generado en el formulario. La intención es acceder a los valores que escribe el usuario//
+
+            //ej.-->inputsArray = [{ label: 'Email', inputType: 'email', inputPlaceholder: 'my@email.com', inputId: 'email' }, ...]//
+            //Normalmente para acceder al valor de un input a traves del id ej.--> event.target.idDelInput (e.g. event.target.email)//
+
+            //ej.-->form[inputsArray[i].inputId] ---> event.target['email'] === event.target.email
+            //ej.-->console.log(form[inputsArray[i].inputId].value) //<input />.value
+
+            var fieldName = inputsArray[i].inputId //Declaramos variable fieldName, que se corresponde al nombre del campo, y le asignamos el valor del indice de inputsArray en base la id del input//
+            var value = form[inputsArray[i].inputId].value //Declaramos variable value, que se corresponde al valor de ese input, y le asignamos el valor del objetivo del evento (form) sobre el indice de inputsArray, en base al valor de la id del input//
+
+            formData[fieldName] = value; //Asignamos a formData, en base al nombre del campo, el valor iterado en el for. ej-->formData = {'email': 'patata@mail.com'}//
+        }
+
+        callback(formData) //Llamamos a la respuesta (callback) de los datos del formulario.
+    })
+
+    return formContainer //Devolvemos formContainer//
+
+}
+
+function registerUser(registerData) { //La función permite crear el registro del usuario, en base a los datos de registro ej.-->registerData = {'email': '', 'password': '', 'confirmation-password': ''}//
+    if (!registerData['email'] && !registerData['password'] && !registerData['confirmation-password']) { //El if nos indica que si no se rellena el campo de email, contraseña y confirmación de contraseña ej-->!registerData['email'] => registerData['email'] === undefined && registerData['email'] === null//
+        alert('Register Data Incomplete') //Nos arroja un alert que nos indica que los datos están incompletos//
+        return //Al producirse esto, nos salimos de la función//
+    }
+    if (registerData['password'] !== registerData['confirmation-password']) { //El if nos indica que si el campo de contraseña es diferente al campo de confirmar contraseña//
+        alert('Password and confirmation password are not the same') //Nos arroja un alert que nos indica que las contraseñas no son coincidentes//
+        return //Al producirse esto, nos salimos de la función//
+    }
+
+    //Mejoras a considerar: Asignar longitud mínima de contraseña, introducir mínimo una letra mayúscula en la contraseña, validar que el mail no esta en uso, etc//
+
+    users.push({ email: registerData['email'], password: registerData['password'], id: Date.now() }) //Si todo lo anterior en los if no sucede, sobre la variable users creada, empujamos los datos introducidos. Al no tener base de datos creada, asignamos con id:Date.now(), una id especifica para ese registro//
+    console.log(users) //El console log permite ver en consola los datos de ese hipotético usuario registrado. Al no tener base de datos, después de refrescar la página, estos datos se perderán//
+
+}
+
+function loginUser(loginData) { //La función permite crear el login del usuario, en base a los datos de registro ej.-->loginData = {'email': '', 'password': ''}//
+    if (!loginData['email'] && !loginData['password']) { //El if nos indica que si no se rellena el campo de email y contraseña ej-->!loginData['email'] => loginData['email'] === undefined && loginData['email'] === null//
+        alert('Login Data Incomplete') //Nos arroja un alert que nos indica que los datos están incompletos//
+        return //Al producirse esto, nos salimos de la función//
+    }
+
+    //Mejoras a considerar: En teoría, no debería funcionar, ya que no hay base de datos que almacene los registros//
+
+}
 //**********************************************************************************************************************************************************************************************//
 //**********************************************************************************************************************************************************************************************//
 
@@ -44,7 +125,7 @@ function createButton(text, style, callback) { //La función permite crear un bo
 //**********************************************************************************************************************************************************************************************//
 //CREAMOS FUNCIONES DE RENDERIZADO DE CADA UNA DE LAS PÁGINAS QUE CONTENDERÁ NUESTRA PÁGINA WEB//
 //**********************************************************************************************************************************************************************************************//
-function renderLanding() { //La función permite renderizar el Landing page, es decir, la primera página que se mostrará al acceder a la web//
+function renderLandingPage() { //La función permite renderizar el Landing page, es decir, la primera página que se mostrará al acceder a la web//
     var landingContainer = createContainer(''); //Declaramos la variable landingContainer (contenedor de la página principal), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
     var landingTitle = createTextContainer('h1', 'SM Developers', 'title');  //Declaramos la variable landingTitle (título de la página principal), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
     var joinButton = createButton('JOIN IN!', 'buttonJoin', function () { navigateToRegister(landingContainer) }) //Declaramos la variable joinButton (que será el botón para acceder), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos//
@@ -53,46 +134,66 @@ function renderLanding() { //La función permite renderizar el Landing page, es 
     landingContainer.appendChild(joinButton); //Añadimos al contenedor de la página principal, el botón para unirse//
 
     body.appendChild(landingContainer); //Añadimos el contenedor de la página principal al body//
+
+    return landingContainer //Devolvemos landingContainer//
 }
 
-function navigateToRegister(previousView) { //La función permite renderizar el Register page, es decir, la página de registro. Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta//
+function navigateToLanding() {
+    var landingView = renderLandingPage()
+
+    body.replaceChild(landingView, previousView)
+}
+
+function renderRegisterPage() { //La función permite renderizar el registerPage, es decir, la página de registro//
     var registerContainer = createContainer(''); //Declaramos la variable registerContainer (contenedor de la página de registro), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
-    var registerButtonContainer = createContainer(''); //Declaramos la variable registerButtonContainer (contenedor de los botones de la página de registro), y le asignamos el valor de la función createButtonContainer. Entre paréntesis, agregamos los estilos (styles) que queramos que tenga//
     var registerTitle = createTextContainer('h1', 'Register', 'title'); //Declaramos la variable registerTitle (título de la página de registro), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
-    var registerButton = createButton('Register', 'buttonRegister', function () { alert('not rendered yet') }) //Declaramos la variable registerButton (que será el botón para acceder al formulario de registro), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos (en este caso está incompleto, no ha creado la función de renderizado del formulario de registro//
-    var toLoginButton = createButton('Go to login', 'buttonGoToLogin', function () { navigateToLogin(registerContainer) }) //Declaramos la variable toLoginButton (que será el botón para acceder a la página de logeo), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los extilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
-    registerButtonContainer.style.display = 'flex'; //Añadimos estilos al contenedor de los botones de la página de registro//
-    registerButtonContainer.style.flexDirection = 'row'; //Añadimos estilos al contenedor de los botones de la página de registro//
-    registerButtonContainer.style.justifyContent = 'center'; //Añadimos estilos al contenedor de los botones de la página de registro//
-    registerButtonContainer.style.gap = '2rem'; //Añadimos estilos al contenedor de los botones de la página de registro//
+    var objectEmail = { label: 'Email', inputType: 'email', inputPlaceholder: 'my@email.com', inputId: 'email', isRequired: true } //Declaramos el objeto objectEmail, que contendrá los campos correspondientes al input de email//
+    var objectPassword = { label: 'Password', inputType: 'password', inputPlaceholder: '*******', inputId: 'password', isRequired: true } //Declaramos el objeto objectPassword, que contendrá los campos corespondientes al input de contraseña//
+    var objectConfirmPassword = { label: 'Confirm password', inputType: 'password', inputPlaceholder: '*******', inputId: 'confirmation-password', isRequired: true } //Declaramos el objeto objectConfirmPassword, que contendrá los campos correspondientes al input de confirmar contraseña//
+    var registerForm = createForm([objectEmail, objectPassword, objectConfirmPassword], 'Register', registerUser) //Declaramos variable registerForm, que se corresponde al formulario de registro. Llamamos al función createForm y le introducimos los objetos que queremos que se rendericen, así como el submit (en este caso Register) y el callback, que será llamando a la función registerUser//
+    var toLoginButton = createButton('Go to login', 'buttonGoToLogin', function () { navigateToLogin(registerContainer) }) //Declaramos la variable toLoginButton (que será el botón para acceder a la página de logeo), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+    var toLandingButton = createButton('Go to landing', 'buttonGoToLanding', function () { navigateToLanding(registerContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+    registerContainer.appendChild(registerTitle) //Añadimos registerTitle a registerContainer//
+    registerContainer.appendChild(registerForm) //Añadimos registerForm a registerContainer//
+    registerContainer.appendChild(toLoginButton) //Añadimos toLoginButton a registerContainer//
+    registerContainer.appendChild(toLandingButton) //Añadimos toLandingButton a registerContainer//
 
-    registerButtonContainer.appendChild(registerButton); //Añadimos al contenedor de los botones de la página de registro, el botón de registro//
-    registerButtonContainer.appendChild(toLoginButton); //Añadimos al contenedor de los botones de la página de registro, el botón de login//
-    registerContainer.appendChild(registerTitle); //Añadimos al contenedor de la página de registro, el título de la página de registro//
-    registerContainer.appendChild(registerButtonContainer); //Añadimos al contenedor de la página de registro, el contenedor de los botones de la página de registro//
+    body.appendChild(registerContainer) //Añadimos registerContainer al body//
 
-    body.replaceChild(registerContainer, previousView) //Añadimos el contenedor de la página de registro al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por registerContainer//
+    return registerContainer //Devolvemos registerContainer//
+}
+
+function navigateToRegister(previousView) { //La función permite navegar al registerPage, es decir, la página de registro. Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta//
+    var registerView = renderRegisterPage() //Declaramos variable registerView, que será la vista de la página de registro y le asignamos el valor de la función de renderizado de la página de registro (renderRegisterPage)//
+
+    body.replaceChild(registerView, previousView) //Añadimos el contenedor de la página de registro al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por registerContainer//
+}
+
+function renderLoginpage() { //La función permite renderizar el registerLogin, es decir, la página de login//
+    var loginContainer = createContainer(''); //Declaramos la variable loginContainer (contenedor de la página de login), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
+    var loginTitle = createTextContainer('h1', 'Login', 'title'); //Declaramos la variable loginTitle (título de la página de login), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
+    var objectEmail = { label: 'Email', inputType: 'email', inputPlaceholder: 'my@email.com', inputId: 'email', isRequired: true } //Declaramos el objeto objectEmail, que contendrá los campos correspondientes al input de email//
+    var objectPassword = { label: 'Password', inputType: 'password', inputPlaceholder: '*******', inputId: 'password', isRequired: true } //Declaramos el objeto objectPassword, que contendrá los campos corespondientes al input de contraseña//
+    var loginForm = createForm([objectEmail, objectPassword], 'Login', loginUser) //Declaramos variable loginForm, que se corresponde al formulario de login. Llamamos al función createForm y le introducimos los objetos que queremos que se rendericen, así como el submit (en este caso Login) y el callback, que será llamando a la función loginUser//
+    var toRegisterButton = createButton('Go to register', 'buttonRegister', function () { navigateToRegister(loginContainer) }) //Declaramos la variable toRegisterButton (que será el botón para acceder a la página de registro), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los extilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+    var toLandingButton = createButton('Go to landing', 'buttonGoToLanding', function () { navigateToLanding(loginContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+
+    loginContainer.appendChild(loginTitle) //Añadimos loginTitle a loginContainer//
+    loginContainer.appendChild(loginForm) //Añadimos loginForm a loginContainer//
+    loginContainer.appendChild(toRegisterButton) //Añadimos toRegisterButton a loginContainer//
+    loginContainer.appendChild(toLandingButton) //Añadimos toLandingButton a loginContainer//
+
+    body.appendChild(loginContainer) //Añadimos loginContainer al body//
+
+    return loginContainer //Devolvemos loginContainer//
 }
 
 function navigateToLogin(previousView) { //La función permite renderizar el Login page, es decir, la página de login. Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta//
-    var loginContainer = createContainer(''); //Declaramos la variable loginContainer (contenedor de la página de logeo), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
-    var loginButtonContainer = createContainer(''); //Declaramos la variable loginButtonContainer (contenedor de los botones de la página de login) y le asignamos el valor de la función createButtonContainer. Entre paréntesis, agregamos los estilos (styles) que queramos que tenga//
-    var loginTitle = createTextContainer('h1', 'Login', 'title'); //Declaramos la variable loginTitle (título de la página de logeo), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
-    var loginButton = createButton('Login', 'buttonGoToLogin', function () { alert('not rendered yet') }) //Declaramos la variable loginButton (que será el botón para acceder al formulario de logeo), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos (en este caso está incompleto, no ha creado la función de renderizado del formulario de logeo//
-    var toRegisterButton = createButton('Go to register', 'buttonRegister', function () { navigateToRegister(loginContainer) }) //Declaramos la variable toRegisterButton (que será el botón para acceder a la página de registro), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los extilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
-    loginButtonContainer.style.display = 'flex'; //Añadimos estilos al contenedor de los botones de la página de login//
-    loginButtonContainer.style.flexDirection = 'row'; //Añadimos estilos al contenedor de los botones de la página de login//
-    loginButtonContainer.style.justifyContent = 'center'; //Añadimos estilos al contenedor de los botones de la página de login//
-    loginButtonContainer.style.gap = '2rem'; //Añadimos estilos al contenedor de los botones de la página de login//
+    var loginView = renderLoginpage() //Declaramos variable loginView, que será la vista de la página de login y le asignamos el valor de la función de renderizado de la página de login (renderLoginPage)//
 
-    loginButtonContainer.appendChild(loginButton); //Añadimos al contenedor de los botones de la página de login, el botón de login//
-    loginButtonContainer.appendChild(toRegisterButton); //Añadimos al contenedor de los botones de la página de login, el botón de registro//
-    loginContainer.appendChild(loginTitle); //Añadimos al contenedor de la página de la página de login, el título de la página de login//
-    loginContainer.appendChild(loginButtonContainer); //Añadimos al contenedor de la página de login, el contenedor de los botones de la página de login//
-
-    body.replaceChild(loginContainer, previousView) //Añadimos el contenedor de la pagina de login al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por loginContainer//
+    body.replaceChild(loginView, previousView) //Añadimos el contenedor de la página de login al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por loginContainer//
 }
 
-renderLanding() //Ejecutamos la función de renderLanding//
+renderLandingPage() //Ejecutamos la función de renderLanding//
 //**********************************************************************************************************************************************************************************************//
 //**********************************************************************************************************************************************************************************************//
