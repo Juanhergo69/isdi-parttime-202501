@@ -141,6 +141,8 @@ function loginUser(loginData) { //La función permite crear el login del usuario
     }
 
     sessionStorage.id = userLoginCheckout.id ////Almacenamos en sessionStorage el id del usuario que se acaba de registrar y/o logear//
+
+    navigateToHome(currentView)
 }
 
 function createHomePage() { //La función permite crear la página home//
@@ -156,7 +158,7 @@ function createHomePage() { //La función permite crear la página home//
         return renderRegisterPage();
     }
 
-    var loggedUserUsername = userLogged.username //Declaramos la variable loggedUserUserName, que se corresponderá al usuario logeado en base a su nombre de usuario//
+    var loggedUserUsername = userLogged.userName //Declaramos la variable loggedUserUserName, que se corresponderá al usuario logeado en base a su nombre de usuario//
     var welcomeText = createTextContainer('h1', `Welcome, ${loggedUserUsername}`, '') //Declaramos la variable welcomeText, que se corresponderá al mensaje de bienvenida una vez se acceda a la página home//
 
     var logoutButton = createButton('Logout', '', function () { sessionStorage.removeItem('id'); navigateToLogin(homeContainer) }) //Declaramos la variable logoutButton (que será el botón para salir de la página home, y deslogar el usuario), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
