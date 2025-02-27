@@ -1,6 +1,6 @@
 var body = document.body; //Traemos el body al archivo Js//
-
-var users = [] //Creamos variable de usuarios como array vacío, se irá rellenando conforme se introduzcan y guarden (base de datos de juguete pendiente de realizar)//
+var currentView //Creamos variable currentView como indefinida, será la página de renderizado en la que nos encontremos actualmente. Se irá asignando por cada renderizado//
+//var users = [] //Creamos variable de usuarios como array vacío, se irá rellenando conforme se introduzcan y guarden (base de datos de juguete pendiente de realizar)//
 
 //**********************************************************************************************************************************************************************************************//
 //LA FUNCION APPENDCHILDREN() ES MERAMENTE CURISIODIDAD, EN PRUEBAS DE RENDIMIENTO, ES PEOR QUE EL MÉTODO CLÁSICO APPENDCHILD//
@@ -104,19 +104,68 @@ function registerUser(registerData) { //La función permite crear el registro de
 
     //Mejoras a considerar: Asignar longitud mínima de contraseña, introducir mínimo una letra mayúscula en la contraseña, validar que el mail no esta en uso, etc//
 
-    users.push({ email: registerData['email'], password: registerData['password'], id: Date.now() }) //Si todo lo anterior en los if no sucede, sobre la variable users creada, empujamos los datos introducidos. Al no tener base de datos creada, asignamos con id:Date.now(), una id especifica para ese registro//
-    console.log(users) //El console log permite ver en consola los datos de ese hipotético usuario registrado. Al no tener base de datos, después de refrescar la página, estos datos se perderán//
+    var usersJson = localStorage.getItem('users') //Declaramos variable usersJson, que serán los usuarios que se registren, y que quedarán almacenados en la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia//
 
+    var users //Declaramos variable users, donde se irán almacenando los usuarios registrados. De esta variable beberá la anterior variable usersJson para poder hacer las comprobaciones de si el usario no está registrado (y por ende, se cree la cuenta nueva) o de estarlo, pasar a página de home//
+    if (!usersJson) { //El if nos dice, que si al hacer la comprobación no está registrado el usuario//
+        users = [] //Se almacena en la variable users//
+    } else { //Y si ocurre lo contrario, es decir, que sí existe en la base de datos//
+        users = JSON.parse(usersJson) //Transformar el resultado en formato json a formato javascript// 
+    }
+
+    var doesUserExist = users.some(function (_user) { return_user.mail === registerData['email'] }) //Declaramos variable doesUserExist, que nos permitirá comprobar la existencia (o no) del usuario que pretende registrarse. Some permite comprobar si alguno de los elementos cumple la condición indicada, en base a la función proporcionada//
+    if (doesUserExist) { //El if nos indica que, si el usuario existe//
+        alert('this mail is alredy in use') //Nos lanza un alert indicando que el usuario ya existe//
+        return //Si se cumple el if, nos salimos de la función//
+    }
+
+    var userName = registerData['email'].split('@')[0] //Declaramos variable userName, que será el nombre que adoptará el sistema para el usuario registrado. Mediante split, dividimos la dirección de mail en dos partes de un mismo array, partiendo desde el arroba (y haciéndolo desaparecer), y seleccionamos el elemento 0, es decir, la primera posición de ese array. En este caso, sería todo lo anterior al @//
+    var userCreated = { email: registerData['email'], password: registerData['password'], userName, id: Date.now() } //Declaramos variable userCreated, que serán los datos almacenados del registro del usuario. Constará de su email, su contraseña, su nombre de usuario (declarado arriba) y "trampeamos con id:Date.now(), para asignar una id especifica para ese usuario"
+
+    users.push(userCreated) //Con este push lo que hacemos es empujar los datos de userCreated a la variable users previamente declarada//
+
+    localStorage.users = JSON.stringify(users) //Asignamos a nuestra base de datos de usuarios el valor de JSON.stringify sobre los usuarios, básicamente transformamos de javascript a Json//
+    sessionStorage.id = userCreated.id //Almacenamos en sessionStorage el id del usuario que se acaba de registrar y/o logear//
+
+    navigateToHome(currentView) //La función navigateToHome permite navegar hasta la página de home, a traves de la vista actual (currentView)
 }
 
 function loginUser(loginData) { //La función permite crear el login del usuario, en base a los datos de registro ej.-->loginData = {'email': '', 'password': ''}//
-    if (!loginData['email'] && !loginData['password']) { //El if nos indica que si no se rellena el campo de email y contraseña ej-->!loginData['email'] => loginData['email'] === undefined && loginData['email'] === null//
-        alert('Login Data Incomplete') //Nos arroja un alert que nos indica que los datos están incompletos//
+    var usersJson = localStorage.getItem('users') //Declaramos variable usersJson, que serán los usuarios que se registren, y que quedarán almacenados en la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia//
+    var users = JSON.parse(usersJson) //Declaramos variable users, que transformará el resultado en formato json a formato javascript//
+    var userLoginCheckout = users ? users.find(function (_user) { return _user['email'] === loginData['email'] }) : undefined //Declaramos variable userLoginCheckout, que permitirá comprobar, con ternarios, si el usuario se encuentra en la comprobación facilitada//
+
+    if (!userLoginCheckout || userLoginCheckout['password'] !== loginData['password']) { //El if nos indica que si no se encuentra el usuario, o que la contraseña, en caso de que el usuario exista, no es la correcta//
+        alert('Wrong credentials') //Nos arroja un alert que nos indica que los datos son incorrectos//
         return //Al producirse esto, nos salimos de la función//
     }
 
-    //Mejoras a considerar: En teoría, no debería funcionar, ya que no hay base de datos que almacene los registros//
+    sessionStorage.id = userLoginCheckout.id ////Almacenamos en sessionStorage el id del usuario que se acaba de registrar y/o logear//
+}
 
+function createHomePage() { //La función permite crear la página home//
+    var homeContainer = createContainer('')  //Declaramos la variable homeContainer (contenedor de la página home), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
+    var loggedUserId = JSON.parse(sessionStorage.getItem('id')); //Declaramos variable users, que transformará el resultado en formato json a formato javascript, realizando la comprobación de si el usario está almacenado en la sessionStorage//
+    var usersJson = localStorage.getItem('users') //Declaramos variable usersJson, que serán los usuarios que se registren, y que quedarán almacenados en la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia//
+    var users = JSON.parse(usersJson) //Transformar el resultado en formato json a formato javascript// 
+
+    var userLogged = users ? users.find(function (_user) { return _user.id === loggedUserId }) : undefined //Declaramos variable userLogged, que permitirá comprobar, con ternarios, si el usuario se encuentra en la comprobación facilitada//
+
+    if (!userLogged) { //El if nos indica que si el usuario no se encuentra previamente registrado//
+        alert('Create an account first') //Nos arroja un alert con el siguiente mensaje//
+        return renderRegisterPage();
+    }
+
+    var loggedUserUsername = userLogged.username //Declaramos la variable loggedUserUserName, que se corresponderá al usuario logeado en base a su nombre de usuario//
+    var welcomeText = createTextContainer('h1', `Welcome, ${loggedUserUsername}`, '') //Declaramos la variable welcomeText, que se corresponderá al mensaje de bienvenida una vez se acceda a la página home//
+
+    var logoutButton = createButton('Logout', '', function () { sessionStorage.removeItem('id'); navigateToLogin(homeContainer) }) //Declaramos la variable logoutButton (que será el botón para salir de la página home, y deslogar el usuario), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+
+    homeContainer.appendChild(welcomeText) //Añadimos welcomeText a homeContainer//
+    homeContainer.appendChild(logoutButton) //Añadimos logoutButton a homeContainer//
+    body.appendChild(homeContainer) //Añadimos homeContainer al body//
+
+    return homeContainer //Devolvemos homeContainer//
 }
 //**********************************************************************************************************************************************************************************************//
 //**********************************************************************************************************************************************************************************************//
@@ -138,7 +187,7 @@ function renderLandingPage() { //La función permite renderizar el Landing page,
     return landingContainer //Devolvemos landingContainer//
 }
 
-function navigateToLanding() {
+function navigateToLanding(previousView) { //La función permite navegar al landingPage, es decir, la primera página que se mostrará al acceder a la web.Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta// 
     var landingView = renderLandingPage()
 
     body.replaceChild(landingView, previousView)
@@ -153,10 +202,11 @@ function renderRegisterPage() { //La función permite renderizar el registerPage
     var registerForm = createForm([objectEmail, objectPassword, objectConfirmPassword], 'Register', registerUser) //Declaramos variable registerForm, que se corresponde al formulario de registro. Llamamos al función createForm y le introducimos los objetos que queremos que se rendericen, así como el submit (en este caso Register) y el callback, que será llamando a la función registerUser//
     var toLoginButton = createButton('Go to login', 'buttonGoToLogin', function () { navigateToLogin(registerContainer) }) //Declaramos la variable toLoginButton (que será el botón para acceder a la página de logeo), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     var toLandingButton = createButton('Go to landing', 'buttonGoToLanding', function () { navigateToLanding(registerContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+
+    registerContainer.appendChild(toLandingButton) //Añadimos toLandingButton a registerContainer//
     registerContainer.appendChild(registerTitle) //Añadimos registerTitle a registerContainer//
     registerContainer.appendChild(registerForm) //Añadimos registerForm a registerContainer//
     registerContainer.appendChild(toLoginButton) //Añadimos toLoginButton a registerContainer//
-    registerContainer.appendChild(toLandingButton) //Añadimos toLandingButton a registerContainer//
 
     body.appendChild(registerContainer) //Añadimos registerContainer al body//
 
@@ -165,11 +215,11 @@ function renderRegisterPage() { //La función permite renderizar el registerPage
 
 function navigateToRegister(previousView) { //La función permite navegar al registerPage, es decir, la página de registro. Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta//
     var registerView = renderRegisterPage() //Declaramos variable registerView, que será la vista de la página de registro y le asignamos el valor de la función de renderizado de la página de registro (renderRegisterPage)//
-
-    body.replaceChild(registerView, previousView) //Añadimos el contenedor de la página de registro al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por registerContainer//
+    currentView = registerView //Asignamos el valor de la vista actual (registerView) a la variable currentView//
+    body.replaceChild(registerView, previousView) //Añadimos el contenedor de la página de registro al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por registerView//
 }
 
-function renderLoginpage() { //La función permite renderizar el registerLogin, es decir, la página de login//
+function renderLoginpage() { //La función permite renderizar la loginPage, es decir, la página de login//
     var loginContainer = createContainer(''); //Declaramos la variable loginContainer (contenedor de la página de login), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
     var loginTitle = createTextContainer('h1', 'Login', 'title'); //Declaramos la variable loginTitle (título de la página de login), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
     var objectEmail = { label: 'Email', inputType: 'email', inputPlaceholder: 'my@email.com', inputId: 'email', isRequired: true } //Declaramos el objeto objectEmail, que contendrá los campos correspondientes al input de email//
@@ -178,22 +228,35 @@ function renderLoginpage() { //La función permite renderizar el registerLogin, 
     var toRegisterButton = createButton('Go to register', 'buttonRegister', function () { navigateToRegister(loginContainer) }) //Declaramos la variable toRegisterButton (que será el botón para acceder a la página de registro), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los extilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     var toLandingButton = createButton('Go to landing', 'buttonGoToLanding', function () { navigateToLanding(loginContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
 
+    loginContainer.appendChild(toLandingButton) //Añadimos toLandingButton a loginContainer//
     loginContainer.appendChild(loginTitle) //Añadimos loginTitle a loginContainer//
     loginContainer.appendChild(loginForm) //Añadimos loginForm a loginContainer//
     loginContainer.appendChild(toRegisterButton) //Añadimos toRegisterButton a loginContainer//
-    loginContainer.appendChild(toLandingButton) //Añadimos toLandingButton a loginContainer//
 
     body.appendChild(loginContainer) //Añadimos loginContainer al body//
 
     return loginContainer //Devolvemos loginContainer//
 }
 
-function navigateToLogin(previousView) { //La función permite renderizar el Login page, es decir, la página de login. Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta//
+function navigateToLogin(previousView) { //La función permite navegar a el Login page, es decir, la página de login. Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta//
     var loginView = renderLoginpage() //Declaramos variable loginView, que será la vista de la página de login y le asignamos el valor de la función de renderizado de la página de login (renderLoginPage)//
-
-    body.replaceChild(loginView, previousView) //Añadimos el contenedor de la página de login al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por loginContainer//
+    currentView = loginView //Asignamos el valor de la vista actual (loginView) a la variable currentView//
+    body.replaceChild(loginView, previousView) //Añadimos el contenedor de la página de login al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por loginView//
 }
 
-renderLandingPage() //Ejecutamos la función de renderLanding//
+function renderHomePage() { ////La función permite renderizar el Home page, es decir, la página de home//
+    var homePage = createHomePage() //Declaramos la variable homePage, que será la propia página de home, y se ejecutará mediante la función createHomePage//
+
+    body.appendChild(homePage) //Añadimos homePage al body//
+}
+
+function navigateToHome(previousView) { //La función permite navegar a el Home page, es decir, la página home. Entre paréntises, se introduce el comando previousView, que nos servirá de guía para eliminar el rederizado de la página anterior cuando se renderice esta//
+    var homeView = createHomePage() //Declaramos variable homeView, que será la vista de la página de home y le asignamos el valor de la función de renderizado de la página de home (renderHomePage)//
+    currentView = homeView //Asignamos el valor de la vista actual (homeView) a la variable currentView//
+
+    body.replaceChild(homeView, previousView) //Añadimos el contenedor de la página home al body, utilizando la función replaceChild, y anotamos que la previousView (anterior renderizado), sea sustituido por homeView//
+}
+
+sessionStorage.id ? renderHomePage() : renderLandingPage() //Ejecutamos la función de renderLandingPage, pero primero, preguntamos con ternarios si hay algún usuario que esté logueado en este momento. De ser hay, renderiza la página home//
 //**********************************************************************************************************************************************************************************************//
 //**********************************************************************************************************************************************************************************************//
