@@ -7,8 +7,8 @@ var names = ['Juan', 'Diana', 'Sonia', 'Marta'] //Primer array sobre el que trab
 var names2 = ['Juanjo', 'Francisco', 'David', 'Marco'] //Segundo array sobre el que trabajo//
 var names3 = ['Josefina', 'Manolo', ['Lorenzo', 'Catalina', ['Romeo', 'Carlos']]] //Tercer array sobre el que trabajo//
 
-//Level 1//
-
+//****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+//Level 1 COMPLETED//
 var push = names.push('Copito') //El método push añade a la última posición del array aquello que se comanda entre paréntesis//
 console.log(push)
 console.log(names)
@@ -44,17 +44,18 @@ var lastIndexOf2 = names2.lastIndexOf('David') //El ejemplo de arriba arrojará 
 console.log(lastIndexOf)
 console.log(lastIndexOf2)
 
-/*var reverse = names.reverse() //El metodo reverse cambia las posiciones de todos los elementos del array, a un estado estricamente contrario. Es decir, da la vuelta al array//
-console.log(reverse)*/
+var reverse = names.reverse() //El metodo reverse cambia las posiciones de todos los elementos del array, a un estado estricamente contrario. Es decir, da la vuelta al array//
+console.log(reverse)
 
 var join = names.join(" + ") //El metodo join permite unir en una cadena los diferentes elementos de un array, utilizando distintos métodos de separación. En este caso, utlizará el array names, y separaré cada uno de los parámetos con un espacio, un + y otro espacio//
 console.log(join)
 
-var slice = names.slice(0, 2) //El metodo slice permite extraer elementos de un array existente. Mucho ojo, porque empezará a extraer desde el primer dígito de posición impuesto, pero, del último digito de posición impuesto, sólo extraerá hasta la posición justamente anterior a este dígito.
+var slice = names.slice(0, 2) //El metodo slice permite extraer elementos de un array existente. La primera posición introducida, será el punto de partida de la extracción. La segunda posición introducida, será el punto final de la extracción (considerará hasta la posición justamente anterior a esta segunda posición introducida)//
 console.log(slice)
+//****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
-//Level 2//
-
+//****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+//Level 2 (WORK IN PROGRESS)//
 var splice = names2.splice(0, 2, 'Zacarías') //El metodo splice permite generar un índice interno sobre el que se empiecen a considerar párametros en un array ya existente. El primer dígito indica el punto de partida para empezar la consideración. El segundo dígito marca cuantas posiciones desde el índice se eliminan, y a continuación, se pueden añadir parámetros que se añadirán a continuación del índice interno generado//
 console.log(splice)
 console.log(names2)
@@ -66,21 +67,24 @@ console.log(names2)
 var flat = names3.flat(2) //El metodo flat permite desanidar un array con varios elementos anidados. Si hay varios array anidados, y no se marca ningún ningún número entre paréntesis, sólo desanidará el primer anidado.
 console.log(flat)
 console.log(names3)
+//****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
-//Level 3//
-
+//****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+//Level 3 (NOTHING AT THE MOMENT)//
 var forEach
 var some
 var every
 var find
 var findIndex
+//****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
-//Level 4//
-
+//****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+//Level 4 (NOTHING AT THE MOMENT//
 var map
 var filter
 var reduce
 var sort
+//****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 
 
