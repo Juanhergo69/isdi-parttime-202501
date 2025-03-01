@@ -40,6 +40,19 @@ function createButton(text, style, callback) { //La función permite crear un bo
     return button; //Devolvemos button//
 }
 
+function createImgButton(img, style, callback) { //La función permite crear un botón asociado a una imagen. Tendrá, la propia imagen, los estilos y el callback//
+    var imgButton = document.createElement('button') //Declaramos la variable imgButton, que será el botón que ejecutará el submit//
+    var img = document.createElement('img') //Declaramos la variable img, que será la imagen que se introducirá al botón para ejecutuar el submit//
+    img.src = 'Logo.jpg' ///Añadimos la raíz de esta imagen (en este caso, esta añadida a la propia carpeta de la app)//
+    img.className = style //Declaramos clase de img, que en este caso serán los estilos//
+
+    imgButton.appendChild(img) //Añadimos img al imgbutton//
+    body.appendChild(imgButton) //Añadimos imgButton al body//
+
+    imgButton.addEventListener('click', callback) //Creamos adEventListener, en base al click realizado sobre el botón, para ejecutar el callback//
+    return imgButton //Devolvemos imgButton//
+}
+
 
 function createForm(inputsArray, submitButtonText, callback) { //La función permite crear un formulario. inputsArray serán los objetos a crear ej.-->[{label: 'Email', inputType: 'email', inputPlaceholder: 'my@email.com', inputId: 'email'}, {label: 'Password....}], submitButtonText será el botón de ejecución de los inputsArray y callback sería la función de respuesta a todo lo anterior//
     var formContainer = document.createElement('form'); //Declaramos la variable formContainer, y le asignamos el valor de documento html creado como 'div'. Será el contenedor de nuestro formulario//
@@ -212,18 +225,14 @@ function renderRegisterPage() { //La función permite renderizar el registerPage
     var objectConfirmPassword = { label: 'Confirm password', inputType: 'password', inputPlaceholder: '*******', inputId: 'confirmation-password', isRequired: true } //Declaramos el objeto objectConfirmPassword, que contendrá los campos correspondientes al input de confirmar contraseña//
     var registerForm = createForm([objectEmail, objectPassword, objectConfirmPassword], 'Register', registerUser) //Declaramos variable registerForm, que se corresponde al formulario de registro. Llamamos al función createForm y le introducimos los objetos que queremos que se rendericen, así como el submit (en este caso Register) y el callback, que será llamando a la función registerUser//
     var toLoginButton = createButton('Go to login', 'buttonGoToLogin', function () { navigateToLogin(registerContainer) }) //Declaramos la variable toLoginButton (que será el botón para acceder a la página de logeo), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
-    var toLandingButton = createButton('Go to landing', 'buttonGoToLanding', function () { navigateToLanding(registerContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+    var toLandingButton = createImgButton('img', 'imgButton', function () { navigateToLanding(registerContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createImgButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     var registerMsg = createTextContainer('h4', 'Have you an account?', 'registerMsg')
-    var registerImg = document.createElement('img')
-    registerImg.src = 'Logo.jpg'
-    registerImg.className = 'registerImg'
 
     registerContainer.appendChild(toLandingButton) //Añadimos toLandingButton a registerContainer//
     registerContainer.appendChild(registerTitle) //Añadimos registerTitle a registerContainer//
     registerContainer.appendChild(registerForm) //Añadimos registerForm a registerContainer//
     registerContainer.appendChild(registerMsg) //Añadimos registerMsg a registerContainer/
     registerContainer.appendChild(toLoginButton) //Añadimos toLoginButton a registerContainer//
-    registerContainer.appendChild(registerImg)
 
     body.appendChild(registerContainer) //Añadimos registerContainer al body//
 
@@ -243,18 +252,16 @@ function renderLoginpage() { //La función permite renderizar la loginPage, es d
     var objectPassword = { label: 'Password', inputType: 'password', inputPlaceholder: '*******', inputId: 'password', isRequired: true } //Declaramos el objeto objectPassword, que contendrá los campos corespondientes al input de contraseña//
     var loginForm = createForm([objectEmail, objectPassword], 'Login', loginUser) //Declaramos variable loginForm, que se corresponde al formulario de login. Llamamos al función createForm y le introducimos los objetos que queremos que se rendericen, así como el submit (en este caso Login) y el callback, que será llamando a la función loginUser//
     var toRegisterButton = createButton('Register now!', 'buttonGoToRegister', function () { navigateToRegister(loginContainer) }) //Declaramos la variable toRegisterButton (que será el botón para acceder a la página de registro), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los extilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
-    var toLandingButton = createButton('Go to landing', 'buttonGoToLanding', function () { navigateToLanding(loginContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+    var toLandingButton = createImgButton('img', 'imgButton', function () { navigateToLanding(loginContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createImgButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     var loginMsg = createTextContainer('h4', 'You don`t have an account?', 'loginMsg')
-    var loginImg = document.createElement('img')
-    loginImg.src = 'Logo.jpg'
-    loginImg.className = 'loginImg'
+
 
     loginContainer.appendChild(toLandingButton) //Añadimos toLandingButton a loginContainer//
     loginContainer.appendChild(loginTitle) //Añadimos loginTitle a loginContainer//
     loginContainer.appendChild(loginForm) //Añadimos loginForm a loginContainer//
     loginContainer.appendChild(loginMsg) //Añadimos loginMsg a loginContainer//
     loginContainer.appendChild(toRegisterButton) //Añadimos toRegisterButton a loginContainer//
-    loginContainer.appendChild(loginImg)
+
 
     body.appendChild(loginContainer) //Añadimos loginContainer al body//
 
