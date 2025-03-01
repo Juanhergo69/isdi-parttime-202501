@@ -57,7 +57,7 @@ function createForm(inputsArray, submitButtonText, callback) { //La función per
 
         formContainer.appendChild(label) //Añadimos label a formContainer//
         formContainer.appendChild(inputElement) //Añadimos inputElemento a formContainer//
-        body.appendChild(formContainer) //Añadimos formContainer al body//
+        body.appendChild(formContainer) //Añadimos formContainer al body/
     }
 
     var submitButton = document.createElement('input'); //Declaramos variable sumbitButton, y le asignamos el valor de documento html creado como input//
@@ -114,7 +114,7 @@ function registerUser(registerData) { //La función permite crear el registro de
         users = JSON.parse(usersJson) //Transformar el resultado en formato json a formato javascript// 
     }
 
-    var doesUserExist = users.some(function (_user) { return_user.mail === registerData['email'] }) //Declaramos variable doesUserExist, que nos permitirá comprobar la existencia (o no) del usuario que pretende registrarse. Some permite comprobar si alguno de los elementos cumple la condición indicada, en base a la función proporcionada//
+    var doesUserExist = users.some(function (_user) { return _user.email === registerData['email'] }) //Declaramos variable doesUserExist, que nos permitirá comprobar la existencia (o no) del usuario que pretende registrarse. Some permite comprobar si alguno de los elementos cumple la condición indicada, en base a la función proporcionada//
     if (doesUserExist) { //El if nos indica que, si el usuario existe//
         alert('this mail is alredy in use') //Nos lanza un alert indicando que el usuario ya existe//
         return //Si se cumple el if, nos salimos de la función//
@@ -160,9 +160,10 @@ function createHomePage() { //La función permite crear la página home//
     }
 
     var loggedUserUsername = userLogged.userName //Declaramos la variable loggedUserUserName, que se corresponderá al usuario logeado en base a su nombre de usuario//
-    var welcomeText = createTextContainer('h1', `Welcome, ${loggedUserUsername}`, '') //Declaramos la variable welcomeText, que se corresponderá al mensaje de bienvenida una vez se acceda a la página home//
-
+    var welcomeText = createTextContainer('h1', `Welcome, ${loggedUserUsername}`, 'welcomeMsg') //Declaramos la variable welcomeText, que se corresponderá al mensaje de bienvenida una vez se acceda a la página home//
+    welcomeText.className = 'welcomeMsg'
     var logoutButton = createButton('Logout', '', function () { sessionStorage.removeItem('id'); navigateToLogin(homeContainer) }) //Declaramos la variable logoutButton (que será el botón para salir de la página home, y deslogar el usuario), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+    logoutButton.className = 'logoutButton'
 
     homeContainer.appendChild(welcomeText) //Añadimos welcomeText a homeContainer//
     homeContainer.appendChild(logoutButton) //Añadimos logoutButton a homeContainer//
@@ -180,14 +181,17 @@ function createHomePage() { //La función permite crear la página home//
 function renderLandingPage() { //La función permite renderizar el Landing page, es decir, la primera página que se mostrará al acceder a la web//
     var landingContainer = createContainer(''); //Declaramos la variable landingContainer (contenedor de la página principal), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
     var landingTitle = createTextContainer('h1', 'SM Developers', 'title'); //Declaramos la variable landingTitle (título de la página principal), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
-    var landingMsg = createTextContainer('h3', 'Welcome to your social developer network', 'welcomeMsg') //Declaramos la variable landingMsg (mensaje de la página principal, y le asignamos la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado de menor tamaño), el texto y los estilos//
+    var landingMsg = createTextContainer('h3', 'Welcome to your social developer network', 'landingMsg') //Declaramos la variable landingMsg (mensaje de la página principal, y le asignamos la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado de menor tamaño), el texto y los estilos//
+    var landingImg = document.createElement('img') //Declaramos variable landingImg (imagen de landingPage), y le asignamos el valor de documento html como imagen ('img')//
+    landingImg.src = 'Logo.jpg' //Añadimos la raíz de esta imagen (en este caso, esta añadida a la propia carpeta de la app)//
+    landingImg.className = 'landingImg' //Añadimos la clase css y le asignamos el nombre landingImg (en index.css se continúa el desarrollo de estilos)//
 
     var joinButton = createButton('JOIN IN!', 'buttonJoin', function () { navigateToRegister(landingContainer) }) //Declaramos la variable joinButton (que será el botón para acceder), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos//
-
 
     landingContainer.appendChild(landingTitle) //Añadimos al contenedor de la página principal, el título de la página principal//
     landingContainer.appendChild(landingMsg) //Añadimos al contenedor de la página principal, el mensaje de bienvenida//
     landingContainer.appendChild(joinButton) //Añadimos al contenedor de la página principal, el botón para unirse//
+    landingContainer.appendChild(landingImg)
 
     body.appendChild(landingContainer); //Añadimos el contenedor de la página principal al body//
 
@@ -210,12 +214,16 @@ function renderRegisterPage() { //La función permite renderizar el registerPage
     var toLoginButton = createButton('Go to login', 'buttonGoToLogin', function () { navigateToLogin(registerContainer) }) //Declaramos la variable toLoginButton (que será el botón para acceder a la página de logeo), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     var toLandingButton = createButton('Go to landing', 'buttonGoToLanding', function () { navigateToLanding(registerContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     var registerMsg = createTextContainer('h4', 'Have you an account?', 'registerMsg')
+    var registerImg = document.createElement('img')
+    registerImg.src = 'Logo.jpg'
+    registerImg.className = 'registerImg'
 
     registerContainer.appendChild(toLandingButton) //Añadimos toLandingButton a registerContainer//
     registerContainer.appendChild(registerTitle) //Añadimos registerTitle a registerContainer//
     registerContainer.appendChild(registerForm) //Añadimos registerForm a registerContainer//
     registerContainer.appendChild(registerMsg) //Añadimos registerMsg a registerContainer/
     registerContainer.appendChild(toLoginButton) //Añadimos toLoginButton a registerContainer//
+    registerContainer.appendChild(registerImg)
 
     body.appendChild(registerContainer) //Añadimos registerContainer al body//
 
@@ -237,12 +245,16 @@ function renderLoginpage() { //La función permite renderizar la loginPage, es d
     var toRegisterButton = createButton('Register now!', 'buttonGoToRegister', function () { navigateToRegister(loginContainer) }) //Declaramos la variable toRegisterButton (que será el botón para acceder a la página de registro), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los extilos, y le pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     var toLandingButton = createButton('Go to landing', 'buttonGoToLanding', function () { navigateToLanding(loginContainer) }) //Declaramos la variable toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     var loginMsg = createTextContainer('h4', 'You don`t have an account?', 'loginMsg')
+    var loginImg = document.createElement('img')
+    loginImg.src = 'Logo.jpg'
+    loginImg.className = 'loginImg'
 
     loginContainer.appendChild(toLandingButton) //Añadimos toLandingButton a loginContainer//
     loginContainer.appendChild(loginTitle) //Añadimos loginTitle a loginContainer//
     loginContainer.appendChild(loginForm) //Añadimos loginForm a loginContainer//
     loginContainer.appendChild(loginMsg) //Añadimos loginMsg a loginContainer//
     loginContainer.appendChild(toRegisterButton) //Añadimos toRegisterButton a loginContainer//
+    loginContainer.appendChild(loginImg)
 
     body.appendChild(loginContainer) //Añadimos loginContainer al body//
 
