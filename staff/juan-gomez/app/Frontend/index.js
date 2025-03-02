@@ -1,6 +1,5 @@
 var body = document.body; //Traemos el body al archivo Js//
 var currentView //Creamos variable currentView como indefinida, será la página de renderizado en la que nos encontremos actualmente. Se irá asignando por cada renderizado//
-//var users = [] //Creamos variable de usuarios como array vacío, se irá rellenando conforme se introduzcan y guarden (base de datos de juguete pendiente de realizar)//
 
 //**********************************************************************************************************************************************************************************************//
 //LA FUNCION APPENDCHILDREN() ES MERAMENTE CURISIODIDAD, EN PRUEBAS DE RENDIMIENTO, ES PEOR QUE EL MÉTODO CLÁSICO APPENDCHILD//
@@ -40,7 +39,6 @@ function createButton(text, style, callback) { //La función permite crear un bo
     return button; //Devolvemos button//
 }
 
-var body = document.body;
 function createImgButton(img, style, callback) { //La función permite crear un botón asociado a una imagen. Tendrá, la propia imagen, los estilos y el callback//
     var imgButton = document.createElement('button') //Declaramos la variable imgButton, que será el botón que ejecutará el submit//
     imgButton.style.border = 'none'; //Añadimos estilos al botón que contendrá la imágen para hacerlo desaparecer del renderizado (tras errores de visualización en la página, he llegado a esta conclusión)//
