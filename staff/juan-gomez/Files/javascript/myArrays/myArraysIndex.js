@@ -55,18 +55,18 @@ console.log(slice)
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-//Level 2 (WORK IN PROGRESS)//
-var splice = names2.splice(0, 2, 'Zacarías') //El metodo splice permite generar un índice interno sobre el que se empiecen a considerar párametros en un array ya existente. El primer dígito indica el punto de partida para empezar la consideración. El segundo dígito marca cuantas posiciones desde el índice se eliminan, y a continuación, se pueden añadir parámetros que se añadirán a continuación del índice interno generado//
+//Level 2 COMPLETED (SPLICE AND FILL) NOT COMPLETED (FLAT)//
+var splice = names2.splice(0, 2, 'Zacarías') //El método splice El metodo splice permite generar un índice interno sobre el que se empiecen a eliminar párametros en un array ya existente. El primer dígito indica el punto de partida para empezar la consideración. El segundo dígito marca cuantas posiciones desde el índice se eliminan, y a continuación, se pueden añadir parámetros que se añadirán a continuación del índice interno generado.  Es importante considerar que la última posición no entra dentro de la eliminación, se eliminaría hasta la posición justamente anterior a esta//
 console.log(splice)
 console.log(names2)
 
-var fill = names2.fill('Jonás', 0, 2) //El metodo fill permite sustituir elementos de un array, indicando en primer lugar lo que se quiere añadir, y luego, marcando la posición "desde" (primer dígito de posición) hasta la posición "hasta" (segundo dígito de posición)//
+var fill = names2.fill('Jonás', 0, 2) //El método fill añade un elemento en un array existente, permitiendo elegir la posiciones, donde se quiere incluir. Los elementos que ocupaban esas posiciones son sustitudos por el elmento que se incluya. No considera la última posición marcada, sustiuye hasta la justamente anterior. Se indica primero el elemento que se quiere añadir, a continuación se indica la posición de inicio, y finalmente, la posición de fin//
 console.log(fill)
 console.log(names2)
 
-var flat = names3.flat(2) //El metodo flat permite desanidar un array con varios elementos anidados. Si hay varios array anidados, y no se marca ningún ningún número entre paréntesis, sólo desanidará el primer anidado.
+/*var flat = names3.flat(2) //El metodo flat permite desanidar un array con varios elementos anidados. Si hay varios array anidados y subanidados, y no se marca ningún ningún número entre paréntesis, sólo desanidará el primer anidado. El número introducido se corresponde a la profundidad (nivel de desanidado) al que se quiere llegar (díficil de explicar, fácil de entender viéndolo)//
 console.log(flat)
-console.log(names3)
+console.log(names3)*/
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
@@ -79,7 +79,7 @@ var findIndex
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-//Level 4 (NOTHING AT THE MOMENT//
+//Level 4 (NOTHING AT THE MOMENT)//
 var map
 var filter
 var reduce
