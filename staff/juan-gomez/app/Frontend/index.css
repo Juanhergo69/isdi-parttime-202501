@@ -52,6 +52,7 @@
     font-size: 15px;
     color: white;
     border-radius: 8%;
+    cursor: pointer;
 }
 
 .buttonGoToRegister {
@@ -65,6 +66,7 @@
     font-size: 15px;
     color: white;
     border-radius: 8%;
+    cursor: pointer;
 }
 
 .buttonGoToLogin {
@@ -78,6 +80,7 @@
     font-size: 15px;
     color: white;
     border-radius: 8%;
+    cursor: pointer;
 
 }
 
@@ -93,6 +96,7 @@
     font-size: 15px;
     color: white;
     border-radius: 8%;
+    cursor: pointer;
 }
 
 .imgButton {
@@ -100,6 +104,7 @@
     position: absolute;
     top: 20px;
     left: 20px;
+    cursor: pointer;
 }
 
 .form {
@@ -132,6 +137,7 @@
     color: white;
     border-radius: 8%;
     margin-right: 0.5%;
+    cursor: pointer;
 }
 
 .registerForm {

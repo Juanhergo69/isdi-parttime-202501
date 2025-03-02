@@ -40,8 +40,11 @@ function createButton(text, style, callback) { //La función permite crear un bo
     return button; //Devolvemos button//
 }
 
+var body = document.body;
 function createImgButton(img, style, callback) { //La función permite crear un botón asociado a una imagen. Tendrá, la propia imagen, los estilos y el callback//
     var imgButton = document.createElement('button') //Declaramos la variable imgButton, que será el botón que ejecutará el submit//
+    imgButton.style.border = 'none'; //Añadimos estilos al botón que contendrá la imágen para hacerlo desaparecer del renderizado (tras errores de visualización en la página, he llegado a esta conclusión)//
+    imgButton.style.background = 'transparent'; //Añadimos estilos al botón que contendrá la imágen para hacer desaparecer del rederizado (tras errores de visualización de la página, he llegado a esta conclusión)//
     var img = document.createElement('img') //Declaramos la variable img, que será la imagen que se introducirá al botón para ejecutuar el submit//
     img.src = 'Logo.jpg' ///Añadimos la raíz de esta imagen (en este caso, esta añadida a la propia carpeta de la app)//
     img.className = style //Declaramos clase de img, que en este caso serán los estilos//
