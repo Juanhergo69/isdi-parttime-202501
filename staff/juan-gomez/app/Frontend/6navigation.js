@@ -1,5 +1,5 @@
 //******************************************************************************************************************************************************************************************//
-//EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN NAVEGACIÓN ENTRE LOS DISTINTOS RENDERIZADOS DE NUESTRA WEB. DEBE SER COLOCADO EN QUINTO LUGAR DEL ÍNDICE HTML, YA QUE, LA NAVEGACIÓN DEPENDERÁ DE SI LOS RENDERIZADOS ESTÁN CORRECTOS Y SON FUNCIONALES//
+//EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN NAVEGACIÓN ENTRE LOS DISTINTOS RENDERIZADOS DE NUESTRA WEB. DEBE SER COLOCADO EN SEXTO LUGAR DEL ÍNDICE HTML, YA QUE, LA NAVEGACIÓN DEPENDERÁ DE SI LOS RENDERIZADOS ESTÁN CORRECTOS Y SON FUNCIONALES//
 //******************************************************************************************************************************************************************************************//
 function navigateToLanding(previousView) { //La función permite navegar al landingPage, es decir, la primera página que se mostrará al acceder a la web.Entre paréntesis, se introduce el comando previousView, que nos servirá de guía para eliminar el renderizado de la página anterior cuando se renderice esta// 
     var landingView = renderLandingPage()
