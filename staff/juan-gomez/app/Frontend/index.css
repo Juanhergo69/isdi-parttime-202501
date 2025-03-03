@@ -66,7 +66,7 @@
 }
 
 .buttonJoin:hover {
-    background-color: rgb(0, 157, 201);
+    background-color: rgb(0, 142, 182);
 }
 
 .buttonGoToRegister {
@@ -85,7 +85,7 @@
 }
 
 .buttonGoToRegister:hover {
-    background-color: rgb(0, 157, 201);
+    background-color: rgb(0, 142, 182);
 }
 
 .buttonGoToLogin {
@@ -105,7 +105,7 @@
 }
 
 .buttonGoToLogin:hover {
-    background-color: rgb(0, 157, 201);
+    background-color: rgb(0, 142, 182);
 }
 
 .logoutButton {
@@ -125,7 +125,7 @@
 }
 
 .logoutButton:hover {
-    background-color: rgb(0, 157, 201);
+    background-color: rgb(0, 142, 182);
 }
 
 .imgButton {
