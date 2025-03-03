@@ -9,5 +9,6 @@ document.head.appendChild(link) //Lo añado al documento//
 var link2 = document.createElement('link') //Creo una nueva fuente para utilizar en la web (Zen Loop)//
 link.href = 'https://fonts.googleapis.com/css2?family=Zen+Dots&family=Zen+Loop:ital@0;1&display=swap' //Incluyo el link de la fuente//
 link.rel = 'stylesheet' //Declaro que es un estilo//
+document.head.appendChild(link2) //Lo añado al documento//
 //******************************************************************************************************************************************************************************************//
 //******************************************************************************************************************************************************************************************//
