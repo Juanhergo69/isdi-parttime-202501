@@ -18,7 +18,7 @@ function mySlice(array, firstindex, lastindex) { //La función realizaría un sl
     for (var i = firstindex; i < lastindex; i++) { //El for itera todas las posiciones desde el primer índice de extracción hasta el último índice de extracción//
         slice.push(array[i]) //Se añaden los elementos iterados en for a la variable slice (alternativamente, puedo rescatar la función de myPush para hacerlo de forma manual)//
     }
-    return slice //Devolvemos join//
+    return slice //Devolvemos slice//
 }
 
 //**************************************************************************************************************************************************************//

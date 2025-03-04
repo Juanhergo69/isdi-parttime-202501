@@ -55,7 +55,7 @@ console.log(slice)
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-//Level 2 COMPLETED (SPLICE AND FILL) NOT COMPLETED (FLAT)//
+//Level 2 COMPLETED//
 var splice = names2.splice(0, 2, 'Zacarías') //El método splice El metodo splice permite generar un índice interno sobre el que se empiecen a eliminar párametros en un array ya existente. El primer dígito indica el punto de partida para empezar la consideración. El segundo dígito marca cuantas posiciones desde el índice se eliminan, y a continuación, se pueden añadir parámetros que se añadirán a continuación del índice interno generado.  Es importante considerar que la última posición no entra dentro de la eliminación, se eliminaría hasta la posición justamente anterior a esta//
 console.log(splice)
 console.log(names2)
@@ -63,26 +63,33 @@ console.log(names2)
 var fill = names2.fill('Jonás', 0, 2) //El método fill añade un elemento en un array existente, permitiendo elegir la posiciones, donde se quiere incluir. Los elementos que ocupaban esas posiciones son sustitudos por el elmento que se incluya. No considera la última posición marcada, sustiuye hasta la justamente anterior. Se indica primero el elemento que se quiere añadir, a continuación se indica la posición de inicio, y finalmente, la posición de fin//
 console.log(fill)
 console.log(names2)
-
-/*var flat = names3.flat(2) //El metodo flat permite desanidar un array con varios elementos anidados. Si hay varios array anidados y subanidados, y no se marca ningún ningún número entre paréntesis, sólo desanidará el primer anidado. El número introducido se corresponde a la profundidad (nivel de desanidado) al que se quiere llegar (díficil de explicar, fácil de entender viéndolo)//
-console.log(flat)
-console.log(names3)*/
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 //Level 3 (NOTHING AT THE MOMENT)//
 var forEach
+
 var some
+
 var every
+
 var find
+
 var findIndex
+
+var filter
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-//Level 4 (NOTHING AT THE MOMENT)//
+//Level 4 (FLAT COMPLETED, MAP, REDUCE AND SORT NOT COMPLETED//
+var flat = names3.flat(2) //El metodo flat permite desanidar un array con varios elementos anidados. Si hay varios array anidados y subanidados, y no se marca ningún ningún número entre paréntesis, sólo desanidará el primer anidado. El número introducido se corresponde a la profundidad (nivel de desanidado) al que se quiere llegar (díficil de explicar, fácil de entender viéndolo)//
+console.log(flat)
+console.log(names3)
+
 var map
-var filter
+
 var reduce
+
 var sort
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
