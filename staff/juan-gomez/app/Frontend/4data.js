@@ -34,6 +34,7 @@ function registerUser(registerData) { //La función permite crear el registro de
     users.push(userCreated) //Con este push lo que hacemos es empujar los datos de userCreated a la variable users previamente declarada//
 
     localStorage.users = JSON.stringify(users) //Asignamos a nuestra base de datos de usuarios el valor de JSON.stringify sobre los usuarios, básicamente transformamos de javascript a Json//
+
     sessionStorage.id = userCreated.id //Almacenamos en sessionStorage el id del usuario que se acaba de registrar y/o logear//
 
     navigateToHome(currentView) //La función navigateToHome permite navegar hasta la página de home, a traves de la vista actual (currentView)
@@ -49,7 +50,11 @@ function loginUser(loginData) { //La función permite crear el login del usuario
         return //Al producirse esto, nos salimos de la función//
     }
 
-    sessionStorage.id = userLoginCheckout.id ////Almacenamos en sessionStorage el id del usuario que se acaba de registrar y/o logear//
+    if (loginData['rememberme']) {
+        localStorage.id = userLoginCheckout.id
+    } else {
+        sessionStorage.id = userLoginCheckout.id ////Almacenamos en sessionStorage el id del usuario que se acaba de registrar y/o logear//
+    }
 
     navigateToHome(currentView)
 }

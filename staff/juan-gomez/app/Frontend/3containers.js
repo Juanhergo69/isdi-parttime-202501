@@ -46,11 +46,19 @@ function createForm(inputsArray, submitButtonText, callback) { //La función per
         var label = document.createElement('label') //Declaramos la variable label, y le asignamos el valor de documento html creado como etiqueta (label)//
         label.htmlFor = input.inputId //Continuamos asignando a label la funcion htmlFor, que permite iterar los elementos que se asignen. ej-->input = {... inputId: 'email'}; input.inputId === 'email'//
         label.textContent = input.label //Continuamos asignando a label el contenido de texto, que en este caso será la etiqueta (label) generada sobre el input//
+
         var inputElement = document.createElement('input') //Declaramos la variable inputElement, y le asignamos el valor de documento html creado como input//
         inputElement.type = input.inputType; //Continuamos asignando a inputElement el tipo, que será el tipo de input generado sobre el input//
         inputElement.id = input.inputId; //Continuamos asignando a inputElement la id, que sera la id del input sobre el input//
-        inputElement.placeholder = input.inputPlaceholder //Continuamos asinando a inputElemento el placeholder, que será aquello que sirva de guía para que el usuario sepa que debe escribir ahí. Será la id del placeholder sobre el input//
+
+        if (input.inputType !== 'checkbox') { //El if nos indica, que si el input es distinto a una checkbox//
+            inputElement.placeholder = input.inputPlaceholder || '' //Continuamos asignando a inputElement el placeholder, que será aquello que sirva de guía para que el usuario sepa que debe escribir ahí. Será la id del placeholder sobre el input//
+        } else { //Si el if no se cumple, y por tanto, se trata de un checkbox//
+            inputElement.className = 'checkbox' //Continuamos asignando a inputElement la case de checkbox//
+        }
+
         inputElement.required = input.isRequired //Continuamos asignando a inputElement la categoría required, que servirá para que ese campo sea de obligatorio cumplimiento para seguir avanzando//
+
 
         formContainer.appendChild(label) //Añadimos label a formContainer//
         formContainer.appendChild(inputElement) //Añadimos inputElemento a formContainer//
@@ -80,6 +88,11 @@ function createForm(inputsArray, submitButtonText, callback) { //La función per
             var fieldName = inputsArray[i].inputId //Declaramos variable fieldName, que se corresponde al nombre del campo, y le asignamos el valor del indice de inputsArray en base la id del input//
             var value = form[inputsArray[i].inputId].value //Declaramos variable value, que se corresponde al valor de ese input, y le asignamos el valor del objetivo del evento (form) sobre el indice de inputsArray, en base al valor de la id del input//
 
+            if (inputsArray[i].inputType === 'checkbox') {
+                value = form[inputsArray[i].inputId].checked
+            } else {
+                value = form[inputsArray[i].inputId].value
+            }
             formData[fieldName] = value; //Asignamos a formData, en base al nombre del campo, el valor iterado en el for. ej-->formData = {'email': 'patata@mail.com'}//
         }
 
@@ -92,8 +105,15 @@ function createForm(inputsArray, submitButtonText, callback) { //La función per
 
 function createHomePage() { //La función permite crear la página home//
     var homeContainer = createContainer('')  //Declaramos la variable homeContainer (contenedor de la página home), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
-    var loggedUserId = JSON.parse(sessionStorage.getItem('id')); //Declaramos variable users, que transformará el resultado en formato json a formato javascript, realizando la comprobación de si el usario está almacenado en la sessionStorage//
-    var usersJson = localStorage.getItem('users') //Declaramos variable usersJson, que serán los usuarios que se registren, y que quedarán almacenados en la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia//
+    var loggedUserId //Declaramos variable loggedUserId, que recogerá los datos del usuario que ha hecho login, y en un princpio, la declaramos vacía, ya que dependiendo de si el almacenamiento es local o en sesión se añadairá a uno u otro (if de más abajo)//
+
+    if (localStorage.id) { //El if nos indica que, si la id se encuentra en localStorage (almacenamiento local)//
+        loggedUserId = JSON.parse(localStorage.getItem('id')) //Declaramos que la id del usuario que ha logueado se quedará almacenado en el local de la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia JSONparse permite transformar el resultado en formato json a formato javascript//
+    } else { //Si el if no se cumple, y por tanto, si la id se encuentra sessionStorage (almacenamiento en la sesion)//
+        loggedUserId = JSON.parse(sessionStorage.getItem('id')); //Declaramos que la id del usuario que ha logueado se quedará almacenado en la sesion de la base de datos de juguete (devtools/aplications/sessionstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia JSONparse permite transformar el resultado en formato json a formato javascript//
+    }
+
+    var usersJson = localStorage.users //Declaramos variable usersJson, que serán los usuarios que se registren, y que quedarán almacenados en la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia//
     var users = JSON.parse(usersJson) //Transformar el resultado en formato json a formato javascript// 
 
     var userLogged = users ? users.find(function (_user) { return _user.id === loggedUserId }) : undefined //Declaramos variable userLogged, que permitirá comprobar, con ternarios, si el usuario se encuentra en la comprobación facilitada//
@@ -106,8 +126,15 @@ function createHomePage() { //La función permite crear la página home//
     var loggedUserUsername = userLogged.userName //Declaramos la variable loggedUserUserName, que se corresponderá al usuario logeado en base a su nombre de usuario//
     var welcomeText = createTextContainer('h1', `Welcome, ${loggedUserUsername}`, 'welcomeMsg') //Declaramos la variable welcomeText, que se corresponderá al mensaje de bienvenida una vez se acceda a la página home//
     welcomeText.className = 'welcomeMsg'
-    var logoutButton = createButton('Logout', '', function () { sessionStorage.removeItem('id'); navigateToLogin(homeContainer) }) //Declaramos la variable logoutButton (que será el botón para salir de la página home, y deslogar el usuario), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
-    logoutButton.className = 'logoutButton'
+    var logoutButton = createButton('Logout', 'logoutButton', function () { //Declaramos la variable logoutButton (que será el botón para salir de la página home, y deslogar el usuario), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
+        if (sessionStorage.id) { //El if indica que, si se desloguea desde la sessionStorage (almacenamiento de la sesión)//
+            sessionStorage.removeItem('id') //Se elimina la id de la sessionStorage//
+        }
+        if (localStorage.id) { //El if indica que, si se deslogue desde la localStorage (almacenamiento local)//
+            localStorage.removeItem('id') //Se elimina la id de la localStorage//
+        }
+        navigateToLogin(homeContainer)
+    })
 
     homeContainer.appendChild(welcomeText) //Añadimos welcomeText a homeContainer//
     homeContainer.appendChild(logoutButton) //Añadimos logoutButton a homeContainer//
