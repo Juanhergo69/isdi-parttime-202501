@@ -1,13 +1,11 @@
 //Método Flat//
-//El metodo flat permite desanidar un array con varios elementos anidados. Si hay varios array anidados y subanidados, y no se marca ningún ningún número entre paréntesis, sólo desanidará el primer anidado. El número introducido se corresponde a la profundidad (nivel de desanidado) al que se quiere llegar (díficil de explicar, fácil de entender viéndolo)//
+//El metodo flat permite desanidar un array con varios elementos anidados. Si hay varios array anidados y subanidados, y no se marca ningún ningún número entre paréntesis, sólo desanidará el primer anidado. El número introducido se corresponde a la profundidad (nivel de desanidado) al que se quiere llegar (díficil de explicar, fácil de entender viéndolo). Si se introduce Infinity entre paréntesis, desanidará todos los array anidados//
 //Procedimiento de comprobación TDD//
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS LAS VARIABLES A CONSIDERAR PARA REALIZAR LAS COMPROBACIONES//
 var names = ['Juan', ['Francisco', 'Loli', ['Dante', 'Germán']], 'Diana', ['Gonzalo', 'Angel', ['María', 'David']], 'Sonia', ['Lidia, Tere', ['Amira', 'Telma']], 'Marta'] //Declaramos variable con array original//
 var testNames = ['Juan', ['Francisco', 'Loli', ['Dante', 'Germán']], 'Diana', ['Gonzalo', 'Angel', ['María', 'David']], 'Sonia', ['Lidia, Tere', ['Amira', 'Telma']], 'Marta']  //Declaramos variable de test con los elementos del array original//
-console.log(testNames)
-console.log(controlResult1) //Devuelve en consola el array desanidado hasta la profundidad indicada (en este caso, solo desanidaría el primer anidado))//
 //**************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
