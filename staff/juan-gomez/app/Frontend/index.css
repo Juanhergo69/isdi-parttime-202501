@@ -1,230 +1,257 @@
-.title {
+* {
+    /*Se aplica un reset básico para que todos los elementos tengan un estilo consistente en todos los navegadores*/
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /*Definimos estilos generales del body*/
+    font-family: 'Zen Dots';
     display: flex;
     justify-content: center;
-    margin-top: 5%;
-    color: black;
-    font-family: 'Zen Dots';
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(100deg, white, rgb(0, 142, 182));
+    padding: 20px;
+}
 
+.landingContainer,
+.homeContainer {
+    /*Definimos estilos comunes para landingContainer y homeContainer (contenedores de la página landing y home respectivamente)*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgb(0, 142, 182);
+    border: 1px solid rgb(0, 142, 182);
 }
 
 .landingImg {
-    position: absolute;
-    height: 15rem;
-    top: 7rem;
-    left: 52.5rem;
-    border-radius: 40px;
+    /*Definimos estilos para landingImg (imagen de la página de landing)*/
+    width: 100%;
+    max-width: 200px;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
-.landingMsg {
-    display: flex;
-    justify-content: center;
-    margin-top: 25%;
+.landingImg:hover {
+    /*Definimos hover para cambio acercamiento de imagen*/
+    transform: scale(1.30);
+}
+
+.landingMsg,
+.homeMsg {
+    /*Definimos estilos comunes para landingMsg y homeMsg (mensajes de la página landing y home respectivamente)*/
     color: black;
+    text-align: center;
+    margin-bottom: 20px;
     font-family: 'Zen Dots';
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgb(0, 142, 182);
 }
 
-.registerMsg {
-    position: absolute;
-    justify-content: center;
-    color: black;
-    top: 40rem;
-    font-family: 'Zen Loop';
-    font-size: 20px;
-}
-
+.registerMsg,
 .loginMsg {
-    position: absolute;
-    justify-content: center;
+    /*Definimos estilos comunes para registerMsg y loginMsg (mensajes de la página register y login respectivamente)*/
+    font-size: 1.5rem;
     color: black;
-    top: 40rem;
+    text-align: center;
+    margin-bottom: 1px;
     font-family: 'Zen Loop';
-    font-size: 20px;
 }
 
-.welcomeMsg {
-    display: flex;
-    justify-content: center;
-    margin-top: 8%;
-    color: black;
-    font-family: 'Zen Dots';
-}
-
-.buttonJoin {
-    display: flex;
-    justify-content: center;
-    background-color: black;
-    margin-left: 46.5%;
-    margin-top: 5%;
-    height: 3rem;
-    width: 8rem;
-    align-items: center;
-    font-family: 'Zen Dots';
-    font-size: 15px;
-    color: white;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-.buttonJoin:hover {
-    background-color: rgb(0, 142, 182);
-}
-
-.buttonGoToRegister {
-    position: absolute;
-    background-color: black;
-    width: 8rem;
-    top: 44rem;
-    height: 3rem;
-    width: 8rem;
-    align-items: center;
-    font-size: 15px;
-    color: white;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: 'Zen Dots';
-}
-
-.buttonGoToRegister:hover {
-    background-color: rgb(0, 142, 182);
-}
-
-.buttonGoToLogin {
-    position: absolute;
-    background-color: black;
-    width: 8rem;
-    top: 44rem;
-    height: 3rem;
-    width: 8rem;
-    align-items: center;
-    font-size: 15px;
-    color: white;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: 'Zen Dots';
-
-}
-
-.buttonGoToLogin:hover {
-    background-color: rgb(0, 142, 182);
-}
-
+.buttonJoin,
+.buttonGoToRegister,
+.buttonGoToLogin,
 .logoutButton {
-    display: flex;
-    justify-content: center;
+    /*Definimos estilos comunes para buttonJoin, buttonGoToRegister, buttonGoToLogin y logoutButton*/
     background-color: black;
-    margin-left: 46.5%;
-    margin-top: 23.5%;
-    height: 3rem;
-    width: 8rem;
-    align-items: center;
-    font-size: 15px;
     color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
     border-radius: 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
     font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
+.buttonJoin:hover,
+.buttonGoToRegister:hover,
+.buttonGoToLogin:hover,
 .logoutButton:hover {
+    /*Definimos hover para buttonJoin, buttonGoToRegister, buttonGoToLogin y logoutButton*/
     background-color: rgb(0, 142, 182);
+    transform: scale(1.05)
 }
 
 .imgButton {
-    height: 5.1rem;
-    position: absolute;
-    top: 20px;
-    left: 20px;
+    /*Definimos estilos para imgButton (botón interactivo que nos lleva a landingPage)*/
+    width: 100px;
+    height: auto;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.imgButton:hover {
+    /*Definimos hover para imgButton*/
+    transform: scale(1.05)
 }
 
 .form {
+    /*Definimos estilos generales de los formularios*/
     display: flex;
     flex-direction: column;
-    font-family: 'Zen Loop';
-    font-size: 25px;
-    font-weight: bold;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 1rem;
     border: 1px solid rgb(0, 142, 182);
     border-radius: 20px;
     background-color: white;
-    box-shadow: 0 4px 6px rgb(0, 142, 182);
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
     padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    font-family: 'Zen Dots';
+    font-size: 1rem;
+    color: black;
+}
+
+.registerForm,
+.loginForm {
+    /*Definimos estilos comunes para registerForm y loginform (formularios de registro y logueo respectivamente*/
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 1rem;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    font-family: 'Zen Dots';
 }
 
-.form input[type='email'] {
-    border-color: rgb(0, 142, 182);
-}
-
+.form input[type='email'],
 .form input[type='password'] {
-    border-color: rgb(0, 142, 182);
+    /*Definimos estilos comunes a input.type.email e input.type.password (casilla de poner email y casillas de contraseña y confirmación de contraseña)*/
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: white;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
+
+.form input[type='email']:hover,
+.form input[type='password']:hover {
+    /*Definimos hover común para input.type.email e input.type.password ((casilla de poner email y casillas de contraseña y confirmación de contraseña)*/
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
 
 .form input[type="submit"] {
-    position: absolute;
-    flex-direction: row;
-    justify-content: center;
+    /*Definimos estilos a input.type.submit (botón de registro o logueo de sus respectivos formularios*/
     background-color: black;
-    width: 8rem;
-    top: 36rem;
-    height: 2rem;
-    width: 8rem;
-    left: 56rem;
-    align-items: center;
-    font-family: 'Zen Dots';
-    font-size: 15px;
     color: white;
-    border-radius: 8%;
-    margin-right: 0.5%;
-    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
     border-radius: 20px;
-
-}
-
-.form input[type='submit']:hover {
-    background-color: rgb(0, 142, 182);
-}
-
-.registerForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5rem;
-}
-
-.loginForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.form input[type="submit"]:hover {
+    /*Definimos hover para input.type.submit (botón de registro o logueo de sus respectivos formularios*/
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05)
 }
 
 .checkbox {
-    position: absolute;
-    top: 30.1rem;
-    left: 64rem;
-    height: 15px;
-    width: 15px;
+    /*Definimos estilos para checkbox (casilla Remember Me del formulario de logueo)*/
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgb(0, 142, 182);
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
 }
 
-.zen-dots-regular {
-    font-family: "Zen Dots", serif;
-    font-weight: 400;
-    font-style: normal;
+.checkbox:checked {
+    /*Definimos que, si se ha ejecutado, el color del fondo cambia*/
+    background-color: rgb(0, 142, 182);
 }
 
-@media (min-width: 720px) {
+/*Definimos estilos responsivos para que la página y sus elementos mantengan su distribución independientemente del tamaño de la pantalla*/
+@media (max-width: 768px) {
     .title {
-        color: rgb(0, 0, 0)
+        font-size: 1.5rem;
+    }
+
+    .landingMsg,
+    .registerMsg,
+    .loginMsg,
+    .welcomeMsg {
+        font-size: 1.2rem;
+    }
+
+    .buttonJoin,
+    .buttonGoToRegister,
+    .buttonGoToLogin,
+    .logoutButton {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .form,
+    .registerForm,
+    .loginForm {
+        padding: 15px;
     }
 }
 
-
-@media (min-width: 1024px) {
+@media (max-width: 480px) {
     .title {
-        color: rgb(0, 0, 0)
+        font-size: 1.2rem;
+    }
+
+    .landingMsg,
+    .registerMsg,
+    .loginMsg,
+    .welcomeMsg {
+        font-size: 1rem;
+    }
+
+    .buttonJoin,
+    .buttonGoToRegister,
+    .buttonGoToLogin,
+    .logoutButton {
+        font-size: 0.9rem;
     }
 }

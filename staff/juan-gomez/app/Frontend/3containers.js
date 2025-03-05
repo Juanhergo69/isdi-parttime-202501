@@ -88,10 +88,10 @@ function createForm(inputsArray, submitButtonText, callback) { //La función per
             var fieldName = inputsArray[i].inputId //Declaramos variable fieldName, que se corresponde al nombre del campo, y le asignamos el valor del indice de inputsArray en base la id del input//
             var value = form[inputsArray[i].inputId].value //Declaramos variable value, que se corresponde al valor de ese input, y le asignamos el valor del objetivo del evento (form) sobre el indice de inputsArray, en base al valor de la id del input//
 
-            if (inputsArray[i].inputType === 'checkbox') {
-                value = form[inputsArray[i].inputId].checked
-            } else {
-                value = form[inputsArray[i].inputId].value
+            if (inputsArray[i].inputType === 'checkbox') { //El if nos indica que, si en el indice de inputsArray, el inputType es una checkbox//
+                value = form[inputsArray[i].inputId].checked //El valor que nos devuelve sobre el formulario, es el indice de inputId, con la categoría checked (por ser checkbox)//
+            } else { //Si el if no se produce, y se trata entonces de otra label que no es checkbox//
+                value = form[inputsArray[i].inputId].value //El valor que nos devuelve sobre el formulario, es el indice de inputId, con la categoría value (por ser un valor)//
             }
             formData[fieldName] = value; //Asignamos a formData, en base al nombre del campo, el valor iterado en el for. ej-->formData = {'email': 'patata@mail.com'}//
         }
@@ -104,7 +104,7 @@ function createForm(inputsArray, submitButtonText, callback) { //La función per
 }
 
 function createHomePage() { //La función permite crear la página home//
-    var homeContainer = createContainer('')  //Declaramos la variable homeContainer (contenedor de la página home), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
+    var homeContainer = createContainer('homeContainer')  //Declaramos la variable homeContainer (contenedor de la página home), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
     var loggedUserId //Declaramos variable loggedUserId, que recogerá los datos del usuario que ha hecho login, y en un princpio, la declaramos vacía, ya que dependiendo de si el almacenamiento es local o en sesión se añadairá a uno u otro (if de más abajo)//
 
     if (localStorage.id) { //El if nos indica que, si la id se encuentra en localStorage (almacenamiento local)//
@@ -120,12 +120,11 @@ function createHomePage() { //La función permite crear la página home//
 
     if (!userLogged) { //El if nos indica que si el usuario no se encuentra previamente registrado//
         alert('Create an account first') //Nos arroja un alert con el siguiente mensaje//
-        return renderRegisterPage();
+        return renderRegisterPage() //Devolvemos el renderizado de la págin ade registro//
     }
 
     var loggedUserUsername = userLogged.userName //Declaramos la variable loggedUserUserName, que se corresponderá al usuario logeado en base a su nombre de usuario//
-    var welcomeText = createTextContainer('h1', `Welcome, ${loggedUserUsername}`, 'welcomeMsg') //Declaramos la variable welcomeText, que se corresponderá al mensaje de bienvenida una vez se acceda a la página home//
-    welcomeText.className = 'welcomeMsg'
+    var homeMsg = createTextContainer('h1', `Welcome, ${loggedUserUsername}`, 'homeMsg') //Declaramos la variable welcomeText, que se corresponderá al mensaje de bienvenida una vez se acceda a la página home//
     var logoutButton = createButton('Logout', 'logoutButton', function () { //Declaramos la variable logoutButton (que será el botón para salir de la página home, y deslogar el usuario), y le asignamos el valor de la función createButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
         if (sessionStorage.id) { //El if indica que, si se desloguea desde la sessionStorage (almacenamiento de la sesión)//
             sessionStorage.removeItem('id') //Se elimina la id de la sessionStorage//
@@ -133,10 +132,10 @@ function createHomePage() { //La función permite crear la página home//
         if (localStorage.id) { //El if indica que, si se deslogue desde la localStorage (almacenamiento local)//
             localStorage.removeItem('id') //Se elimina la id de la localStorage//
         }
-        navigateToLogin(homeContainer)
+        navigateToLogin(homeContainer) //Ejecutamos la funcion navigateToLogin (desde homeContainer, que es donde nos encontramos) tras pulsar logoutButton//
     })
 
-    homeContainer.appendChild(welcomeText) //Añadimos welcomeText a homeContainer//
+    homeContainer.appendChild(homeMsg) //Añadimos welcomeText a homeContainer//
     homeContainer.appendChild(logoutButton) //Añadimos logoutButton a homeContainer//
     body.appendChild(homeContainer) //Añadimos homeContainer al body//
 

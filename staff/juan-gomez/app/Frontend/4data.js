@@ -1,5 +1,5 @@
 //******************************************************************************************************************************************************************************************//
-//EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN EL TRATAMIENDO DE DATOS, YA SEA CREACIÓN, ALMACENAMIENTO O COMPARACIÓN DE LOS MISMOS. DEBE COLOARSE EN CUARTA POSICIÓN DEL INDICE HTML, YA QUE, TRAS LOS RENDERIZADOS, EJECUTARÁ UNA SERIE DE LÓGICAS PARA LA CREACIÓN DE USUARIOS Y LOGEO DE USUARIOS//
+//EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN EL TRATAMIENTO DE DATOS, YA SEA CREACIÓN, ALMACENAMIENTO O COMPARACIÓN DE LOS MISMOS. DEBE COLOARSE EN CUARTA POSICIÓN DEL INDICE HTML, YA QUE, TRAS LOS RENDERIZADOS, EJECUTARÁ UNA SERIE DE LÓGICAS PARA LA CREACIÓN DE USUARIOS Y LOGEO DE USUARIOS//
 //******************************************************************************************************************************************************************************************//
 function registerUser(registerData) { //La función permite crear el registro del usuario, en base a los datos de registro ej.-->registerData = {'email': '', 'password': '', 'confirmation-password': ''}//
     if (!registerData['email'] && !registerData['password'] && !registerData['confirmation-password']) { //El if nos indica que si no se rellena el campo de email, contraseña y confirmación de contraseña ej-->!registerData['email'] => registerData['email'] === undefined && registerData['email'] === null//
@@ -10,8 +10,6 @@ function registerUser(registerData) { //La función permite crear el registro de
         alert('Password and confirmation password are not the same') //Nos arroja un alert que nos indica que las contraseñas no son coincidentes//
         return //Al producirse esto, nos salimos de la función//
     }
-
-    //Mejoras a considerar: Asignar longitud mínima de contraseña, introducir mínimo una letra mayúscula en la contraseña, validar que el mail no esta en uso, etc//
 
     var usersJson = localStorage.getItem('users') //Declaramos variable usersJson, que serán los usuarios que se registren, y que quedarán almacenados en la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia//
 
@@ -50,13 +48,13 @@ function loginUser(loginData) { //La función permite crear el login del usuario
         return //Al producirse esto, nos salimos de la función//
     }
 
-    if (loginData['rememberme']) {
-        localStorage.id = userLoginCheckout.id
-    } else {
-        sessionStorage.id = userLoginCheckout.id ////Almacenamos en sessionStorage el id del usuario que se acaba de registrar y/o logear//
+    if (loginData['rememberme']) { //El if nos indica que, si desde los datos de logueo, el inputId remememberme (la checkbox) es true (o lo que es lo mismo, está marcada)//
+        localStorage.id = userLoginCheckout.id //La id del usuario será almacenada en localStorage (es decir, el almacenamiento local)//
+    } else { //Si sucede lo contrario (es decir, la checkbox no está marcada)//
+        sessionStorage.id = userLoginCheckout.id //La id del usuario será almacenada en sessionStorage (es decir, el almacenamiento de la sesión)//
     }
 
-    navigateToHome(currentView)
+    navigateToHome(currentView) //Navegamos a la página home desde la vista actual//
 }
 //******************************************************************************************************************************************************************************************//
 //******************************************************************************************************************************************************************************************//
