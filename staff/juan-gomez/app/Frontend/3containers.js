@@ -135,6 +135,8 @@ function createHomePage() { //La función permite crear la página home//
         navigateToLogin(homeContainer) //Ejecutamos la funcion navigateToLogin (desde homeContainer, que es donde nos encontramos) tras pulsar logoutButton//
     })
 
+    //Crear formulario para escribir mensajes, que se suban al localStorage, y que sean visibles por el usuario que lo escribió y por los demás usuarios que se conecten en otro formulario al lado de este. Se debe asignar el nombre del usuario al mensaje, para que el resto sepan quién lo ha escrito//
+
     homeContainer.appendChild(homeMsg) //Añadimos welcomeText a homeContainer//
     homeContainer.appendChild(logoutButton) //Añadimos logoutButton a homeContainer//
     body.appendChild(homeContainer) //Añadimos homeContainer al body//

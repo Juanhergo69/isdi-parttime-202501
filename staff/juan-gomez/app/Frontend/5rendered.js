@@ -9,7 +9,7 @@ function renderLandingPage() { //La función permite renderizar el Landing page,
     landingImg.src = 'Logo.jpg' //Añadimos la raíz de esta imagen (en este caso, esta añadida a la propia carpeta de la app)//
     landingImg.className = 'landingImg' //Añadimos la clase css y le asignamos el nombre landingImg (en index.css se continúa el desarrollo de estilos)//
 
-    var joinButton = createButton('JOIN IN!', 'buttonJoin', function () { navigateToRegister(landingContainer) }) //Declaramos la variable joinButton (que será el botón para acceder), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos//
+    var joinButton = createButton('Join In!', 'buttonJoin', function () { navigateToRegister(landingContainer) }) //Declaramos la variable joinButton (que será el botón para acceder), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos//
 
 
     //landingContainer.appendChild(landingTitle) //Añadimos al contenedor de la página principal, el título de la página principal (dejo comentado esto, porque al incluir la imagen de la página principal, deja de ser útil el título, pero quiero tenerlo a mano para chequeo)//
