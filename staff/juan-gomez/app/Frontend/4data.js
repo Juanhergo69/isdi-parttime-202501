@@ -56,5 +56,24 @@ function loginUser(loginData) { //La función permite crear el login del usuario
 
     navigateToHome(currentView) //Navegamos a la página home desde la vista actual//
 }
+
+function storeMsg(userMsg) { //La función permitiría almacenar en localStorage el mensaje que escribiría el usuario a través de sendMsgForm//
+    if (userMsg === null || userMsg.trim() === '' || typeof userMsg !== 'string') { //El if nos indica que si userMsg no existe, o que contiene nada, o que lo que contiene no es un string// //LA VALIDACION NO FUNCIONA, SE AÑADE SIEMPRE EL MENSAJE//
+        alert("El mensaje está vacío y no se ha almacenado.") //Declaramos un alert que nos indica que no se ha almacenado nada//
+        return //Nos salimos de la función si el if se cumple//
+    } else { //Si el if no se produce, y por tanto, el mensaje del usuario existe y tiene contenido//
+        var storedMessages = JSON.parse(localStorage.getItem('messages')) || [] //Declaramos variable storeMessages, y le asignamos la obtención de estos datos si es que existen, si no los hay, se considera array vacío. Se utiliza JSON.parse para transformar de JSON a JS//
+        storedMessages.push(userMsg) //Pusheamos, o lo que es lo mismo, añadimos el userMsg al array de storesMessages//
+        localStorage.setItem('messages', JSON.stringify(storedMessages)) //Añadimos a localStorage, gracias a setItem, el array actualizado con los mensajes del usuario. Se recurre a JSON.stringify para transformar de JS a JSON//
+        alert('Mensaje almacenado con éxito.') //Declaramos un alert que nos indica que el mensaje se ha almacenado con exito en localStorage//
+    }
+}
+
+function viewMessages() { //La función permitiría rescatar los mensajes en localStorage, para posteriormente ser visualizados desde userMsgForm//
+    var storedMessages = JSON.parse(localStorage.getItem('messages')) || [] //Declaramos variable storeMessages, que contendrá los mensajes de localStorage, transformados de JSON a JS, o si no hay mensajes, un array vacío (nada)//
+    var postCommunityMsg = document.getElementById('postcommunity') //Declaramos variable postCommunityMsg, que contendrá los elementos recogidos en la id postcommunity//
+    var messagesText = storedMessages.join('\n\n') //Declaramos variable messagesText, que contendrá la unión (join) de todos los storedMessages (mensajes almacenados), y separados por dos saltos de línea)
+    postCommunityMsg.value = messagesText //Indicamos que el valor de postCommunityMsg es igual a messagesText//
+}
 //******************************************************************************************************************************************************************************************//
 //******************************************************************************************************************************************************************************************//
