@@ -165,12 +165,11 @@ function createHomePage() { //La función permite crear la página home//
         })
         var title = document.getElementById('title').value //Declaramos variable title, que contendenrá, gracias a la función getElementById, la id del título del post//
         var msg = document.getElementById('msg').value //Declaramos variable msg, que contendrá, gracias a la función getElementById, la id del mensaje que se escriba//
-        var userMsg = `User: ${loggedUserUsername}\nTitle: ${title}\nMessage: ${msg}` //Declaramos variable userMsg, que contendrá el usuario, el título del post y el mensaje se ha escrito//
-        storeMsg(userMsg) //Ejecutamos la función de almacenamiento de mensaje en base al userMsg//
+        storeMsg(loggedUserUsername, title, msg) //Ejecutamos la función de almacenamiento de mensaje en base al userMsg//
         document.getElementById('title').value = '' //Despues de ejecutar la funcion storeMsg, limpiamos el campo de titulo//
         document.getElementById('msg').value = '' //Despues de ejecutar la funcion storeMsg, limpiamos el campo de msg//
-        viewMessages() //Ejecutamos la función viewMessages para mostrar los mensajes en userMsgForm//
-    });
+        viewMessages() //Ejecutamos la función viewMessages para mostrar el mensaje enviado en userMsgForm//
+    })
     sendMsgForm.className = 'sendMsgForm' //Damos un nombre de clase para dar estilos al formulario desde Css//
 
     var objectBodyUserMsg = { label: 'Posts of community', inputType: 'textarea', inputPlaceholder: '', inputId: 'postcommunity', isRequired: false } //Declaramos variable objectBodyUserMsg, que contendrá los mensajes escritos por los usarios desde sendMsgForm. Esto dará problemas, pero más tarde validaremos el textarea para solucionarlo//
@@ -216,7 +215,7 @@ function createHomePage() { //La función permite crear la página home//
     body.appendChild(userMsgForm) //Añadimos userMsgForm al body//
     body.appendChild(homeContainer) //Añadimos homeContainer al body//
 
-    viewMessages()
+    viewMessages() //Ejecutamos la función viewMessages para mostrar todos los mensajes almacenados actualmente//
 
     return homeContainer //Devolvemos homeContainer//
 }

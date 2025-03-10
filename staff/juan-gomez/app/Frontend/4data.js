@@ -57,15 +57,16 @@ function loginUser(loginData) { //La función permite crear el login del usuario
     navigateToHome(currentView) //Navegamos a la página home desde la vista actual//
 }
 
-function storeMsg(userMsg) { //La función permitiría almacenar en localStorage el mensaje que escribiría el usuario a través de sendMsgForm//
-    if (userMsg === null || userMsg.trim() === '' || typeof userMsg !== 'string') { //El if nos indica que si userMsg no existe, o que contiene nada, o que lo que contiene no es un string// //LA VALIDACION NO FUNCIONA, SE AÑADE SIEMPRE EL MENSAJE//
-        alert("El mensaje está vacío y no se ha almacenado.") //Declaramos un alert que nos indica que no se ha almacenado nada//
-        return //Nos salimos de la función si el if se cumple//
-    } else { //Si el if no se produce, y por tanto, el mensaje del usuario existe y tiene contenido//
-        var storedMessages = JSON.parse(localStorage.getItem('messages')) || [] //Declaramos variable storeMessages, y le asignamos la obtención de estos datos si es que existen, si no los hay, se considera array vacío. Se utiliza JSON.parse para transformar de JSON a JS//
+function storeMsg(loggedUserUsername, title, msg) { //La función permitiría almacenar en localStorage los mensajes escritos por el usuario//
+    if (!title || !msg) { //El if nos indica que si no existe titulo escrito o mensaje escrito (no valido el usuario, porque siempre estará ahí)//
+        alert('All fields are required. The message has not been stored') //Se ejecuta un alert que indica que el mensaje no se ha almacenado//
+        return //Nos salimos de la función//
+    } else { //Si el if no se cumple, y por tanto, todos los campos están correctamente rellenos//
+        var userMsg = `User: ${loggedUserUsername}\nTitle: ${title}\nMessage: ${msg}` //Declaramos variable userMsg, que contendrá el usuario, el título del post y el mensaje se ha escrito//
+        var storedMessages = JSON.parse(localStorage.getItem('messages')) || [] //Declaramos variable storeMessages, que contendrá los mensajes almacenados en localStorage, o si no los hay, un array vacío. El Json parse nos permite transformar de//
         storedMessages.push(userMsg) //Pusheamos, o lo que es lo mismo, añadimos el userMsg al array de storesMessages//
         localStorage.setItem('messages', JSON.stringify(storedMessages)) //Añadimos a localStorage, gracias a setItem, el array actualizado con los mensajes del usuario. Se recurre a JSON.stringify para transformar de JS a JSON//
-        alert('Mensaje almacenado con éxito.') //Declaramos un alert que nos indica que el mensaje se ha almacenado con exito en localStorage//
+        alert('Message stored successfully.') //Se ejecuta un alert que indica que el mensaje se ha almacenado//
     }
 }
 
