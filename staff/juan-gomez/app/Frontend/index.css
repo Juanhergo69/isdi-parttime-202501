@@ -318,59 +318,6 @@ body {
     padding: 20px;
 }
 
-.userMsgForm textarea {
-    /*Definimos estilos para el textarea de userMsgForm*/
-    outline: none;
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid black;
-    border-radius: 10px;
-    font-family: 'Zen Loop';
-    font-size: 25px;
-    background-color: white;
-    margin-bottom: 10px;
-    text-align: left;
-    vertical-align: top;
-    resize: none;
-    /*Defino el reescalado en none, ya que no quiero que el formulario pueda ampliarse. Si hay más mensajes que se queden fuera del campo, se visualizarán a través de scroll vertical*/
-    transition: transform 0.3s ease;
-    min-height: 395px;
-    /*Defino una altura mínima para hacerlo coincidir con la altura del formulario sendMsgForm*/
-    width: 400px;
-}
-
-.userMsgForm textarea:hover {
-    /*Definimos hover para el textarea de userMsgForm*/
-    border-color: rgb(0, 142, 182);
-    box-shadow: 0 0 10px rgb(0, 142, 182);
-    transform: scale(1.02);
-}
-
-.userMsgForm textarea::-webkit-scrollbar {
-    /*Definimos estilos para la scrollbar del textarea de userMsgForm*/
-    width: 12px;
-
-}
-
-.userMsgForm textarea::-webkit-scrollbar-track {
-    /*Definimos estilos para la pista (el fondo donde se situa la barra de scroll)*/
-    background: white;
-    border-radius: 10px;
-}
-
-.userMsgForm textarea::-webkit-scrollbar-thumb {
-    /*Definimos estilos para la propia barra de scroll (lo parte que se mueve)*/
-    background: black;
-    border-radius: 10px;
-    border: 3px solid white;
-}
-
-.userMsgForm textarea::-webkit-scrollbar-thumb:hover {
-    /*Definimos hover para scrollbar*/
-    background: rgb(0, 142, 182);
-    cursor: grab;
-}
-
 .userMsgForm input[type='submit'] {
     /*Definimos estilos para el input submit de userMsgForm*/
     display: flex;
@@ -394,6 +341,94 @@ body {
     /*Definimos hover para input.type.submit (botón de registro o logueo de sus respectivos formularios*/
     background-color: rgb(0, 142, 182);
     transform: scale(1.05)
+}
+
+.divElementPost {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+    overflow-y: auto;
+    /* Scroll vertical si el contenido es muy largo */
+    overflow-x: hidden;
+    /* Evita el scroll horizontal */
+    height: 400px;
+    /* Altura fija para el contenedor de mensajes */
+    width: 400px;
+    transition: transform 0.3s ease;
+    /* Ajusta según sea necesario */
+}
+
+/* Estilos personalizados para la scrollbar */
+.divElementPost::-webkit-scrollbar {
+    width: 8px;
+    /* Ancho de la scrollbar */
+}
+
+.divElementPost::-webkit-scrollbar-thumb {
+    background-color: black;
+    /* Color del thumb (barra deslizante) */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    transition: transform 0.3s ease;
+}
+
+.divElementPost::-webkit-scrollbar-track {
+    background-color: white;
+    /* Color del track (fondo de la scrollbar) */
+    border-radius: 5px;
+    /* Bordes redondeados */
+}
+
+.divElementPost::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.02);
+    cursor: grab;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    transition: transform 0.3s ease;
+    overflow-x: hidden;
+    /* Evita el scroll horizontal */
+    box-sizing: border-box;
+    /* Asegura que el padding no afecte el tamaño */
+    word-wrap: break-word;
+    /* Rompe palabras largas para evitar desbordamiento */
+    white-space: pre-wrap;
+    /* Mantiene los saltos de línea y ajusta el texto */
+}
+
+.message:hover {
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
+.message-user,
+.message-title,
+.message-text,
+.message-date {
+    margin-bottom: 5px;
+    /* Espacio entre cada elemento */
+    word-wrap: break-word;
+    /* Rompe palabras largas para evitar desbordamiento */
+}
+
+.message-user {
+    font-weight: bold;
+    /* Estilo para el usuario */
+}
+
+.message-date {
+    font-size: 1.2rem;
+    font-family: 'Zen Loop';
+    color: #666;
+    /* Estilo para la fecha */
 }
 
 .imgButton {
@@ -564,7 +599,7 @@ body {
         left: 16.3rem;
     }
 
-    .userMsgForm textarea {
+    .divElementPost {
         left: 5rem;
         width: 13rem;
         left: 16rem;

@@ -57,24 +57,59 @@ function loginUser(loginData) { //La función permite crear el login del usuario
     navigateToHome(currentView) //Navegamos a la página home desde la vista actual//
 }
 
-function storeMsg(loggedUserUsername, title, msg) { //La función permitiría almacenar en localStorage los mensajes escritos por el usuario//
-    if (!title || !msg) { //El if nos indica que si no existe titulo escrito o mensaje escrito (no valido el usuario, porque siempre estará ahí)//
-        alert('All fields are required. The message has not been stored') //Se ejecuta un alert que indica que el mensaje no se ha almacenado//
+function storeMsg(loggedUserUserId, title, msg, date) { //La función permitira almacenar un mensaje en localStorage, basado en el nombre del usuario, titulo, mensaje y fecha de creación//
+    if (!title || !msg) { //El if nos indica que si no hay título o no hay mensaje//
+        alert('All fields are required. The message has not been stored') //Se ejecuta un alert indicando que el mensaje no se ha almacenado//
         return //Nos salimos de la función//
-    } else { //Si el if no se cumple, y por tanto, todos los campos están correctamente rellenos//
-        var userMsg = `User: ${loggedUserUsername}\nTitle: ${title}\nMessage: ${msg}` //Declaramos variable userMsg, que contendrá el usuario, el título del post y el mensaje se ha escrito//
-        var storedMessages = JSON.parse(localStorage.getItem('messages')) || [] //Declaramos variable storeMessages, que contendrá los mensajes almacenados en localStorage, o si no los hay, un array vacío. El Json parse nos permite transformar de//
-        storedMessages.push(userMsg) //Pusheamos, o lo que es lo mismo, añadimos el userMsg al array de storesMessages//
-        localStorage.setItem('messages', JSON.stringify(storedMessages)) //Añadimos a localStorage, gracias a setItem, el array actualizado con los mensajes del usuario. Se recurre a JSON.stringify para transformar de JS a JSON//
-        alert('Message stored successfully.') //Se ejecuta un alert que indica que el mensaje se ha almacenado//
+    } else { //Si no se cumple el if, es decir, hay titulo y mensaje//
+        var objectUserMsg = { userId: loggedUserUserId, title: title, msg: msg, date: date.toLocaleString() } //Creamos el objeto objectUserMsg, que contendrá la id del usuario, titulo, mensaje y fecha(utilizamos toLocaleString para formatear la fecha y que sea legible//
+        var storedMessages = JSON.parse(localStorage.getItem('messages')) || [] //Declaramos variable storeMessages, que contendrá los mensajes cojidos de localStorage (hay que hacer la conversión con JSON.parse). Si no los hay, se ejecutará un array vacío//
+        storedMessages.push(objectUserMsg); //Pusheamos, o lo que es lo mismo, añadimos objectUserMsg a storeMessages//
+        localStorage.setItem('messages', JSON.stringify(storedMessages)); //Y añadimos a localStorage el mensaje (hay que hacer la conversión con JSON.stringify)
+        alert('Message stored successfully.') //Se ejecuta un alert indicando que el mensaje se ha almacenado//
     }
 }
 
-function viewMessages() { //La función permitiría rescatar los mensajes en localStorage, para posteriormente ser visualizados desde userMsgForm//
-    var storedMessages = JSON.parse(localStorage.getItem('messages')) || [] //Declaramos variable storeMessages, que contendrá los mensajes de localStorage, transformados de JSON a JS, o si no hay mensajes, un array vacío (nada)//
-    var postCommunityMsg = document.getElementById('postcommunity') //Declaramos variable postCommunityMsg, que contendrá los elementos recogidos en la id postcommunity//
-    var messagesText = storedMessages.join('\n\n') //Declaramos variable messagesText, que contendrá la unión (join) de todos los storedMessages (mensajes almacenados), y separados por dos saltos de línea)
-    postCommunityMsg.value = messagesText //Indicamos que el valor de postCommunityMsg es igual a messagesText//
+function viewMessages() {
+    var storedMessages = JSON.parse(localStorage.getItem('messages')) || [] //Declaramos variable storeMessages, que contendrá los mensajes cojidos de localStorage (hay que hacer la conversión con JSON.parse) Si no los hay, se ejecutará un array vacío//
+    var postCommunityMsgContainer = document.getElementById('postcommunity') //Declaramos variable postCommunityMsgContainer, que contendrá todos los elementos de la id postcommunity//
+    var users = JSON.parse(localStorage.getItem('users')) || [] //Declaramos variable users, y la traemos haciendo el cambio de JSON  JS desde localStorage. Si no hay usuarios registrados, nos traemos un array vacío//
+
+    postCommunityMsgContainer.innerHTML = '' //Limpiamos el contenedor antes de agregar los mensajes//
+
+    storedMessages.forEach(function (message) { //Iteramos cada mensaje almacenado//
+        var messageDiv = document.createElement('div') //Declaramos variable messageDiv, y lo creamos como div (servirá de contenedor para el mensaje)
+        messageDiv.className = 'message' //Asignamos nombre de clase para dar estilos//
+
+        var user = users.find(function (_user) { //Declaramos variable user, que contendrá la búsqueda del nombre del usuario actualizado usando la ID almacenada en el mensaje//
+            return _user.id === message.userId
+        })
+
+        var userName = user ? user.userName : 'Unknown User' //Si no se encuentra el usuario preguntando con ternarios, mostramos Unknown User//
+
+        var userDiv = document.createElement('div') //Declaramos variable userDiv//
+        userDiv.className = 'message-user' //Asignamos nombre de clase para dar estilos//
+        userDiv.textContent = `User: ${userName}`; //Indicamos que su contenido será el nombre del usuario actualizado//
+        messageDiv.appendChild(userDiv) //Añadimos userDiv a messageDiv//
+
+        var titleDiv = document.createElement('div') //Declaramos variable titleDiv//
+        titleDiv.className = 'message-title' //Asignamos nombre de clase para dar estilos//
+        titleDiv.textContent = `Title: ${message.title}`; //Indicamos que su contenido será el título del mensaje//
+        messageDiv.appendChild(titleDiv) //Añadimos titleDiv a a messageDiv//
+
+        var msgDiv = document.createElement('div') //Declaramos variable msgDiv//
+        msgDiv.className = 'message-text' //Asignamos nombre de clase para dar estilos//
+        msgDiv.textContent = `Message: ${message.msg}`; //Indicamos que su contenido será el mensaje escrito por el usuario//
+        messageDiv.appendChild(msgDiv) //Añadimos msgDiv a messageDiv//
+
+        var dateDiv = document.createElement('div') //Declaramos variable dateDiv//
+        dateDiv.className = 'message-date' //Asignamos nombre de clase para dar estilos//
+        dateDiv.textContent = `Date: ${message.date}`; //Indicamos que su contenido será la fecha en la que se generó el mensaje//
+        messageDiv.appendChild(dateDiv) //añadimos dateDiv a messageDiv//
+
+        postCommunityMsgContainer.appendChild(messageDiv) //Añadimos messageDiv a postComunityMsgContainer//
+    });
 }
+
 //******************************************************************************************************************************************************************************************//
 //******************************************************************************************************************************************************************************************//

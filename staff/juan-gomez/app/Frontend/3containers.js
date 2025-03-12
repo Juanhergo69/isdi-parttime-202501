@@ -157,26 +157,30 @@ function createHomePage() { //La función permite crear la página home//
         body.removeChild(userMsgForm) //Quitamos del body el formulario de mensajes enviados por los usuarios//
     })
 
-    var objectTitleSendMsg = { label: 'Title your post', inputType: 'textTitle', inputPlaceholder: 'Enter your title', inputId: 'title', isRequired: false } //Declaramos variable objectTitleSendMsg, que será el objeto que contenga el titulo del post que se quiera añadir//
-    var objectBodySendMsg = { label: 'Write your post', inputType: 'textarea', inputPlaceholder: 'Enter your msg', inputId: 'msg', isRequired: false } //Declaramos variable objectBodySendMsg, que será el cuerpo donde el usuario añada el mensaje que quiere enviar. Esto dará problemas, pero más tarde validaremos el textarea para solucionarlo// //
+    var objectTitleSendMsg = { label: 'Title your post', inputType: 'textTitle', inputPlaceholder: 'Enter your title', inputId: 'title', isRequired: true } //Declaramos variable objectTitleSendMsg, que será el objeto que contenga el titulo del post que se quiera añadir//
+    var objectBodySendMsg = { label: 'Write your post', inputType: 'textarea', inputPlaceholder: 'Enter your msg', inputId: 'msg', isRequired: true } //Declaramos variable objectBodySendMsg, que será el cuerpo donde el usuario añada el mensaje que quiere enviar. Esto dará problemas, pero más tarde validaremos el textarea para solucionarlo// //
     var sendMsgForm = createForm([objectTitleSendMsg, objectBodySendMsg], 'Post your Msg', function () { //Declaramos variable sendMsgForm, para crear el formulario de creación de mensaje//
         sendMsgForm.addEventListener('submit', function (event) { //Declaro en primer lugar que sendMsgForm reaccionará al submit (no encuentro mejor forma de hacerlo)//
             event.preventDefault() //Previniendo los comportamientos predeterminados del formulario//
         })
         var title = document.getElementById('title').value //Declaramos variable title, que contendenrá, gracias a la función getElementById, la id del título del post//
         var msg = document.getElementById('msg').value //Declaramos variable msg, que contendrá, gracias a la función getElementById, la id del mensaje que se escriba//
-        storeMsg(loggedUserUsername, title, msg) //Ejecutamos la función de almacenamiento de mensaje en base al userMsg//
+        var date = new Date()
+        storeMsg(loggedUserId, title, msg, date) //Ejecutamos la función de almacenamiento de mensaje en base al userMsg//
         document.getElementById('title').value = '' //Despues de ejecutar la funcion storeMsg, limpiamos el campo de titulo//
         document.getElementById('msg').value = '' //Despues de ejecutar la funcion storeMsg, limpiamos el campo de msg//
         viewMessages() //Ejecutamos la función viewMessages para mostrar el mensaje enviado en userMsgForm//
     })
     sendMsgForm.className = 'sendMsgForm' //Damos un nombre de clase para dar estilos al formulario desde Css//
 
-    var objectBodyUserMsg = { label: 'Posts of community', inputType: 'textarea', inputPlaceholder: '', inputId: 'postcommunity', isRequired: false } //Declaramos variable objectBodyUserMsg, que contendrá los mensajes escritos por los usarios desde sendMsgForm. Esto dará problemas, pero más tarde validaremos el textarea para solucionarlo//
-    var userMsgForm = createForm([objectBodyUserMsg], 'Answer', function () { //Declaramos variable userMsgForm, para crear el formulario donde se visualizarán los mensajes enviados por los usuarios desde sendMsgForm. La función es un alert, ya que la función que queremos darle (contestar a esos mensajes) aún no está desarrollada//
-        alert('Contestar mensaje, aún no desarrollado') //Falta por desarrollar esta función, mi idea es que se pueda seleccionar un mensaje a la vista desde userMsgForm, y tras hacer submit sobre answer, poder contestar a ese mensaje en concreto//
-    });
+    var objectBodyUserMsg = { label: 'Posts of community', inputType: 'div', inputPlaceholder: '', inputId: 'postcommunity', isRequired: false } //Declaramos variable objectBodyUserMsg, que contendrá los mensajes escritos por los usarios desde sendMsgForm. Esto dará problemas, pero más tarde validaremos el textarea para solucionarlo//
+    var userMsgForm = createForm([objectBodyUserMsg], 'Answer', function () { }) //Declaramos variable userMsgForm, para crear el formulario donde se visualizarán los mensajes enviados por los usuarios desde sendMsgForm. La función se declara vacía, ya que a posteriori la asignaremos con un adEventListener// 
+    userMsgForm.addEventListener('submit', function (event) { //Declaramos el addEventListener sobre el submit de userMsgForm//
+        event.preventDefault(); //Prevenir el comportamiento por defecto del formulario//
+        alert('Contestar mensaje, aún no desarrollado') //Se ejecuta un alert indicando la función que realizaría el submit (no desarrollado aún)//
+    })
     userMsgForm.className = 'userMsgForm' //Damos un nombre de clase para dar estilos al formulario desde Css//
+
 
     var inputElementMsg = document.getElementById('msg') //Declaramos variable inputElementMsg, para comenzar con las validaciones, con idea de forzar que el input pase a ser un textarea//
     if (inputElementMsg && objectBodySendMsg.inputType === 'textarea') { //El if nos indica que si inputElementMsg y el tipo de input del objeto objectBodySendMsg son exactamente iguales a textarea//
@@ -186,21 +190,18 @@ function createHomePage() { //La función permite crear la página home//
         textareaElementMsg.placeholder = inputElementMsg.placeholder //Estas igualdades permiten asignar las caracteristicas de los input a textarea//
         textareaElementMsg.required = inputElementMsg.required //Estas igualdades permiten asignar las caracteristicas de los input a textarea//
 
-        inputElementMsg.parentNode.replaceChild(textareaElementMsg, inputElementMsg) //Encontrado por internet, con parentNode accedo al nodo padre de los inputs, es decir, userMsgForm, para decirle que remplace los inputElementPost por textAreaElementPost//
+        inputElementMsg.parentNode.replaceChild(textareaElementMsg, inputElementMsg) //Con parentNode accedemos al nodo padre de los inputs, es decir, userMsgForm, para decirle que remplace los inputElementPost por textAreaElementPost//
     }
 
-    var inputElementPost = document.getElementById('postcommunity') //Declaramos variable inputElementPost, para comenzar con las validaciones, con idea de forzar que el input pase a ser un textarea//
-    if (inputElementPost && objectBodyUserMsg.inputType === 'textarea') { //El if nos indica que si inputElementPost y el tipo de input del objeto objectBodyUserMsg son exactamente iguales a textarea//
-        var textareaElementPost = document.createElement('textarea') //Declaramos variable textareaElementPost, y la creamos como documento HTML textarea//
-
-        textareaElementPost.id = inputElementPost.id //Estas igualdades permiten asignar las caracteristicas de los input a textarea//
-        textareaElementPost.placeholder = inputElementPost.placeholder //Estas igualdades permiten asignar las caracteristicas de los input a textarea//
-        textareaElementPost.required = inputElementPost.required //Estas igualdades permiten asignar las caracteristicas de los input a textarea//
-
-        textareaElementPost.readOnly = true //Con esto evitamos que los mensajes a la vista en textAreaElementPost puedan ser borrados y/o modificados. Y al mismo tiempo, evitamos que se pueda escribir en ese campo. Básicamente, es para hacerlo de solo lectura//
-
-        inputElementPost.parentNode.replaceChild(textareaElementPost, inputElementPost) //Encontrado por internet, con parentNode accedo al nodo padre de los inputs, es decir, userMsgForm, para decirle que remplace los inputElementPost por textAreaElementPost//
+    var inputElementPost = document.getElementById('postcommunity') //Declaramos variable inputElementPost, para comenzar con las validaciones, con idea de asignar la categoría div a todas las variables con esa id (este será el contenedor de todos los mensajes)//
+    if (inputElementPost && objectBodyUserMsg.inputType === 'div') { //El if nos indica que si inputElementPost y el tipo de input del objeto objectBodyUserMsg son exactamente iguales a un div//
+        var divElementPost = document.createElement('div') //Declaramos variable divElementPost y lo creamos como div//
+        divElementPost.id = inputElementPost.id //Declaramos que la id de divElementPost es igual a la id de inputElementPost//
+        divElementPost.className = 'divElementPost' //Declaramos nombre de clase para dar estilos//
+        inputElementPost.parentNode.replaceChild(divElementPost, inputElementPost) //Con parentNode accedemos al nodo padre de los inputs, es decir, userMsgForm, para decirle que remplace los inputElementPost por divElementPost//
     }
+
+
 
     menuDropContainer.appendChild(profileButton) //Añadimos profileButton a menuDropContainer//
     menuDropContainer.appendChild(settingsButton) //Añadimos settingsButton a menuDropContainer//
