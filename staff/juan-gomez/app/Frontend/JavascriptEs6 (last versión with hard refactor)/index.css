@@ -1,0 +1,719 @@
+* {
+    /*Se aplica un reset básico para que todos los elementos tengan un estilo consistente en todos los navegadores*/
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /*Definimos estilos generales del body*/
+    font-family: 'Zen Dots';
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(500deg, white, rgb(0, 142, 182));
+}
+
+.landingContainer {
+    /*Definimos estilos comunes para landingContainer (contenedor de la página landing)*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgb(0, 142, 182);
+    border: 1px solid rgb(0, 142, 182);
+    width: 100%;
+    max-width: 45rem;
+    margin: auto;
+    position: relative;
+    top: 10%;
+    transform: translateY(-10%)
+}
+
+.homeContainer {
+    /*Definimos estilos comunes para homeContainer (contenedor de la página home)*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 1%;
+    padding: 40px;
+    margin: 0 auto;
+}
+
+.landingImg {
+    /*Definimos estilos para landingImg (imagen de la página de landing)*/
+    width: 100%;
+    max-width: 200px;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.landingImg:hover {
+    /*Definimos hover para cambio acercamiento de imagen*/
+    transform: scale(1.05);
+}
+
+.homeImg {
+    /*Definimos estilos para landingImg (imagen de la página de landing)*/
+    width: 100%;
+    max-width: 100px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.homeImg:hover {
+    /*Definimos hover para cambio acercamiento de imagen*/
+    transform: scale(1.05);
+}
+
+.landingMsg {
+    /*Definimos estilos para landingMsg (mensajes de la página landing)*/
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Zen Dots';
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgb(0, 142, 182);
+}
+
+.homeMsg {
+    /*Definimos estilos para homeMsg (mensaje de la página home)*/
+    color: black;
+    font-family: 'Zen Dots';
+    font-size: 2rem;
+    text-shadow: 8px 8px 16px rgb(255, 255, 255);
+}
+
+.registerMsg,
+.loginMsg {
+    /*Definimos estilos comunes para registerMsg y loginMsg (mensajes de la página register y login respectivamente)*/
+    font-size: 1.5rem;
+    color: black;
+    text-align: center;
+    margin: 0 auto;
+    font-family: 'Zen Loop';
+}
+
+.buttonJoin,
+.buttonGoToRegister,
+.buttonGoToLogin {
+    /*Definimos estilos comunes para buttonJoin, buttonGoToRegister y buttonGoToLogin*/
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    max-width: 200px;
+    font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.buttonJoin:hover,
+.buttonGoToRegister:hover,
+.buttonGoToLogin:hover {
+    /*Definimos hover para buttonJoin, buttonGoToRegister y buttonGoToLogin*/
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05)
+}
+
+.menuButton {
+    /*Definimos estilos para menuButton*/
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 22px 26px;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    max-width: 150px;
+    font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.menuButton:hover {
+    /*Definimos hover para menuButton*/
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 142, 182);
+    transform: scale(1.05)
+}
+
+.menuDropContainer {
+    /*Definimos estilos para menuDropContainer*/
+    position: absolute;
+    margin-top: 13rem;
+    right: 1.3rem;
+    display: none;
+    /*Declaro el display en none, para que cuando se pulse el botón cambie a flex y se muestre*/
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    padding: 6px;
+    border-radius: 5px;
+    width: auto;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+}
+
+
+.profileButton,
+.settingsButton,
+.logoutButton {
+    /*Definimos estilos comunes para profileButton, settingsButton y logoutButton*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    min-width: 100px;
+    max-width: 100px;
+    font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.profileButton:hover,
+.settingsButton:hover,
+.logoutButton:hover {
+    /*Definimos hover común para profileButton, settingsButton y logoutButton*/
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05)
+}
+
+.homeImgContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toggleSendMsgFormButton {
+    height: 40px;
+    width: 100px;
+    align-items: center;
+    background-color: black;
+    border-radius: 20px;
+    font-family: 'Zen Dots';
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease
+}
+
+.toggleSendMsgFormButton:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05)
+}
+
+.sendMsgForm {
+    /*Definimos estilos para sendMsgForm*/
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 18rem;
+    left: 27rem;
+    font-size: 1rem;
+    background-color: white;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    gap: 0.8rem;
+    padding: 20px;
+    width: 450px;
+    height: 525px;
+}
+
+.sendMsgForm ::placeholder {
+    /*Definimos estilos para placeholder de sendMsgForm*/
+    font-family: 'Zen Loop';
+    font-size: 22px;
+}
+
+.sendMsgForm input[type='textTitle'] {
+    /*Definimos estilos para el input textTitle de senMsgForm*/
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: white;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+    font-family: 'Zen Loop';
+    font-size: 1.5rem;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.sendMsgForm input[type='textTitle']:hover {
+    /*Definimos hover para el input textTitle de sendMsgForm*/
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
+
+.sendMsgForm textarea {
+    /*Definimos estilos para el textarea de userMsgForm*/
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: white;
+    margin-bottom: 10px;
+    text-align: left;
+    vertical-align: top;
+    resize: none;
+    /*Defino el reescalado en none, ya que no quiero que el formulario pueda ampliarse. Si hay más mensajes que se queden fuera del campo, se visualizarán a través de scroll vertical*/
+    transition: transform 0.3s ease;
+    height: 350px;
+    min-height: 290px;
+    /*Defino una altura mínima para hacerlo coincidir con la altura del formulario sendMsgForm*/
+    width: 400px;
+    overflow-y: auto;
+    font-family: 'Zen Loop';
+    font-size: 1.5rem;
+}
+
+.sendMsgForm textarea::-webkit-scrollbar {
+    width: 8px;
+    /* Ancho de la scrollbar */
+    margin-right: 8px;
+}
+
+.sendMsgForm textarea::-webkit-scrollbar-thumb {
+    background-color: black;
+    /* Color del thumb (barra deslizante) */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    transition: transform 0.3s ease;
+}
+
+.sendMsgForm textarea::-webkit-scrollbar-track {
+    background-color: white;
+    /* Color del track (fondo de la scrollbar) */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    margin: 2px;
+}
+
+.sendMsgForm textarea::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.02);
+    cursor: grab;
+}
+
+.sendMsgForm textarea:hover {
+    /*Definimos hover para el input textPost de sendMsgForm*/
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
+.sendMsgForm input[type='submit'] {
+    /*Definimos estilos para el input submit de sendMsgForm*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.sendMsgForm input[type='submit']:hover {
+    /*Definimos hover para el input submit de sendMsgForm*/
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05)
+}
+
+.userMsgForm {
+    /*Definimos estilos para userMsgForm*/
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 18rem;
+    left: 64rem;
+    font-size: 1rem;
+    background-color: white;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    gap: 1rem;
+    padding: 20px;
+}
+
+.userMsgForm.centered {
+    left: 50%;
+    /* Centrar horizontalmente */
+    transform: translateX(-50%);
+    /* Ajustar el centrado */
+}
+
+.userMsgForm input[type='submit'] {
+    /*Definimos estilos para el input submit de userMsgForm*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.userMsgForm input[type='submit']:hover {
+    /*Definimos hover para input.type.submit (botón de registro o logueo de sus respectivos formularios*/
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05)
+}
+
+.divElementPost {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+    overflow-y: auto;
+    /* Scroll vertical si el contenido es muy largo */
+    overflow-x: hidden;
+    /* Evita el scroll horizontal */
+    height: 400px;
+    /* Altura fija para el contenedor de mensajes */
+    width: 400px;
+    transition: transform 0.3s ease;
+    /* Ajusta según sea necesario */
+}
+
+/* Estilos personalizados para la scrollbar */
+.divElementPost::-webkit-scrollbar {
+    width: 8px;
+    /* Ancho de la scrollbar */
+}
+
+.divElementPost::-webkit-scrollbar-thumb {
+    background-color: black;
+    /* Color del thumb (barra deslizante) */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    transition: transform 0.3s ease;
+}
+
+.divElementPost::-webkit-scrollbar-track {
+    background-color: white;
+    /* Color del track (fondo de la scrollbar) */
+    border-radius: 5px;
+    /* Bordes redondeados */
+}
+
+.divElementPost::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.02);
+    cursor: grab;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    transition: transform 0.3s ease;
+    overflow-x: hidden;
+    /* Evita el scroll horizontal */
+    box-sizing: border-box;
+    /* Asegura que el padding no afecte el tamaño */
+    word-wrap: break-word;
+    /* Rompe palabras largas para evitar desbordamiento */
+    white-space: pre-wrap;
+    /* Mantiene los saltos de línea y ajusta el texto */
+}
+
+.message:hover {
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
+.message-title,
+.message-text {
+    font-family: 'Zen Loop';
+    font-size: 1.75rem;
+}
+
+
+.message-user,
+.message-title,
+.message-text,
+.message-date {
+    margin-bottom: 5px;
+    /* Espacio entre cada elemento */
+    word-wrap: break-word;
+    /* Rompe palabras largas para evitar desbordamiento */
+}
+
+.message-user {
+    font-weight: bold;
+    /* Estilo para el usuario */
+}
+
+.message-date {
+    font-size: 1.2rem;
+    font-family: 'Zen Loop';
+    color: #666;
+    /* Estilo para la fecha */
+}
+
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.5rem;
+    /* Tamaño del ícono */
+    color: black;
+    /* Color del corazón vacío */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Estilos para el corazón vacío */
+.far.fa-heart {
+    color: black;
+    /* Color del corazón vacío */
+}
+
+/* Estilos para el corazón relleno */
+.fas.fa-heart {
+    color: rgb(0, 142, 182);
+    /* Color azul característico */
+}
+
+/* Efecto hover */
+.like-button:hover {
+    transform: scale(1.1);
+    /* Escalar ligeramente al pasar el cursor */
+}
+
+.message-likes {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+    /* Separación del contenido superior */
+}
+
+.imgButton {
+    /*Definimos estilos para imgButton (botón interactivo que nos lleva a landingPage)*/
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.imgButton:hover {
+    /*Definimos hover para imgButton*/
+    transform: scale(1.05)
+}
+
+.form {
+    /*Definimos estilos generales de los formularios*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    font-family: 'Zen Dots';
+    font-size: 1rem;
+    color: black;
+}
+
+.registerForm,
+.loginForm {
+    /*Definimos estilos comunes para registerForm y loginForm*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    font-family: 'Zen Dots';
+    margin: auto;
+    position: relative;
+    top: 2%;
+    transform: translateY(-2%);
+}
+
+.registerForm ::placeholder,
+.loginForm ::placeholder {
+    /*Definimos estilos comunes para los placeholder de registerForm y loginForm*/
+    font-family: 'Zen Loop';
+    font-size: 22px;
+}
+
+.form input[type='email'],
+.form input[type='password'] {
+    /*Definimos estilos comunes a input.type.email e input.type.password (casilla de poner email y casillas de contraseña y confirmación de contraseña)*/
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: white;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.form input[type='email']:hover,
+.form input[type='password']:hover {
+    /*Definimos hover común para input.type.email e input.type.password ((casilla de poner email y casillas de contraseña y confirmación de contraseña)*/
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
+
+.form input[type="submit"] {
+    /*Definimos estilos a input.type.submit (botón de registro o logueo de sus respectivos formularios*/
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+}
+
+.form input[type="submit"]:hover {
+    /*Definimos hover para input.type.submit (botón de registro o logueo de sus respectivos formularios*/
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05)
+}
+
+.checkbox {
+    /*Definimos estilos para checkbox (casilla Remember Me del formulario de logueo)*/
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgb(0, 142, 182);
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.checkbox:checked {
+    /*Definimos que, si se ha ejecutado, el color del fondo cambia*/
+    background-color: rgb(0, 142, 182);
+}
+
+/*Definimos estilos responsivos para que la página y sus elementos mantengan su distribución independientemente del tamaño de la pantalla*/
+@media (max-width: 768px) {
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .landingMsg,
+    .registerMsg,
+    .loginMsg,
+    .homeMsg {
+        font-size: 1rem;
+    }
+
+    .buttonJoin,
+    .buttonGoToRegister,
+    .buttonGoToLogin,
+    .logoutButton {
+        width: auto;
+        max-width: 150px;
+    }
+
+    .form,
+    .registerForm,
+    .loginForm {
+        padding: 15px;
+    }
+
+    .sendMsgForm {
+        left: 5rem;
+        width: 15rem;
+        left: 0.1rem;
+    }
+
+    .sendMsgForm textarea {
+        left: 5rem;
+        width: 13rem;
+        left: 0.1rem;
+    }
+
+    .userMsgForm {
+        left: 5rem;
+        width: 15rem;
+        left: 16.2rem;
+    }
+
+    .divElementPost {
+        left: 5rem;
+        width: 13rem;
+        left: 16rem;
+    }
+}
