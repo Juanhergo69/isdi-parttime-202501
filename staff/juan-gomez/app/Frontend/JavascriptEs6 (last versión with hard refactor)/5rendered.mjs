@@ -10,7 +10,7 @@ import { navigateToRegister, navigateToLogin, navigateToLanding } from './6navig
 //******************************************************************************************************************************************************************************************//
 
 //******************************************************************************************************************************************************************************************//
-//EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN RENDERIZADOS DE LAS DISTINAS PÁGINAS DE NUESTRA WEB. DEBE SER COLOCADO EN QUINTO LUGAR DEL ÍNDICE HTML, YA QUE, EL REDERIZADO DEPENDERÁ DE SI LAS LÓGICAS SON CORRECTAS, Y DEPENDIENDO DEL TRATAMIENTO DE LOS DATOS, RENDERIZARÁ UNA PÁGINA U OTRA//
+//EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN RENDERIZADOS DE LAS DISTINAS PÁGINAS DE NUESTRA APP//
 //******************************************************************************************************************************************************************************************//
 export const renderLandingPage = () => { //Exportamos y creamos renderLandingPage. La función permite renderizar el Landing page, es decir, la primera página que se mostrará al acceder a la web//
     const landingContainer = createContainer('landingContainer'); //Declaramos landingContainer (contenedor de la página principal), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//

@@ -2,7 +2,7 @@ import { body, currentView } from './1state.mjs' //Importamos el body y la pági
 import { renderLandingPage, renderRegisterPage, renderLoginpage, renderHomePage } from './5rendered.mjs' //Importamos todas las funciones que impliquen renderizados//
 
 //******************************************************************************************************************************************************************************************//
-//EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN NAVEGACIÓN ENTRE LOS DISTINTOS RENDERIZADOS DE NUESTRA WEB. DEBE SER COLOCADO EN SEXTO LUGAR DEL ÍNDICE HTML, YA QUE, LA NAVEGACIÓN DEPENDERÁ DE SI LOS RENDERIZADOS ESTÁN CORRECTOS Y SON FUNCIONALES//
+//EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN NAVEGACIÓN ENTRE LOS DISTINTOS RENDERIZADOS DE NUESTRA APP//
 //******************************************************************************************************************************************************************************************//
 export const navigateTo = (renderFunction) => { //Exportamos y creamos navigateTo, que servirá como función general para la navegación. Permitirá eliminar la anterior vista para renderizar la siguiente//
     while (body.firstChild) { //El while nos indica, que, mientras exista una página renderizada//
