@@ -519,14 +519,14 @@ body {
 }
 
 /* Estilos para el corazón vacío */
-.far.fa-heart {
+.far.fa-thumbs-up {
     color: black;
     /* Color del corazón vacío */
 }
 
 /* Estilos para el corazón relleno */
-.fas.fa-heart {
-    color: rgb(0, 142, 182);
+.fas.fa-thumbs-up {
+    color: green;
     /* Color azul característico */
 }
 
@@ -537,6 +537,43 @@ body {
 }
 
 .message-likes {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+    /* Separación del contenido superior */
+}
+
+.dislike-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+    font-size: 1.5rem;
+    /* Tamaño del ícono */
+    color: black;
+    /* Color del corazón vacío */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Estilos para el corazón vacío */
+.far.fa-thumbs-down {
+    color: black;
+    /* Color del corazón vacío */
+}
+
+/* Estilos para el corazón relleno */
+.fas.fa-thumbs-down {
+    color: red;
+    /* Color azul característico */
+}
+
+/* Efecto hover */
+.dislike-button:hover {
+    transform: scale(1.1);
+    /* Escalar ligeramente al pasar el cursor */
+}
+
+.message-dislikes {
     font-size: 0.9rem;
     color: #666;
     margin-top: 10px;

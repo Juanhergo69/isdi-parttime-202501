@@ -2,6 +2,6 @@
 //EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN EL ESTADO INCIAL DE LA APLICACIÓN//
 //******************************************************************************************************************************************************************************************//
 export const body = document.body //Exportamos y declaramos el body//
-export let currentView = null; //Exportamos y declaramos currentView (vista actual). La declaramos como null de inicio//
+export let currentView = null //Exportamos y declaramos currentView (vista actual). La declaramos como null de inicio//
 //**********************************************************************************************************************************************************************************************//
 //**********************************************************************************************************************************************************************************************//

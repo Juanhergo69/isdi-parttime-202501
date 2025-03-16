@@ -1,10 +1,10 @@
 //******************************************************************************************************************************************************************************************//
 //AQUÍ SE IMPORTAN TODOS LOS ELEMENTOS NECESARIOS DE OTROS ARCHIVOS PARA EL CORRECTO FUNCIONAMIENTO DEL CÓDIGO ALOJADO EN ESTE ARCHIVO//
 //******************************************************************************************************************************************************************************************//
-import { body, currentView } from './1state.mjs' //Importamos el body y la vista actual//
-import { loadFonts } from './2utils.mjs' //Importamos las fuentes//
+import { body } from './1state.mjs' //Importamos el body y la vista actual//ç
+import { loadFonts } from './2utils.mjs'
 import { storeMsg, viewMessages } from './4data.mjs' //Importamos el almacenamiento de mensajes y la visualización de mensajes//
-import { navigateToLogin, navigateToRegister } from './6navigation.mjs' //Importamos la navegación a login y la navegación a registro//
+import { navigateToLogin } from './6navigation.mjs' //Importamos la navegación a login y la navegación a registro//
 //******************************************************************************************************************************************************************************************//
 //******************************************************************************************************************************************************************************************//
 
@@ -14,7 +14,7 @@ import { navigateToLogin, navigateToRegister } from './6navigation.mjs' //Import
 export const createContainer = (style) => { //Exportamos y creamos createContainer. La función permite crear un contenedor con estilos (style) predefinidos. Esto nos servirá para ir renderizando cada una de las páginas de nuestra web//
     const container = document.createElement('div') //Declaramos container, y le asignamos el valor de documento creado como un div//
     container.className = style //Continuamos asginandole la clase, que en este caso será el estilo que le pase el usuario en la llamada de la función//
-    loadFonts() //Ejecutamos las fuentes//
+    loadFonts()
     return container //Devolvemos container//
 }
 
@@ -22,7 +22,7 @@ export const createTextContainer = (tag, text, style) => { //Exportamos y creamo
     const element = document.createElement(tag) //Declaramos element, y le asignamos el valor de documento html creado en base al tag//
     element.textContent = text //Continuamos asignandole el contenido, que en este caso será text (texto)//
     element.className = style //Continuamos asignandole la clase, que en este caso serán los styles (estilos)//
-    loadFonts() //Ejecutamos las fuentes//
+    loadFonts()
     return element //Devolvemos element//
 }
 
@@ -31,7 +31,7 @@ export const createButton = (text, style, callback) => { //Exportamos y creamos 
     button.textContent = text //Continuamos asignandole el contenido, que en este caso será text (texto)//
     button.className = style  //Continuamos asignandole la clase, que en este caso serán los styles (estilos)//
     button.addEventListener('click', callback) //Creamos un adEventListener, en base al click realizado sobre el botón, para ejecutar el callback//
-    loadFonts() //Ejecutamos las fuentes//
+    loadFonts()
     return button //Devolvemos button//
 }
 
@@ -96,14 +96,19 @@ export const createForm = (inputsArray, submitButtonText, callback) => { //Expor
         const formData = {} //Declaramos formData, que se corresponderá a los datos del formulario. Se declara como un objeto vacío que se irá rellenando con la iteración del siguiente for//
 
         inputsArray.forEach(input => { //Hacemos una iteración con forEach sobre inputsArray, en base al input//
-            const fieldName = input.inputId //Declaramos fielName, y asignamos que es la id del input recorrido con forEach//
-            const value = form[input.inputId].value //Declaramos value, y asginamos que devuelve el valor de id del input recorrido por forEach en el formulario//
-            formData[fieldName] = value //Se asigna el valor del campo de entrada al fielName de formData//
+            const fieldName = input.inputId //Declaramos fieldName, y asignamos que es la id del input recorrido con forEach//
+            const inputElement = form[input.inputId] //Declaramos inputElement, y le asignamos el input id del formulario//
+            if (inputElement) { //El if nos indica, que si inputElement existe//
+                const value = inputElement.value //Declaramos value, dandole el valor de inputElement//
+                formData[fieldName] = value //Declaramos que value, es el nombre del campo de los datos del formulario//
+            } else { //Si el if no ocurre, y por tanto, no hay valor en ese input//
+                console.error(`Element with id ${input.inputId} not found`) //Se ejecuta un console.error informando de ello//
+            }
         })
-
-        loadFonts()
         callback(formData) //Se ejecuta el callback pasandole formData//
     })
+
+    loadFonts()
 
     return formContainer //Devolvemos formContainer//
 }
@@ -123,9 +128,9 @@ export const createHomePage = () => { //Exportamos y creamos createHombePage. La
 
     const userLogged = users ? users.find(function (_user) { return _user.id === loggedUserId }) : undefined //Declaramos userLogged, que permitirá comprobar, con ternarios, si el usuario se encuentra en la comprobación facilitada//
 
-    if (!userLogged) { //El if nos indica que si el usuario no se encuentra previamente registrado//
-        alert('Create an account first') //Nos arroja un alert con el siguiente mensaje//
-        return navigateToRegister(currentView) //Navegamos a la página de registro desde la página actual//
+    if (!userLogged) { //El if nos indica que, si no hay usuario logeado//
+        console.error('User not found') //Se ejecuta un console.error informando de ellos//
+        return //Salidmos de la función//
     }
 
     const loggedUserUsername = userLogged.userName //Declaramos loggedUserUserName, que se corresponderá al usuario logeado en base a su nombre de usuario//
@@ -159,8 +164,6 @@ export const createHomePage = () => { //Exportamos y creamos createHombePage. La
             localStorage.removeItem('id') //Se elimina la id de la localStorage//
         }
         navigateToLogin(homeContainer) //Ejecutamos la funcion navigateToLogin (desde homeContainer, que es donde nos encontramos) tras pulsar logoutButton//
-        body.removeChild(sendMsgForm) //Quitamos del body el formulario de envío de mensajes//
-        body.removeChild(userMsgForm) //Quitamos del body el formulario de mensajes enviados por los usuarios//
     })
 
     const objectTitleSendMsg = { label: 'Title your post', inputType: 'textTitle', inputPlaceholder: 'Enter your title', inputId: 'title', isRequired: true } //Declaramos objectTitleSendMsg, que será el objeto que contenga el titulo del post que se quiera añadir//

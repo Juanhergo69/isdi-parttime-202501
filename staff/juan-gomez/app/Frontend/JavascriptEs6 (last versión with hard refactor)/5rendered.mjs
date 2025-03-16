@@ -2,7 +2,7 @@
 //AQUÍ SE IMPORTAN TODOS LOS ELEMENTOS NECESARIOS DE OTROS ARCHIVOS PARA EL CORRECTO FUNCIONAMIENTO DEL CÓDIGO ALOJADO EN ESTE ARCHIVO//
 //******************************************************************************************************************************************************************************************//
 import { body } from './1state.mjs' //Importamos el body//
-import { loadFonts, renderPage } from './2utils.mjs'; //Importamos las fuentes y la función de renderizado de páginas//
+import { renderPage } from './2utils.mjs'; //Importamos la función de renderizado de páginas//
 import { createContainer, createTextContainer, createButton, createImgButton, createForm, createHomePage } from './3containers.mjs' //Importamos todas las funciones que crean un contenedor//
 import { registerUser, loginUser } from './4data.mjs' //Importamos las funciones de registro y logeo//
 import { navigateToRegister, navigateToLogin, navigateToLanding } from './6navigation.mjs' //Importamos las funciones que permiten la navegación//
@@ -20,7 +20,6 @@ export const renderLandingPage = () => { //Exportamos y creamos renderLandingPag
     landingImg.className = 'landingImg' //Añadimos la clase css y le asignamos el nombre landingImg (en index.css se continúa el desarrollo de estilos)//
     const joinButton = createButton('Join In!', 'buttonJoin', function () { navigateToRegister(landingContainer) }) //Declaramos joinButton (que será el botón para acceder), y le asignamos el valor de la función createButton. Entre paréntesis agregamos el texto, los estilos, y le pasamos la función de la página a la que queramos ir, en base a la página en la que nos encontramos//
 
-    loadFonts() //Ejecutamos las fuentes//
     return renderPage(landingContainer, [landingImg, landingMsg, joinButton]) //Devolvemos la función renderPage, incluyendo todos los elementos a renderizar//
 }
 
@@ -35,11 +34,10 @@ export const renderRegisterPage = () => { //Exportamos y creamos renderRegisterP
     const toLandingButton = createImgButton('img', 'imgButton', () => { navigateToLanding(registerContainer) }) //Declaramos toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createImgButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     const registerMsg = createTextContainer('h4', 'Have you an account?', 'registerMsg')
 
-    loadFonts() //Ejecutamos las fuentes//
     return renderPage(registerContainer, [toLandingButton, registerTitle, registerForm, registerMsg, toLoginButton]) //Devolvemos la función renderPage, incluyendo todos los elementos a renderizar//
 }
 
-export const renderLoginpage = () => { //Exportamos y creamos renderLoginPage. La función permite renderizar la loginPage, es decir, la página de login//
+export const renderLoginPage = () => { //Exportamos y creamos renderLoginPage. La función permite renderizar la loginPage, es decir, la página de login//
     const loginContainer = createContainer('loginForm'); //Declaramos loginContainer (contenedor de la página de login), y le asignamos el valor de la funcion createContainer. Entre paréntesis, agregaremos los estilos (style) que queramos que tenga//
     const loginTitle = createTextContainer('h1', 'LOGIN', 'title'); //Declaramos loginTitle (título de la página de login), y le asignamos el valor de la función createTextContainer. Entre paréntesis, agregaremos el tag (que será un encabezado), el texto y los estilos//
     const objectEmail = { label: 'Email', inputType: 'email', inputPlaceholder: 'my@email.com', inputId: 'email', isRequired: true } //Declaramos objectEmail, que contendrá los campos correspondientes al input de email//
@@ -50,7 +48,6 @@ export const renderLoginpage = () => { //Exportamos y creamos renderLoginPage. L
     const toLandingButton = createImgButton('img', 'imgButton', () => { navigateToLanding(loginContainer) }) //Declaramos toLandingButton (que será el botón acceder a la página de landing), y le asignamos el valor de la función createImgButton. Entre paréntesis, agregamos el texto, los estilos, y la pasamos la función de la página a la que queremos ir, en base a la página en la que nos encontramos//
     const loginMsg = createTextContainer('h4', 'You don`t have an account?', 'loginMsg')
 
-    loadFonts() //Ejecutamos las fuentes//
     return renderPage(loginContainer, [toLandingButton, loginTitle, loginForm, loginMsg, toRegisterButton]) //Devolvemos la función renderPage, incluyendo todos los elementos a renderizar//
 }
 
@@ -58,7 +55,6 @@ export const renderHomePage = () => { //Exportamos y creamos renderHomePage. La 
     const homePage = createHomePage() //Declaramos homePage, que será la propia página de home, y se ejecutará mediante la función createHomePage//
     body.appendChild(homePage) //Añadimos homePage al body//
 
-    loadFonts() //Ejecutamos las fuentes//
     return homePage //Devolvemos homePage//
 }
 //**********************************************************************************************************************************************************************************************//
