@@ -89,11 +89,15 @@ export const toggleLike = (messageId, userId) => { //Exportamos y declaramos too
     const messages = getMessages() //Declaramos messages, que serán los mensajes que nos traemos de localStorage gracias a la función getMessages//
     const message = messages.find(msg => msg.date === messageId) //Declaramos message, que contendrá el elemento encontrado de messages que reúna la condición de igualdad de fecha e id. Este reultado lo almacena en msg//
     if (message) { //El if nos indica que, si existe message//
-        const userIndex = message.likes.indexOf(userId) //Declaramos userIndex, que almacenará los likes de los mensajes, basado en la id del usuario//
-        if (userIndex === -1) { //El if nos indica que si userIndex es -1 (es decir, el mensaje no tiene like)//
+        const userLikeIndex = message.likes.indexOf(userId) //Declaramos userLikeIndex, que almacenará los likes de los mensajes, basado en la id del usuario//
+        const userDislikeIndex = message.dislikes.indexOf(userId) //Declaramos userDislikeIndex, que almacenará los dislikes de los mensajes, basado en la id del usuario//
+        if (userLikeIndex === -1) { //El if nos indica que si userLikeIndex es -1 (es decir, el mensaje no tiene like)//
             message.likes.push(userId) //Se añade el like al mensaje, almacenando la userId//
+            if (userDislikeIndex !== -1) { //El if nos indica que si userDislikeIndex es distinto a -1 (es decir, el mensaje tiene un dislike)//
+                message.dislikes.splice(userDislikeIndex, 1) //Se quita el dislike que previamente tenía//
+            }
         } else { //Si el if no se cumple, y por tanto, el mensaje ya tiene like dado//
-            message.likes.splice(userIndex, 1) //Se quita el like que previamente tenía//
+            message.likes.splice(userLikeIndex, 1) //Se quita el like que previamente tenía//
         }
         saveMessages(messages) //Guardamos los mensajes en localStorage gracias a la función saveMessages//
     }
@@ -103,11 +107,15 @@ export const toggleDislike = (messageId, userId) => { //Exportamos y declaramos 
     const messages = getMessages() //Declaramos messages, que serán los mensajes que nos traemos de localStorage gracias a la función getMessages//
     const message = messages.find(msg => msg.date === messageId) //Declaramos message, que contendrá el elemento encontrado de messages que reúna la condición de igualdad de fecha e id. Este reultado lo almacena en msg//
     if (message) { //El if nos indica que, si existe message//
-        const userIndex = message.dislikes.indexOf(userId) //Declaramos userIndex, que almacenará los dislikes de los mensajes, basado en la id del usuario//
-        if (userIndex === -1) { //El if nos indica que si userIndex es -1 (es decir, el mensaje no tiene dislike)//
+        const userDislikeIndex = message.dislikes.indexOf(userId) //Declaramos userDislikeIndex, que almacenará los dislikes de los mensajes, basado en la id del usuario//
+        const userLikeIndex = message.likes.indexOf(userId) //Declaramos userLikeIndex, que almacenará los likes de los mensajes, basado en al id del usuario//
+        if (userDislikeIndex === -1) { //El if nos indica que si userIndex es -1 (es decir, el mensaje no tiene dislike)//
             message.dislikes.push(userId) //Se añade el dislike al mensaje, almacenando la userId//
+            if (userLikeIndex !== -1) { //El if nos indica que si userLikeIndex es distinto a -1 (es decir, el mensaje un like)
+                message.likes.splice(userLikeIndex, 1) //Se quita el like que previamente tenía//
+            } 
         } else { //Si el if no se cumple, y por tanto, el mensaje ya tiene dislike dado//
-            message.dislikes.splice(userIndex, 1) //Se quita el dislike que previamente tenía//
+            message.dislikes.splice(userDislikeIndex, 1) //Se quita el dislike que previamente tenía//
         }
         saveMessages(messages) //Guardamos los mensajes en localStorage gracias a la función saveMessages//
     }
