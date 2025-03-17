@@ -104,6 +104,8 @@ body {
     font-family: 'Tektur';
     font-size: 1.1rem;
     border-radius: 20px;
+    width: fit-content;
+    white-space: nowrap;
 }
 
 .registerMsg,
