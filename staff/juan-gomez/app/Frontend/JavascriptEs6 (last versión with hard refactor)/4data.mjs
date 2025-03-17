@@ -229,7 +229,7 @@ export const viewMessages = () => {
         })
 
         messageDiv.appendChild(likeButton) //Añadimos likeButton a messageDiv//
-        messageDiv.appendChild(dislikeButton)
+        messageDiv.appendChild(dislikeButton) //Añadimos dislikeButton a messageDiv//
 
         postCommunityMsgContainer.appendChild(messageDiv) //Añadimos messageDiv a postComunityMsgContainer//
     })

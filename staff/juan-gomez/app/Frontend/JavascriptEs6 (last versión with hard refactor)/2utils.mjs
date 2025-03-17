@@ -82,7 +82,7 @@ export const createModal = (message, onCloseCallback) => { //Exportamos y creamo
     document.addEventListener('click', () => { //Indicamos con un addEventListener, que cuando se haga click en cualquier parte del documento//
         modal.remove() //El modal desaparece//
         if (onCloseCallback) { //Si existe onCloseCallback
-            onCloseCallback(); //Ejecutarlo, para permitir mostrar el modal antes de que se produzca otra acción//
+            onCloseCallback() //Ejecutarlo, para permitir mostrar el modal antes de que se produzca otra acción//
         }
     }, { once: true }) //Indicamos que lo haga una vez//
 
