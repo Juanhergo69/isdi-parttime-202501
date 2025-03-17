@@ -91,6 +91,21 @@ body {
     text-shadow: 8px 8px 16px rgb(255, 255, 255);
 }
 
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid red;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    font-family: 'Tektur';
+    font-size: 1.1rem;
+    border-radius: 20px;
+}
+
 .registerMsg,
 .loginMsg {
     /*Definimos estilos comunes para registerMsg y loginMsg (mensajes de la página register y login respectivamente)*/
@@ -654,6 +669,8 @@ body {
     background-color: white;
     margin-bottom: 10px;
     transition: transform 0.3s ease;
+    font-family: 'Zen Loop';
+    font-size: 1.5rem;
     /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 

@@ -2,7 +2,7 @@
 //AQUÍ SE IMPORTAN TODOS LOS ELEMENTOS NECESARIOS DE OTROS ARCHIVOS PARA EL CORRECTO FUNCIONAMIENTO DEL CÓDIGO ALOJADO EN ESTE ARCHIVO//
 //******************************************************************************************************************************************************************************************//
 import { body } from './1state.mjs' //Importamos el body y la vista actual//ç
-import { loadFonts } from './2utils.mjs'
+import { loadFonts, validateTitle, validateTextarea, createModal } from './2utils.mjs'
 import { storeMsg, viewMessages } from './4data.mjs' //Importamos el almacenamiento de mensajes y la visualización de mensajes//
 import { navigateToLogin } from './6navigation.mjs' //Importamos la navegación a login y la navegación a registro//
 //******************************************************************************************************************************************************************************************//
@@ -90,10 +90,10 @@ export const createForm = (inputsArray, submitButtonText, callback) => { //Expor
 
     formContainer.appendChild(submitButton) //Añadimos submitButton a formContainer//
 
-    formContainer.addEventListener('submit', function (event) { //Indicamos que, cuando se producza un submit (en este caso, que se ejecute submitButton) , se ejecutará una función sobre el evento//
+    formContainer.addEventListener('submit', (event) => { //Indicamos que, cuando se producza un submit (en este caso, que se ejecute submitButton) , se ejecutará una función sobre el evento//
         event.preventDefault() //Para evitar comportamientos extraños, como que se reinice el renderizado, ejecutamos preventDefault sobre ese evento//
         const form = event.target //Declaramos form, que será igual al objetivo del evento. En este caso, el objetivo del evento es el formulario creado. ej--> elemento form html al que le hemos dado submit//
-        const formData = {} //Declaramos formData, que se corresponderá a los datos del formulario. Se declara como un objeto vacío que se irá rellenando con la iteración del siguiente for//
+        const formData = {} //Declaramos formData, que se corresponderá a los datos del formulario. Se declara como un objeto vacío que se irá rellenando con la iteración del siguiente forEach//
 
         inputsArray.forEach(input => { //Hacemos una iteración con forEach sobre inputsArray, en base al input//
             const fieldName = input.inputId //Declaramos fieldName, y asignamos que es la id del input recorrido con forEach//
@@ -126,7 +126,7 @@ export const createHomePage = () => { //Exportamos y creamos createHombePage. La
     const usersJson = localStorage.users //Declaramos usersJson, que serán los usuarios que se registren, y que quedarán almacenados en la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia//
     const users = JSON.parse(usersJson) //Transformar el resultado en formato JSON a formato javascript// 
 
-    const userLogged = users ? users.find(function (_user) { return _user.id === loggedUserId }) : undefined //Declaramos userLogged, que permitirá comprobar, con ternarios, si el usuario se encuentra en la comprobación facilitada//
+    const userLogged = users ? users.find((_user) => { return _user.id === loggedUserId }) : undefined //Declaramos userLogged, que permitirá comprobar, con ternarios, si el usuario se encuentra en la comprobación facilitada//
 
     if (!userLogged) { //El if nos indica que, si no hay usuario logeado//
         console.error('User not found') //Se ejecuta un console.error informando de ellos//
@@ -174,7 +174,16 @@ export const createHomePage = () => { //Exportamos y creamos createHombePage. La
             event.preventDefault() //Previniendo los comportamientos predeterminados del formulario//
         })
         const title = document.getElementById('title').value //Declaramos title, que contendenrá, gracias a la función getElementById, la id del título del post//
-        const msg = document.getElementById('msg').value //Declaramos msg, que contendrá, gracias a la función getElementById, la id del mensaje que se escriba//
+        const msg = document.getElementById('msg').value //Declaramos msg, que contendrá, gracias a la función getElementById, la id del mensaje que se escriba//    
+        if (!validateTitle(title)) { //El if nos indica que si no se pasa la validación de título según el regex//
+            createModal('Title can not exced 5 words') //Se renderiza el modal con el texto//
+            return //Salimos de la función//
+        }
+
+        if (!validateTextarea(msg)) { //El if nos indica que si no se pasa la validación de textarea según el regex//
+            createModal('Message can not exced 100 words') //se renderiza el modal con el texto//
+            return //Salimos de la función//
+        }
         const date = new Date() //Declaramos date, que será la fecha exacta en la que el usuario mandó el mensaje a localStorage//
         storeMsg(loggedUserId, title, msg, date) //Ejecutamos la función de almacenamiento de mensaje en base al userMsg//
         document.getElementById('title').value = '' //Despues de ejecutar la funcion storeMsg, limpiamos el campo de titulo//

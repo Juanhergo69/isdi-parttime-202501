@@ -8,7 +8,8 @@ export const capitalizeFirstLetter = (str) => { //Exportamos y declaramos capita
 export const loadFonts = () => { //Exportamos y declaramos loadFonts, que nos servirá de base de datos para las fuentes que queramos utilizar en nuestra aplicación//
     const fonts = [ //Declaramos fonts, y a continuación, agregamos las url de las fuentes que queramos traernos (lo pongo en columna para facilitar la vista)//
         'https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap',
-        'https://fonts.googleapis.com/css2?family=Zen+Dots&family=Zen+Loop:ital@0;1&display=swap'
+        'https://fonts.googleapis.com/css2?family=Zen+Dots&family=Zen+Loop:ital@0;1&display=swap',
+        'https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap'
     ]
     fonts.forEach(font => { //con forEach, recorremos cada una de las url introducidas, y las creamos como link, dandole su categoría y estilo//
         const link = document.createElement('link') //Declaramos link, para crear el link de cada fuente recorrida con forEach//
@@ -50,6 +51,42 @@ export const renderPage = (container, elements) => { //Exportamos y declaramos r
     elements.forEach(element => container.appendChild(element)); // Añadir elementos al contenedor
     document.body.appendChild(container); // Añadir el contenedor al body
     return container
+}
+
+export const validateEmail = (email) => { //Exportamos y declaramos validateEmail, que servirá para validar con regex la dirección de email para registro//
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ //El regex indica que, la estructura del email debe ser la siguiente: texto+@+texto+.(es,com,net,etc..)//
+    return emailRegex.test(email) //Devolvemos el test realizado al campo email con regex//
+}
+
+export const validatePassword = (password) => { //Exportamos y declaramos validatePassword, que servirá para validar el formato válido de la contraseña ingresada para registro//
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/ //El regex indica que, la contraseña debe contener al menos 6 carácteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial//
+    return passwordRegex.test(password) //Devolvemos el test realizado al campo password con regex//
+}
+
+export const validateTitle = (title) => { //Exportamos y declaramos validateTitle, que servirá para validar el formato del título para el formulario de envío de mensajes//
+    const words = title.split(/\s+/).filter(word => word.length > 0) //El regex indica que, el título debe tener 5 o menos palabras//
+    return words.length <= 5 //Devolvemos la longitud del título, siempre y cuando sea igual o menor a 5 palabras//
+}
+
+export const validateTextarea = (textarea) => { //Exportamos y declaramos validateTextarea, que servíra para validar el formato del textarea para el formulario de envío de mensajes//
+    const words = textarea.split(/\s+/).filter(word => word.length > 0) //El regex indica que, el mensaje introducido en el textarea deber tener 100 o menos palabras//
+    return words.length <= 100 //Devolvemos la longitud del mensaje, siempre y cuando sea igual o menor a 100//
+}
+
+export const createModal = (message, onCloseCallback) => { //Exportamos y creamos createModal, que servirá para crear los modales según proceda. S indica como segundo parámetro onCloseCallback, ya que nos hará falta para aquellas situaciones en las que determinada acción renderice otra página//
+    const modal = document.createElement('div') //Declramos modal y lo creamos como div//
+    modal.className = 'modal' //Asginamos nombre de clase para dar estilos//
+    modal.textContent = message //Indicamos que el contenido será un mensaje//
+    document.body.appendChild(modal) //Añadimos el modal al body//
+
+    document.addEventListener('click', () => { //Indicamos con un addEventListener, que cuando se haga click en cualquier parte del documento//
+        modal.remove() //El modal desaparece//
+        if (onCloseCallback) { //Si existe onCloseCallback
+            onCloseCallback(); //Ejecutarlo, para permitir mostrar el modal antes de que se produzca otra acción//
+        }
+    }, { once: true }) //Indicamos que lo haga una vez//
+
+    return modal //Devolvemos el modal
 }
 //**********************************************************************************************************************************************************************************************//
 //**********************************************************************************************************************************************************************************************//

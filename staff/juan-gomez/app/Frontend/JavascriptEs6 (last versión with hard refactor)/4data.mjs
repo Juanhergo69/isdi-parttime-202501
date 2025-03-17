@@ -9,7 +9,10 @@ import {
     saveUsers,
     getMessages,
     saveMessages,
-    getLoggedUserId
+    getLoggedUserId,
+    validateEmail,
+    validatePassword,
+    createModal,
 } from './2utils.mjs' //Importamos las funciones utilitarias (lo pongo en vertical para facilitar la vista//
 import { navigateToRegister, navigateToHome } from './6navigation.mjs' //Importamos la navegación a home//
 //******************************************************************************************************************************************************************************************//
@@ -18,22 +21,27 @@ import { navigateToRegister, navigateToHome } from './6navigation.mjs' //Importa
 //******************************************************************************************************************************************************************************************//
 //EN ESTE ARCHIVO SE AGLUTINAN TODAS LAS FUNCIONES QUE INVOLUCRAN EL TRATAMIENTO DE DATOS, YA SEA CREACIÓN, ALMACENAMIENTO O COMPARACIÓN DE LOS MISMOS//
 //******************************************************************************************************************************************************************************************//
-export const registerUser = (registerData) => { //Export amos y creamos registerUser. La función permite crear el registro del usuario, en base a los datos de registro ej.-->registerData = {'email': '', 'password': '', 'confirmation-password': ''}//
-    if (!registerData['email'] && !registerData['password'] && !registerData['confirmation-password']) { //El if nos indica que si no hay email, contraseña o confirmación de contraseña//
-        alert('Register Data Incomplete') //Se ejecuta un alert diciendo que los datos de registro están incompletos//
+export const registerUser = (registerData) => { //Exportamos y declaramos registerUser. La función permite crear el registro del usuario, en base a los datos de registro ej.-->registerData = {'email': '', 'password': '', 'confirmation-password': ''}//
+    if (!validateEmail(registerData['email'])) { //El if nos indica que si no se pasa la validación de email según el regex//
+        createModal('Email format incorrect. Email must contain text + @ + text + valid termination (example .com, .es, .net, etc...)') //Se renderiza el modal con el texto//
+        return //Salimos dela función//
+    }
+
+    if (!validatePassword(registerData['password'])) { //El if nos indica que si no se pasa la validación de contraseña según el regex//
+        createModal('Password must contain 6 characters, 1 upper letter, 1 lower letter, 1 number and 1 special character') //Se renderiza el modal con el texto//
         return //Salimos de la función//
     }
 
     if (registerData['password'] !== registerData['confirmation-password']) { //El if nos indica que si la contraseña es diferente a la confirmación de contraseña//
-        alert('Password and confirmation password are not the same') //Se ejecuta un alert que nos indica que las contraseñas no son coincidentes//
-        return //Salimos de la función
+        createModal('Passwords are not the same. Please, try again') //Se renderiza el modal con el texto//
+        return //Salimos de la función//
     }
 
     const users = getUsers() //Declaramos usersJson, que serán los usuarios que se registren, y que quedarán almacenados en la base de datos de juguete (devtools/aplications/localstorage sobre nuestro index html) getItem permite "cojer" aquel elemento parametrizado dentro del paréntesis para usarlo de referencia//
     const doesUserExist = users.some(user => user.email === registerData['email']) //Declaramos doesUserExist, que nos permitirá comprobar la existencia (o no) del usuario que pretende registrarse. Some permite comprobar si alguno de los elementos cumple la condición indicada, en base a la función proporcionada//
 
     if (doesUserExist) { //El if nos indica que, si el usuario existe//
-        alert('This mail is alredy in use') //Se ejecuta un alert indicando que el usuario ya existe//
+        createModal('This mail is alredy in use') //Se renderiza el modal con el texto//
         return //Nos salimos de la función//
     }
 
@@ -54,12 +62,13 @@ export const loginUser = (loginData) => { //Exportamos y creamos loginUser. La f
     const userLoginCheckout = users.find(user => user['email'] === loginData['email']) //Declaramos variable userLoginCheckout, que permitirá comprobar si el usuario se encuentra en la información facilitada//
 
     if (!userLoginCheckout) { //El if nos indica que, si el usuario que loguea no existe//
-        alert('Create an account first') //Se ejecuta un alert indicando que creemos una cuenta primero//
-        navigateToRegister(currentView) //Navegamos a la página de registro desde la vista actual//
+        createModal('The email is not registered yet. Please, create an account first', () => { //Se renderiza el modal con el texto, y en este caso, le pasamos el callback para que se renderice antes de pasar a la página de registro//
+            navigateToRegister(currentView) //Navegamos a la página de registro desde la vista actual//
+        })
         return //Salimos de la función//
     }
     if (userLoginCheckout['password'] !== loginData['password']) { //El if nos indica que si no coincide la contraseña que se pone con la que tiene asignada el usuario existente que loguea//
-        alert('Wrong credentials') //Se ejecuta un alert que nos indica que los datos son incorrectos//
+        createModal('Incorrect password, Please, try again') //Se renderiza el modal con el texto//
         return //Salimos de la función//
     }
 
@@ -74,14 +83,14 @@ export const loginUser = (loginData) => { //Exportamos y creamos loginUser. La f
 
 export const storeMsg = (loggedUserUserId, title, msg, date) => { //Exportamos y creamos storeMSg. La función permitira almacenar un mensaje en localStorage, basado en el nombre del usuario, titulo, mensaje y fecha de creación//
     if (!title || !msg) { //El if nos indica que si no hay título o no hay mensaje//
-        alert('All fields are required. The message has not been stored') //Se ejecuta un alert indicando que el mensaje no se ha almacenado//
+        createModal('All fields are required. The message has not been stored') //Se renderiza el modal con el texto//
         return //Nos salimos de la función//
     } else { //Si no se cumple el if, es decir, hay titulo y mensaje//
         const messages = getMessages() //Declaramos messages, que serán los mensajes que nos traemos de localStorage gracias a la función getMessages//
         const objectUserMsg = { userId: loggedUserUserId, title: title, msg: msg, date: date.toLocaleString(), likes: [], dislikes: [] } //Declaramos objectUserMsg, que contendrá la id del usuario, titulo, mensaje y fecha(utilizamos toLocaleString para formatear la fecha y que sea legible. Añadimos likes y dislikes como array vacío para almacenamiento de likes/dislike por mensaje//
         messages.push(objectUserMsg) //Pusheamos objectUserMsg a messages//
         saveMessages(messages) //Guardamos los mensajes en localStorage gracias a la función saveMessages//
-        alert('Message store successfully') //Se ejecuta un alert indicando que el mensaje se ha almacenado//
+        createModal('Message store successfully') //Se renderiza el modal con el texto//
     }
 }
 
@@ -113,7 +122,7 @@ export const toggleDislike = (messageId, userId) => { //Exportamos y declaramos 
             message.dislikes.push(userId) //Se añade el dislike al mensaje, almacenando la userId//
             if (userLikeIndex !== -1) { //El if nos indica que si userLikeIndex es distinto a -1 (es decir, el mensaje un like)
                 message.likes.splice(userLikeIndex, 1) //Se quita el like que previamente tenía//
-            } 
+            }
         } else { //Si el if no se cumple, y por tanto, el mensaje ya tiene dislike dado//
             message.dislikes.splice(userDislikeIndex, 1) //Se quita el dislike que previamente tenía//
         }
@@ -177,7 +186,7 @@ export const viewMessages = () => {
         thumbsUpIcon.className = 'far fa-thumbs-up' //Asignamos nombre de clase para dar estilos. El nombre del estilo viene dado por FontAwesome (se indica far porque este será el estilo para el pulgar arriba vacío y con borde, es decir, cuando no se ha dado like)//
         likeButton.appendChild(thumbsUpIcon) //Añadimos thumbsUpIcon a likeButton//
 
-        const dislikesDiv =  document.createElement('div') //Declaramos dislikesDiv//
+        const dislikesDiv = document.createElement('div') //Declaramos dislikesDiv//
         dislikesDiv.className = 'message-dislikes' //Asignamos nombre de clase para dar estilos//
         const dislikesCount = message.dislikes.length //Declaramos dislikesCount, que será el contador de dislikes//
         const dislikedUsers = message.dislikes.map(dislikeUserId => { //Declaramos dislikedUsers, que con map nos permitirá asociar la id del dislike del usuario con el dislike//
@@ -220,8 +229,8 @@ export const viewMessages = () => {
         })
 
         messageDiv.appendChild(likeButton) //Añadimos likeButton a messageDiv//
-        messageDiv.appendChild(dislikeButton) 
-        
+        messageDiv.appendChild(dislikeButton)
+
         postCommunityMsgContainer.appendChild(messageDiv) //Añadimos messageDiv a postComunityMsgContainer//
     })
 }
