@@ -23,7 +23,7 @@ import { navigateToRegister, navigateToHome } from './6navigation.mjs' //Importa
 //******************************************************************************************************************************************************************************************//
 export const registerUser = (registerData) => { //Exportamos y declaramos registerUser. La función permite crear el registro del usuario, en base a los datos de registro ej.-->registerData = {'email': '', 'password': '', 'confirmation-password': ''}//
     if (!validateEmail(registerData['email'])) { //El if nos indica que si no se pasa la validación de email según el regex//
-        createModal('Email format incorrect. Email must contain text + @ + text + valid termination (example .com, .es, .net, etc...)') //Se renderiza el modal con el texto//
+        createModal('Email must contain text + @ + text + valid termination (example .com, .es, .net, etc...)') //Se renderiza el modal con el texto//
         return //Salimos dela función//
     }
 
