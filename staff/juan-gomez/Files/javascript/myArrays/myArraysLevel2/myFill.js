@@ -4,16 +4,16 @@
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS LAS VARIABLES A CONSIDERAR PARA REALIZAR LAS COMPROBACIONES//
-var names = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable con array original//
-var testNames = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable de test con los elementos del array original//
+let names = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable con array original//
+let testNames = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable de test con los elementos del array original//
 //**************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS UNA FUNCIÓN QUE REALIZARÍA, DE MANERA MANUAL, EL MÉTODO FILL//
-function myFill(array, fill, start = 0, end = array.length) { //La función realizaría un fill de forma manual, añadiendo un elemento entre una posición incio y una posición final, y sustituyendo los elementos que ocupen esas posiciones//
+const myFill = (array, fill, start = 0, end = array.length) => { //La función realizaría un fill de forma manual, añadiendo un elemento entre una posición incio y una posición final, y sustituyendo los elementos que ocupen esas posiciones//
     if (array.length === 0) return undefined //El if nos indica que si la longitud del array es 0 (es decir, no hay nada), nos devuelve indefinido (undifined)//
 
-    for (var i = start; i < end; i++) { //El for itera los elementos que se encuentran desde la posición start y la posición end//
+    for (let i = start; i < end; i++) { //El for itera los elementos que se encuentran desde la posición start y la posición end//
         array[i] = fill //Indicamos que el valor del indice del array iterado es fill (el elemento a insertar en esas posiciones)//
     }
     return array //Devolvemos el valor del array//
@@ -22,15 +22,15 @@ function myFill(array, fill, start = 0, end = array.length) { //La función real
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS LAS VARIABLES DE CONTROL PARA REALIZAR LAS COMPROBACIONES//
-var controlResult1 = testNames.fill('Copito', 0, 2) //Declaramos primera variable de control, donde realizamos el fill de testeo sobre el array de testeo. Devolvería el array con el fill incluido entre la posición 0 y la posición 2//
-var controlResult2 = myFill(names, 'Copito', 0, 2) //Declaramos la segunda variable de control, donde aplicaremos el concat original sobre el array original, a través de nuestra función manual. Devolvería el array con el fill incluido entre la posición 0 y la posición 2//
+const controlResult1 = testNames.fill('Copito', 0, 2) //Declaramos primera variable de control, donde realizamos el fill de testeo sobre el array de testeo. Devolvería el array con el fill incluido entre la posición 0 y la posición 2//
+const controlResult2 = myFill(names, 'Copito', 0, 2) //Declaramos la segunda variable de control, donde aplicaremos el concat original sobre el array original, a través de nuestra función manual. Devolvería el array con el fill incluido entre la posición 0 y la posición 2//
 //***************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
 //VALIÉNDONOS DE LA FUNCION CONSOLE.ASSERT, REALIZAMOS POR DOS VÍAS LAS COMPROBACIONES PERTINENTES, PARA AVERIGUAR SI AMBOS TEST SON SUPERADOS, O SI POR CONTRA, DEBEMOS MODIFICARLOS//
 console.assert(controlResult1 === controlResult2, 'ambos controles devuelven lo mismo. El código es correcto')
 
-for (var i = 0; i < controlResult1.length; i++) { //El for itera todos los elementos de la longitud de controlResult1//
+for (let i = 0; i < controlResult1.length; i++) { //El for itera todos los elementos de la longitud de controlResult1//
     console.assert(controlResult1[i] === controlResult2[i], `la posición ${i} es diferente en ambos arrays. ${testNames[i]} !== ${names[i]}`); //Con este assert comprobamos los índices de controlResult1 y de controlResult2. Si son iguales, no lanzará ningún mensaje, pero si hay diferencias en algúna posición, las arrojaría en el mensaje escrito en consola//
 }
 //***************************************************************************************************************************************************************//

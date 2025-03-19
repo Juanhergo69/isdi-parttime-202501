@@ -5,19 +5,19 @@
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS LAS VARIABLES A CONSIDERAR PARA REALIZAR LAS COMPROBACIONES//
-var names = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable con array original//
-var testNames = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable de test con los elementos del array original//
-var nameToUnshift = 'Loli' //Declaramos variable de aquello que queremos añadir sobre nuestro array//
+let names = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable con array original//
+let testNames = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable de test con los elementos del array original//
+let nameToUnshift = 'Loli' //Declaramos variable de aquello que queremos añadir sobre nuestro array//
 //**************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS UNA FUNCIÓN QUE REALIZARÍA, DE MANERA MANUAL, EL MÉTODO UNSHIFT// (Toda esta función está sacada de Google, necesito explicación para comprenderla)
-function myUnshift(array, ...elements) { //La función realizaría un unshift de forma manual, sobre un array//
-    var updateLength = array.length + elements.length //Declaramos variable de actualización de nueva longitud del array//
-    for (var i = updateLength - 1; i >= elements.length; i--) { //El for itera a la inversa los elementos del array, desplazándolos hacia la derecha, para dejar hueco a los elementos que se quieran añadir al principio del array//
+const myUnshift = (array, ...elements) => { //La función realizaría un unshift de forma manual, sobre un array//
+    const updateLength = array.length + elements.length //Declaramos variable de actualización de nueva longitud del array//
+    for (let i = updateLength - 1; i >= elements.length; i--) { //El for itera a la inversa los elementos del array, desplazándolos hacia la derecha, para dejar hueco a los elementos que se quieran añadir al principio del array//
         array[i] = array[i - elements.length] //Se indica que el indice del array es igual al indice del array, menos la longitud de los elementos a añadir en primera posición//
     }
-    for (var j = 0; j < elements.length; j++) { //El for itera los elementos de nueva incoporación, para posteriormente añadirlos al array//
+    for (let j = 0; j < elements.length; j++) { //El for itera los elementos de nueva incoporación, para posteriormente añadirlos al array//
         array[j] = elements[j]; //Se indica que el nuevo indice del array es igual al indice de los elementos de nueva icorporación//
     }
     return updateLength //Devolvemos la actualización de la longitud del array//
@@ -26,15 +26,15 @@ function myUnshift(array, ...elements) { //La función realizaría un unshift de
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS LAS VARIABLES DE CONTROL PARA REALIZAR LAS COMPROBACIONES//
-var controlResult1 = testNames.unshift(nameToUnshift) //Declaramos primera variable de control, donde realizamos el unshift sobre el array de testeo. Devolvería la longitud del array//
-var controlResult2 = myUnshift(names, nameToUnshift) //Declaramos la segunda variable de control, donde aplicaremos el unshift sobre el array original, a través de nuestra función manual. Devolvería la longitud del array//
+const controlResult1 = testNames.unshift(nameToUnshift) //Declaramos primera variable de control, donde realizamos el unshift sobre el array de testeo. Devolvería la longitud del array//
+const controlResult2 = myUnshift(names, nameToUnshift) //Declaramos la segunda variable de control, donde aplicaremos el unshift sobre el array original, a través de nuestra función manual. Devolvería la longitud del array//
 //***************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
 //VALIÉNDONOS DE LAS FUNCION CONSOLE.ASSERT, REALIZAMOS POR DOS VÍAS LAS COMPROBACIONES PERTINENTES, PARA AVERIGUAR SI AMBOS TEST SON SUPERADOS, O SI POR CONTRA, DEBEMOS MODIFICARLOS//
 console.assert(controlResult1 === controlResult2, 'ambos controles devuelven lo mismo. El código es correcto')
 
-for (var i = 0; i < controlResult1.length; i++) { //Con este método, el for itera todos los elementos de la longitud de controlResult1//
+for (let i = 0; i < controlResult1.length; i++) { //Con este método, el for itera todos los elementos de la longitud de controlResult1//
     console.assert(controlResult1[i] === controlResult2[i], `la posición ${i} es diferente en ambos arrays. ${testNames[i]} !== ${names[i]}`); //Con este assert comprobamos los índices de controlResult1 y de controlResult2. Si son iguales, no lanzará ningún mensaje, pero si hay diferencias en algúna posición, las arrojaría en el mensaje escrito en consola//
 }
 //***************************************************************************************************************************************************************//

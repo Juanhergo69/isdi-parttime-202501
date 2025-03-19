@@ -5,35 +5,34 @@
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS LAS VARIABLES A CONSIDERAR PARA REALIZAR LAS COMPROBACIONES//
-var names = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable con array original//
-var testNames = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable de test con los elementos del array original//
+let names = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable con array original//
+let testNames = ['Juan', 'Diana', 'Sonia', 'Marta'] //Declaramos variable de test con los elementos del array original//
 //**************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS UNA FUNCIÓN QUE REALIZARÍA, DE MANERA MANUAL, EL MÉTODO JOIN//
-function myReverse(array) { //La función realizaría un reverse de forma manual, en base a un array//
+const myReverse = (array) => { //La función realizaría un reverse de forma manual, en base a un array//
     if (array.length === 0) return undefined //El if nos indica que si la longitud del array es 0 (es decir, no hay nada), nos devuelve indefinido (undifined)//
 
-    var reverse = [] //Declaramos variable reverse, que almacenará cada elemento extraido en un array//
-    for (var i = array.length - 1; i >= 0; i--) { //El for itera todas las posiciones del array, desde la última posición a la primera//
+    let reverse = [] //Declaramos variable reverse, que almacenará cada elemento extraido en un array//
+    for (let i = array.length - 1; i >= 0; i--) { //El for itera todas las posiciones del array, desde la última posición a la primera//
         reverse.push(array[i]) //Se añaden los elementos iterados en el for a la variable reverse (alternativamente, puedo rescatar la función de myPush para hacerlo de forma manual)//
     }
     return reverse //Devolvemos reverse//
 }
-
 //**************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
 //DECLARAMOS LAS VARIABLES DE CONTROL PARA REALIZAR LAS COMPROBACIONES//
-var controlResult1 = testNames.reverse() //Declaramos primera variable de control, donde realizamos el reverse sobre el array de testeo. Devolvería un array con los elementos ordenados del revés//
-var controlResult2 = myReverse(names) //Declaramos la segunda variable de control, donde aplicaremos el reverse sobre el array original. Devolvería un array con los elementos ordenados del revés//
+const controlResult1 = testNames.reverse() //Declaramos primera variable de control, donde realizamos el reverse sobre el array de testeo. Devolvería un array con los elementos ordenados del revés//
+const controlResult2 = myReverse(names) //Declaramos la segunda variable de control, donde aplicaremos el reverse sobre el array original. Devolvería un array con los elementos ordenados del revés//
 //***************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
 //VALIÉNDONOS DE LA FUNCION CONSOLE.ASSERT, REALIZAMOS POR DOS VÍAS LAS COMPROBACIONES PERTINENTES, PARA AVERIGUAR SI AMBOS TEST SON SUPERADOS, O SI POR CONTRA, DEBEMOS MODIFICARLOS//
 console.assert(controlResult1 === controlResult2, 'ambos controles devuelven lo mismo. El código es correcto')
 
-for (var i = 0; i < controlResult1.length; i++) { //El for itera todos los elementos de la longitud de controlResult1//
+for (let i = 0; i < controlResult1.length; i++) { //El for itera todos los elementos de la longitud de controlResult1//
     console.assert(controlResult1[i] === controlResult2[i], `la posición ${i} es diferente en ambos arrays. ${testNames[i]} !== ${names[i]}`); //Con este assert comprobamos los índices de controlResult1 y de controlResult2. Si son iguales, no lanzará ningún mensaje, pero si hay diferencias en algúna posición, las arrojaría en el mensaje escrito en consola//
 }
 //***************************************************************************************************************************************************************//
