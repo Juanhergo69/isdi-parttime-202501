@@ -2,11 +2,11 @@
 //Se deben probar cada uno de los comandos y comprender que hace cada uno de ellos//
 //Al lado de cada línea de código describiré la función que ejecuta cada uno de ellos//
 
-
 let names = ['Juan', 'Diana', 'Sonia', 'Marta'] //Primer array sobre el que trabajo//
 let names2 = ['Juanjo', 'Francisco', 'David', 'Marco'] //Segundo array sobre el que trabajo//
 let names3 = ['Josefina', 'Manolo', ['Lorenzo', 'Catalina', ['Romeo', 'Carlos']]] //Tercer array sobre el que trabajo//
 let numbers = [15, 30, 60, 120, 240] //Cuarto array sobre el que trabajo//
+let people = [{ name: 'Juan', age: 34 }, { name: 'Diana', age: 31 }, { name: 'Sonia', age: 11 }, { name: 'Marta', age: 2 }, { name: 'Matusalen', age: 10000000000 }] //Quinto array sobre el que trabajo//
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 //Level 1 COMPLETED//
@@ -67,7 +67,7 @@ console.log(names2)
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-//Level 3 cOMPLETED//
+//Level 3 COMPLETED//
 const forEach = names.forEach((name, index, array) => { //El metodo forEach permite iterar todos los elementos de un array, y aplicar a cada uno de ellos un callback//
     console.log(`Name: ${name}, Index: ${index}, Array: ${array}`)
 })
@@ -96,7 +96,7 @@ console.log(filter)
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-//Level 4 (FLAT COMPLETED, MAP COMPLETE, REDUCE COMPLETE AND SORT NOT COMPLETED//
+//Level 4 COMPLETED//
 const flat = names3.flat(2) //El metodo flat permite desanidar un array con letios elementos anidados. Si hay letios array anidados y subanidados, y no se marca ningún ningún número entre paréntesis, sólo desanidará el primer anidado. El número introducido se corresponde a la profundidad (nivel de desanidado) al que se quiere llegar (díficil de explicar, fácil de entender viéndolo)//
 console.log(flat)
 console.log(names3)
@@ -107,7 +107,9 @@ console.log(map)
 const reduce = numbers.reduce((acumulator, actualValue) => acumulator + actualValue, 0) //El metodo reduce permite iterar en todos los elementos de un array, y reducir todos los elementos a un único valor a través de 2 parámetros: Un callback que recibe 4 argumentos: acumulador (valor acumulador que se construye con cada iteración), valor actual (valor de cada elemento iterado), indice (es opcional, y marca la posición de cada elemento iterado) y array (el array sobre el que se está haciendo la iteración). El segundo parámetro es el valor incial, que se corresponde al valor incial con el que empieza el acumulador. El útil para hacer operaciones matemáticas con números, o para concatenar, contar la longitud, o contar la frecuencia de caracteres en strings de texto.//
 console.log(reduce)
 
-sort
+const sort = people.sort((a, b) => a.age - b.age) //El metodo sort permite iterar en todos los elementos de un array, y ordenarlos alfabéticamente si no se comanda una función de comparación. Convierte todos los elementos en strings, independientemente que sean texto o números, por lo que, para poder hacer una ordenación lógica de números, debe si o si hacerse una función de comparación. Modifica el array original//
+console.log(sort)
+console.log(people)
 //****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 
 

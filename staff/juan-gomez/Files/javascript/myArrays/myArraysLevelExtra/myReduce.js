@@ -1,5 +1,5 @@
 //Método Reduce//
-////El metodo reduce permite iterar en todos los elementos de un array, y reducir todos los elementos a un único valor a través de 2 parámetros: Un callback que recibe 4 argumentos: acumulador (valor acumulador que se construye con cada iteración), valor actual (valor de cada elemento iterado), indice (es opcional, y marca la posición de cada elemento iterado) y array (el array sobre el que se está haciendo la iteración). El segundo parámetro es el valor incial, que se corresponde al valor incial con el que empieza el acumulador. El útil para hacer operaciones matemáticas con números, o para concatenar, contar la longitud, o contar la frecuencia de caracteres en strings de texto.//
+//El metodo reduce permite iterar en todos los elementos de un array, y reducir todos los elementos a un único valor a través de 2 parámetros: Un callback que recibe 4 argumentos: acumulador (valor acumulador que se construye con cada iteración), valor actual (valor de cada elemento iterado), indice (es opcional, y marca la posición de cada elemento iterado) y array (el array sobre el que se está haciendo la iteración). El segundo parámetro es el valor incial, que se corresponde al valor incial con el que empieza el acumulador. El útil para hacer operaciones matemáticas con números, o para concatenar, contar la longitud, o contar la frecuencia de caracteres en strings de texto.//
 
 //Procedimiento de comprobación TDD//
 
@@ -41,11 +41,15 @@ const controlResult2 = myReduce(numbers, 0) //Declaramos la segunda variable de 
 
 //***************************************************************************************************************************************************************//
 //VALIÉNDONOS DE LA FUNCION CONSOLE.ASSERT, REALIZAMOS POR DOS VÍAS LAS COMPROBACIONES PERTINENTES, PARA AVERIGUAR SI AMBOS TEST SON SUPERADOS, O SI POR CONTRA, DEBEMOS MODIFICARLOS//
-console.assert(controlResult1 === controlResult2, 'ambos controles devuelven lo mismo. El código es correcto')
-
-for (let i = 0; i < controlResult1.length; i++) { //El for itera todos los elementos de la longitud de controlResult1//
-    console.assert(controlResult1[i] === controlResult2[i], `la posición ${i} es diferente en ambos arrays. ${testNames[i]} !== ${names[i]}`); //Con este assert comprobamos los índices de controlResult1 y de controlResult2. Si son iguales, no lanzará ningún mensaje, pero si hay diferencias en algúna posición, las arrojaría en el mensaje escrito en consola//
+const comparingArrays = (array1, array2) => { //La función permite hacer una comprobación de dos array diferentes en base a su longitud//
+    if (array1.length !== array2.length) return false //El if nos indica que si las longitudes son diferentes, los arrays no son iguales, y por tanto, nos devuelve false//
+    for (var i = 0; i < array1.length; i++) { //El for itera un indice en base a la longitud del array1//
+        if (array1[i] !== array2[i]) return false; //El if nos indica que si hay algún indice diferente dentro de los indices de array1 y array2, los array no son igual, y por tanto, nos devuelve false//
+    }
+    return true //Devolvemos true si no se produce ninguno de los dos casos anteriores, y por tanto, encontramos que la longitud de los dos array es igual//
 }
+
+console.assert(comparingArrays(controlResult1, controlResult2), 'ambos controles devuelven lo mismo. El código es correcto') //La función permite hacer la comparación de la longitud de los dos arrays//
 //***************************************************************************************************************************************************************//
 
 //***************************************************************************************************************************************************************//
