@@ -1,125 +1,158 @@
+/* Reset básico para todos los elementos */
 * {
-  /*Se aplica un reset básico para que todos los elementos tengan un estilo consistente en todos los navegadores*/
   margin: 0;
+  /* Elimina márgenes por defecto */
   padding: 0;
+  /* Elimina padding por defecto */
   box-sizing: border-box;
+  /* Incluye padding y border en el cálculo del tamaño */
 }
 
+/* Contenedor principal de la aplicación */
 #app {
-  /*Definimos estilos generales de app*/
   display: flex;
   min-height: 100vh;
+  /* Ocupa al menos el 100% del viewport height */
   background: linear-gradient(500deg, white, rgb(0, 142, 182));
+  /* Fondo con gradiente */
 }
 
+/* Estilos para el contenedor de la página de inicio (Landing) */
 .landingContainer {
-  /*Definimos estilos comunes para landingContainer (contenedor de la página landing)*/
   display: flex;
   flex-direction: column;
+  /* Disposición vertical */
   justify-content: center;
+  /* Centrado vertical */
   align-items: center;
+  /* Centrado horizontal */
   gap: 30px;
+  /* Espacio entre elementos hijos */
   padding: 20px;
   background: white;
   border-radius: 20px;
+  /* Bordes redondeados */
   backdrop-filter: blur(10px);
+  /* Efecto de desenfoque */
   box-shadow: 0 8px 32px rgb(0, 142, 182);
+  /* Sombra */
   border: 1px solid rgb(0, 142, 182);
+  /* Borde */
   width: 100%;
   max-width: 45rem;
+  /* Ancho máximo */
   margin: auto;
+  /* Centrado automático */
   position: relative;
   top: 10%;
-  transform: translateY(-10%)
+  transform: translateY(-10%);
+  /* Ajuste fino de posición vertical */
 }
 
+/* Contenedor de la página principal */
 .homePageContainer {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
+/* Encabezado de la página principal */
 .homeHeaderContainer {
-  /*Definimos estilos comunes para homeContainer (contenedor de la página home)*/
   display: flex;
   justify-content: space-between;
+  /* Espacio entre elementos */
   align-items: center;
   width: 100%;
   height: 1%;
   padding: 40px;
   margin-top: 3rem;
+  /* Margen superior */
 }
 
+/* Imagen de la página de inicio */
 .landingImg {
-  /*Definimos estilos para landingImg (imagen de la página de landing)*/
   width: 100%;
   max-width: 200px;
+  /* Ancho máximo */
   border-radius: 20px;
+  /* Bordes redondeados */
   transition: transform 0.3s ease;
-  /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
+  /* Transición suave para hover */
 }
 
+/* Efecto hover para la imagen de landing */
 .landingImg:hover {
-  /*Definimos hover para cambio acercamiento de imagen*/
   transform: scale(1.05);
+  /* Escala ligeramente al pasar el mouse */
 }
 
+/* Imagen de la página principal */
 .homeImg {
-  /*Definimos estilos para landingImg (imagen de la página de landing)*/
   width: 100%;
   max-width: 100px;
   border-radius: 10px;
   transition: transform 0.3s ease;
-  /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
+/* Efecto hover para la imagen de home */
 .homeImg:hover {
-  /*Definimos hover para cambio acercamiento de imagen*/
   transform: scale(1.05);
 }
 
+/* Mensaje de la página de inicio */
 .landingMsg {
-  /*Definimos estilos para landingMsg (mensajes de la página landing)*/
   color: black;
   text-align: center;
   margin-bottom: 20px;
   font-family: 'Zen Dots';
+  /* Fuente personalizada */
   font-size: 1.5rem;
   text-shadow: 2px 2px 4px rgb(0, 142, 182);
+  /* Sombra de texto */
 }
 
+/* Mensaje de la página principal */
 .homeMsg {
-  /*Definimos estilos para homeMsg (mensaje de la página home)*/
   color: black;
   font-family: 'Zen Dots';
   font-size: 2rem;
   text-shadow: 8px 8px 16px rgb(255, 255, 255);
+  /* Sombra de texto blanca */
 }
 
+/* Estilos para el modal */
 .modal {
   position: fixed;
+  /* Posición fija en la pantalla */
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  /* Centrado perfecto */
   background-color: white;
   padding: 20px;
   border: 1px solid rgb(0, 142, 182);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Sombra suave */
   z-index: 1000;
+  /* Por encima de otros elementos */
   font-family: 'Tektur';
   font-size: 1.1rem;
   border-radius: 20px;
   width: fit-content;
+  /* Ancho según contenido */
   white-space: nowrap;
+  /* Evita saltos de línea */
 }
 
+/* Efecto hover para el modal */
 .modal:hover {
   cursor: pointer;
+  /* Cambia el cursor */
 }
 
+/* Mensajes de registro y login */
 .registerMsg,
 .loginMsg {
-  /*Definimos estilos comunes para registerMsg y loginMsg (mensajes de la página register y login respectivamente)*/
   font-size: 1.5rem;
   color: black;
   text-align: center;
@@ -127,64 +160,67 @@
   font-family: 'Zen Loop';
 }
 
+/* Estilos para botones principales */
 .buttonJoin,
 .buttonGoToRegister,
 .buttonGoToLogin {
-  /*Definimos estilos comunes para buttonJoin, buttonGoToRegister y buttonGoToLogin*/
   background-color: black;
   color: white;
   border: none;
   padding: 8px 16px;
   font-size: 1rem;
   border-radius: 20px;
+  /* Bordes muy redondeados */
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: auto;
   max-width: 200px;
   font-family: 'Zen Dots';
   transition: transform 0.3s ease;
-  /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
+/* Efecto hover para botones principales */
 .buttonJoin:hover,
 .buttonGoToRegister:hover,
 .buttonGoToLogin:hover {
-  /*Definimos hover para buttonJoin, buttonGoToRegister y buttonGoToLogin*/
   background-color: rgb(0, 142, 182);
+  /* Cambio de color */
   transform: scale(1.05)
+    /* Efecto de escala */
 }
 
+/* Botón de menú */
 .menuButton {
-  /*Definimos estilos para menuButton*/
   background-color: black;
   color: white;
   border: none;
   padding: 22px 26px;
+  /* Padding circular */
   font-size: 1.5rem;
   border-radius: 50%;
+  /* Forma circular */
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: auto;
   max-width: 150px;
   font-family: 'Zen Dots';
   transition: transform 0.3s ease;
-  /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
+/* Efecto hover para botón de menú */
 .menuButton:hover {
-  /*Definimos hover para menuButton*/
   background-color: rgb(255, 255, 255);
   color: rgb(0, 142, 182);
+  /* Cambio de color */
   transform: scale(1.05)
 }
 
+/* Contenedor del menú desplegable */
 .menuDropContainer {
   position: absolute;
   right: 1.1rem;
   top: 8rem;
-  /* Ajusta esta posición según necesites */
   display: flex;
-  /* Cambiado de 'none' a 'flex' */
   flex-direction: column;
   align-items: flex-end;
   gap: 5px;
@@ -196,14 +232,13 @@
   background-color: white;
   box-shadow: 0 4px 10px rgb(0, 142, 182);
   z-index: 100;
-  /* Asegura que aparezca sobre otros elementos */
+  /* Por encima de otros elementos */
 }
 
-
+/* Botones del menú desplegable */
 .profileButton,
 .settingsButton,
 .logoutButton {
-  /*Definimos estilos comunes para profileButton, settingsButton y logoutButton*/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -220,17 +255,17 @@
   max-width: 100px;
   font-family: 'Zen Dots';
   transition: transform 0.3s ease;
-  /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
+/* Efecto hover para botones del menú */
 .profileButton:hover,
 .settingsButton:hover,
 .logoutButton:hover {
-  /*Definimos hover común para profileButton, settingsButton y logoutButton*/
   background-color: rgb(0, 142, 182);
   transform: scale(1.05)
 }
 
+/* Contenedor de imagen en home */
 .homeImgContainer {
   display: flex;
   flex-direction: column;
@@ -238,6 +273,7 @@
   gap: 0.5rem;
 }
 
+/* Botón para alternar formulario de mensaje */
 .toggleSendMsgFormButton {
   height: 40px;
   width: 100px;
@@ -251,19 +287,20 @@
   transition: transform 0.3s ease
 }
 
+/* Efecto hover para botón de formulario */
 .toggleSendMsgFormButton:hover {
   background-color: rgb(0, 142, 182);
   transform: scale(1.05)
 }
 
+/* Formulario para enviar mensajes */
 .sendMsgForm {
-  /* Mantenemos los estilos actuales */
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 18rem;
-  left: 27rem;
+  margin-top: 12rem;
+  left: 15rem;
   font-size: 1rem;
   background-color: white;
   border: 1px solid rgb(0, 142, 182);
@@ -271,19 +308,20 @@
   box-shadow: 0 4px 10px rgb(0, 142, 182);
   gap: 0.8rem;
   padding: 20px;
-  width: 550px;
-  height: 525px;
-  /* Altura de referencia */
+  width: 700px;
+  height: auto !important;
+  min-height: 700px;
+  padding-bottom: 20px;
 }
 
+/* Placeholder del formulario de mensaje */
 .sendMsgForm ::placeholder {
-  /*Definimos estilos para placeholder de sendMsgForm*/
   font-family: 'Zen Loop';
   font-size: 22px;
 }
 
+/* Input de texto en formulario */
 .sendMsgForm input[type='text'] {
-  /*Definimos estilos para el input textTitle de senMsgForm*/
   outline: none;
   width: 100%;
   padding: 10px;
@@ -296,19 +334,17 @@
   box-sizing: border-box;
   font-family: 'Zen Loop';
   font-size: 1.5rem;
-  /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
+/* Efecto hover para input de texto */
 .sendMsgForm input[type='text']:hover {
-  /*Definimos hover para el input textTitle de sendMsgForm*/
   border-color: rgb(0, 142, 182);
   box-shadow: 0 0 10px rgb(0, 142, 182);
   transform: scale(1.02);
 }
 
-
+/* Textarea del formulario */
 .sendMsgForm textarea {
-  /*Definimos estilos para el textarea de userMsgForm*/
   outline: none;
   width: 100%;
   padding: 10px;
@@ -320,36 +356,32 @@
   text-align: left;
   vertical-align: top;
   resize: none;
-  /*Defino el reescalado en none, ya que no quiero que el formulario pueda ampliarse. Si hay más mensajes que se queden fuera del campo, se visualizarán a través de scroll vertical*/
+  /* Deshabilita redimensionamiento */
   transition: transform 0.3s ease;
-  height: 350px;
-  min-height: 290px;
-  /*Defino una altura mínima para hacerlo coincidir con la altura del formulario sendMsgForm*/
+  height: 300px;
+  min-height: 200px;
   width: 100%;
   overflow-y: auto;
+  /* Scroll vertical si es necesario */
   font-family: 'Zen Loop';
   font-size: 1.5rem;
 }
 
+/* Personalización de scrollbar para textarea */
 .sendMsgForm textarea::-webkit-scrollbar {
   width: 8px;
-  /* Ancho de la scrollbar */
   margin-right: 8px;
 }
 
 .sendMsgForm textarea::-webkit-scrollbar-thumb {
   background-color: black;
-  /* Color del thumb (barra deslizante) */
   border-radius: 5px;
-  /* Bordes redondeados */
   transition: transform 0.3s ease;
 }
 
 .sendMsgForm textarea::-webkit-scrollbar-track {
   background-color: white;
-  /* Color del track (fondo de la scrollbar) */
   border-radius: 5px;
-  /* Bordes redondeados */
   margin: 2px;
 }
 
@@ -359,15 +391,15 @@
   cursor: grab;
 }
 
+/* Efecto hover para textarea */
 .sendMsgForm textarea:hover {
-  /*Definimos hover para el input textPost de sendMsgForm*/
   border-color: rgb(0, 142, 182);
   box-shadow: 0 0 10px rgb(0, 142, 182);
   transform: scale(1.02);
 }
 
+/* Botón de submit en formulario */
 .sendMsgForm input[type='submit'] {
-  /*Definimos estilos para el input submit de sendMsgForm*/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -382,22 +414,239 @@
   width: auto;
   font-family: 'Zen Dots';
   transition: transform 0.3s ease;
-  /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
+/* Efecto hover para botón de submit */
 .sendMsgForm input[type='submit']:hover {
-  /*Definimos hover para el input submit de sendMsgForm*/
   background-color: rgb(0, 142, 182);
   transform: scale(1.05)
 }
 
+/* Sección optimizada para imágenes */
+.optimized-image-section {
+  width: 100%;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Controles de imagen */
+.image-controls-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Información compacta de imagen */
+.compact-image-info {
+  text-align: center;
+  margin-top: -5px;
+}
+
+/* Vista previa compacta de imagen */
+.compact-image-preview {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+}
+
+/* Contenedor para subida de imágenes */
+.image-upload-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Contenedor de subida de imágenes */
+.image-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+}
+
+/* Label para subida de imágenes */
+.image-upload-label {
+  background-color: black;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Zen Dots';
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Efecto hover para label de subida */
+.image-upload-label:hover {
+  background-color: rgb(0, 142, 182);
+  transform: scale(1.05);
+}
+
+/* Sección de carga de imágenes */
+.image-upload-section {
+  width: 100%;
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Controles de subida de imágenes */
+.image-upload-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Nombre de archivo para imágenes */
+.image-upload-filename {
+  font-family: 'Tektur';
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Contenedor de vista previa */
+.image-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* Wrapper de vista previa */
+.image-preview-wrapper {
+  width: 100%;
+  max-height: 150px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5;
+}
+
+/* Vista previa de imagen */
+.image-preview {
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+/* Miniaturas de imágenes */
+.image-thumbnail {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Contenedor de información de imagen */
+.image-info-container {
+  margin-top: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Nombre de archivo */
+.image-filename {
+  font-family: 'Tektur';
+  font-size: 0.85rem;
+  color: #666;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Vista previa ajustada */
+.constrained-preview {
+  width: 100%;
+  max-height: 120px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 6px;
+  margin-top: -10px;
+}
+
+/* Botón para eliminar imagen */
+.remove-image-button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Zen Dots';
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Efecto hover para botón de eliminar */
+.remove-image-button:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
+}
+
+/* Icono en botón de eliminar */
+.remove-image-button i {
+  font-size: 0.75rem;
+}
+
+/* Contenedor de imagen en mensajes */
+.message-image-container {
+  width: 100%;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Imagen en mensajes */
+.message-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+/* Efecto hover para imagen en mensajes */
+.message-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgb(0, 142, 182);
+}
+
+/* Formulario de mensajes de usuario */
 .userMsgForm {
-  /* Añadimos altura fija igual a sendMsgForm */
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 18rem;
+  margin-top: 12rem;
   left: 64rem;
   font-size: 1rem;
   background-color: white;
@@ -406,53 +655,47 @@
   box-shadow: 0 4px 10px rgb(0, 142, 182);
   gap: 1rem;
   padding: 20px;
-  width: 550px;
-  /* Mismo ancho que sendMsgForm */
-  height: 525px;
-  /* Misma altura que sendMsgForm */
+  width: 700px;
+  height: 700px;
 }
 
+/* Versión centrada del formulario */
 .userMsgForm.centered {
   left: 50%;
   transform: translateX(-50%);
-  /* Mantenemos la misma altura */
-  width: 550px;
-  height: 525px;
+  width: 700px;
+  height: 700px;
 }
 
+/* Contenedor de mensajes de usuario */
 .userMsgContainer {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
   background-color: white;
   overflow-y: auto;
+  /* Scroll vertical */
   overflow-x: hidden;
-  height: calc(525px - 60px);
-  /* Restamos el padding (20px*2) + gap (1rem) */
+  /* No scroll horizontal */
+  height: calc(600px - 1px);
   width: 100%;
-  /* Ocupa todo el ancho disponible */
   transition: transform 0.3s ease;
 }
 
-/* Estilos personalizados para la scrollbar */
+/* Personalización de scrollbar para contenedor de mensajes */
 .userMsgContainer::-webkit-scrollbar {
   width: 8px;
-  /* Ancho de la scrollbar */
 }
 
 .userMsgContainer::-webkit-scrollbar-thumb {
   background-color: black;
-  /* Color del thumb (barra deslizante) */
   border-radius: 5px;
-  /* Bordes redondeados */
   transition: transform 0.3s ease;
 }
 
 .userMsgContainer::-webkit-scrollbar-track {
   background-color: white;
-  /* Color del track (fondo de la scrollbar) */
   border-radius: 5px;
-  /* Bordes redondeados */
 }
 
 .userMsgContainer::-webkit-scrollbar-thumb:hover {
@@ -461,6 +704,7 @@
   cursor: grab;
 }
 
+/* Estilos para mensajes individuales */
 .message {
   margin-bottom: 10px;
   padding: 10px;
@@ -469,62 +713,62 @@
   background-color: white;
   transition: transform 0.3s ease;
   overflow-x: hidden;
-  /* Evita el scroll horizontal */
   box-sizing: border-box;
-  /* Asegura que el padding no afecte el tamaño */
   word-wrap: break-word;
-  /* Rompe palabras largas para evitar desbordamiento */
+  /* Rompe palabras largas */
   white-space: pre-wrap;
-  /* Mantiene los saltos de línea y ajusta el texto */
+  /* Mantiene saltos de línea */
 }
 
+/* Efecto hover para mensajes */
 .message:hover {
   border-color: rgb(0, 142, 182);
   box-shadow: 0 0 10px rgb(0, 142, 182);
   transform: scale(1.02);
 }
 
+/* Estilo para nombre de usuario en mensaje */
 .message-user {
   font-family: 'Zen Dots';
   font-weight: bold;
   font-size: 1.1rem;
-  /* Estilo para el usuario */
 }
 
+/* Estilo para título de mensaje */
 .message-title {
   font-weight: bold;
 }
 
+/* Estilos comunes para texto de mensaje */
 .message-title,
 .message-text {
   font-family: 'Zen Loop';
   font-size: 2rem;
 }
 
+/* Estilos para elementos de mensaje */
 .message-user,
 .message-title,
 .message-text,
 .message-date {
   margin-bottom: 5px;
-  /* Espacio entre cada elemento */
   word-wrap: break-word;
-  /* Rompe palabras largas para evitar desbordamiento */
 }
 
+/* Estilo para fecha de mensaje */
 .message-date {
   font-size: 0.9rem;
   font-family: 'Tektur';
   color: #666;
-  /* Estilo para la fecha */
 }
 
-/* Ajustes para los botones */
+/* Contenedor de acciones en mensajes */
 .message-actions {
   display: flex;
   gap: 16px;
 }
 
-/* Estilo para la lista de nombres */
+/* Estilos para lista de nombres de usuarios */
 .user-names-list {
   display: inline;
 }
@@ -533,6 +777,7 @@
   display: inline;
 }
 
+/* Separadores para lista de nombres */
 .user-name:not(:last-child)::after {
   content: ", ";
 }
@@ -541,7 +786,7 @@
   content: " and ";
 }
 
-/* Estilo para el contador */
+/* Estilo para contador de usuarios */
 .users-count {
   font-style: italic;
   color: #666;
@@ -549,7 +794,7 @@
   margin-left: 4px;
 }
 
-/* Estilos base del tooltip */
+/* Tooltip para mostrar usuarios */
 .users-tooltip {
   visibility: hidden;
   position: absolute;
@@ -574,7 +819,7 @@
   display: inline-block;
 }
 
-/* Triángulo indicador */
+/* Triángulo indicador para tooltip */
 .users-tooltip::after {
   content: "";
   position: absolute;
@@ -584,7 +829,7 @@
   border-style: solid;
 }
 
-/* Bordes laterales diferenciados */
+/* Color para tooltip de likes */
 .likes-tooltip {
   border-left: 4px solid green;
 }
@@ -593,6 +838,7 @@
   border-color: green transparent transparent transparent;
 }
 
+/* Color para tooltip de dislikes */
 .dislikes-tooltip {
   border-left: 4px solid red;
 }
@@ -601,21 +847,21 @@
   border-color: red transparent transparent transparent;
 }
 
-/* Contenedores principales */
+/* Contenedores para botones de like/dislike */
 .like-container,
 .dislike-container {
   position: relative;
   display: inline-block;
 }
 
-/* Mostrar tooltip al hacer hover */
+/* Muestra tooltip al hacer hover */
 .like-container:hover .likes-tooltip,
 .dislike-container:hover .dislikes-tooltip {
   visibility: visible;
   opacity: 1;
 }
 
-/* Estilos para los botones */
+/* Estilos para botones de like/dislike */
 .like-button,
 .dislike-button {
   position: relative;
@@ -629,64 +875,59 @@
   gap: 4px;
 }
 
-/* Estilos para el corazón vacío */
+/* Estilo para icono de like vacío */
 .far.fa-thumbs-up {
   color: black;
-  /* Color del corazón vacío */
 }
 
-/* Estilos para el corazón relleno */
+/* Estilo para icono de like lleno */
 .fas.fa-thumbs-up {
   color: green;
-  /* Color azul característico */
 }
 
-/* Efecto hover */
+/* Efecto hover para botón de like */
 .like-button:hover {
   transform: scale(1.1);
-  /* Escalar ligeramente al pasar el cursor */
 }
 
+/* Contador de likes */
 .message-likes {
   font-size: 0.9rem;
   color: #666;
   margin-top: 10px;
-  /* Separación del contenido superior */
 }
 
-/* Estilos para el corazón vacío */
+/* Estilo para icono de dislike vacío */
 .far.fa-thumbs-down {
   color: black;
-  /* Color del corazón vacío */
 }
 
-/* Estilos para el corazón relleno */
+/* Estilo para icono de dislike lleno */
 .fas.fa-thumbs-down {
   color: red;
-  /* Color azul característico */
 }
 
-/* Efecto hover */
+/* Efecto hover para botón de dislike */
 .dislike-button:hover {
   transform: scale(1.1);
-  /* Escalar ligeramente al pasar el cursor */
 }
 
+/* Contador de dislikes */
 .message-dislikes {
   font-size: 0.9rem;
   color: #666;
   margin-top: 10px;
-  /* Separación del contenido superior */
 }
 
+/* Botón con imagen */
 .imgButton {
   background: transparent;
   border: none;
   padding: 0;
   display: inline-block;
-  /* Mantiene el contenedor ajustado a la imagen */
 }
 
+/* Estilo para imagen en botón */
 .imgButton img {
   width: 100px;
   height: auto;
@@ -694,19 +935,18 @@
   cursor: pointer;
   transition: transform 0.3s ease;
   margin-bottom: 20px;
-  /* Espaciado inferior */
 }
 
+/* Efecto hover para imagen en botón */
 .imgButton img:hover {
   transform: scale(1.05);
 }
 
+/* Estilos generales para formularios */
 .form {
-  /* Estilos generales del formulario */
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  /* ¡Importante! Hace que los hijos ocupen todo el ancho */
   border: 1px solid rgb(0, 142, 182);
   border-radius: 20px;
   background-color: white;
@@ -720,20 +960,18 @@
   gap: 0.5rem;
 }
 
+/* Estilos para labels en formularios */
 .form label {
   display: block;
   text-align: center;
   margin-bottom: 8px;
-  /* Ajusta este valor según necesites */
   font-family: 'Zen Dots';
-  /* Mantén consistencia con tu diseño */
   display: block;
-  /* Asegura que el margin se aplique correctamente */
 }
 
+/* Formularios de registro y login */
 .registerForm,
 .loginForm {
-  /*Definimos estilos comunes para registerForm y loginForm*/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -752,16 +990,16 @@
   transform: translateY(-2%);
 }
 
+/* Placeholder para formularios */
 .registerForm ::placeholder,
 .loginForm ::placeholder {
-  /*Definimos estilos comunes para los placeholder de registerForm y loginForm*/
   font-family: 'Zen Loop';
   font-size: 22px;
 }
 
+/* Inputs de email y password */
 .form input[type='email'],
 .form input[type='password'] {
-  /*Definimos estilos comunes a input.type.email e input.type.password (casilla de poner email y casillas de contraseña y confirmación de contraseña)*/
   outline: none;
   width: 100%;
   padding: 10px;
@@ -773,48 +1011,39 @@
   transition: transform 0.3s ease;
   font-family: 'Zen Loop';
   font-size: 1.5rem;
-  /*Parametrizamos tiempo de transformación al realizar el hover (declarado a continuación)*/
 }
 
+/* Efecto hover para inputs */
 .form input[type='email']:hover,
 .form input[type='password']:hover {
-  /*Definimos hover común para input.type.email e input.type.password ((casilla de poner email y casillas de contraseña y confirmación de contraseña)*/
   border-color: rgb(0, 142, 182);
   box-shadow: 0 0 10px rgb(0, 142, 182);
   transform: scale(1.02);
 }
 
-
+/* Botón de submit en formularios */
 .form input[type="submit"] {
   background-color: black;
   color: white;
   border: none;
   padding: 10px 20px;
-  /* Padding interno (ajustable) */
   font-size: 1rem;
   border-radius: 20px;
   cursor: pointer;
   font-family: 'Zen Dots';
-
-  /* Ajuste de tamaño y centrado */
   display: inline-block;
-  /* Ancho ajustado al texto */
   width: auto;
-  /* Ancho automático (no ocupa el 100%) */
   margin: 0 auto;
-  /* Centrado horizontal */
-
-  /* Transiciones */
-  transition:
-    background-color 0.3s ease,
-    transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+/* Efecto hover para botón de submit */
 .form input[type="submit"]:hover {
   background-color: rgb(0, 142, 182);
   transform: scale(1.05);
 }
 
+/* Contenedor de checkbox */
 .checkbox-container {
   display: flex;
   flex-direction: column;
@@ -822,14 +1051,14 @@
   margin: 10px 0;
 }
 
-/* Estilo para la label del checkbox */
+/* Label para checkbox */
 .checkbox-label {
   font-family: 'Zen Dots';
   margin-bottom: 8px;
   cursor: pointer;
 }
 
-/* Estilo personalizado del checkbox */
+/* Estilo personalizado para checkbox */
 .checkbox {
   appearance: none;
   -webkit-appearance: none;
@@ -845,11 +1074,12 @@
   align-items: center;
 }
 
+/* Checkbox marcado */
 .checkbox:checked {
   background-color: rgb(0, 142, 182);
 }
 
-/* Checkmark personalizado */
+/* Checkmark en checkbox */
 .checkbox:checked::after {
   content: "✓";
   color: white;
@@ -857,7 +1087,7 @@
   position: absolute;
 }
 
-/* Añade esto al final de index.css */
+/* Contenedor de página de perfil */
 .profilePageContainer {
   display: flex;
   flex-direction: column;
@@ -865,6 +1095,7 @@
   width: 100%;
 }
 
+/* Contenedor de formulario de perfil */
 .profileFormContainer {
   display: flex;
   justify-content: center;
@@ -872,11 +1103,13 @@
   margin-top: 6rem;
 }
 
+/* Grupo de campos en formulario */
 .form-group {
   margin-bottom: 1.5rem;
   width: 100%;
 }
 
+/* Label en grupo de campos */
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
@@ -884,6 +1117,7 @@
   font-size: 1rem;
 }
 
+/* Inputs en grupo de campos */
 .form-group input {
   width: 100%;
   padding: 0.8rem;
@@ -894,16 +1128,19 @@
   transition: all 0.3s ease;
 }
 
+/* Efecto hover para inputs */
 .form-group input:hover {
   border-color: rgb(0, 142, 182);
   box-shadow: 0 0 10px rgb(0, 142, 182);
   transform: scale(1.02);
 }
 
+/* Input con error */
 .form-group input.error {
   border-color: red;
 }
 
+/* Mensaje de error */
 .error-message {
   color: red;
   font-family: 'Tektur';
@@ -912,6 +1149,7 @@
   display: block;
 }
 
+/* Acciones en formulario */
 .form-actions {
   display: flex;
   justify-content: space-between;
@@ -919,11 +1157,12 @@
   margin-top: 2rem;
 }
 
+/* Botones en acciones de formulario */
 .form-actions button {
   flex: 1;
 }
 
-/*Definimos estilos responsivos para que la página y sus elementos mantengan su distribución independientemente del tamaño de la pantalla*/
+/* Media queries para diseño responsivo */
 @media (max-width: 768px) {
   .title {
     font-size: 1.5rem;
@@ -968,9 +1207,9 @@
     left: 16.2rem;
   }
 
-  .divElementPost {
+  .userMsgForm.centered {
     left: 5rem;
-    width: 13rem;
-    left: 16rem;
+    width: 25rem;
+    left: 16.2rem;
   }
 }

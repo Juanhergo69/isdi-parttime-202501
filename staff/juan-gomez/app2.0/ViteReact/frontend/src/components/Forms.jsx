@@ -1,47 +1,77 @@
-import React from "react";
+//Importa la librería React para poder usar componentes//
+import React from 'react'
 
-const Form = ({ inputsArray, submitButtonText, onSubmit }) => { //Declaramos Form, que será nuestra función de creación de formularios//
-    const handleSubmit = (event) => { //handleSubmit permite manejar el submit del 
-        event.preventDefault();
-        const formData = {};
+/*Componente Form que recibe props desestructuradas:
+ - inputsArray: array de objetos con configuración de inputs
+ - submitButtonText: texto del botón de submit
+ - onSubmit: función que se ejecuta al enviar el formulario*/
+const Form = ({ inputsArray, submitButtonText, onSubmit }) => {
+    //Función que maneja el evento submit del formulario//
+    const handleSubmit = (event) => {
+        event.preventDefault() //Previene el comportamiento por defecto del formulario//
+
+        //Objeto donde se almacenarán los datos del formulario//
+        const formData = {}
+
+        //Itera sobre cada input definido en inputsArray//
         inputsArray.forEach(input => {
+            /*Guarda el valor del input en formData:
+             - Para checkboxes guarda el estado checked (true/false)
+             - Para otros tipos guarda el valor del input*/
             formData[input.inputId] = input.inputType === 'checkbox'
                 ? event.target[input.inputId].checked
                 : event.target[input.inputId].value;
-        });
-        onSubmit(formData);
-    };
+        })
 
+        //Ejecuta la función onSubmit pasándole los datos recolectados//
+        onSubmit(formData);
+    }
+
+    //Retorna el JSX del componente//
     return (
+        /*Formulario con:
+         - Clase CSS 'form'
+         - Maneja el evento submit con handleSubmit*/
         <form className='form' onSubmit={handleSubmit}>
+            {/* Mapea inputsArray para renderizar cada campo */}
             {inputsArray.map(input => (
+                /*Contenedor div para cada input:
+                - Key único basado en inputId
+                - Clase CSS especial para checkboxes*/
                 <div key={input.inputId} className={input.inputType === 'checkbox' ? 'checkbox-container' : ''}>
+                    {/* Label del input */}
                     <label
-                        htmlFor={input.inputId}
-                        className={input.inputType === 'checkbox' ? 'checkbox-label' : ''}
+                        htmlFor={input.inputId} //Asociación label-input//
+                        className={input.inputType === 'checkbox' ? 'checkbox-label' : ''} //Clase CSS para checkboxes//
                     >
-                        {input.label}
+                        {input.label} {/* Texto del label */}
                     </label>
+
+                    {/* Render condicional: textarea o input normal */}
                     {input.inputType === 'textarea' ? (
+                        //Textarea con://
                         <textarea
-                            id={input.inputId}
-                            placeholder={input.inputPlaceholder}
-                            required={input.isRequired}
+                            id={input.inputId} //ID que coincide con el htmlFor del label//
+                            placeholder={input.inputPlaceholder} //Texto placeholder//
+                            required={input.isRequired} //Si es obligatorio//
                         />
                     ) : (
+                        //Input normal con://
                         <input
-                            type={input.inputType}
-                            id={input.inputId}
-                            placeholder={input.inputPlaceholder}
-                            required={input.isRequired}
-                            className={input.inputType === 'checkbox' ? 'checkbox' : ''}
+                            type={input.inputType} //Tipo de input (text, checkbox, etc)//
+                            id={input.inputId} //ID que coincide con el htmlFor del label//
+                            placeholder={input.inputPlaceholder} //Texto placeholder//
+                            required={input.isRequired} //Si es obligatorio//
+                            className={input.inputType === 'checkbox' ? 'checkbox' : ''} //Clase CSS para checkboxes//
                         />
                     )}
                 </div>
             ))}
+            {/* Input de tipo submit con el texto personalizado */}
             <input type="submit" value={submitButtonText} />
         </form>
-    );
-};
+    )
+}
 
+//Exporta el componente Form como exportación por defecto//
 export default Form
