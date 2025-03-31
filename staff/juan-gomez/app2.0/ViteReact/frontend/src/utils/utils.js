@@ -69,10 +69,10 @@ export const createModal = (message, onCloseCallback) => {
     const modal = document.createElement('div');
     modal.className = 'modal' //Clase CSS para estilos//
 
-    //HTML interno del modal//
+    //HTML interno del modal. Muestra el mensaje recibido//
     modal.innerHTML = `
         <div class="modal-content">
-            <p>${message}</p>  // Muestra el mensaje recibido
+            <p>${message}</p> 
         </div>
     `
 

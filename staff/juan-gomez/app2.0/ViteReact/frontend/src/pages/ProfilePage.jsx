@@ -1,52 +1,74 @@
-//Importa la librería React para crear componentes//
+//Importa la biblioteca React para crear componentes//
 import React from 'react'
-//Importa funciones utilitarias desde utils.js//
+
+//Importa funciones utilitarias específicas desde el archivo utils//
 import {
-    getUsers,         //Obtiene lista de usuarios registrados//
-    saveUsers,        //Guarda cambios en los usuarios//
-    validateEmail,    //Valida formato de email//
-    validatePassword, //Valida fortaleza de contraseña//
-    createModal,      //Muestra ventanas modales//
-    getLoggedUserId   //Obtiene ID del usuario logueado//
+    getUsers,          //Obtiene lista de usuarios//
+    saveUsers,         //Guarda usuarios en almacenamiento//
+    validateEmail,     //Valida formato de email//
+    validatePassword,  //Valida fortaleza de contraseña//
+    createModal,       //Crea modales de notificación//
+    getLoggedUserId    //Obtiene ID del usuario logueado//
 } from '../utils/utils'
+
 //Importa estilos CSS//
 import '../index.css'
 
-//Componente de página de perfil que recibe prop de navegación//
+//Define el componente funcional ProfilePage que recibe props de navegación//
 const ProfilePage = ({ navigation }) => {
-    //Obtiene lista de usuarios y datos del usuario actual//
+    //Obtiene la lista completa de usuarios//
     const users = getUsers()
+
+    //Obtiene el ID del usuario actualmente logueado//
     const loggedUserId = getLoggedUserId()
+
+    //Busca y obtiene los datos del usuario logueado//
     const loggedUser = users.find(user => user.id === loggedUserId)
 
-    //Estado para los datos del formulario//
+    //Estado para manejar los datos del formulario con valores iniciales//
     const [formData, setFormData] = React.useState({
-        userName: (loggedUser && loggedUser.userName) || '', //Nombre de usuario actual//
-        email: (loggedUser && loggedUser.email) || '', //Email actual//
-        password: '', //Nueva contraseña (vacío por defecto)//
-        confirmPassword: '' //Confirmación de contraseña//
+        userName: (loggedUser && loggedUser.userName) || '',       //Nombre de usuario o cadena vacía//
+        email: (loggedUser && loggedUser.email) || '',             //Email o cadena vacía//
+        password: '',                                              //Contraseña vacía por defecto//
+        confirmPassword: ''                                        //Confirmación vacía por defecto//
     })
 
-    //Estado para almacenar errores de validación//
+    //Estado para manejar errores de validación//
     const [errors, setErrors] = React.useState({})
 
-    //Redirige al login si no hay usuario logueado//
+    //Estado para la imagen seleccionada (nueva)//
+    const [selectedImage, setSelectedImage] = React.useState(null)
+
+    //Estado para la vista previa de imagen (avatar actual o nuevo)//
+    const [imagePreview, setImagePreview] = React.useState(loggedUser?.avatar || null)
+
+    //Estado para controlar redirección explícita//
+    const [shouldRedirect, setShouldRedirect] = React.useState(false)
+
+    //Efecto para manejar redirección//
+    React.useEffect(() => {
+        if (shouldRedirect) {
+            navigation.navigateToHome() //Redirige a Home solo cuando shouldRedirect es true//
+        }
+    }, [shouldRedirect, navigation])
+
+    //Redirige a login si no hay usuario logueado//
     if (!loggedUserId) {
-        navigation.navigateToLogin()
-        return null
+        navigation.navigateToLogin() //Navega a la página de login//
+        return null //No renderiza nada//
     }
 
-    //Maneja cambios en los campos del formulario//
+    //Maneja cambios en los inputs del formulario//
     const handleChange = (e) => {
         const { name, value } = e.target //Extrae nombre y valor del input//
 
-        //Actualiza el estado del formulario manteniendo otros valores//
+        //Actualiza el estado del formulario manteniendo los valores anteriores//
         setFormData(prev => ({
             ...prev,
             [name]: value
         }))
 
-        //Limpia el error de este campo si existía//
+        //Limpia el error correspondiente si existe//
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -55,9 +77,35 @@ const ProfilePage = ({ navigation }) => {
         }
     }
 
+    //Maneja cambio de imagen de avatar//
+    const handleImageChange = (e) => {
+        const file = e.target.files[0] //Obtiene el archivo seleccionado//
+        if (file) {
+            setSelectedImage(file) //Guarda el archivo en el estado//
+
+            //Crea un FileReader para leer la imagen//
+            const reader = new FileReader()
+
+            //Cuando se complete la lectura//
+            reader.onload = () => {
+                setImagePreview(reader.result) //Guarda la vista previa como URL de datos//
+            }
+
+            //Lee el archivo como URL de datos//
+            reader.readAsDataURL(file)
+        }
+    }
+
+    //Elimina la imagen seleccionada//
+    const removeImage = () => {
+        setSelectedImage(null) //Limpia la imagen seleccionada//
+        setImagePreview(null) //Limpia la vista previa//
+        document.getElementById('avatar-upload').value = '' //Resetea el input de archivo//
+    }
+
     //Valida todos los campos del formulario//
     const validateForm = () => {
-        const newErrors = {}
+        const newErrors = {} //Objeto para acumular errores//
 
         //Validación de nombre de usuario//
         if (!formData.userName.trim()) {
@@ -71,13 +119,13 @@ const ProfilePage = ({ navigation }) => {
             newErrors.email = 'Invalid email format'
         }
 
-        //Validación de contraseñas (solo si se ingresaron)//
+        //Validaciones de contraseña (solo si se está cambiando)//
         if (formData.password || formData.confirmPassword) {
             //Longitud mínima//
             if (formData.password.length < 6) {
                 newErrors.password = 'Password must be at least 6 characters'
             }
-            //Requisitos de complejidad//
+            //Complejidad (mayúscula, minúscula, número, caracter especial)//
             else if (!validatePassword(formData.password)) {
                 newErrors.password = 'Password must contain at least one uppercase, one lowercase, one number and one special character'
             }
@@ -94,16 +142,17 @@ const ProfilePage = ({ navigation }) => {
 
     //Maneja el envío del formulario//
     const handleSubmit = (e) => {
-        e.preventDefault() //Evita recarga de página//
+        e.preventDefault() //Previene el comportamiento por defecto del formulario//
 
-        if (!validateForm()) return //Valida y detiene si hay errores//
+        //Valida el formulario y sale si hay errores//
+        if (!validateForm()) return
 
-        //Actualiza la lista de usuarios//
+        //Prepara los datos actualizados del usuario sin la imagen (se manejará por separado)//
         const updatedUsers = users.map(user => {
-            if (user.id === loggedUserId) { //Solo modifica el usuario actual//
+            if (user.id === loggedUserId) {
                 const updatedUser = {
-                    ...user, //Copia todos los datos existentes//
-                    userName: formData.userName, //Actualiza nombre//
+                    ...user,                     //Copia todas las propiedades existentes//
+                    userName: formData.userName, //Actualiza nombre de usuario//
                     email: formData.email        //Actualiza email//
                 }
 
@@ -114,15 +163,60 @@ const ProfilePage = ({ navigation }) => {
 
                 return updatedUser
             }
-            return user //Retorna otros usuarios sin cambios//
+            return user //Devuelve usuarios no modificados tal cual//
         })
 
-        saveUsers(updatedUsers) //Guarda los cambios//
+        //Función para guardar el perfil y manejar la redirección//
+        const saveProfile = (usersToSave) => {
+            saveUsers(usersToSave) //Guarda los usuarios actualizados//
+            createModal('Profile updated successfully!', () => {
+                setShouldRedirect(true) //Activa la redirección después de cerrar el modal//
+            })
+        }
 
-        //Muestra modal de éxito y redirige al home//
-        createModal('Profile updated successfully!', () => {
-            navigation.navigateToHome()
-        })
+        //Manejo de imagen seleccionada (nuevo avatar)//
+        if (selectedImage) {
+            const reader = new FileReader()
+
+            //Cuando se completa la lectura de la imagen//
+            reader.onload = (event) => {
+                //Crea una nueva versión de los usuarios con el avatar actualizado//
+                const updatedUsersWithAvatar = updatedUsers.map(user => {
+                    if (user.id === loggedUserId) {
+                        return {
+                            ...user,
+                            avatar: event.target.result //Añade el avatar en base64//
+                        }
+                    }
+                    return user
+                })
+                saveProfile(updatedUsersWithAvatar) //Guarda con el nuevo avatar//
+            }
+
+            //Manejo de errores al leer la imagen//
+            reader.onerror = () => {
+                createModal('Error updating avatar') //Notifica el error//
+            }
+
+            //Inicia la lectura del archivo como URL de datos//
+            reader.readAsDataURL(selectedImage)
+        }
+        //Manejo cuando se elimina la imagen existente//
+        else if (imagePreview === null) {
+            //Crea una versión de los usuarios sin el avatar//
+            const updatedUsersWithoutAvatar = updatedUsers.map(user => {
+                if (user.id === loggedUserId) {
+                    const { avatar, ...rest } = user //Elimina la propiedad avatar//
+                    return rest
+                }
+                return user
+            })
+            saveProfile(updatedUsersWithoutAvatar) //Guarda sin avatar//
+        }
+        //Cuando no hay cambios en la imagen//
+        else {
+            saveProfile(updatedUsers) //Guarda los otros cambios del perfil//
+        }
     }
 
     //Renderizado del componente//
@@ -130,26 +224,82 @@ const ProfilePage = ({ navigation }) => {
         <div className="profilePageContainer">
             {/* Encabezado de la página */}
             <div className="homeHeaderContainer">
+                {/* Contenedor del logo */}
                 <div className="homeImgContainer">
                     <img src="/Logo.jpg" className="homeImg" alt="Logo" />
                 </div>
 
+                {/* Título de la página */}
                 <h1 className="homeMsg">Edit Profile</h1>
 
-                {/* Botón para volver al inicio */}
+                {/* Botón para volver al home */}
                 <button
-                    className="menuButton"
+                    className="menuButton back-button"
                     onClick={() => navigation.navigateToHome()}
                     aria-label="Back to home"
                 >
-                    <i className="fas fa-arrow-left"></i>
+                    <div className="menuButton-content">
+                        <i className="fas fa-arrow-left"></i>
+                    </div>
                 </button>
             </div>
 
-            {/* Contenedor del formulario */}
+            {/* Contenedor principal del formulario */}
             <div className="profileFormContainer">
                 <form onSubmit={handleSubmit} className="form">
-                    {/* Grupo para nombre de usuario */}
+                    {/* Sección de imagen de perfil */}
+                    <div className="form-group">
+                        <label>Profile Image:</label>
+                        <div className="optimized-image-section">
+                            {/* Controles para subir/remover imagen */}
+                            <div className="image-controls-row">
+                                {/* Label estilizado para input de archivo */}
+                                <label htmlFor="avatar-upload" className="image-upload-label">
+                                    <i className="fas fa-image"></i> {imagePreview ? 'Change Image' : 'Add Image'}
+                                </label>
+
+                                {/* Input real para subir archivo (oculto) */}
+                                <input
+                                    type="file"
+                                    id="avatar-upload"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    style={{ display: 'none' }}
+                                />
+
+                                {/* Botón para remover imagen (visible solo cuando hay imagen) */}
+                                {imagePreview && (
+                                    <button
+                                        type="button"
+                                        className="remove-image-button"
+                                        onClick={removeImage}
+                                    >
+                                        <i className="fas fa-times"></i> Remove
+                                    </button>
+                                )}
+                            </div>
+
+                            {/* Muestra nombre del archivo seleccionado */}
+                            {selectedImage && (
+                                <div className="compact-image-info">
+                                    <span className="image-filename">{selectedImage.name}</span>
+                                </div>
+                            )}
+
+                            {/* Muestra vista previa de la imagen */}
+                            {imagePreview && (
+                                <div className="constrained-preview">
+                                    <img
+                                        src={imagePreview}
+                                        alt="Preview"
+                                        className="compact-image-preview"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Campo para nombre de usuario */}
                     <div className="form-group">
                         <label htmlFor="userName">Username:</label>
                         <input
@@ -164,7 +314,7 @@ const ProfilePage = ({ navigation }) => {
                         {errors.userName && <span className="error-message">{errors.userName}</span>}
                     </div>
 
-                    {/* Grupo para email */}
+                    {/* Campo para email */}
                     <div className="form-group">
                         <label htmlFor="email">Email:</label>
                         <input
@@ -178,7 +328,7 @@ const ProfilePage = ({ navigation }) => {
                         {errors.email && <span className="error-message">{errors.email}</span>}
                     </div>
 
-                    {/* Grupo para nueva contraseña */}
+                    {/* Campo para nueva contraseña */}
                     <div className="form-group">
                         <label htmlFor="password">New Password:</label>
                         <input
@@ -192,7 +342,7 @@ const ProfilePage = ({ navigation }) => {
                         {errors.password && <span className="error-message">{errors.password}</span>}
                     </div>
 
-                    {/* Grupo para confirmar contraseña */}
+                    {/* Campo para confirmar nueva contraseña */}
                     <div className="form-group">
                         <label htmlFor="confirmPassword">Confirm New Password:</label>
                         <input
@@ -209,15 +359,19 @@ const ProfilePage = ({ navigation }) => {
                     {/* Botones de acción */}
                     <div className="form-actions">
                         <button type="submit" className="buttonJoin">Save Changes</button>
-                        <button type="button" className="buttonGoToLogin" onClick={() => navigation.navigateToHome()}>
+                        <button
+                            type="button"
+                            className="buttonGoToLogin"
+                            onClick={() => navigation.navigateToHome()}
+                        >
                             Cancel
                         </button>
                     </div>
                 </form>
             </div>
         </div>
-    )
+    );
 }
 
-//Exporta el componente ProfilePage como exportación por defecto//
+//Exporta el componente como exportación por defecto//
 export default ProfilePage
