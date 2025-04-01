@@ -5,8 +5,9 @@ import RegisterPage from './pages/RegisterPage'    //Página de registro//
 import LoginPage from './pages/LoginPage'          //Página de login//
 import HomePage from './pages/HomePage'            //Página principal//
 import ProfilePage from './pages/ProfilePage'      //Página de perfil//
+import Bio from './pages/BioPage'                  //Página de biografía//
 
-// Componente principal de la aplicación
+//Componente principal de la aplicación//
 const App = () => {
   //Estado para controlar la página actual//
   //Inicialmente verifica si hay un usuario logueado (en sessionStorage o localStorage)//
@@ -15,12 +16,17 @@ const App = () => {
     //Si hay ID almacenado, va a HomePage, sino a LandingPage//
   })
 
+  //Estado para almacenar parámetros de navegación//
+  const [pageParams, setPageParams] = React.useState({}) //Objeto vacío inicial//
+
   //Sistema de navegación centralizado//
   const navigation = {
     //Función base para cambiar de página//
-    navigateTo: (page) => {
+    //Ahora acepta parámetros opcionales para pasar a las páginas//
+    navigateTo: (page, params = {}) => {
       setCurrentPage(page)          //Actualiza el estado de la página//
-      window.scrollTo(0, 0)         //Scroll al inicio de la página//
+      setPageParams(params)         //Guarda los parámetros en el estado//
+      window.scrollTo(0, 0)        //Scroll al inicio de la página//
     },
 
     //Navegación específica a Landing Page//
@@ -40,7 +46,11 @@ const App = () => {
     },
 
     //Navegación específica a Profile Page//
-    navigateToProfile: () => navigation.navigateTo('ProfilePage')
+    navigateToProfile: () => navigation.navigateTo('ProfilePage'),
+
+    //Navegación específica a Bio Page//
+    //Recibe el nombre de usuario como parámetro//
+    navigateToBio: (userName) => navigation.navigateTo('Bio', { userName })
   }
 
   //Renderizado condicional basado en la página actual//
@@ -54,6 +64,8 @@ const App = () => {
         return <LoginPage navigation={navigation} />     //Renderiza LoginPage//
       case 'ProfilePage':
         return <ProfilePage navigation={navigation} />   //Renderiza ProfilePage//
+      case 'Bio':
+        return <Bio navigation={navigation} userName={pageParams.userName} /> //Renderiza Bio con parámetro//
       case 'LandingPage':
       default:
         return <LandingPage navigation={navigation} />   //Renderiza LandingPage por defecto//

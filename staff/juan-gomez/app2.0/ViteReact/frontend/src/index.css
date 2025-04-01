@@ -1,149 +1,149 @@
 /* Reset básico para eliminar márgenes y padding predeterminados de todos los elementos */
 * {
   margin: 0;
-  /* Elimina todos los márgenes externos */
+  /* Establece el margen exterior de todos los elementos a 0 */
   padding: 0;
-  /* Elimina todos los rellenos internos */
+  /* Establece el relleno interno de todos los elementos a 0 */
   box-sizing: border-box;
-  /* Incluye padding y border en el cálculo del tamaño total */
+  /* Hace que el padding y border se incluyan en el ancho/alto total del elemento */
 }
 
 /* Contenedor principal de la aplicación */
 #app {
   display: flex;
-  /* Usa flexbox para el layout */
+  /* Activa el modelo de layout flexbox */
   min-height: 100vh;
-  /* Altura mínima del 100% del viewport */
+  /* Establece la altura mínima al 100% del viewport */
   background: linear-gradient(500deg, white, rgb(0, 142, 182));
-  /* Fondo con gradiente lineal */
+  /* Fondo con gradiente lineal de blanco a azul */
 }
 
 /* Contenedor de la página de inicio (Landing) */
 .landingContainer {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza los elementos hijos en columna */
   justify-content: center;
-  /* Centrado vertical */
+  /* Centra los elementos verticalmente */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra los elementos horizontalmente */
   gap: 30px;
-  /* Espacio entre elementos hijos */
+  /* Espacio de 30px entre elementos hijos */
   padding: 20px;
-  /* Relleno interno */
+  /* Relleno interno de 20px */
   background: white;
   /* Fondo blanco */
   border-radius: 20px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 20px */
   backdrop-filter: blur(10px);
-  /* Efecto de desenfoque */
+  /* Efecto de desenfoque de 10px */
   box-shadow: 0 8px 32px rgb(0, 142, 182);
-  /* Sombra exterior */
+  /* Sombra exterior azul */
   border: 1px solid rgb(0, 142, 182);
-  /* Borde del contenedor */
+  /* Borde azul de 1px */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   max-width: 45rem;
-  /* Ancho máximo */
+  /* Ancho máximo de 45rem */
   margin: auto;
   /* Centrado automático horizontal */
   position: relative;
   /* Posicionamiento relativo */
   top: 10%;
-  /* Posición desde arriba */
+  /* Posiciona el elemento 10% desde arriba */
   transform: translateY(-10%);
-  /* Ajuste de posición vertical */
+  /* Mueve el elemento hacia arriba un 10% de su altura */
 }
 
 /* Contenedor de la página principal */
 .homePageContainer {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   min-height: 100vh;
-  /* Altura mínima del viewport */
+  /* Altura mínima del 100% del viewport */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
 }
 
 /* Encabezado de la página principal */
 .homeHeaderContainer {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   justify-content: space-between;
-  /* Espacio entre elementos */
+  /* Distribuye el espacio entre elementos */
   align-items: center;
-  /* Centrado vertical */
+  /* Centra los elementos verticalmente */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   height: 1%;
-  /* Altura mínima */
+  /* Altura mínima del 1% */
   padding: 40px;
-  /* Relleno interno */
+  /* Relleno interno de 40px */
   margin-top: 3rem;
-  /* Margen superior */
+  /* Margen superior de 3rem */
 }
 
 /* Estilos para la imagen de la página de inicio */
 .landingImg {
   width: 100%;
-  /* Ancho completo del contenedor */
+  /* Ancho del 100% del contenedor */
   max-width: 200px;
-  /* Ancho máximo */
+  /* Ancho máximo de 200px */
   border-radius: 20px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 20px */
   transition: transform 0.3s ease;
-  /* Transición suave para transformaciones */
+  /* Transición suave de transformación durante 0.3s */
 }
 
 /* Efecto hover para la imagen de landing */
 .landingImg:hover {
   transform: scale(1.05);
-  /* Escala la imagen al 105% */
+  /* Escala la imagen al 105% al hacer hover */
 }
 
 /* Estilos para la imagen de la página principal */
 .homeImg {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   max-width: 100px;
-  /* Ancho máximo */
+  /* Ancho máximo de 100px */
   border-radius: 10px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 10px */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación durante 0.3s */
 }
 
 /* Efecto hover para la imagen de home */
 .homeImg:hover {
   transform: scale(1.05);
-  /* Escala la imagen al 105% */
+  /* Escala la imagen al 105% al hacer hover */
 }
 
 /* Estilos para el mensaje de la página de inicio */
 .landingMsg {
   color: black;
-  /* Color de texto */
+  /* Color de texto negro */
   text-align: center;
-  /* Alineación centrada */
+  /* Alineación de texto centrada */
   margin-bottom: 20px;
-  /* Margen inferior */
+  /* Margen inferior de 20px */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   font-size: 1.5rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.5rem */
   text-shadow: 2px 2px 4px rgb(0, 142, 182);
-  /* Sombra de texto */
+  /* Sombra de texto azul */
 }
 
 /* Estilos para el mensaje de la página principal */
 .homeMsg {
   color: black;
-  /* Color de texto */
+  /* Color de texto negro */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   font-size: 2rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 2rem */
   text-shadow: 8px 8px 16px rgb(255, 255, 255);
   /* Sombra de texto blanca */
 }
@@ -151,19 +151,19 @@
 /* Estilos para el modal */
 .modal {
   position: fixed;
-  /* Posición fija en pantalla */
+  /* Posicionamiento fijo en la pantalla */
   top: 50%;
-  /* Posición desde arriba */
+  /* Posiciona el 50% desde arriba */
   left: 50%;
-  /* Posición desde la izquierda */
+  /* Posiciona el 50% desde la izquierda */
   transform: translate(-50%, -50%);
-  /* Centrado perfecto */
+  /* Centra perfectamente el modal */
   background-color: white;
   /* Fondo blanco */
   padding: 20px;
-  /* Relleno interno */
+  /* Relleno interno de 20px */
   border: 1px solid rgb(0, 142, 182);
-  /* Borde */
+  /* Borde azul de 1px */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   /* Sombra suave */
   z-index: 1000;
@@ -171,9 +171,9 @@
   font-family: 'Tektur';
   /* Fuente personalizada */
   font-size: 1.1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.1rem */
   border-radius: 20px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 20px */
   width: fit-content;
   /* Ancho según contenido */
   white-space: nowrap;
@@ -190,13 +190,13 @@
 .registerMsg,
 .loginMsg {
   font-size: 1.5rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.5rem */
   color: black;
-  /* Color de texto */
+  /* Color de texto negro */
   text-align: center;
-  /* Alineación centrada */
+  /* Alineación de texto centrada */
   margin: 0 auto;
-  /* Margen automático */
+  /* Margen automático (centrado horizontal) */
   font-family: 'Zen Loop';
   /* Fuente personalizada */
 }
@@ -212,23 +212,23 @@
   border: none;
   /* Sin borde */
   padding: 8px 16px;
-  /* Relleno interno */
+  /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
   font-size: 1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1rem */
   border-radius: 20px;
   /* Bordes muy redondeados */
   cursor: pointer;
-  /* Cursor pointer */
+  /* Cursor tipo pointer */
   transition: background-color 0.3s ease;
-  /* Transición suave */
+  /* Transición suave del color de fondo */
   width: auto;
   /* Ancho automático */
   max-width: 200px;
-  /* Ancho máximo */
+  /* Ancho máximo de 200px */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
 }
 
 /* Efecto hover para botones principales */
@@ -236,9 +236,9 @@
 .buttonGoToRegister:hover,
 .buttonGoToLogin:hover {
   background-color: rgb(0, 142, 182);
-  /* Cambio de color de fondo */
+  /* Cambia color de fondo a azul */
   transform: scale(1.05);
-  /* Efecto de escala */
+  /* Escala el botón al 105% */
 }
 
 /* Estilos base para el botón de menú */
@@ -252,29 +252,29 @@
   padding: 0;
   /* Sin relleno */
   font-size: 1.5rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.5rem */
   border-radius: 50%;
   /* Forma circular */
   cursor: pointer;
-  /* Cursor pointer */
+  /* Cursor tipo pointer */
   transition: all 0.3s ease;
-  /* Transición suave */
+  /* Transición suave para todas las propiedades */
   width: 70px;
-  /* Ancho fijo */
+  /* Ancho fijo de 70px */
   height: 70px;
-  /* Altura fija (igual que el ancho para círculo perfecto) */
+  /* Altura fija de 70px (igual que el ancho para círculo perfecto) */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   align-items: center;
-  /* Centrado vertical */
+  /* Centra verticalmente */
   justify-content: center;
-  /* Centrado horizontal */
+  /* Centra horizontalmente */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   position: relative;
   /* Posicionamiento relativo */
   overflow: hidden;
-  /* Oculta desbordamiento */
+  /* Oculta contenido que desborde */
   z-index: 101;
   /* Nivel de apilamiento */
 }
@@ -282,15 +282,15 @@
 /* Contenedor interno del botón de menú */
 .menuButton-content {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   height: 100%;
-  /* Altura completa */
+  /* Altura del 100% */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   align-items: center;
-  /* Centrado vertical */
+  /* Centra verticalmente */
   justify-content: center;
-  /* Centrado horizontal */
+  /* Centra horizontalmente */
 }
 
 /* Estilo para botón con avatar */
@@ -302,11 +302,11 @@
 /* Estilos para el avatar en el botón */
 .menuButton-avatar {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   height: 100%;
-  /* Altura completa */
+  /* Altura del 100% */
   object-fit: cover;
-  /* Ajuste de imagen */
+  /* Ajusta la imagen manteniendo proporciones */
   border-radius: 50%;
   /* Forma circular */
 }
@@ -314,9 +314,9 @@
 /* Estilo para la inicial (cuando no hay avatar) */
 .menuButton-initial {
   font-size: 1.5rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.5rem */
   line-height: 1;
-  /* Altura de línea */
+  /* Altura de línea de 1 */
 }
 
 /* Estilo específico para botón de volver */
@@ -327,17 +327,17 @@
 
 .menuButton.back-button .menuButton-content i {
   font-size: 1.5rem;
-  /* Tamaño de fuente para icono */
+  /* Tamaño de fuente de 1.5rem para el icono */
 }
 
 /* Efecto hover para el botón de menú */
 .menuButton:hover {
   background-color: rgb(255, 255, 255);
-  /* Fondo blanco */
+  /* Cambia fondo a blanco */
   color: rgb(0, 142, 182);
-  /* Color de texto azul */
+  /* Cambia color de texto a azul */
   transform: scale(1.05);
-  /* Efecto de escala */
+  /* Escala el botón al 105% */
 }
 
 /* Contenedor del menú desplegable */
@@ -345,31 +345,31 @@
   position: absolute;
   /* Posicionamiento absoluto */
   right: 1.1rem;
-  /* Posición desde la derecha */
+  /* Posición desde la derecha de 1.1rem */
   top: 8rem;
-  /* Posición desde arriba */
+  /* Posición desde arriba de 8rem */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: flex-end;
-  /* Alineación a la derecha */
+  /* Alinea elementos a la derecha */
   gap: 5px;
-  /* Espacio entre elementos */
+  /* Espacio de 5px entre elementos */
   padding: 6px;
-  /* Relleno interno */
+  /* Relleno interno de 6px */
   border-radius: 5px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 5px */
   width: auto;
   /* Ancho automático */
   border: 1px solid rgb(0, 142, 182);
-  /* Borde */
+  /* Borde azul de 1px */
   border-radius: 20px;
   /* Bordes muy redondeados */
   background-color: white;
   /* Fondo blanco */
   box-shadow: 0 4px 10px rgb(0, 142, 182);
-  /* Sombra */
+  /* Sombra azul */
   z-index: 100;
   /* Nivel de apilamiento */
 }
@@ -379,11 +379,11 @@
 .settingsButton,
 .logoutButton {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   background-color: black;
   /* Fondo negro */
   color: white;
@@ -391,25 +391,25 @@
   border: none;
   /* Sin borde */
   padding: 8px 16px;
-  /* Relleno interno */
+  /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
   font-size: 0.9rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.9rem */
   border-radius: 20px;
   /* Bordes muy redondeados */
   cursor: pointer;
-  /* Cursor pointer */
+  /* Cursor tipo pointer */
   transition: background-color 0.3s ease;
-  /* Transición suave */
+  /* Transición suave del color de fondo */
   width: auto;
   /* Ancho automático */
   min-width: 100px;
-  /* Ancho mínimo */
+  /* Ancho mínimo de 100px */
   max-width: 100px;
-  /* Ancho máximo */
+  /* Ancho máximo de 100px */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
 }
 
 /* Efecto hover para botones del menú */
@@ -417,31 +417,31 @@
 .settingsButton:hover,
 .logoutButton:hover {
   background-color: rgb(0, 142, 182);
-  /* Cambio de color de fondo */
+  /* Cambia color de fondo a azul */
   transform: scale(1.05);
-  /* Efecto de escala */
+  /* Escala el botón al 105% */
 }
 
 /* Contenedor de imagen en home */
 .homeImgContainer {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   gap: 0.5rem;
-  /* Espacio entre elementos */
+  /* Espacio de 0.5rem entre elementos */
 }
 
 /* Botón para alternar formulario de mensaje */
 .toggleSendMsgFormButton {
   height: 40px;
-  /* Altura fija */
+  /* Altura fija de 40px */
   width: 100px;
-  /* Ancho fijo */
+  /* Ancho fijo de 100px */
   align-items: center;
-  /* Centrado vertical */
+  /* Centra elementos verticalmente */
   background-color: black;
   /* Fondo negro */
   border-radius: 20px;
@@ -453,17 +453,17 @@
   border: none;
   /* Sin borde */
   cursor: pointer;
-  /* Cursor pointer */
+  /* Cursor tipo pointer */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
 }
 
 /* Efecto hover para botón de formulario */
 .toggleSendMsgFormButton:hover {
   background-color: rgb(0, 142, 182);
-  /* Cambio de color de fondo */
+  /* Cambia color de fondo a azul */
   transform: scale(1.05);
-  /* Efecto de escala */
+  /* Escala el botón al 105% */
 }
 
 /* Formulario para enviar mensajes */
@@ -471,37 +471,37 @@
   position: absolute;
   /* Posicionamiento absoluto */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   margin-top: 12rem;
-  /* Margen superior */
+  /* Margen superior de 12rem */
   left: 15rem;
-  /* Posición desde la izquierda */
+  /* Posición desde la izquierda de 15rem */
   font-size: 1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1rem */
   background-color: white;
   /* Fondo blanco */
   border: 1px solid rgb(0, 142, 182);
-  /* Borde */
+  /* Borde azul de 1px */
   border-radius: 15px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 15px */
   box-shadow: 0 4px 10px rgb(0, 142, 182);
-  /* Sombra */
+  /* Sombra azul */
   gap: 0.8rem;
-  /* Espacio entre elementos */
+  /* Espacio de 0.8rem entre elementos */
   padding: 20px;
-  /* Relleno interno */
+  /* Relleno interno de 20px */
   width: 700px;
-  /* Ancho fijo */
+  /* Ancho fijo de 700px */
   height: auto !important;
-  /* Altura automática */
+  /* Altura automática (importante para sobrescribir) */
   min-height: 700px;
-  /* Altura mínima */
+  /* Altura mínima de 700px */
   padding-bottom: 20px;
-  /* Relleno inferior */
+  /* Relleno inferior de 20px */
 }
 
 /* Estilos para placeholders en formulario */
@@ -509,140 +509,140 @@
   font-family: 'Zen Loop';
   /* Fuente personalizada */
   font-size: 22px;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 22px */
 }
 
 /* Input de texto en formulario */
 .sendMsgForm input[type='text'] {
   outline: none;
-  /* Sin contorno */
+  /* Elimina el contorno al enfocar */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   padding: 10px;
-  /* Relleno interno */
+  /* Relleno interno de 10px */
   border: 1px solid black;
-  /* Borde */
+  /* Borde negro de 1px */
   border-radius: 10px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 10px */
   font-size: 1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1rem */
   background-color: white;
   /* Fondo blanco */
   margin-bottom: 10px;
-  /* Margen inferior */
+  /* Margen inferior de 10px */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
   box-sizing: border-box;
-  /* Modelo de caja */
+  /* Modelo de caja border-box */
   font-family: 'Zen Loop';
   /* Fuente personalizada */
   font-size: 1.5rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.5rem */
 }
 
 /* Efecto hover para input de texto */
 .sendMsgForm input[type='text']:hover {
   border-color: rgb(0, 142, 182);
-  /* Cambio de color de borde */
+  /* Cambia color de borde a azul */
   box-shadow: 0 0 10px rgb(0, 142, 182);
-  /* Sombra */
+  /* Sombra azul */
   transform: scale(1.02);
-  /* Efecto de escala */
+  /* Escala ligeramente el input */
 }
 
 /* Textarea del formulario */
 .sendMsgForm textarea {
   outline: none;
-  /* Sin contorno */
+  /* Elimina el contorno al enfocar */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   padding: 10px;
-  /* Relleno interno */
+  /* Relleno interno de 10px */
   border: 1px solid black;
-  /* Borde */
+  /* Borde negro de 1px */
   border-radius: 10px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 10px */
   font-size: 1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1rem */
   background-color: white;
   /* Fondo blanco */
   margin-bottom: 10px;
-  /* Margen inferior */
+  /* Margen inferior de 10px */
   text-align: left;
-  /* Alineación izquierda */
+  /* Alineación de texto a la izquierda */
   vertical-align: top;
-  /* Alineación superior */
+  /* Alineación vertical arriba */
   resize: none;
   /* Deshabilita redimensionamiento */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
   height: 300px;
-  /* Altura fija */
+  /* Altura fija de 300px */
   min-height: 200px;
-  /* Altura mínima */
+  /* Altura mínima de 200px */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   overflow-y: auto;
   /* Scroll vertical si es necesario */
   font-family: 'Zen Loop';
   /* Fuente personalizada */
   font-size: 1.5rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.5rem */
 }
 
 /* Personalización de scrollbar para textarea */
 .sendMsgForm textarea::-webkit-scrollbar {
   width: 8px;
-  /* Ancho del scrollbar */
+  /* Ancho del scrollbar de 8px */
   margin-right: 8px;
-  /* Margen derecho */
+  /* Margen derecho de 8px */
 }
 
 .sendMsgForm textarea::-webkit-scrollbar-thumb {
   background-color: black;
-  /* Color del thumb */
+  /* Color del thumb negro */
   border-radius: 5px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 5px */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
 }
 
 .sendMsgForm textarea::-webkit-scrollbar-track {
   background-color: white;
-  /* Color del track */
+  /* Color del track blanco */
   border-radius: 5px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 5px */
   margin: 2px;
-  /* Margen */
+  /* Margen de 2px */
 }
 
 .sendMsgForm textarea::-webkit-scrollbar-thumb:hover {
   background-color: rgb(0, 142, 182);
-  /* Cambio de color al hover */
+  /* Cambia color del thumb a azul */
   transform: scale(1.02);
-  /* Efecto de escala */
+  /* Escala ligeramente el thumb */
   cursor: grab;
-  /* Cursor grab */
+  /* Cursor tipo grab */
 }
 
 /* Efecto hover para textarea */
 .sendMsgForm textarea:hover {
   border-color: rgb(0, 142, 182);
-  /* Cambio de color de borde */
+  /* Cambia color de borde a azul */
   box-shadow: 0 0 10px rgb(0, 142, 182);
-  /* Sombra */
+  /* Sombra azul */
   transform: scale(1.02);
-  /* Efecto de escala */
+  /* Escala ligeramente el textarea */
 }
 
 /* Botón de submit en formulario */
 .sendMsgForm input[type='submit'] {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   background-color: black;
   /* Fondo negro */
   color: white;
@@ -650,99 +650,103 @@
   border: none;
   /* Sin borde */
   padding: 8px 16px;
-  /* Relleno interno */
+  /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
   font-size: 0.9rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.9rem */
   border-radius: 20px;
   /* Bordes muy redondeados */
   cursor: pointer;
-  /* Cursor pointer */
+  /* Cursor tipo pointer */
   transition: background-color 0.3s ease;
-  /* Transición suave */
+  /* Transición suave del color de fondo */
   width: auto;
   /* Ancho automático */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
 }
 
 /* Efecto hover para botón de submit */
 .sendMsgForm input[type='submit']:hover {
   background-color: rgb(0, 142, 182);
-  /* Cambio de color de fondo */
+  /* Cambia color de fondo a azul */
   transform: scale(1.05);
-  /* Efecto de escala */
+  /* Escala el botón al 105% */
 }
 
 /* Sección optimizada para imágenes */
 .optimized-image-section {
   width: 100%;
-  /* Ancho completo */
-  margin: 10px 0;
-  /* Margen vertical */
+  /* Ancho del 100% */
+  margin-bottom: 5px;
+  /* Margen inferior de 5px */
+  margin-top: 20px;
+  /* Margen superior de 20px */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   gap: 8px;
-  /* Espacio entre elementos */
+  /* Espacio de 8px entre elementos */
 }
 
 /* Controles de imagen */
 .image-controls-row {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   gap: 10px;
-  /* Espacio entre elementos */
+  /* Espacio de 10px entre elementos */
   justify-content: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   align-items: center;
-  /* Centrado vertical */
+  /* Centra elementos verticalmente */
   flex-wrap: wrap;
-  /* Envoltura de elementos */
+  /* Permite que los elementos se envuelvan */
 }
 
 /* Información compacta de imagen */
 .compact-image-info {
   text-align: center;
-  /* Alineación centrada */
-  margin-top: 1px;
-  /* Margen superior mínimo */
+  /* Alineación de texto centrada */
+  margin-top: -5px;
+  /* Margen superior negativo de 5px */
+  margin-bottom: -10px;
+  /* Margen inferior negativo de 10px */
 }
 
 /* Vista previa compacta de imagen */
 .compact-image-preview {
   max-width: 100%;
-  /* Ancho máximo */
+  /* Ancho máximo del 100% */
   max-height: 80px;
-  /* Altura máxima */
+  /* Altura máxima de 80px */
   object-fit: contain;
-  /* Ajuste de imagen */
+  /* Ajusta la imagen manteniendo proporciones */
 }
 
 /* Contenedor para subida de imágenes */
 .image-upload-wrapper {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   justify-content: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   margin-bottom: 10px;
-  /* Margen inferior */
+  /* Margen inferior de 10px */
 }
 
 /* Contenedor de subida de imágenes */
 .image-upload-container {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   gap: 8px;
-  /* Espacio entre elementos */
+  /* Espacio de 8px entre elementos */
   width: auto;
   /* Ancho automático */
 }
@@ -754,59 +758,59 @@
   color: white;
   /* Texto blanco */
   padding: 8px 16px;
-  /* Relleno interno */
+  /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
   border-radius: 20px;
   /* Bordes muy redondeados */
   cursor: pointer;
-  /* Cursor pointer */
+  /* Cursor tipo pointer */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   font-size: 0.9rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.9rem */
   transition: all 0.3s ease;
-  /* Transición suave */
+  /* Transición suave para todas las propiedades */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   align-items: center;
-  /* Centrado vertical */
+  /* Centra elementos verticalmente */
   gap: 8px;
-  /* Espacio entre elementos */
+  /* Espacio de 8px entre elementos */
 }
 
 /* Efecto hover para label de subida */
 .image-upload-label:hover {
   background-color: rgb(0, 142, 182);
-  /* Cambio de color de fondo */
+  /* Cambia color de fondo a azul */
   transform: scale(1.05);
-  /* Efecto de escala */
+  /* Escala el label al 105% */
 }
 
 /* Sección de carga de imágenes */
 .image-upload-section {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   margin: 15px 0;
-  /* Margen vertical */
+  /* Margen vertical de 15px */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
 }
 
 /* Controles de subida de imágenes */
 .image-upload-controls {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   gap: 10px;
-  /* Espacio entre elementos */
+  /* Espacio de 10px entre elementos */
   align-items: center;
-  /* Centrado vertical */
+  /* Centra elementos verticalmente */
   justify-content: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
 }
 
 /* Nombre de archivo para imágenes */
@@ -814,73 +818,73 @@
   font-family: 'Tektur';
   /* Fuente personalizada */
   font-size: 0.9rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.9rem */
   color: #666;
   /* Color de texto gris */
   text-align: center;
-  /* Alineación centrada */
+  /* Alineación de texto centrada */
   max-width: 100%;
-  /* Ancho máximo */
+  /* Ancho máximo del 100% */
   overflow: hidden;
-  /* Oculta desbordamiento */
+  /* Oculta contenido que desborde */
   text-overflow: ellipsis;
-  /* Puntos suspensivos si texto largo */
+  /* Muestra puntos suspensivos si el texto es muy largo */
   white-space: nowrap;
-  /* No permite saltos de línea */
+  /* Evita saltos de línea */
 }
 
 /* Contenedor de vista previa */
 .image-preview-container {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   gap: 8px;
-  /* Espacio entre elementos */
+  /* Espacio de 8px entre elementos */
   margin-top: 10px;
-  /* Margen superior */
+  /* Margen superior de 10px */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
 }
 
 /* Wrapper de vista previa */
 .image-preview-wrapper {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   max-height: 150px;
-  /* Altura máxima */
+  /* Altura máxima de 150px */
   margin-top: 10px;
-  /* Margen superior */
+  /* Margen superior de 10px */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   justify-content: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   overflow: hidden;
-  /* Oculta desbordamiento */
+  /* Oculta contenido que desborde */
   border-radius: 8px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 8px */
   border: 1px solid #ddd;
-  /* Borde */
+  /* Borde gris claro de 1px */
   background-color: #f5f5f5;
-  /* Fondo gris claro */
+  /* Fondo gris muy claro */
 }
 
 /* Vista previa de imagen */
 .image-preview {
   max-width: 100%;
-  /* Ancho máximo */
+  /* Ancho máximo del 100% */
   max-height: 150px;
-  /* Altura máxima */
+  /* Altura máxima de 150px */
   object-fit: contain;
-  /* Ajuste de imagen */
+  /* Ajusta la imagen manteniendo proporciones */
 }
 
 /* Miniaturas de imágenes */
 .image-thumbnail {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   height: auto;
   /* Altura automática */
   display: block;
@@ -890,11 +894,11 @@
 /* Contenedor de información de imagen */
 .image-info-container {
   margin-top: 8px;
-  /* Margen superior */
+  /* Margen superior de 8px */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   text-align: center;
-  /* Alineación centrada */
+  /* Alineación de texto centrada */
 }
 
 /* Nombre de archivo */
@@ -902,37 +906,39 @@
   font-family: 'Tektur';
   /* Fuente personalizada */
   font-size: 0.85rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.85rem */
   color: #666;
   /* Color de texto gris */
   display: inline-block;
   /* Display inline-block */
   max-width: 100%;
-  /* Ancho máximo */
+  /* Ancho máximo del 100% */
   overflow: hidden;
-  /* Oculta desbordamiento */
+  /* Oculta contenido que desborde */
   text-overflow: ellipsis;
-  /* Puntos suspensivos si texto largo */
+  /* Muestra puntos suspensivos si el texto es muy largo */
   white-space: nowrap;
-  /* No permite saltos de línea */
+  /* Evita saltos de línea */
 }
 
 /* Vista previa ajustada */
 .constrained-preview {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   max-height: 120px;
-  /* Altura máxima */
+  /* Altura máxima de 120px */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   justify-content: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   overflow: hidden;
-  /* Oculta desbordamiento */
+  /* Oculta contenido que desborde */
   border-radius: 6px;
-  /* Bordes redondeados */
-  margin-top: -5px;
-  /* Margen superior negativo */
+  /* Bordes redondeados de 6px */
+  margin-top: 5px;
+  /* Margen superior de 5px */
+  margin-bottom: 10px;
+  /* Margen inferior de 10px */
 }
 
 /* Botón para eliminar imagen */
@@ -944,73 +950,73 @@
   border: none;
   /* Sin borde */
   padding: 5px 10px;
-  /* Relleno interno */
+  /* Relleno interno de 5px arriba/abajo y 10px izquierda/derecha */
   border-radius: 20px;
   /* Bordes muy redondeados */
   cursor: pointer;
-  /* Cursor pointer */
+  /* Cursor tipo pointer */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   font-size: 0.75rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.75rem */
   transition: all 0.3s ease;
-  /* Transición suave */
+  /* Transición suave para todas las propiedades */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   align-items: center;
-  /* Centrado vertical */
+  /* Centra elementos verticalmente */
   gap: 4px;
-  /* Espacio entre elementos */
+  /* Espacio de 4px entre elementos */
 }
 
 /* Efecto hover para botón de eliminar */
 .remove-image-button:hover {
   background-color: #cc0000;
-  /* Fondo rojo oscuro */
+  /* Cambia color de fondo a rojo oscuro */
   transform: scale(1.05);
-  /* Efecto de escala */
+  /* Escala el botón al 105% */
 }
 
 /* Icono en botón de eliminar */
 .remove-image-button i {
   font-size: 0.75rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.75rem */
 }
 
 /* Contenedor de imagen en mensajes */
 .message-image-container {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   margin: 10px 0;
-  /* Margen vertical */
+  /* Margen vertical de 10px */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   justify-content: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
 }
 
 /* Imagen en mensajes */
 .message-image {
   max-width: 100%;
-  /* Ancho máximo */
+  /* Ancho máximo del 100% */
   max-height: 300px;
-  /* Altura máxima */
+  /* Altura máxima de 300px */
   object-fit: contain;
-  /* Ajuste de imagen */
+  /* Ajusta la imagen manteniendo proporciones */
   border-radius: 10px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 10px */
   border: 1px solid #ddd;
-  /* Borde */
+  /* Borde gris claro de 1px */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /* Sombra suave */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
 }
 
 /* Efecto hover para imagen en mensajes */
 .message-image:hover {
   transform: scale(1.02);
-  /* Efecto de escala */
+  /* Escala la imagen al 102% */
   box-shadow: 0 0 10px rgb(0, 142, 182);
   /* Sombra azul */
 }
@@ -1020,55 +1026,55 @@
   position: absolute;
   /* Posicionamiento absoluto */
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   flex-direction: column;
-  /* Dirección vertical */
+  /* Organiza elementos en columna */
   align-items: center;
-  /* Centrado horizontal */
+  /* Centra elementos horizontalmente */
   margin-top: 12rem;
-  /* Margen superior */
+  /* Margen superior de 12rem */
   left: 64rem;
-  /* Posición desde la izquierda */
+  /* Posición desde la izquierda de 64rem */
   font-size: 1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1rem */
   background-color: white;
   /* Fondo blanco */
   border: 1px solid rgb(0, 142, 182);
-  /* Borde */
+  /* Borde azul de 1px */
   border-radius: 15px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 15px */
   box-shadow: 0 4px 10px rgb(0, 142, 182);
-  /* Sombra */
+  /* Sombra azul */
   gap: 1rem;
-  /* Espacio entre elementos */
+  /* Espacio de 1rem entre elementos */
   padding: 20px;
-  /* Relleno interno */
+  /* Relleno interno de 20px */
   width: 700px;
-  /* Ancho fijo */
+  /* Ancho fijo de 700px */
   height: 700px;
-  /* Altura fija */
+  /* Altura fija de 700px */
 }
 
 /* Versión centrada del formulario */
 .userMsgForm.centered {
   left: 50%;
-  /* Posición desde la izquierda */
+  /* Posición desde la izquierda del 50% */
   transform: translateX(-50%);
   /* Centrado horizontal */
   width: 700px;
-  /* Ancho fijo */
+  /* Ancho fijo de 700px */
   height: 700px;
-  /* Altura fija */
+  /* Altura fija de 700px */
 }
 
 /* Contenedor de mensajes de usuario */
 .userMsgContainer {
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   padding: 10px;
-  /* Relleno interno */
+  /* Relleno interno de 10px */
   border-radius: 5px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 5px */
   background-color: white;
   /* Fondo blanco */
   overflow-y: auto;
@@ -1078,60 +1084,60 @@
   height: calc(600px - 1px);
   /* Altura calculada */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
 }
 
 /* Personalización de scrollbar para contenedor de mensajes */
 .userMsgContainer::-webkit-scrollbar {
   width: 8px;
-  /* Ancho del scrollbar */
+  /* Ancho del scrollbar de 8px */
 }
 
 .userMsgContainer::-webkit-scrollbar-thumb {
   background-color: black;
-  /* Color del thumb */
+  /* Color del thumb negro */
   border-radius: 5px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 5px */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
 }
 
 .userMsgContainer::-webkit-scrollbar-track {
   background-color: white;
-  /* Color del track */
+  /* Color del track blanco */
   border-radius: 5px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 5px */
 }
 
 .userMsgContainer::-webkit-scrollbar-thumb:hover {
   background-color: rgb(0, 142, 182);
-  /* Cambio de color al hover */
+  /* Cambia color del thumb a azul */
   transform: scale(1.02);
-  /* Efecto de escala */
+  /* Escala ligeramente el thumb */
   cursor: grab;
-  /* Cursor grab */
+  /* Cursor tipo grab */
 }
 
 /* Estilos para mensajes individuales */
 .message {
   margin-bottom: 10px;
-  /* Margen inferior */
+  /* Margen inferior de 10px */
   padding: 10px;
-  /* Relleno interno */
+  /* Relleno interno de 10px */
   border: 1px solid black;
-  /* Borde */
+  /* Borde negro de 1px */
   border-radius: 5px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 5px */
   background-color: white;
   /* Fondo blanco */
   transition: transform 0.3s ease;
-  /* Transición suave */
+  /* Transición suave de transformación */
   overflow-x: hidden;
   /* No scroll horizontal */
   box-sizing: border-box;
-  /* Modelo de caja */
+  /* Modelo de caja border-box */
   word-wrap: break-word;
   /* Rompe palabras largas */
   white-space: pre-wrap;
@@ -1141,11 +1147,11 @@
 /* Efecto hover para mensajes */
 .message:hover {
   border-color: rgb(0, 142, 182);
-  /* Cambio de color de borde */
+  /* Cambia color de borde a azul */
   box-shadow: 0 0 10px rgb(0, 142, 182);
   /* Sombra azul */
   transform: scale(1.02);
-  /* Efecto de escala */
+  /* Escala el mensaje al 102% */
 }
 
 /* Estilo para nombre de usuario en mensaje */
@@ -1155,7 +1161,7 @@
   font-weight: bold;
   /* Texto en negrita */
   font-size: 1.1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.1rem */
 }
 
 /* Estilo para título de mensaje */
@@ -1170,7 +1176,7 @@
   font-family: 'Zen Loop';
   /* Fuente personalizada */
   font-size: 2rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 2rem */
 }
 
 /* Estilos para elementos de mensaje */
@@ -1179,7 +1185,7 @@
 .message-text,
 .message-date {
   margin-bottom: 5px;
-  /* Margen inferior */
+  /* Margen inferior de 5px */
   word-wrap: break-word;
   /* Rompe palabras largas */
 }
@@ -1187,7 +1193,7 @@
 /* Estilo para fecha de mensaje */
 .message-date {
   font-size: 0.9rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.9rem */
   font-family: 'Tektur';
   /* Fuente personalizada */
   color: #666;
@@ -1197,9 +1203,9 @@
 /* Contenedor de acciones en mensajes */
 .message-actions {
   display: flex;
-  /* Layout flexbox */
+  /* Activa flexbox */
   gap: 16px;
-  /* Espacio entre elementos */
+  /* Espacio de 16px entre elementos */
 }
 
 /* Estilos para lista de nombres de usuarios */
@@ -1216,12 +1222,12 @@
 /* Separadores para lista de nombres */
 .user-name:not(:last-child)::after {
   content: ", ";
-  /* Separador coma */
+  /* Agrega coma como separador */
 }
 
 .user-name:last-child::after {
   content: " and ";
-  /* Separador "and" para último elemento */
+  /* Agrega "and" como separador para el último elemento */
 }
 
 /* Estilo para contador de usuarios */
@@ -1233,7 +1239,7 @@
   display: inline;
   /* Display inline */
   margin-left: 4px;
-  /* Margen izquierdo */
+  /* Margen izquierdo de 4px */
 }
 
 /* Tooltip para mostrar usuarios */
@@ -1243,41 +1249,41 @@
   position: absolute;
   /* Posicionamiento absoluto */
   bottom: 100%;
-  /* Posición desde abajo */
+  /* Posición desde abajo del 100% */
   left: 0;
-  /* Posición desde la izquierda */
+  /* Posición desde la izquierda de 0 */
   margin-bottom: 8px;
-  /* Margen inferior */
+  /* Margen inferior de 8px */
   padding: 8px 10px;
-  /* Relleno interno */
+  /* Relleno interno de 8px arriba/abajo y 10px izquierda/derecha */
   background-color: white;
   /* Fondo blanco */
   color: black;
   /* Texto negro */
   border-radius: 4px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 4px */
   box-shadow: 0 2px 10px rgba(0, 142, 182, 0.3);
-  /* Sombra */
+  /* Sombra azul con transparencia */
   font-family: 'Tektur';
   /* Fuente personalizada */
   font-size: 0.9rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 0.9rem */
   opacity: 0;
   /* Inicialmente transparente */
   transition: opacity 0.2s ease;
-  /* Transición suave */
+  /* Transición suave de opacidad */
   z-index: 100;
   /* Nivel de apilamiento */
   border: 1px solid rgb(0, 142, 182);
-  /* Borde */
+  /* Borde azul de 1px */
   max-width: 400px;
-  /* Ancho máximo */
+  /* Ancho máximo de 400px */
   white-space: nowrap;
-  /* No permite saltos de línea */
+  /* Evita saltos de línea */
   overflow: hidden;
-  /* Oculta desbordamiento */
+  /* Oculta contenido que desborde */
   text-overflow: ellipsis;
-  /* Puntos suspensivos si texto largo */
+  /* Muestra puntos suspensivos si el texto es muy largo */
   display: inline-block;
   /* Display inline-block */
 }
@@ -1289,19 +1295,19 @@
   position: absolute;
   /* Posicionamiento absoluto */
   top: 100%;
-  /* Posición desde arriba */
+  /* Posición desde arriba del 100% */
   left: 10px;
-  /* Posición desde la izquierda */
+  /* Posición desde la izquierda de 10px */
   border-width: 6px;
-  /* Tamaño del borde */
+  /* Tamaño del borde de 6px */
   border-style: solid;
-  /* Estilo del borde */
+  /* Estilo del borde sólido */
 }
 
 /* Color para tooltip de likes */
 .likes-tooltip {
   border-left: 4px solid green;
-  /* Borde izquierdo verde */
+  /* Borde izquierdo verde de 4px */
 }
 
 .likes-tooltip::after {
@@ -1312,12 +1318,12 @@
 /* Color para tooltip de dislikes */
 .dislikes-tooltip {
   border-left: 4px solid red;
-  /* Borde izquierdo rojo */
+  /* Borde izquierdo rojo de 4px */
 }
 
 .dislikes-tooltip::after {
   border-color: red transparent transparent transparent;
-  /*Triángulo rojo*/
+  /* Triángulo rojo */
 }
 
 /* Contenedores para botones de like/dislike */
@@ -1326,7 +1332,7 @@
   position: relative;
   /* Posicionamiento relativo para contener elementos absolutos */
   display: inline-block;
-  /* Muestra como elemento en línea pero con propiedades de bloque */
+  /* Display inline-block */
 }
 
 /* Muestra tooltip al hacer hover */
@@ -1335,7 +1341,7 @@
   visibility: visible;
   /* Hace visible el tooltip */
   opacity: 1;
-  /* Establece opacidad completa al tooltip */
+  /* Opacidad completa */
 }
 
 /* Estilos para botones de like/dislike */
@@ -1348,73 +1354,73 @@
   border: none;
   /* Sin bordes */
   cursor: pointer;
-  /* Cursor tipo puntero */
+  /* Cursor tipo pointer */
   padding: 0 8px;
-  /* Espaciado interno horizontal */
+  /* Relleno interno de 0 arriba/abajo y 8px izquierda/derecha */
   font-size: 1.5rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1.5rem */
   display: flex;
-  /* Usa flexbox para alinear elementos */
+  /* Activa flexbox */
   align-items: center;
   /* Centra elementos verticalmente */
   gap: 4px;
-  /* Espacio entre elementos hijos */
+  /* Espacio de 4px entre elementos */
 }
 
 /* Estilo para icono de like vacío */
 .far.fa-thumbs-up {
   color: black;
-  /* Color negro para icono no seleccionado */
+  /* Color negro */
 }
 
 /* Estilo para icono de like lleno */
 .fas.fa-thumbs-up {
   color: green;
-  /* Color verde para icono seleccionado */
+  /* Color verde */
 }
 
 /* Efecto hover para botón de like */
 .like-button:hover {
   transform: scale(1.1);
-  /* Escala el botón al 110% al hacer hover */
+  /* Escala el botón al 110% */
 }
 
 /* Contador de likes */
 .message-likes {
   font-size: 0.9rem;
-  /* Tamaño de fuente pequeño */
+  /* Tamaño de fuente de 0.9rem */
   color: #666;
-  /* Color gris oscuro */
+  /* Color de texto gris */
   margin-top: 10px;
-  /* Margen superior */
+  /* Margen superior de 10px */
 }
 
 /* Estilo para icono de dislike vacío */
 .far.fa-thumbs-down {
   color: black;
-  /* Color negro para icono no seleccionado */
+  /* Color negro */
 }
 
 /* Estilo para icono de dislike lleno */
 .fas.fa-thumbs-down {
   color: red;
-  /* Color rojo para icono seleccionado */
+  /* Color rojo */
 }
 
 /* Efecto hover para botón de dislike */
 .dislike-button:hover {
   transform: scale(1.1);
-  /* Escala el botón al 110% al hacer hover */
+  /* Escala el botón al 110% */
 }
 
 /* Contador de dislikes */
 .message-dislikes {
   font-size: 0.9rem;
-  /* Tamaño de fuente pequeño */
+  /* Tamaño de fuente de 0.9rem */
   color: #666;
-  /* Color gris oscuro */
+  /* Color de texto gris */
   margin-top: 10px;
-  /* Margen superior */
+  /* Margen superior de 10px */
 }
 
 /* Botón con imagen */
@@ -1426,41 +1432,41 @@
   padding: 0;
   /* Sin relleno */
   display: inline-block;
-  /* Muestra como bloque en línea */
+  /* Display inline-block */
 }
 
 /* Estilo para imagen en botón */
 .imgButton img {
   width: 100px;
-  /* Ancho fijo */
+  /* Ancho fijo de 100px */
   height: auto;
-  /* Altura automática para mantener proporción */
+  /* Altura automática */
   border-radius: 10px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 10px */
   cursor: pointer;
-  /* Cursor tipo puntero */
+  /* Cursor tipo pointer */
   transition: transform 0.3s ease;
-  /* Transición suave para transformaciones */
+  /* Transición suave de transformación */
   margin-bottom: 20px;
-  /* Margen inferior */
+  /* Margen inferior de 20px */
 }
 
 /* Efecto hover para imagen en botón */
 .imgButton img:hover {
   transform: scale(1.05);
-  /* Escala la imagen al 105% al hacer hover */
+  /* Escala la imagen al 105% */
 }
 
 /* Estilos generales para formularios */
 .form {
   display: flex;
-  /* Usa flexbox */
+  /* Activa flexbox */
   flex-direction: column;
   /* Organiza elementos en columna */
   align-items: stretch;
   /* Estira elementos para llenar el contenedor */
   border: 1px solid rgb(0, 142, 182);
-  /* Borde azul */
+  /* Borde azul de 1px */
   border-radius: 20px;
   /* Bordes muy redondeados */
   background-color: white;
@@ -1468,68 +1474,68 @@
   box-shadow: 0 4px 10px rgb(0, 142, 182);
   /* Sombra azul */
   padding: 20px;
-  /* Espaciado interno */
+  /* Relleno interno de 20px */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   max-width: 400px;
-  /* Ancho máximo */
+  /* Ancho máximo de 400px */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   font-size: 1rem;
-  /* Tamaño de fuente base */
+  /* Tamaño de fuente de 1rem */
   color: black;
   /* Color de texto negro */
   gap: 0.5rem;
-  /* Espacio entre elementos hijos */
+  /* Espacio de 0.5rem entre elementos */
 }
 
 /* Estilos para labels en formularios */
 .form label {
   display: block;
-  /* Muestra como bloque */
+  /* Display block */
   text-align: center;
-  /* Centra el texto */
+  /* Alineación de texto centrada */
   margin-bottom: 8px;
-  /* Margen inferior */
+  /* Margen inferior de 8px */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   display: block;
-  /* Redundante, ya definido arriba */
+  /* Display block (redundante) */
 }
 
 /* Formularios de registro y login */
 .registerForm,
 .loginForm {
   display: flex;
-  /* Usa flexbox */
+  /* Activa flexbox */
   flex-direction: column;
   /* Organiza elementos en columna */
   align-items: center;
   /* Centra elementos horizontalmente */
   gap: 1rem;
-  /* Espacio entre elementos hijos */
+  /* Espacio de 1rem entre elementos */
   border: 1px solid rgb(0, 142, 182);
-  /* Borde azul */
+  /* Borde azul de 1px */
   border-radius: 15px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 15px */
   background-color: white;
   /* Fondo blanco */
   box-shadow: 0 4px 10px rgb(0, 142, 182);
   /* Sombra azul */
   padding: 20px;
-  /* Espaciado interno */
+  /* Relleno interno de 20px */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   max-width: 400px;
-  /* Ancho máximo */
+  /* Ancho máximo de 400px */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   margin: auto;
-  /* Centra el formulario */
+  /* Centrado automático */
   position: relative;
   /* Posicionamiento relativo */
   top: 2%;
-  /* Posición desde arriba */
+  /* Posición desde arriba del 2% */
   transform: translateY(-2%);
   /* Ajuste fino de posición vertical */
 }
@@ -1538,47 +1544,49 @@
 .registerForm ::placeholder,
 .loginForm ::placeholder {
   font-family: 'Zen Loop';
-  /* Fuente personalizada para placeholders */
+  /* Fuente personalizada */
   font-size: 22px;
-  /* Tamaño de fuente grande */
+  /* Tamaño de fuente de 22px */
 }
 
 /* Inputs de email y password */
 .form input[type='email'],
-.form input[type='password'] {
+.form input[type='password'],
+.form input[type='text'] {
   outline: none;
   /* Elimina el contorno al enfocar */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
   padding: 10px;
-  /* Espaciado interno */
+  /* Relleno interno de 10px */
   border: 2px solid black;
-  /* Borde negro */
+  /* Borde negro de 2px */
   border-radius: 10px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 10px */
   font-size: 1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1rem */
   background-color: white;
   /* Fondo blanco */
   margin-bottom: 10px;
-  /* Margen inferior */
+  /* Margen inferior de 10px */
   transition: transform 0.3s ease;
-  /* Transición suave para transformaciones */
+  /* Transición suave de transformación */
   font-family: 'Zen Loop';
   /* Fuente personalizada */
   font-size: 1.5rem;
-  /* Tamaño de fuente grande */
+  /* Tamaño de fuente de 1.5rem */
 }
 
 /* Efecto hover para inputs */
 .form input[type='email']:hover,
-.form input[type='password']:hover {
+.form input[type='password']:hover,
+.form input[type='text']:hover {
   border-color: rgb(0, 142, 182);
-  /* Cambia color de borde al hacer hover */
+  /* Cambia color de borde a azul */
   box-shadow: 0 0 10px rgb(0, 142, 182);
-  /* Agrega sombra al hacer hover */
+  /* Sombra azul */
   transform: scale(1.02);
-  /* Escala ligeramente al hacer hover */
+  /* Escala ligeramente el input */
 }
 
 /* Botón de submit en formularios */
@@ -1588,23 +1596,23 @@
   color: white;
   /* Texto blanco */
   border: none;
-  /* Sin bordes */
+  /* Sin borde */
   padding: 10px 20px;
-  /* Espaciado interno */
+  /* Relleno interno de 10px arriba/abajo y 20px izquierda/derecha */
   font-size: 1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1rem */
   border-radius: 20px;
   /* Bordes muy redondeados */
   cursor: pointer;
-  /* Cursor tipo puntero */
+  /* Cursor tipo pointer */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   display: inline-block;
-  /* Muestra como bloque en línea */
+  /* Display inline-block */
   width: auto;
   /* Ancho automático */
   margin: 0 auto;
-  /* Centra horizontalmente */
+  /* Margen automático (centrado horizontal) */
   transition: background-color 0.3s ease, transform 0.3s ease;
   /* Transiciones suaves */
 }
@@ -1612,21 +1620,21 @@
 /* Efecto hover para botón de submit */
 .form input[type="submit"]:hover {
   background-color: rgb(0, 142, 182);
-  /* Cambia color de fondo al hacer hover */
+  /* Cambia color de fondo a azul */
   transform: scale(1.05);
-  /* Escala ligeramente al hacer hover */
+  /* Escala el botón al 105% */
 }
 
 /* Contenedor de checkbox */
 .checkbox-container {
   display: flex;
-  /* Usa flexbox */
+  /* Activa flexbox */
   flex-direction: column;
   /* Organiza elementos en columna */
   align-items: center;
   /* Centra elementos horizontalmente */
   margin: 10px 0;
-  /* Margen vertical */
+  /* Margen vertical de 10px */
 }
 
 /* Label para checkbox */
@@ -1634,9 +1642,9 @@
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   margin-bottom: 8px;
-  /* Margen inferior */
+  /* Margen inferior de 8px */
   cursor: pointer;
-  /* Cursor tipo puntero */
+  /* Cursor tipo pointer */
 }
 
 /* Estilo personalizado para checkbox */
@@ -1646,21 +1654,21 @@
   -webkit-appearance: none;
   /* Elimina estilos por defecto en Safari */
   width: 20px;
-  /* Ancho fijo */
+  /* Ancho fijo de 20px */
   height: 20px;
-  /* Altura fija */
+  /* Altura fija de 20px */
   border: 2px solid rgb(0, 142, 182);
-  /* Borde azul */
+  /* Borde azul de 2px */
   border-radius: 4px;
   /* Bordes ligeramente redondeados */
   background-color: white;
   /* Fondo blanco */
   cursor: pointer;
-  /* Cursor tipo puntero */
+  /* Cursor tipo pointer */
   position: relative;
   /* Posicionamiento relativo */
   display: flex;
-  /* Usa flexbox */
+  /* Activa flexbox */
   justify-content: center;
   /* Centra horizontalmente */
   align-items: center;
@@ -1680,7 +1688,7 @@
   color: white;
   /* Color blanco */
   font-size: 14px;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 14px */
   position: absolute;
   /* Posicionamiento absoluto */
 }
@@ -1688,45 +1696,47 @@
 /* Contenedor de página de perfil */
 .profilePageContainer {
   display: flex;
-  /* Usa flexbox */
+  /* Activa flexbox */
   flex-direction: column;
   /* Organiza elementos en columna */
-  min-height: 100vh;
-  /* Altura mínima de toda la ventana */
+  height: 100vh;
+  /* Altura del 100% del viewport */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
+  overflow: hidden;
+  /* Oculta contenido que desborde */
 }
 
 /* Contenedor de formulario de perfil */
 .profileFormContainer {
   display: flex;
-  /* Usa flexbox */
+  /* Activa flexbox */
   justify-content: center;
-  /* Centra horizontalmente */
+  /* Centra elementos horizontalmente */
   padding: 2rem;
-  /* Espaciado interno grande */
+  /* Relleno interno de 2rem */
   margin-top: 2rem;
-  /* Margen superior */
+  /* Margen superior de 2rem */
 }
 
 /* Grupo de campos en formulario */
 .form-group {
   margin-bottom: 0.1rem;
-  /* Margen inferior pequeño */
+  /* Margen inferior de 0.1rem */
   width: 100%;
-  /* Ancho completo */
+  /* Ancho del 100% */
 }
 
 /* Label en grupo de campos */
 .form-group label {
   display: block;
-  /* Muestra como bloque */
-  margin-bottom: 0.1rem;
-  /* Margen inferior pequeño */
+  /* Display block */
+  margin-bottom: 0.5rem;
+  /* Margen inferior de 0.5rem */
   font-family: 'Zen Dots';
   /* Fuente personalizada */
   font-size: 1rem;
-  /* Tamaño de fuente */
+  /* Tamaño de fuente de 1rem */
 }
 
 /* Inputs en grupo de campos */
@@ -1734,35 +1744,73 @@
 .form-group input[type="text"],
 .form-group input[type="password"] {
   width: 100%;
-  /* Ancho completo */
-  padding: 0.5rem;
-  /* Espaciado interno */
+  /* Ancho del 100% */
+  padding: 0.4rem;
+  /* Relleno interno de 0.4rem */
   border: 2px solid black;
-  /* Borde negro */
+  /* Borde negro de 2px */
   border-radius: 10px;
-  /* Bordes redondeados */
+  /* Bordes redondeados de 10px */
   font-family: 'Zen Loop';
   /* Fuente personalizada */
   font-size: 1.46rem;
-  /* Tamaño de fuente grande */
+  /* Tamaño de fuente de 1.46rem */
   transition: all 0.3s ease;
-  /* Transición suave para todos los cambios */
+  /* Transición suave para todas las propiedades */
 }
 
 /* Efecto hover para inputs */
 .form-group input:hover {
   border-color: rgb(0, 142, 182);
-  /* Cambia color de borde al hacer hover */
+  /* Cambia color de borde a azul */
   box-shadow: 0 0 10px rgb(0, 142, 182);
-  /* Agrega sombra al hacer hover */
+  /* Sombra azul */
   transform: scale(1.02);
-  /* Escala ligeramente al hacer hover */
+  /* Escala ligeramente el input */
 }
 
 /* Input con error */
 .form-group input.error {
   border-color: red;
   /* Borde rojo para indicar error */
+}
+
+.buttonSaveChanges,
+.buttonCancel {
+  background-color: black;
+  /* Fondo negro */
+  color: white;
+  /* Texto blanco */
+  border: none;
+  /* Sin borde */
+  padding: 8px 16px;
+  /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
+  font-size: 1rem;
+  /* Tamaño de fuente de 1rem */
+  border-radius: 20px;
+  /* Bordes muy redondeados */
+  cursor: pointer;
+  /* Cursor tipo pointer */
+  transition: background-color 0.3s ease;
+  /* Transición suave del color de fondo */
+  width: auto;
+  /* Ancho automático */
+  max-width: 200px;
+  /* Ancho máximo de 200px */
+  font-family: 'Zen Dots';
+  /* Fuente personalizada */
+  transition: transform 0.3s ease;
+  /* Transición suave de transformación */
+  margin-top: 0.1rem;
+  /* Margen superior de 0.1rem */
+}
+
+.buttonSaveChanges:hover,
+.buttonCancel:hover {
+  background-color: rgb(0, 142, 182);
+  /* Cambia color de fondo a azul */
+  transform: scale(1.05);
+  /* Escala el botón al 105% */
 }
 
 /* Mensaje de error */
@@ -1772,29 +1820,313 @@
   font-family: 'Tektur';
   /* Fuente personalizada */
   font-size: 0.9rem;
-  /* Tamaño de fuente pequeño */
+  /* Tamaño de fuente de 0.9rem */
   margin-top: 0.5rem;
-  /* Margen superior */
+  /* Margen superior de 0.5rem */
   display: block;
-  /* Muestra como bloque */
+  /* Display block */
 }
 
 /* Acciones en formulario */
 .form-actions {
   display: flex;
-  /* Usa flexbox */
+  /* Activa flexbox */
   justify-content: space-between;
   /* Distribuye espacio entre elementos */
   gap: 0.7rem;
-  /* Espacio entre elementos */
-  margin-top: 0.1rem;
-  /* Margen superior pequeño */
+  /* Espacio de 0.7rem entre elementos */
+  margin-top: 1.1rem;
+  /* Margen superior de 1.1rem */
 }
 
 /* Botones en acciones de formulario */
 .form-actions button {
   flex: 1;
   /* Ocupa espacio disponible equitativamente */
+}
+
+.bioHeaderContainer {
+  display: flex;
+  /* Activa flexbox */
+  justify-content: space-between;
+  /* Distribuye espacio entre elementos */
+  align-items: center;
+  /* Centra elementos verticalmente */
+  width: 100%;
+  /* Ancho del 100% */
+  height: 1%;
+  /* Altura mínima del 1% */
+  padding: 40px;
+  /* Relleno interno de 40px */
+  margin-top: 3rem;
+  /* Margen superior de 3rem */
+}
+
+/* Contenedor de página de biografía */
+.bioPageContainer {
+  display: flex;
+  /* Activa flexbox */
+  flex-direction: column;
+  /* Organiza elementos en columna */
+  height: 100vh;
+  /* Altura mínima del 100% del viewport */
+  width: 100%;
+  /* Ancho del 100% */
+  overflow: hidden;
+}
+
+/* Contenedor de formulario de biografía */
+.bioFormContainer {
+  display: flex;
+  /* Activa flexbox */
+  justify-content: center;
+  /* Centra elementos horizontalmente */
+  padding: 2rem;
+  /* Relleno interno de 2rem */
+  margin-top: 2rem;
+  /* Margen superior de 2rem */
+}
+
+.bioForm {
+  display: flex;
+  /* Activa flexbox */
+  flex-direction: column;
+  /* Organiza elementos en columna */
+  align-items: center;
+  /* Centra elementos horizontalmente */
+  margin-top: 0.1rem;
+  /* Margen superior de 0.1rem */
+  left: 64rem;
+  /* Posición desde la izquierda de 64rem */
+  font-size: 1rem;
+  /* Tamaño de fuente de 1rem */
+  background-color: white;
+  /* Fondo blanco */
+  border: 1px solid rgb(0, 142, 182);
+  /* Borde azul de 1px */
+  border-radius: 15px;
+  /* Bordes redondeados de 15px */
+  box-shadow: 0 4px 10px rgb(0, 142, 182);
+  /* Sombra azul */
+  gap: 1rem;
+  /* Espacio de 1rem entre elementos */
+  padding: 20px;
+  /* Relleno interno de 20px */
+  width: 700px;
+  /* Ancho fijo de 700px */
+  height: 700px;
+  /* Altura fija de 700px */
+}
+
+.bioMsgContainer {
+  width: 100%;
+  /* Ancho del 100% */
+  padding: 10px;
+  /* Relleno interno de 10px */
+  border-radius: 5px;
+  /* Bordes redondeados de 5px */
+  background-color: white;
+  /* Fondo blanco */
+  overflow-y: auto;
+  /* Scroll vertical */
+  overflow-x: hidden;
+  /* No scroll horizontal */
+  height: calc(600px - 1px);
+  /* Altura calculada */
+  width: 100%;
+  /* Ancho del 100% */
+  transition: transform 0.3s ease;
+  /* Transición suave de transformación */
+  margin-top: -3rem;
+  /* Margen superior negativo de 3rem */
+}
+
+/* Personalización de scrollbar para contenedor de mensajes */
+.bioMsgContainer::-webkit-scrollbar {
+  width: 8px;
+  /* Ancho del scrollbar de 8px */
+}
+
+.bioMsgContainer::-webkit-scrollbar-thumb {
+  background-color: black;
+  /* Color del thumb negro */
+  border-radius: 5px;
+  /* Bordes redondeados de 5px */
+  transition: transform 0.3s ease;
+  /* Transición suave de transformación */
+}
+
+.bioMsgContainer::-webkit-scrollbar-track {
+  background-color: white;
+  /* Color del track blanco */
+  border-radius: 5px;
+  /* Bordes redondeados de 5px */
+}
+
+.bioMsgContainer::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(0, 142, 182);
+  /* Cambia color del thumb a azul */
+  transform: scale(1.02);
+  /* Escala ligeramente el thumb */
+  cursor: grab;
+  /* Cursor tipo grab */
+}
+
+/* Sección de información del usuario */
+.user-info-section {
+  display: flex;
+  /* Activa flexbox */
+  flex-direction: column;
+  /* Organiza elementos en columna */
+  align-items: center;
+  /* Centra elementos horizontalmente */
+  margin-bottom: 1.8rem;
+  /* Margen inferior de 1.8rem */
+  gap: 0.1rem;
+  /* Espacio de 0.1rem entre elementos */
+}
+
+/* Avatar en biografía */
+.bio-avatar {
+  width: 70px;
+  /* Ancho fijo de 70px */
+  height: 70px;
+  /* Altura fija de 70px */
+  border-radius: 50%;
+  /* Forma circular */
+  object-fit: cover;
+  /* Ajusta la imagen manteniendo proporciones */
+  border: 1px solid rgb(0, 142, 182);
+  /* Borde azul de 1px */
+  box-shadow: 0 4px 10px rgba(0, 142, 182, 0.3);
+  /* Sombra azul con transparencia */
+}
+
+/* Inicial del avatar cuando no hay imagen */
+.bio-avatar-initial {
+  width: 70px;
+  /* Ancho fijo de 70px */
+  height: 70px;
+  /* Altura fija de 70px */
+  border-radius: 50%;
+  /* Forma circular */
+  background-color: black;
+  /* Fondo negro */
+  color: white;
+  /* Texto blanco */
+  display: flex;
+  /* Activa flexbox */
+  align-items: center;
+  /* Centra elementos verticalmente */
+  justify-content: center;
+  /* Centra elementos horizontalmente */
+  font-size: 1.5rem;
+  /* Tamaño de fuente de 1.5rem */
+  font-family: 'Zen Dots';
+  /* Fuente personalizada */
+  border: 1px solid rgb(0, 142, 182);
+  /* Borde azul de 1px */
+}
+
+/* Nombre de usuario en biografía */
+.bio-username {
+  font-family: 'Zen Dots';
+  /* Fuente personalizada */
+  font-size: 1.5rem;
+  /* Tamaño de fuente de 1.5rem */
+  color: black;
+  /* Texto negro */
+  text-shadow: 2px 2px 4px rgba(0, 142, 182, 0.5);
+  /* Sombra de texto azul */
+}
+
+/* Mensaje cuando no hay mensajes */
+.no-messages {
+  text-align: center;
+  /* Alineación de texto centrada */
+  font-family: 'Zen Loop';
+  /* Fuente personalizada */
+  font-size: 1.5rem;
+  /* Tamaño de fuente de 1.5rem */
+  color: #666;
+  /* Color de texto gris */
+  margin-top: 2rem;
+  /* Margen superior de 2rem */
+}
+
+/* Estilos para el campo de contraseña con toggle */
+.password-input-container {
+  position: relative;
+  /* Posicionamiento relativo */
+  width: 100%;
+  /* Ancho del 100% */
+  margin-bottom: 10px;
+  /* Margen inferior de 10px */
+}
+
+.password-input-container input {
+  width: 100%;
+  /* Ancho del 100% */
+  padding: 10px 40px 10px 10px;
+  /* Relleno interno con espacio para el icono */
+  border: 2px solid black;
+  /* Borde negro de 2px */
+  border-radius: 10px;
+  /* Bordes redondeados de 10px */
+  font-size: 1.5rem;
+  /* Tamaño de fuente de 1.5rem */
+  font-family: 'Zen Loop';
+  /* Fuente personalizada */
+  background-color: white;
+  /* Fondo blanco */
+  transition: all 0.3s ease;
+  /* Transición suave para todas las propiedades */
+  box-sizing: border-box;
+  /* Modelo de caja border-box */
+  outline: none;
+  /* Elimina el contorno al enfocar */
+}
+
+/* Efecto hover para campos de contraseña */
+.password-input-container input:hover {
+  border-color: rgb(0, 142, 182);
+  /* Cambia color de borde a azul */
+  box-shadow: 0 0 10px rgb(0, 142, 182);
+  /* Sombra azul */
+  transform: scale(1.02);
+  /* Escala ligeramente el input */
+}
+
+/* Estilo para el botón de toggle de contraseña */
+.password-toggle {
+  position: absolute;
+  /* Posicionamiento absoluto */
+  right: 10px;
+  /* Posición desde la derecha de 10px */
+  top: 50%;
+  /* Posición desde arriba del 50% */
+  transform: translateY(-50%);
+  /* Centrado vertical */
+  background: none;
+  /* Sin fondo */
+  border: none;
+  /* Sin bordes */
+  cursor: pointer;
+  /* Cursor tipo pointer */
+  color: #666;
+  /* Color gris */
+  font-size: 1.2rem;
+  /* Tamaño de fuente de 1.2rem */
+  padding: 5px;
+  /* Relleno interno de 5px */
+  z-index: 2;
+  /* Nivel de apilamiento */
+}
+
+/* Efecto hover para el botón de toggle */
+.password-toggle:hover {
+  color: rgb(0, 142, 182);
+  /* Cambia color a azul */
 }
 
 /* Media queries para diseño responsivo */
@@ -1833,36 +2165,36 @@
 
   .sendMsgForm {
     left: 5rem;
-    /* Posición desde la izquierda */
+    /* Posición desde la izquierda de 5rem */
     width: 15rem;
-    /* Ancho reducido */
+    /* Ancho reducido de 15rem */
     left: 0.1rem;
     /* Sobrescribe posición anterior */
   }
 
   .sendMsgForm textarea {
     left: 5rem;
-    /* Posición desde la izquierda */
+    /* Posición desde la izquierda de 5rem */
     width: 13rem;
-    /* Ancho reducido */
+    /* Ancho reducido de 13rem */
     left: 0.1rem;
     /* Sobrescribe posición anterior */
   }
 
   .userMsgForm {
     left: 5rem;
-    /* Posición desde la izquierda */
+    /* Posición desde la izquierda de 5rem */
     width: 15rem;
-    /* Ancho reducido */
+    /* Ancho reducido de 15rem */
     left: 16.2rem;
     /* Sobrescribe posición anterior */
   }
 
   .userMsgForm.centered {
     left: 5rem;
-    /* Posición desde la izquierda */
+    /* Posición desde la izquierda de 5rem */
     width: 25rem;
-    /* Ancho reducido */
+    /* Ancho reducido de 25rem */
     left: 16.2rem;
     /* Sobrescribe posición anterior */
   }

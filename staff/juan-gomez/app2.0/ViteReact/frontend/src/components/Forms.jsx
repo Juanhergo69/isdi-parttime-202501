@@ -18,9 +18,11 @@ const Form = ({ inputsArray, submitButtonText, onSubmit }) => {
             /*Guarda el valor del input en formData:
              - Para checkboxes guarda el estado checked (true/false)
              - Para otros tipos guarda el valor del input*/
-            formData[input.inputId] = input.inputType === 'checkbox'
-                ? event.target[input.inputId].checked
-                : event.target[input.inputId].value;
+            if (document.getElementById(input.inputId)) {
+                formData[input.inputId] = input.inputType === 'checkbox'
+                    ? event.target[input.inputId].checked
+                    : event.target[input.inputId].value;
+            }
         })
 
         //Ejecuta la función onSubmit pasándole los datos recolectados//
@@ -47,13 +49,19 @@ const Form = ({ inputsArray, submitButtonText, onSubmit }) => {
                         {input.label} {/* Texto del label */}
                     </label>
 
-                    {/* Render condicional: textarea o input normal */}
-                    {input.inputType === 'textarea' ? (
+                    {/* Render condicional: 
+                        1. Si existe customInput, lo renderiza
+                        2. Si no, renderiza textarea o input normal según el tipo */}
+                    {input.customInput ? (
+                        // Renderiza el input personalizado si existe
+                        input.customInput
+                    ) : input.inputType === 'textarea' ? (
                         //Textarea con://
                         <textarea
                             id={input.inputId} //ID que coincide con el htmlFor del label//
                             placeholder={input.inputPlaceholder} //Texto placeholder//
                             required={input.isRequired} //Si es obligatorio//
+                            autoComplete={input.autoComplete || "off"} //Autocompletado//
                         />
                     ) : (
                         //Input normal con://
@@ -63,6 +71,7 @@ const Form = ({ inputsArray, submitButtonText, onSubmit }) => {
                             placeholder={input.inputPlaceholder} //Texto placeholder//
                             required={input.isRequired} //Si es obligatorio//
                             className={input.inputType === 'checkbox' ? 'checkbox' : ''} //Clase CSS para checkboxes//
+                            autoComplete={input.autoComplete || "off"} //Autocompletado//
                         />
                     )}
                 </div>

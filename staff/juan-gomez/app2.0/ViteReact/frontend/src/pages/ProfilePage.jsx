@@ -16,6 +16,10 @@ import '../index.css'
 
 //Define el componente funcional ProfilePage que recibe props de navegación//
 const ProfilePage = ({ navigation }) => {
+    //Estados para controlar visibilidad de contraseñas//
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
     //Obtiene la lista completa de usuarios//
     const users = getUsers()
 
@@ -328,40 +332,60 @@ const ProfilePage = ({ navigation }) => {
                         {errors.email && <span className="error-message">{errors.email}</span>}
                     </div>
 
-                    {/* Campo para nueva contraseña */}
+                    {/* Campo para nueva contraseña con toggle de visibilidad */}
                     <div className="form-group">
                         <label htmlFor="password">New Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className={errors.password ? 'error' : ''}
-                        />
+                        <div className="password-input-container">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className={errors.password ? 'error' : ''}
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={() => setShowPassword(!showPassword)}
+                                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                            >
+                                {showPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
+                            </button>
+                        </div>
                         {errors.password && <span className="error-message">{errors.password}</span>}
                     </div>
 
-                    {/* Campo para confirmar nueva contraseña */}
+                    {/* Campo para confirmar nueva contraseña con toggle de visibilidad */}
                     <div className="form-group">
                         <label htmlFor="confirmPassword">Confirm New Password:</label>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            className={errors.confirmPassword ? 'error' : ''}
-                        />
+                        <div className="password-input-container">
+                            <input
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                className={errors.confirmPassword ? 'error' : ''}
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                            >
+                                {showConfirmPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
+                            </button>
+                        </div>
                         {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
                     </div>
 
                     {/* Botones de acción */}
                     <div className="form-actions">
-                        <button type="submit" className="buttonJoin">Save Changes</button>
+                        <button type="submit" className="buttonSaveChanges">Save Changes</button>
                         <button
                             type="button"
-                            className="buttonGoToLogin"
+                            className="buttonCancel"
                             onClick={() => navigation.navigateToHome()}
                         >
                             Cancel

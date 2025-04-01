@@ -9,6 +9,9 @@ import '../index.css'
 
 //Define el componente LoginPage que recibe la prop navigation//
 const LoginPage = ({ navigation }) => {
+    //Estado para controlar visibilidad de contraseña//
+    const [showPassword, setShowPassword] = React.useState(false);
+
     //Función que maneja el envío del formulario de login//
     const handleSubmit = (formData) => {
         //Obtiene todos los usuarios registrados//
@@ -69,14 +72,34 @@ const LoginPage = ({ navigation }) => {
                         isRequired: true,
                         autoComplete: "email"
                     },
-                    //Campo de contraseña//
+                    //Campo de contraseña con toggle de visibilidad//
                     {
                         label: 'Password',
-                        inputType: 'password',
+                        inputType: showPassword ? 'text' : 'password',
                         inputPlaceholder: '*******',
                         inputId: 'password',
                         isRequired: true,
-                        autoComplete: "current-password"
+                        autoComplete: "current-password",
+                        //Input personalizado con botón de toggle//
+                        customInput: (
+                            <div className="password-input-container">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    placeholder="*******"
+                                    required
+                                    autoComplete="current-password"
+                                />
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                >
+                                    {showPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
+                                </button>
+                            </div>
+                        )
                     },
                     //Checkbox para recordar sesión//
                     {

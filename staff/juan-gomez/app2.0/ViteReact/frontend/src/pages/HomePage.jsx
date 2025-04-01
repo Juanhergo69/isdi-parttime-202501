@@ -338,7 +338,15 @@ const HomePage = ({ navigation }) => {
                             return (
                                 <div key={message.date} className="message">
                                     {/* Muestra información del autor */}
-                                    <div className="message-user">User: {(author && author.userName) || 'Unknown'}</div>
+                                    <div className="message-user">
+                                        User: <span
+                                            className="user-name-link"
+                                            onClick={() => navigation.navigateToBio(author.userName)}
+                                            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                        >
+                                            {(author && author.userName) || 'Unknown'}
+                                        </span>
+                                    </div>
 
                                     {/* Muestra título del mensaje */}
                                     <div className="message-title">Title: {message.title}</div>

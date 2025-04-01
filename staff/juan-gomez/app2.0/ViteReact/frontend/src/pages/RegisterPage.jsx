@@ -16,6 +16,10 @@ import '../index.css'
 
 //Componente de página de registro que recibe prop de navegación//
 const RegisterPage = ({ navigation }) => {
+    //Estados para controlar visibilidad de contraseñas//
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
     //Función que maneja el envío del formulario//
     const handleSubmit = (formData) => {
         //Valida formato de email//
@@ -82,7 +86,7 @@ const RegisterPage = ({ navigation }) => {
             {/* Título del formulario */}
             <h1 className="title">REGISTER</h1>
 
-            {/* Componente Form reutilizable */}
+            {/* Componente Form reutilizable con campos de contraseña personalizados */}
             <Form
                 inputsArray={[
                     //Campo para email//
@@ -94,23 +98,63 @@ const RegisterPage = ({ navigation }) => {
                         isRequired: true,
                         autoComplete: "email"
                     },
-                    //Campo para contraseña//
+                    //Campo para contraseña con toggle de visibilidad//
                     {
                         label: 'Password',
-                        inputType: 'password',
+                        inputType: showPassword ? 'text' : 'password',
                         inputPlaceholder: '*******',
                         inputId: 'password',
                         isRequired: true,
-                        autoComplete: "new-password"
+                        autoComplete: "new-password",
+                        //Input personalizado con botón de toggle//
+                        customInput: (
+                            <div className="password-input-container">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    placeholder="*******"
+                                    required
+                                    autoComplete="new-password"
+                                />
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                >
+                                    {showPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
+                                </button>
+                            </div>
+                        )
                     },
-                    //Campo para confirmar contraseña//
+                    //Campo para confirmar contraseña con toggle de visibilidad//
                     {
                         label: 'Confirm password',
-                        inputType: 'password',
+                        inputType: showConfirmPassword ? 'text' : 'password',
                         inputPlaceholder: '*******',
                         inputId: 'confirmation-password',
                         isRequired: true,
-                        autoComplete: "new-password"
+                        autoComplete: "new-password",
+                        //Input personalizado con botón de toggle//
+                        customInput: (
+                            <div className="password-input-container">
+                                <input
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    id="confirmation-password"
+                                    placeholder="*******"
+                                    required
+                                    autoComplete="new-password"
+                                />
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                                >
+                                    {showConfirmPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
+                                </button>
+                            </div>
+                        )
                     }
                 ]}
                 submitButtonText="Register"  //Texto del botón de envío//
