@@ -1,38 +1,68 @@
 //Importa la biblioteca React para crear componentes//
 import React from 'react'
 
+//Importa funciones useState y useEffect para crear estados y efectos//
+import { useState, useEffect } from 'react'
+
+//Importa el componente Link y useParams de react-router-dom para navegación//
+import { Link, useParams } from 'react-router-dom'
+
 //Importa funciones utilitarias específicas desde el archivo utils//
 import {
     getUsers,          //Obtiene lista de usuarios//
     getMessages,       //Obtiene todos los mensajes//
-    createModal        //Crea modales de notificación//
+    getLoggedUserId    //Obtiene ID del usuario logueado//
 } from '../utils/utils'
+
+//Importa funciones para manejar likes/dislikes//
+import { toggleLike, toggleDislike } from '../utils/data.js'
 
 //Importa estilos CSS//
 import '../index.css'
 
 
-//Define el componente funcional Bio que recibe props de navegación y userName//
-const Bio = ({ navigation, userName }) => {
+//Define el componente funcional Bio que recibe props de navegación//
+const BioPage = ({ navigation }) => {
+    //Obtiene el parámetro userName de la URL//
+    const { userName } = useParams()
+
     //Obtiene la lista completa de usuarios registrados//
     const users = getUsers()
+
+    //Obtiene el ID del usuario actualmente logueado//
+    const loggedUserId = getLoggedUserId()
 
     //Busca el usuario cuyo perfil se está viendo//
     const viewedUser = users.find(user => user.userName === userName)
 
-    //Obtiene todos los mensajes almacenados//
-    const allMessages = getMessages()
+    //Estado para almacenar y actualizar la lista de mensajes//
+    const [messages, setMessages] = useState(getMessages())
 
     //Filtra los mensajes para obtener solo los del usuario visto//
-    const userMessages = allMessages.filter(message => {
+    const userMessages = messages.filter(message => {
         const messageAuthor = users.find(user => user.id === message.userId)
         return messageAuthor && messageAuthor.userName === userName
     })
 
-    //Si no se encontró el usuario, muestra mensaje y redirige//
+    //Maneja el evento de like en un mensaje//
+    const handleLike = (messageId) => {
+        toggleLike(messageId, loggedUserId) //Llama a la función para alternar el like//
+        setMessages(getMessages()) //Actualiza la lista de mensajes//
+    }
+
+    //Maneja el evento de dislike en un mensaje//
+    const handleDislike = (messageId) => {
+        toggleDislike(messageId, loggedUserId) //Llama a la función para alternar el dislike//
+        setMessages(getMessages()) //Actualiza la lista de mensajes//
+    }
+
     if (!viewedUser) {
-        createModal('User not found', () => navigation.navigateToHome())
-        return null
+        //Usamos useEffect para redirigir después del renderizado inicial//
+        useEffect(() => {
+            navigation.navigateToNotFound()
+        }, [navigation]) //Dependencia: navigation//
+
+        return null //No renderiza nada mientras redirige//
     }
 
     //Renderizado del componente//
@@ -40,16 +70,20 @@ const Bio = ({ navigation, userName }) => {
         <div className="bioPageContainer">
             {/* Encabezado de la página */}
             <div className="bioHeaderContainer">
-                {/* Contenedor del logo */}
                 <div className="homeImgContainer">
-                    <img src="/Logo.jpg" className="homeImg" alt="Logo" />
+                    {/* Imagen del logo con clases para estilos y texto alternativo */}
+                    <img
+                        src="/Logo.jpg"       //Ruta de la imagen del logo//
+                        className="homeImg  " //Clase CSS para la imagen//
+                        alt="Logo"            //Texto alternativo para accesibilidad//
+                    />
                 </div>
-
                 {/* Título de la página */}
                 <h1 className="homeMsg">User Profile</h1>
 
-                {/* Botón para volver al home */}
-                <button
+                {/* Botón para volver a home - ahora con Link */}
+                <Link
+                    to="/home"
                     className="menuButton back-button"
                     onClick={() => navigation.navigateToHome()}
                     aria-label="Back to home"
@@ -57,7 +91,7 @@ const Bio = ({ navigation, userName }) => {
                     <div className="menuButton-content">
                         <i className="fas fa-arrow-left"></i>
                     </div>
-                </button>
+                </Link>
             </div>
 
             {/* Contenedor principal del perfil */}
@@ -89,6 +123,30 @@ const Bio = ({ navigation, userName }) => {
                     <div className="bioMsgContainer">
                         {userMessages.length > 0 ? (
                             userMessages.map((message) => {
+                                //Verifica si el usuario actual dio like/dislike a este mensaje//
+                                const hasLiked = message.likes && message.likes.includes(loggedUserId)
+                                const hasDisliked = message.dislikes && message.dislikes.includes(loggedUserId)
+
+                                //Cuenta los likes/dislikes//
+                                const likesCount = (message.likes && message.likes.length) || 0
+                                const dislikesCount = (message.dislikes && message.dislikes.length) || 0
+
+                                //Obtiene nombres de usuarios que dieron like//
+                                const likedUsers = message.likes
+                                    ? message.likes.map(likeUserId => {
+                                        const user = users.find(u => u.id === likeUserId)
+                                        return user ? user.userName : 'Unknown'
+                                    })
+                                    : []
+
+                                //Obtiene nombres de usuarios que dieron dislike//
+                                const dislikedUsers = message.dislikes
+                                    ? message.dislikes.map(dislikeUserId => {
+                                        const user = users.find(u => u.id === dislikeUserId)
+                                        return user ? user.userName : 'Unknown'
+                                    })
+                                    : []
+
                                 //Renderiza cada mensaje del usuario//
                                 return (
                                     <div key={message.date} className="message">
@@ -111,6 +169,63 @@ const Bio = ({ navigation, userName }) => {
 
                                         {/* Muestra fecha del mensaje */}
                                         <div className="message-date">Date: {message.date}</div>
+
+                                        {/* Contenedor de acciones (like/dislike) */}
+                                        <div className="message-actions">
+                                            {/* Contenedor y botón de like */}
+                                            <div className="like-container">
+                                                <button
+                                                    className="like-button"
+                                                    onClick={() => handleLike(message.date)}
+                                                    aria-label="Like"
+                                                >
+                                                    {/* Icono de like (lleno o vacío según estado) */}
+                                                    <i className={hasLiked ? "fas fa-thumbs-up" : "far fa-thumbs-up"}></i>
+
+                                                    {/* Contador de likes */}
+                                                    <span className="message-likes">({likesCount})</span>
+                                                </button>
+
+                                                {/* Tooltip con nombres de usuarios que dieron like */}
+                                                {likedUsers.length > 0 && (
+                                                    <div className="users-tooltip likes-tooltip">
+                                                        {likedUsers.slice(0, 3).join(', ')}
+                                                        {likedUsers.length > 3 && (
+                                                            <span className="users-count">
+                                                                {` and ${likedUsers.length - 3} more`}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Contenedor y botón de dislike */}
+                                            <div className="dislike-container">
+                                                <button
+                                                    className="dislike-button"
+                                                    onClick={() => handleDislike(message.date)}
+                                                    aria-label="Dislike"
+                                                >
+                                                    {/* Icono de dislike (lleno o vacío según estado) */}
+                                                    <i className={hasDisliked ? "fas fa-thumbs-down" : "far fa-thumbs-down"}></i>
+
+                                                    {/* Contador de dislikes */}
+                                                    <span className="message-dislikes">({dislikesCount})</span>
+                                                </button>
+
+                                                {/* Tooltip con nombres de usuarios que dieron dislike */}
+                                                {dislikedUsers.length > 0 && (
+                                                    <div className="users-tooltip dislikes-tooltip">
+                                                        {dislikedUsers.slice(0, 3).join(', ')}
+                                                        {dislikedUsers.length > 3 && (
+                                                            <span className="users-count">
+                                                                {` and ${dislikedUsers.length - 3} more`}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 )
                             })
@@ -125,4 +240,4 @@ const Bio = ({ navigation, userName }) => {
 }
 
 //Exporta el componente como exportación por defecto//
-export default Bio
+export default BioPage

@@ -86,3 +86,10 @@ export const toggleDislike = (messageId, userId) => {
         saveMessages(messages)
     }
 }
+
+//Función para manejar la eliminación de mensajes//
+export const deleteMessage = (messageId) => {
+    const messages = getMessages()
+    const updatedMessages = messages.filter(msg => msg.date !== messageId) //Filtra para excluir el mensaje cuyo campo date coincide con messageId//
+    localStorage.setItem('messages', JSON.stringify(updatedMessages))
+}

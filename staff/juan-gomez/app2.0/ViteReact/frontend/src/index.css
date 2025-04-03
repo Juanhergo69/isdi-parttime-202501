@@ -18,6 +18,146 @@
   /* Fondo con gradiente lineal de blanco a azul */
 }
 
+/* Elimina subrayado de todos los Links */
+a {
+  text-decoration: none;
+}
+
+/* Opcional: estilo para hover */
+a:hover {
+  text-decoration: none;
+}
+
+/* Estilos para la página 404 */
+
+/* Contenedor principal de la página 404 */
+.not-found-page {
+  display: flex;
+  /* Establece el display como flex para facilitar el centrado */
+  justify-content: center;
+  /* Centra horizontalmente los elementos hijos */
+  align-items: center;
+  /* Centra verticalmente los elementos hijos */
+  height: 100vh;
+  /* Ocupa el 100% del alto de la ventana (viewport height) */
+  width: 100%;
+  /* Ocupa el 100% del ancho disponible */
+  background-color: #f8f9fa;
+  /* Color de fondo de respaldo */
+  padding: 20px;
+  /* Espaciado interno de 20px en todos los lados */
+  text-align: center;
+  /* Alinea el texto al centro */
+  background: linear-gradient(500deg, white, rgb(0, 142, 182));
+  /* Fondo con gradiente lineal */
+}
+
+/* Contenedor del contenido de la página 404 */
+.not-found-content {
+  max-width: 500px;
+  /* Ancho máximo del contenedor */
+  width: 100%;
+  /* Ancho del 100% dentro del max-width */
+  padding: 40px;
+  /* Espaciado interno generoso */
+  background: white;
+  /* Fondo blanco */
+  border-radius: 12px;
+  /* Bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  /* Sombra suave */
+  border: 1px solid rgb(0, 142, 182);
+  /* Borde de 2px (nota: falta 'solid' para ser válido) */
+}
+
+/* Contenedor de la imagen/icono */
+.not-found-image {
+  margin-bottom: 24px;
+  /* Margen inferior para separar del título */
+}
+
+/* Estilos para el SVG (icono) */
+.not-found-image svg {
+  width: 100px;
+  /* Ancho del icono */
+  height: 100px;
+  /* Alto del icono */
+  color: #dc3545;
+  /* Color rojo para el icono */
+}
+
+/* Estilos para el título */
+.not-found-title {
+  color: #dc3545;
+  /* Color rojo */
+  margin-bottom: 16px;
+  /* Margen inferior */
+  font-size: 2rem;
+  /* Tamaño de fuente grande */
+  font-family: 'Zen Dots';
+  /* Fuente personalizada */
+}
+
+/* Estilos para el mensaje descriptivo */
+.not-found-message {
+  color: #6c757d;
+  /* Color gris para el texto */
+  margin-bottom: 32px;
+  /* Margen inferior grande */
+  font-size: 1.1rem;
+  /* Tamaño de fuente ligeramente aumentado */
+  font-family: 'Tektur';
+  /* Fuente personalizada */
+}
+
+/* Contenedor para los botones de acción */
+.not-found-actions {
+  display: flex;
+  /* Display flex para alinear botones */
+  gap: 16px;
+  /* Espacio entre botones */
+  justify-content: center;
+  /* Centra los botones horizontalmente */
+  flex-wrap: wrap;
+  /* Permite que los botones se envuelvan en pantallas pequeñas */
+}
+
+/* Estilos base para botones primarios (consistentes con la app) */
+.not-found-button {
+  display: inline-flex;
+  /* Display flex inline */
+  align-items: center;
+  /* Centra los elementos verticalmente */
+  gap: 8px;
+  /* Espacio entre icono y texto */
+  padding: 10px 20px;
+  /* Relleno interno */
+  background-color: black;
+  /* Fondo negro */
+  color: white;
+  /* Texto blanco */
+  border-radius: 20px;
+  /* Bordes muy redondeados (pastilla) */
+  text-decoration: none;
+  /* Quita subrayado de enlaces */
+  transition: background-color 0.3s ease;
+  /* Transición suave para color de fondo */
+  transition: transform 0.3s ease;
+  /* Transición suave para transformaciones */
+  font-family: 'Zen Dots';
+  /* Fuente personalizada */
+  font-size: 1rem;
+  /* Tamaño de fuente base */
+}
+
+/* Efectos hover para botones primarios */
+.not-found-button:hover {
+  background-color: rgb(0, 142, 182);
+  /* Cambia color de fondo al azul */
+  transform: scale(1.05);
+  /* Efecto de escala (agrandamiento) al pasar el mouse */
+}
+
 /* Contenedor de la página de inicio (Landing) */
 .landingContainer {
   display: flex;
@@ -376,7 +516,7 @@
 
 /* Estilos para botones del menú desplegable */
 .profileButton,
-.settingsButton,
+.messagesButton,
 .logoutButton {
   display: flex;
   /* Activa flexbox */
@@ -414,7 +554,7 @@
 
 /* Efecto hover para botones del menú */
 .profileButton:hover,
-.settingsButton:hover,
+.messagesButton:hover,
 .logoutButton:hover {
   background-color: rgb(0, 142, 182);
   /* Cambia color de fondo a azul */
@@ -1365,6 +1505,7 @@
   /* Centra elementos verticalmente */
   gap: 4px;
   /* Espacio de 4px entre elementos */
+  font-family: 'Tektur';
 }
 
 /* Estilo para icono de like vacío */
@@ -1721,7 +1862,7 @@
 
 /* Grupo de campos en formulario */
 .form-group {
-  margin-bottom: 0.1rem;
+  margin-bottom: -0.5rem;
   /* Margen inferior de 0.1rem */
   width: 100%;
   /* Ancho del 100% */
@@ -1801,8 +1942,7 @@
   /* Fuente personalizada */
   transition: transform 0.3s ease;
   /* Transición suave de transformación */
-  margin-top: 0.1rem;
-  /* Margen superior de 0.1rem */
+  margin-bottom: -2rem;
 }
 
 .buttonSaveChanges:hover,
@@ -1811,6 +1951,37 @@
   /* Cambia color de fondo a azul */
   transform: scale(1.05);
   /* Escala el botón al 105% */
+}
+
+.delete-account-section {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid grey;
+  text-align: center;
+}
+
+.buttonDeleteAccount {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  border-radius: 20px;
+  font-family: 'Zen Dots';
+  transition: transform 0.3s ease;
+  margin-top: -1rem;
+}
+
+.buttonDeleteAccount:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
+}
+
+.buttonDeleteAccount i {
+  margin-right: 8px;
 }
 
 /* Mensaje de error */
@@ -1835,7 +2006,7 @@
   /* Distribuye espacio entre elementos */
   gap: 0.7rem;
   /* Espacio de 0.7rem entre elementos */
-  margin-top: 1.1rem;
+  margin-top: 0.5rem;
   /* Margen superior de 1.1rem */
 }
 
@@ -1843,6 +2014,160 @@
 .form-actions button {
   flex: 1;
   /* Ocupa espacio disponible equitativamente */
+}
+
+/* Contenedor principal - Aseguramos el flujo normal */
+.messagesPageContainer {
+  display: block;
+  /* Cambiado de flex a block */
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(500deg, white, rgb(0, 142, 182));
+  position: relative;
+}
+
+/* Header - Posición absoluta en la parte superior */
+.messagesHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px 40px;
+  position: absolute;
+  /* Cambiado a absoluto */
+  top: 16px;
+  left: 0;
+  z-index: 10;
+  background: none;
+}
+
+.messagesFormContainer {
+  display: flex;
+  /* Activa flexbox */
+  justify-content: center;
+  /* Centra elementos horizontalmente */
+  padding: 2rem;
+  /* Relleno interno de 2rem */
+  margin-top: 8.8rem;
+  /* Margen superior de 2rem */
+  width: 100%
+}
+
+/* Formulario - Mantenemos estilos de BioPage pero con ajustes */
+.messagesForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border: 1px solid rgb(0, 142, 182);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgb(0, 142, 182);
+  padding: 20px;
+  width: 700px;
+  max-height: 700px;
+  margin: 20px 0;
+}
+
+/* Contenedor de mensajes con scroll */
+.messagesMsgContainer {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: white;
+  overflow-y: auto;
+  max-height: 600px;
+  margin-top: -2rem;
+}
+
+/* Personalización de scrollbar (igual a BioPage) */
+.messagesMsgContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messagesMsgContainer::-webkit-scrollbar-thumb {
+  background-color: black;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.messagesMsgContainer::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 5px;
+}
+
+.messagesMsgContainer::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(0, 142, 182);
+  transform: scale(1.02);
+  cursor: grab;
+}
+
+/* Estilos específicos para los mensajes en MessagesPage */
+.message-stats {
+  display: flex;
+  gap: 15px;
+  margin: 10px 0;
+}
+
+.message-stats div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  font-family: 'Tektur';
+}
+
+.message-stats i {
+  color: rgb(0, 142, 182);
+}
+
+.like-stats,
+.dislike-stats {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  font-family: 'Tektur';
+  font-size: 1.5rem;
+}
+
+.delete-message-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Zen Dots';
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  border-radius: 20px;
+}
+
+.delete-message-button:hover {
+  background-color: #e60000;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.delete-message-button i {
+  font-size: 0.9rem;
+}
+
+/* Contenedor de página de biografía */
+.bioPageContainer {
+  display: flex;
+  /* Activa flexbox */
+  flex-direction: column;
+  /* Organiza elementos en columna */
+  height: 100vh;
+  /* Altura mínima del 100% del viewport */
+  width: 100%;
+  /* Ancho del 100% */
+  overflow: hidden;
 }
 
 .bioHeaderContainer {
@@ -1860,19 +2185,6 @@
   /* Relleno interno de 40px */
   margin-top: 3rem;
   /* Margen superior de 3rem */
-}
-
-/* Contenedor de página de biografía */
-.bioPageContainer {
-  display: flex;
-  /* Activa flexbox */
-  flex-direction: column;
-  /* Organiza elementos en columna */
-  height: 100vh;
-  /* Altura mínima del 100% del viewport */
-  width: 100%;
-  /* Ancho del 100% */
-  overflow: hidden;
 }
 
 /* Contenedor de formulario de biografía */
@@ -1980,7 +2292,7 @@
   /* Organiza elementos en columna */
   align-items: center;
   /* Centra elementos horizontalmente */
-  margin-bottom: 1.8rem;
+  margin-bottom: 2rem;
   /* Margen inferior de 1.8rem */
   gap: 0.1rem;
   /* Espacio de 0.1rem entre elementos */

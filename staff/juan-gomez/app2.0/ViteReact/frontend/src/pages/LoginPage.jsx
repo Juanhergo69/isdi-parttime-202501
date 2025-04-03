@@ -1,16 +1,25 @@
 //Importa la librería React para crear componentes//
 import React from 'react'
+
+//Importa función useState para crear estados//
+import { useState } from 'react'
+
+//Importa el componente Link de react-router-dom para navegación//
+import { Link } from 'react-router-dom'
+
 //Importa funciones utilitarias para obtener usuarios y mostrar modales//
 import { getUsers, createModal } from '../utils/utils'
+
 //Importa el componente Form para reutilizar el formulario//
 import Form from '../components/Forms'
+
 //Importa los estilos CSS//
 import '../index.css'
 
 //Define el componente LoginPage que recibe la prop navigation//
 const LoginPage = ({ navigation }) => {
     //Estado para controlar visibilidad de contraseña//
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     //Función que maneja el envío del formulario de login//
     const handleSubmit = (formData) => {
@@ -49,13 +58,14 @@ const LoginPage = ({ navigation }) => {
     return (
         //Contenedor principal del formulario de login//
         <div className="loginForm">
-            {/* Botón con logo para volver a la página de inicio */}
-            <button
+            {/* Botón con logo para volver a la página de inicio - ahora con Link */}
+            <Link
+                to="/"
                 className="imgButton"
                 onClick={navigation.navigateToLanding}
             >
                 <img src="/Logo.jpg" alt="Home" />
-            </button>
+            </Link>
 
             {/* Título del formulario */}
             <h1 className="title">LOGIN</h1>
@@ -116,13 +126,14 @@ const LoginPage = ({ navigation }) => {
             {/* Mensaje para usuarios sin cuenta */}
             <h4 className="loginMsg">You don't have an account?</h4>
 
-            {/* Botón para redirigir al registro */}
-            <button
+            {/* Botón para redirigir al registro - ahora con Link */}
+            <Link
+                to="/register"
                 className="buttonGoToRegister"
                 onClick={navigation.navigateToRegister}
             >
                 Register now!
-            </button>
+            </Link>
         </div>
     )
 }

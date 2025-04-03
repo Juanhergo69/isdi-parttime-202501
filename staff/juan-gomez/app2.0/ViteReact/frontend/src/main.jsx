@@ -4,6 +4,9 @@ import React from 'react'
 //Importa ReactDOM desde el paquete react-dom/client para renderizado en el cliente//
 import ReactDOM from 'react-dom/client'
 
+//Importa BrowserRouter de react-router-dom para el enrutamiento//
+import { BrowserRouter } from 'react-router-dom'
+
 //Importa el componente principal App de tu aplicación//
 import App from './App'
 
@@ -16,7 +19,13 @@ ReactDOM.createRoot(document.getElementById('app'))
   .render(
     //<React.StrictMode> es un componente que ayuda a detectar problemas potenciales//
     <React.StrictMode>
-      {/* Componente principal de la aplicación */}
-      <App />
+      {/* 
+        BrowserRouter provee el contexto de enrutamiento a toda la aplicación
+        Permite la navegación mediante URLs sin recargar la página
+      */}
+      <BrowserRouter>
+        {/* Componente principal de la aplicación */}
+        <App />
+      </BrowserRouter>
     </React.StrictMode>
   )

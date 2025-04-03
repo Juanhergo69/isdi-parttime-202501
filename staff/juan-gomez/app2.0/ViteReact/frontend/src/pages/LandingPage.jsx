@@ -1,5 +1,9 @@
 //Importa la librería React para poder crear componentes//
 import React from 'react'
+
+//Importa el componente Link de react-router-dom para navegación//
+import { Link } from 'react-router-dom'
+
 //Importa los estilos CSS para esta página//
 import '../index.css'
 
@@ -21,13 +25,14 @@ const LandingPage = ({ navigation }) => {
                 Welcome to your social developer network
             </h3>
 
-            {/* Botón para unirse/registrarse */}
-            <button
-                className="buttonJoin"  //Clase CSS para estilos del botón//
+            {/* Botón para unirse/registrarse - ahora usando Link */}
+            <Link
+                to="/register"         //Ruta a la página de registro//
+                className="buttonJoin" //Clase CSS para estilos del botón//
                 onClick={navigation.navigateToRegister} //Función que se ejecuta al hacer clic//
             >
                 Join In!   {/*Texto del botón*/}
-            </button>
+            </Link>
         </div>
     )
 }

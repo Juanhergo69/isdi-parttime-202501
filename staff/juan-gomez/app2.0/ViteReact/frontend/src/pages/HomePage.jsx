@@ -1,6 +1,12 @@
 //Importa la biblioteca React para crear componentes//
 import React from 'react'
 
+//Importa funciones useState y useEffect para crear estados y efectos//
+import { useState, useEffect } from 'react'
+
+//Importa el componente Link de react-router-dom para navegación//
+import { Link } from 'react-router-dom'
+
 //Importa funciones específicas para manejar likes/dislikes y almacenar mensajes desde un archivo de datos//
 import { toggleLike, toggleDislike, storeMsg } from '../utils/data.js'
 
@@ -13,19 +19,19 @@ import '../index.css'
 //Define el componente funcional HomePage que recibe props de navegación//
 const HomePage = ({ navigation }) => {
     //Estado para controlar la visibilidad del menú desplegable del usuario//
-    const [showMenu, setShowMenu] = React.useState(false)
+    const [showMenu, setShowMenu] = useState(false)
 
     //Estado para controlar la visibilidad del formulario de mensaje//
-    const [showMsgForm, setShowMsgForm] = React.useState(false)
+    const [showMsgForm, setShowMsgForm] = useState(false)
 
     //Estado para almacenar y actualizar la lista de mensajes//
-    const [messages, setMessages] = React.useState(getMessages())
+    const [messages, setMessages] = useState(getMessages())
 
     //Estado para guardar la imagen seleccionada para un nuevo mensaje//
-    const [selectedImage, setSelectedImage] = React.useState(null)
+    const [selectedImage, setSelectedImage] = useState(null)
 
     //Estado para mostrar una vista previa de la imagen seleccionada//
-    const [imagePreview, setImagePreview] = React.useState(null)
+    const [imagePreview, setImagePreview] = useState(null)
 
     //Obtiene la lista completa de usuarios registrados//
     const users = getUsers()
@@ -37,7 +43,7 @@ const HomePage = ({ navigation }) => {
     const loggedUser = users.find(user => user.id === loggedUserId)
 
     //Efecto secundario para cerrar el menú al hacer clic fuera de él//
-    React.useEffect(() => {
+    useEffect(() => {
         //Función que maneja el clic fuera del menú//
         const handleClickOutside = (e) => {
             //Verifica si el clic fue fuera del menú y sus botones//
@@ -166,9 +172,12 @@ const HomePage = ({ navigation }) => {
             <div className="homeHeaderContainer">
                 {/* Contenedor de logo y botón de nuevo post */}
                 <div className="homeImgContainer">
-                    {/* Logo de la aplicación */}
-                    <img src="/Logo.jpg" className="homeImg" alt="Logo" />
-
+                    {/* Imagen del logo con clases para estilos y texto alternativo */}
+                    <img
+                        src="/Logo.jpg"       //Ruta de la imagen del logo//
+                        className="homeImg  " //Clase CSS para la imagen//
+                        alt="Logo"            //Texto alternativo para accesibilidad//
+                    />
                     {/* Botón para mostrar/ocultar el formulario de mensaje */}
                     <button
                         className="toggleSendMsgFormButton"
@@ -177,7 +186,6 @@ const HomePage = ({ navigation }) => {
                         {showMsgForm ? 'Hide Form' : 'New Post'}
                     </button>
                 </div>
-
                 {/* Mensaje de bienvenida con nombre de usuario */}
                 <h1 className="homeMsg">Welcome, {(loggedUser && loggedUser.userName) || 'User'}</h1>
 
@@ -207,15 +215,29 @@ const HomePage = ({ navigation }) => {
                 {/* Menú desplegable cuando está visible */}
                 {showMenu && (
                     <div className="menuDropContainer">
-                        {/* Botón para ir al perfil */}
-                        <button className="profileButton" onClick={() => navigation.navigateToProfile()}>
+                        {/* Botón para ir al perfil - ahora con Link */}
+                        <Link
+                            to="/profile"
+                            className="profileButton"
+                            onClick={() => {
+                                navigation.navigateToProfile();
+                                setShowMenu(false);
+                            }}
+                        >
                             <i className="fas fa-user"></i> Profile
-                        </button>
+                        </Link>
 
-                        {/* Botón de configuración (no implementado) */}
-                        <button className="settingsButton" onClick={() => createModal('Settings page not implemented')}>
-                            <i className="fas fa-cog"></i> Settings
-                        </button>
+                        {/* Botón para ir a mensajes - ahora con Link */}
+                        <Link
+                            to="/messages"
+                            className="messagesButton"
+                            onClick={() => {
+                                navigation.navigateToMessages();
+                                setShowMenu(false);
+                            }}
+                        >
+                            <i className="fas fa-envelope"></i> My Msg
+                        </Link>
 
                         {/* Botón para cerrar sesión */}
                         <button className="logoutButton" onClick={handleLogout}>
@@ -430,7 +452,7 @@ const HomePage = ({ navigation }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

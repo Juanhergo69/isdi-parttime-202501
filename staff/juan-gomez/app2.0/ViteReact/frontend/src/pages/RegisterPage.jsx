@@ -1,5 +1,12 @@
 //Importa la librería React para crear componentes//
 import React from 'react'
+
+//Importa función useState para crear estados//
+import { useState } from 'react'
+
+//Importa el componente Link de react-router-dom para navegación//
+import { Link } from 'react-router-dom'
+
 //Importa funciones utilitarias desde utils.js//
 import {
     getUsers,                //Obtiene lista de usuarios registrados//
@@ -9,16 +16,18 @@ import {
     validatePassword,        //Valida fortaleza de contraseña//  
     createModal              //Muestra ventanas modales//
 } from '../utils/utils'
+
 //Importa componente Form reutilizable//
 import Form from '../components/Forms'
+
 //Importa estilos CSS//
 import '../index.css'
 
 //Componente de página de registro que recibe prop de navegación//
 const RegisterPage = ({ navigation }) => {
     //Estados para controlar visibilidad de contraseñas//
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     //Función que maneja el envío del formulario//
     const handleSubmit = (formData) => {
@@ -75,13 +84,14 @@ const RegisterPage = ({ navigation }) => {
     //Renderizado del componente//
     return (
         <div className="registerForm">
-            {/* Botón con logo para volver a landing */}
-            <button
+            {/* Botón con logo para volver a landing - ahora con Link */}
+            <Link
+                to="/"
                 className="imgButton"
                 onClick={navigation.navigateToLanding}
             >
                 <img src="/Logo.jpg" alt="Home" />
-            </button>
+            </Link>
 
             {/* Título del formulario */}
             <h1 className="title">REGISTER</h1>
@@ -164,13 +174,14 @@ const RegisterPage = ({ navigation }) => {
             {/* Mensaje para usuarios registrados */}
             <h4 className="registerMsg">Have you an account?</h4>
 
-            {/* Botón para ir al login */}
-            <button
+            {/* Botón para ir al login - ahora con Link */}
+            <Link
+                to="/login"
                 className="buttonGoToLogin"
                 onClick={navigation.navigateToLogin}
             >
                 Go to login
-            </button>
+            </Link>
         </div>
     )
 }

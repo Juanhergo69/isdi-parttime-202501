@@ -1,6 +1,12 @@
 //Importa la biblioteca React para crear componentes//
 import React from 'react'
 
+//Importa funciones useState y useEffect para crear estados y efectos//
+import { useState, useEffect } from 'react'
+
+//Importa el componente Link de react-router-dom para navegación//
+import { Link } from 'react-router-dom'
+
 //Importa funciones utilitarias específicas desde el archivo utils//
 import {
     getUsers,          //Obtiene lista de usuarios//
@@ -8,7 +14,9 @@ import {
     validateEmail,     //Valida formato de email//
     validatePassword,  //Valida fortaleza de contraseña//
     createModal,       //Crea modales de notificación//
-    getLoggedUserId    //Obtiene ID del usuario logueado//
+    getLoggedUserId,   //Obtiene ID del usuario logueado//
+    getMessages,       //Obtiene lista de mensajes//
+    saveMessages,      //Guarda mensajes en almacenamiento//
 } from '../utils/utils'
 
 //Importa estilos CSS//
@@ -17,8 +25,8 @@ import '../index.css'
 //Define el componente funcional ProfilePage que recibe props de navegación//
 const ProfilePage = ({ navigation }) => {
     //Estados para controlar visibilidad de contraseñas//
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     //Obtiene la lista completa de usuarios//
     const users = getUsers()
@@ -30,7 +38,7 @@ const ProfilePage = ({ navigation }) => {
     const loggedUser = users.find(user => user.id === loggedUserId)
 
     //Estado para manejar los datos del formulario con valores iniciales//
-    const [formData, setFormData] = React.useState({
+    const [formData, setFormData] = useState({
         userName: (loggedUser && loggedUser.userName) || '',       //Nombre de usuario o cadena vacía//
         email: (loggedUser && loggedUser.email) || '',             //Email o cadena vacía//
         password: '',                                              //Contraseña vacía por defecto//
@@ -38,19 +46,19 @@ const ProfilePage = ({ navigation }) => {
     })
 
     //Estado para manejar errores de validación//
-    const [errors, setErrors] = React.useState({})
+    const [errors, setErrors] = useState({})
 
     //Estado para la imagen seleccionada (nueva)//
-    const [selectedImage, setSelectedImage] = React.useState(null)
+    const [selectedImage, setSelectedImage] = useState(null)
 
     //Estado para la vista previa de imagen (avatar actual o nuevo)//
-    const [imagePreview, setImagePreview] = React.useState(loggedUser?.avatar || null)
+    const [imagePreview, setImagePreview] = useState(loggedUser?.avatar || null)
 
     //Estado para controlar redirección explícita//
-    const [shouldRedirect, setShouldRedirect] = React.useState(false)
+    const [shouldRedirect, setShouldRedirect] = useState(false)
 
     //Efecto para manejar redirección//
-    React.useEffect(() => {
+    useEffect(() => {
         if (shouldRedirect) {
             navigation.navigateToHome() //Redirige a Home solo cuando shouldRedirect es true//
         }
@@ -102,8 +110,8 @@ const ProfilePage = ({ navigation }) => {
 
     //Elimina la imagen seleccionada//
     const removeImage = () => {
-        setSelectedImage(null) //Limpia la imagen seleccionada//
-        setImagePreview(null) //Limpia la vista previa//
+        setSelectedImage(null)                              //Limpia la imagen seleccionada//
+        setImagePreview(null)                               //Limpia la vista previa//
         document.getElementById('avatar-upload').value = '' //Resetea el input de archivo//
     }
 
@@ -172,9 +180,9 @@ const ProfilePage = ({ navigation }) => {
 
         //Función para guardar el perfil y manejar la redirección//
         const saveProfile = (usersToSave) => {
-            saveUsers(usersToSave) //Guarda los usuarios actualizados//
+            saveUsers(usersToSave)                                  //Guarda los usuarios actualizados//
             createModal('Profile updated successfully!', () => {
-                setShouldRedirect(true) //Activa la redirección después de cerrar el modal//
+                setShouldRedirect(true)                             //Activa la redirección después de cerrar el modal//
             })
         }
 
@@ -223,21 +231,68 @@ const ProfilePage = ({ navigation }) => {
         }
     }
 
+    //Función para borrar completamente la cuenta del usuario//
+    const handleDeleteAccount = () => {
+
+        //Confirmación antes de borrar la cuenta//
+        const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.')
+
+        if (confirmDelete) {
+            //1.Obtener datos actuales//
+            const users = getUsers()
+            const messages = getMessages()
+            const loggedUserId = getLoggedUserId()
+
+            //2.Eliminar al usuario de la lista de usuarios//
+            const updatedUsers = users.filter(user => user.id !== loggedUserId)
+            saveUsers(updatedUsers)
+
+            //3.Eliminar todos los mensajes del usuario//
+            const updatedMessages = messages.filter(message => message.userId !== loggedUserId)
+            saveMessages(updatedMessages)
+
+            //4.Eliminar likes/dislikes del usuario en los mensajes restantes//
+            const finalMessages = updatedMessages.map(message => {
+                return {
+                    ...message,
+                    likes: message.likes.filter(like => like !== loggedUserId),
+                    dislikes: message.dislikes.filter(dislike => dislike !== loggedUserId)
+                }
+            })
+            saveMessages(finalMessages)
+
+            //5.Limpiar el almacenamiento local/sesión//
+            localStorage.removeItem('id')
+            sessionStorage.removeItem('id')
+
+            //6.Redirigir a la página de inicio//
+            createModal('Account deleted successfully', () => {
+                navigation.navigateTo('RegisterPage')
+            })
+        }
+    }
+
     //Renderizado del componente//
     return (
         <div className="profilePageContainer">
             {/* Encabezado de la página */}
             <div className="homeHeaderContainer">
-                {/* Contenedor del logo */}
+                {/* Contenedor del logo - ahora con Link */}
                 <div className="homeImgContainer">
-                    <img src="/Logo.jpg" className="homeImg" alt="Logo" />
+                    {/* Imagen del logo con clases para estilos y texto alternativo */}
+                    <img
+                        src="/Logo.jpg"       //Ruta de la imagen del logo//
+                        className="homeImg  " //Clase CSS para la imagen//
+                        alt="Logo"            //Texto alternativo para accesibilidad//
+                    />
                 </div>
 
                 {/* Título de la página */}
                 <h1 className="homeMsg">Edit Profile</h1>
 
-                {/* Botón para volver al home */}
-                <button
+                {/* Botón para volver a home - ahora con Link */}
+                <Link
+                    to="/home"
                     className="menuButton back-button"
                     onClick={() => navigation.navigateToHome()}
                     aria-label="Back to home"
@@ -245,9 +300,8 @@ const ProfilePage = ({ navigation }) => {
                     <div className="menuButton-content">
                         <i className="fas fa-arrow-left"></i>
                     </div>
-                </button>
+                </Link>
             </div>
-
             {/* Contenedor principal del formulario */}
             <div className="profileFormContainer">
                 <form onSubmit={handleSubmit} className="form">
@@ -389,6 +443,17 @@ const ProfilePage = ({ navigation }) => {
                             onClick={() => navigation.navigateToHome()}
                         >
                             Cancel
+                        </button>
+                    </div>
+
+                    {/* Botón para eliminar cuenta */}
+                    <div className="delete-account-section">
+                        <button
+                            type="button"
+                            className="buttonDeleteAccount"
+                            onClick={handleDeleteAccount}
+                        >
+                            <i className="fas fa-trash-alt"></i> Delete Account
                         </button>
                     </div>
                 </form>
