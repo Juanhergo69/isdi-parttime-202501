@@ -1,0 +1,322 @@
+/* Botón con imagen */
+.imgButton {
+    background: transparent;
+    /* Fondo transparente */
+    border: none;
+    /* Sin bordes */
+    padding: 0;
+    /* Sin relleno */
+    display: inline-block;
+    /* Display inline-block */
+}
+
+/* Estilo para imagen en botón */
+.imgButton img {
+    width: 100px;
+    /* Ancho fijo de 100px */
+    height: auto;
+    /* Altura automática */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+    margin-bottom: 20px;
+    /* Margen inferior de 20px */
+}
+
+/* Efecto hover para imagen en botón */
+.imgButton img:hover {
+    transform: scale(1.05);
+    /* Escala la imagen al 105% */
+}
+
+/* Estilos generales para formularios */
+.form {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: stretch;
+    /* Estira elementos para llenar el contenedor */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    background-color: white;
+    /* Fondo blanco */
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    padding: 20px;
+    /* Relleno interno de 20px */
+    width: 100%;
+    /* Ancho del 100% */
+    max-width: 400px;
+    /* Ancho máximo de 400px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    color: black;
+    /* Color de texto negro */
+    gap: 0.5rem;
+    /* Espacio de 0.5rem entre elementos */
+}
+
+/* Estilos para labels en formularios */
+.form label {
+    display: block;
+    /* Display block */
+    text-align: center;
+    /* Alineación de texto centrada */
+    margin-bottom: 8px;
+    /* Margen inferior de 8px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    display: block;
+    /* Display block (redundante) */
+}
+
+/* Inputs de email y password */
+.form input[type='email'],
+.form input[type='password'],
+.form input[type='text'] {
+    outline: none;
+    /* Elimina el contorno al enfocar */
+    width: 100%;
+    /* Ancho del 100% */
+    padding: 10px;
+    /* Relleno interno de 10px */
+    border: 2px solid black;
+    /* Borde negro de 2px */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    background-color: white;
+    /* Fondo blanco */
+    margin-bottom: 10px;
+    /* Margen inferior de 10px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+}
+
+/* Efecto hover para inputs */
+.form input[type='email']:hover,
+.form input[type='password']:hover,
+.form input[type='text']:hover {
+    border-color: rgb(0, 142, 182);
+    /* Cambia color de borde a azul */
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el input */
+}
+
+/* Botón de submit en formularios */
+.form input[type="submit"] {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 10px 20px;
+    /* Relleno interno de 10px arriba/abajo y 20px izquierda/derecha */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    display: inline-block;
+    /* Display inline-block */
+    width: auto;
+    /* Ancho automático */
+    margin: 0 auto;
+    /* Margen automático (centrado horizontal) */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    /* Transiciones suaves */
+}
+
+/* Efecto hover para botón de submit */
+.form input[type="submit"]:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color de fondo a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+.registerMsg {
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    color: black;
+    /* Color de texto negro */
+    text-align: center;
+    /* Alineación de texto centrada */
+    margin: 0 auto;
+    /* Margen automático (centrado horizontal) */
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+}
+
+/* Formularios de registro y login */
+.registerForm {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: center;
+    /* Centra elementos horizontalmente */
+    gap: 1rem;
+    /* Espacio de 1rem entre elementos */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+    border-radius: 15px;
+    /* Bordes redondeados de 15px */
+    background-color: white;
+    /* Fondo blanco */
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    padding: 20px;
+    /* Relleno interno de 20px */
+    width: 100%;
+    /* Ancho del 100% */
+    max-width: 400px;
+    /* Ancho máximo de 400px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    margin: auto;
+    /* Centrado automático */
+    position: relative;
+    /* Posicionamiento relativo */
+    top: 2%;
+    /* Posición desde arriba del 2% */
+    transform: translateY(-2%);
+    /* Ajuste fino de posición vertical */
+}
+
+/* Placeholder para formularios */
+.registerForm ::placeholder {
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+    font-size: 22px;
+    /* Tamaño de fuente de 22px */
+}
+
+.buttonGoToLogin {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 8px 16px;
+    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    transition: background-color 0.3s ease;
+    /* Transición suave del color de fondo */
+    width: auto;
+    /* Ancho automático */
+    max-width: 200px;
+    /* Ancho máximo de 200px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+}
+
+/* Efecto hover para botones principales */
+.buttonGoToLogin:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color de fondo a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+/* Estilos para el campo de contraseña con toggle */
+.password-input-container {
+    position: relative;
+    /* Posicionamiento relativo */
+    width: 100%;
+    /* Ancho del 100% */
+    margin-bottom: 10px;
+    /* Margen inferior de 10px */
+}
+
+.password-input-container input {
+    width: 100%;
+    /* Ancho del 100% */
+    padding: 10px 40px 10px 10px;
+    /* Relleno interno con espacio para el icono */
+    border: 2px solid black;
+    /* Borde negro de 2px */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+    background-color: white;
+    /* Fondo blanco */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    box-sizing: border-box;
+    /* Modelo de caja border-box */
+    outline: none;
+    /* Elimina el contorno al enfocar */
+}
+
+/* Efecto hover para campos de contraseña */
+.password-input-container input:hover {
+    border-color: rgb(0, 142, 182);
+    /* Cambia color de borde a azul */
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el input */
+}
+
+/* Estilo para el botón de toggle de contraseña */
+.password-toggle {
+    position: absolute;
+    /* Posicionamiento absoluto */
+    right: 10px;
+    /* Posición desde la derecha de 10px */
+    top: 50%;
+    /* Posición desde arriba del 50% */
+    transform: translateY(-50%);
+    /* Centrado vertical */
+    background: none;
+    /* Sin fondo */
+    border: none;
+    /* Sin bordes */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    color: #666;
+    /* Color gris */
+    font-size: 1.2rem;
+    /* Tamaño de fuente de 1.2rem */
+    padding: 5px;
+    /* Relleno interno de 5px */
+    z-index: 2;
+    /* Nivel de apilamiento */
+}
+
+/* Efecto hover para el botón de toggle */
+.password-toggle:hover {
+    color: rgb(0, 142, 182);
+    /* Cambia color a azul */
+}

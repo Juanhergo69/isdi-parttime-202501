@@ -11,7 +11,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 
 //Importa los estilos globales CSS para toda la aplicación//
-import './index.css'
+import '../src/styles/base/generals.css'
 
 //Crea un root (raíz) de React en el elemento con id 'app' del DOM//
 ReactDOM.createRoot(document.getElementById('app'))

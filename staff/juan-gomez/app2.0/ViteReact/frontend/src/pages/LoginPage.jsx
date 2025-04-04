@@ -14,7 +14,7 @@ import { getUsers, createModal } from '../utils/utils'
 import Form from '../components/Forms'
 
 //Importa los estilos CSS//
-import '../index.css'
+import '../styles/pages/loginPage.css'
 
 //Define el componente LoginPage que recibe la prop navigation//
 const LoginPage = ({ navigation }) => {

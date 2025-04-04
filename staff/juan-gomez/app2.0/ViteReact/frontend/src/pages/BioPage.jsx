@@ -18,7 +18,7 @@ import {
 import { toggleLike, toggleDislike } from '../utils/data.js'
 
 //Importa estilos CSS//
-import '../index.css'
+import '../styles/pages/bioPage.css'
 
 
 //Define el componente funcional Bio que recibe props de navegación//

@@ -5,7 +5,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 //Importa los estilos CSS asociados al componente//
-import '../index.css'
+import '../styles/pages/notFoundPage.css'
 
 //Define el componente funcional NotFoundPage que recibe el objeto navigation como prop//
 const NotFoundPage = ({ navigation }) => {

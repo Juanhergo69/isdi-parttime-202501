@@ -1,0 +1,127 @@
+/* Contenedor principal de la página 404 */
+.not-found-page {
+    display: flex;
+    /* Establece el display como flex para facilitar el centrado */
+    justify-content: center;
+    /* Centra horizontalmente los elementos hijos */
+    align-items: center;
+    /* Centra verticalmente los elementos hijos */
+    height: 100vh;
+    /* Ocupa el 100% del alto de la ventana (viewport height) */
+    width: 100%;
+    /* Ocupa el 100% del ancho disponible */
+    background-color: #f8f9fa;
+    /* Color de fondo de respaldo */
+    padding: 20px;
+    /* Espaciado interno de 20px en todos los lados */
+    text-align: center;
+    /* Alinea el texto al centro */
+    background: linear-gradient(500deg, white, rgb(0, 142, 182));
+    /* Fondo con gradiente lineal */
+}
+
+/* Contenedor del contenido de la página 404 */
+.not-found-content {
+    max-width: 500px;
+    /* Ancho máximo del contenedor */
+    width: 100%;
+    /* Ancho del 100% dentro del max-width */
+    padding: 40px;
+    /* Espaciado interno generoso */
+    background: white;
+    /* Fondo blanco */
+    border-radius: 12px;
+    /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde de 2px (nota: falta 'solid' para ser válido) */
+}
+
+/* Contenedor de la imagen/icono */
+.not-found-image {
+    margin-bottom: 24px;
+    /* Margen inferior para separar del título */
+}
+
+/* Estilos para el SVG (icono) */
+.not-found-image svg {
+    width: 100px;
+    /* Ancho del icono */
+    height: 100px;
+    /* Alto del icono */
+    color: #dc3545;
+    /* Color rojo para el icono */
+}
+
+/* Estilos para el título */
+.not-found-title {
+    color: #dc3545;
+    /* Color rojo */
+    margin-bottom: 16px;
+    /* Margen inferior */
+    font-size: 2rem;
+    /* Tamaño de fuente grande */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+}
+
+/* Estilos para el mensaje descriptivo */
+.not-found-message {
+    color: #6c757d;
+    /* Color gris para el texto */
+    margin-bottom: 32px;
+    /* Margen inferior grande */
+    font-size: 1.1rem;
+    /* Tamaño de fuente ligeramente aumentado */
+    font-family: 'Tektur';
+    /* Fuente personalizada */
+}
+
+/* Contenedor para los botones de acción */
+.not-found-actions {
+    display: flex;
+    /* Display flex para alinear botones */
+    gap: 16px;
+    /* Espacio entre botones */
+    justify-content: center;
+    /* Centra los botones horizontalmente */
+    flex-wrap: wrap;
+    /* Permite que los botones se envuelvan en pantallas pequeñas */
+}
+
+/* Estilos base para botones primarios (consistentes con la app) */
+.not-found-button {
+    display: inline-flex;
+    /* Display flex inline */
+    align-items: center;
+    /* Centra los elementos verticalmente */
+    gap: 8px;
+    /* Espacio entre icono y texto */
+    padding: 10px 20px;
+    /* Relleno interno */
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border-radius: 20px;
+    /* Bordes muy redondeados (pastilla) */
+    text-decoration: none;
+    /* Quita subrayado de enlaces */
+    transition: background-color 0.3s ease;
+    /* Transición suave para color de fondo */
+    transition: transform 0.3s ease;
+    /* Transición suave para transformaciones */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 1rem;
+    /* Tamaño de fuente base */
+}
+
+/* Efectos hover para botones primarios */
+.not-found-button:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color de fondo al azul */
+    transform: scale(1.05);
+    /* Efecto de escala (agrandamiento) al pasar el mouse */
+}

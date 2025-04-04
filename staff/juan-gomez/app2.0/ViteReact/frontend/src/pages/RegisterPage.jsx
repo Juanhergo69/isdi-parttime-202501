@@ -21,7 +21,7 @@ import {
 import Form from '../components/Forms'
 
 //Importa estilos CSS//
-import '../index.css'
+import '../styles/pages/registerPage.css'
 
 //Componente de página de registro que recibe prop de navegación//
 const RegisterPage = ({ navigation }) => {

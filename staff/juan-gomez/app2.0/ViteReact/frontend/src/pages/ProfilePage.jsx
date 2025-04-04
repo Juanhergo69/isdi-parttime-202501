@@ -20,7 +20,7 @@ import {
 } from '../utils/utils'
 
 //Importa estilos CSS//
-import '../index.css'
+import '../styles/pages/profilePage.css'
 
 //Define el componente funcional ProfilePage que recibe props de navegación//
 const ProfilePage = ({ navigation }) => {

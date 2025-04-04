@@ -5,7 +5,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 //Importa los estilos CSS para esta página//
-import '../index.css'
+import '../styles/pages/landingPage.css'
 
 //Define el componente LandingPage que recibe la prop 'navigation'//
 const LandingPage = ({ navigation }) => {

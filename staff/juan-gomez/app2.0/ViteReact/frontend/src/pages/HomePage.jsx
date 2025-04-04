@@ -14,7 +14,7 @@ import { toggleLike, toggleDislike, storeMsg } from '../utils/data.js'
 import { getMessages, getLoggedUserId, getUsers, createModal, validateTitle, validateTextarea } from '../utils/utils.js'
 
 //Importa los estilos CSS para este componente//
-import '../index.css'
+import '../styles/pages/homePage.css'
 
 //Define el componente funcional HomePage que recibe props de navegación//
 const HomePage = ({ navigation }) => {

@@ -1,0 +1,765 @@
+/* Contenedor de página de perfil */
+.profilePageContainer {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    height: 100vh;
+    /* Altura del 100% del viewport */
+    width: 100%;
+    /* Ancho del 100% */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+}
+
+/* Encabezado de la página principal */
+.homeHeaderContainer {
+    display: flex;
+    /* Activa flexbox */
+    justify-content: space-between;
+    /* Distribuye el espacio entre elementos */
+    align-items: center;
+    /* Centra los elementos verticalmente */
+    width: 100%;
+    /* Ancho del 100% */
+    height: 1%;
+    /* Altura mínima del 1% */
+    padding: 40px;
+    /* Relleno interno de 40px */
+    margin-top: 3rem;
+    /* Margen superior de 3rem */
+}
+
+/* Contenedor de imagen en home */
+.homeImgContainer {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: center;
+    /* Centra elementos horizontalmente */
+    gap: 0.5rem;
+    /* Espacio de 0.5rem entre elementos */
+}
+
+/* Estilos para la imagen de la página principal */
+.homeImg {
+    width: 100%;
+    /* Ancho del 100% */
+    max-width: 100px;
+    /* Ancho máximo de 100px */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación durante 0.3s */
+}
+
+/* Efecto hover para la imagen de home */
+.homeImg:hover {
+    transform: scale(1.05);
+    /* Escala la imagen al 105% al hacer hover */
+}
+
+/* Estilo específico para botón de volver */
+.menuButton.back-button {
+    padding: 0;
+    /* Sin relleno */
+}
+
+.menuButton.back-button {
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem para el icono */
+}
+
+/* Efecto hover para el botón de menú */
+.menuButton:hover {
+    background-color: rgb(255, 255, 255);
+    /* Cambia fondo a blanco */
+    color: rgb(0, 142, 182);
+    /* Cambia color de texto a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+/* Contenedor interno del botón de menú */
+.menuButton-content {
+    width: 100%;
+    /* Ancho del 100% */
+    height: 100%;
+    /* Altura del 100% */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+}
+
+/* Contenedor de formulario de perfil */
+.profileFormContainer {
+    display: flex;
+    /* Activa flexbox */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+    padding: 2rem;
+    /* Relleno interno de 2rem */
+    margin-top: 2rem;
+    /* Margen superior de 2rem */
+}
+
+/* Estilos generales para formularios */
+.form {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: stretch;
+    /* Estira elementos para llenar el contenedor */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    background-color: white;
+    /* Fondo blanco */
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    padding: 20px;
+    /* Relleno interno de 20px */
+    width: 100%;
+    /* Ancho del 100% */
+    max-width: 400px;
+    /* Ancho máximo de 400px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    color: black;
+    /* Color de texto negro */
+    gap: 0.5rem;
+    /* Espacio de 0.5rem entre elementos */
+}
+
+/* Estilos para labels en formularios */
+.form label {
+    display: block;
+    /* Display block */
+    text-align: center;
+    /* Alineación de texto centrada */
+    margin-bottom: 8px;
+    /* Margen inferior de 8px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    display: block;
+    /* Display block (redundante) */
+}
+
+/* Inputs de email y password */
+.form input[type='email'],
+.form input[type='password'],
+.form input[type='text'] {
+    outline: none;
+    /* Elimina el contorno al enfocar */
+    width: 100%;
+    /* Ancho del 100% */
+    padding: 10px;
+    /* Relleno interno de 10px */
+    border: 2px solid black;
+    /* Borde negro de 2px */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    background-color: white;
+    /* Fondo blanco */
+    margin-bottom: 10px;
+    /* Margen inferior de 10px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+}
+
+/* Efecto hover para inputs */
+.form input[type='email']:hover,
+.form input[type='password']:hover,
+.form input[type='text']:hover {
+    border-color: rgb(0, 142, 182);
+    /* Cambia color de borde a azul */
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el input */
+}
+
+/* Botón de submit en formularios */
+.form input[type="submit"] {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 10px 20px;
+    /* Relleno interno de 10px arriba/abajo y 20px izquierda/derecha */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    display: inline-block;
+    /* Display inline-block */
+    width: auto;
+    /* Ancho automático */
+    margin: 0 auto;
+    /* Margen automático (centrado horizontal) */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    /* Transiciones suaves */
+}
+
+/* Efecto hover para botón de submit */
+.form input[type="submit"]:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color de fondo a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+/* Grupo de campos en formulario */
+.form-group {
+    margin-bottom: -0.5rem;
+    /* Margen inferior de 0.1rem */
+    width: 100%;
+    /* Ancho del 100% */
+}
+
+/* Label en grupo de campos */
+.form-group label {
+    display: block;
+    /* Display block */
+    margin-bottom: 0.5rem;
+    /* Margen inferior de 0.5rem */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+}
+
+/* Inputs en grupo de campos */
+.form-group input[type="email"],
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 100%;
+    /* Ancho del 100% */
+    padding: 0.4rem;
+    /* Relleno interno de 0.4rem */
+    border: 2px solid black;
+    /* Borde negro de 2px */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+    font-size: 1.46rem;
+    /* Tamaño de fuente de 1.46rem */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+}
+
+/* Efecto hover para inputs */
+.form-group input:hover {
+    border-color: rgb(0, 142, 182);
+    /* Cambia color de borde a azul */
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el input */
+}
+
+/* Input con error */
+.form-group input.error {
+    border-color: red;
+    /* Borde rojo para indicar error */
+}
+
+.buttonSaveChanges,
+.buttonCancel {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 8px 16px;
+    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    transition: background-color 0.3s ease;
+    /* Transición suave del color de fondo */
+    width: auto;
+    /* Ancho automático */
+    max-width: 200px;
+    /* Ancho máximo de 200px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+    margin-bottom: -2rem;
+}
+
+.buttonSaveChanges:hover,
+.buttonCancel:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color de fondo a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+.delete-account-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid grey;
+    text-align: center;
+}
+
+.buttonDeleteAccount {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    border-radius: 20px;
+    font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+    margin-top: -1rem;
+}
+
+.buttonDeleteAccount:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+.buttonDeleteAccount i {
+    margin-right: 8px;
+}
+
+/* Mensaje de error */
+.error-message {
+    color: red;
+    /* Texto rojo */
+    font-family: 'Tektur';
+    /* Fuente personalizada */
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
+    margin-top: 0.5rem;
+    /* Margen superior de 0.5rem */
+    display: block;
+    /* Display block */
+}
+
+/* Acciones en formulario */
+.form-actions {
+    display: flex;
+    /* Activa flexbox */
+    justify-content: space-between;
+    /* Distribuye espacio entre elementos */
+    gap: 0.7rem;
+    /* Espacio de 0.7rem entre elementos */
+    margin-top: 0.5rem;
+    /* Margen superior de 1.1rem */
+}
+
+/* Botones en acciones de formulario */
+.form-actions button {
+    flex: 1;
+    /* Ocupa espacio disponible equitativamente */
+}
+
+/* Sección optimizada para imágenes */
+.optimized-image-section {
+    width: 100%;
+    /* Ancho del 100% */
+    margin-bottom: 5px;
+    /* Margen inferior de 5px */
+    margin-top: 20px;
+    /* Margen superior de 20px */
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    gap: 8px;
+    /* Espacio de 8px entre elementos */
+}
+
+
+
+/* Controles de imagen */
+.image-controls-row {
+    display: flex;
+    /* Activa flexbox */
+    gap: 10px;
+    /* Espacio de 10px entre elementos */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+    align-items: center;
+    /* Centra elementos verticalmente */
+    flex-wrap: wrap;
+    /* Permite que los elementos se envuelvan */
+}
+
+/* Label para subida de imágenes */
+.image-upload-label {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    padding: 8px 16px;
+    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra elementos verticalmente */
+    gap: 8px;
+    /* Espacio de 8px entre elementos */
+}
+
+/* Efecto hover para label de subida */
+.image-upload-label:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color de fondo a azul */
+    transform: scale(1.05);
+    /* Escala el label al 105% */
+}
+
+/* Sección de carga de imágenes */
+.image-upload-section {
+    width: 100%;
+    /* Ancho del 100% */
+    margin: 15px 0;
+    /* Margen vertical de 15px */
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: center;
+    /* Centra elementos horizontalmente */
+}
+
+/* Controles de subida de imágenes */
+.image-upload-controls {
+    display: flex;
+    /* Activa flexbox */
+    gap: 10px;
+    /* Espacio de 10px entre elementos */
+    align-items: center;
+    /* Centra elementos verticalmente */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+    width: 100%;
+    /* Ancho del 100% */
+}
+
+/* Nombre de archivo para imágenes */
+.image-upload-filename {
+    font-family: 'Tektur';
+    /* Fuente personalizada */
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
+    color: #666;
+    /* Color de texto gris */
+    text-align: center;
+    /* Alineación de texto centrada */
+    max-width: 100%;
+    /* Ancho máximo del 100% */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    text-overflow: ellipsis;
+    /* Muestra puntos suspensivos si el texto es muy largo */
+    white-space: nowrap;
+    /* Evita saltos de línea */
+}
+
+/* Información compacta de imagen */
+.compact-image-info {
+    text-align: center;
+    /* Alineación de texto centrada */
+    margin-top: -5px;
+    /* Margen superior negativo de 5px */
+    margin-bottom: -10px;
+    /* Margen inferior negativo de 10px */
+}
+
+/* Vista previa compacta de imagen */
+.compact-image-preview {
+    max-width: 100%;
+    /* Ancho máximo del 100% */
+    max-height: 80px;
+    /* Altura máxima de 80px */
+    object-fit: contain;
+    /* Ajusta la imagen manteniendo proporciones */
+}
+
+/* Vista previa ajustada */
+.constrained-preview {
+    width: 100%;
+    /* Ancho del 100% */
+    max-height: 120px;
+    /* Altura máxima de 120px */
+    display: flex;
+    /* Activa flexbox */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    border-radius: 6px;
+    /* Bordes redondeados de 6px */
+    margin-top: 5px;
+    /* Margen superior de 5px */
+    margin-bottom: 10px;
+    /* Margen inferior de 10px */
+}
+
+/* Contenedor de vista previa */
+.image-preview-container {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: center;
+    /* Centra elementos horizontalmente */
+    gap: 8px;
+    /* Espacio de 8px entre elementos */
+    margin-top: 10px;
+    /* Margen superior de 10px */
+    width: 100%;
+    /* Ancho del 100% */
+}
+
+/* Wrapper de vista previa */
+.image-preview-wrapper {
+    width: 100%;
+    /* Ancho del 100% */
+    max-height: 150px;
+    /* Altura máxima de 150px */
+    margin-top: 10px;
+    /* Margen superior de 10px */
+    display: flex;
+    /* Activa flexbox */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    border-radius: 8px;
+    /* Bordes redondeados de 8px */
+    border: 1px solid #ddd;
+    /* Borde gris claro de 1px */
+    background-color: #f5f5f5;
+    /* Fondo gris muy claro */
+}
+
+/* Vista previa de imagen */
+.image-preview {
+    max-width: 100%;
+    /* Ancho máximo del 100% */
+    max-height: 150px;
+    /* Altura máxima de 150px */
+    object-fit: contain;
+    /* Ajusta la imagen manteniendo proporciones */
+}
+
+/* Miniaturas de imágenes */
+.image-thumbnail {
+    width: 100%;
+    /* Ancho del 100% */
+    height: auto;
+    /* Altura automática */
+    display: block;
+    /* Display block */
+}
+
+/* Contenedor de información de imagen */
+.image-info-container {
+    margin-top: 8px;
+    /* Margen superior de 8px */
+    width: 100%;
+    /* Ancho del 100% */
+    text-align: center;
+    /* Alineación de texto centrada */
+}
+
+/* Nombre de archivo */
+.image-filename {
+    font-family: 'Tektur';
+    /* Fuente personalizada */
+    font-size: 0.85rem;
+    /* Tamaño de fuente de 0.85rem */
+    color: #666;
+    /* Color de texto gris */
+    display: inline-block;
+    /* Display inline-block */
+    max-width: 100%;
+    /* Ancho máximo del 100% */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    text-overflow: ellipsis;
+    /* Muestra puntos suspensivos si el texto es muy largo */
+    white-space: nowrap;
+    /* Evita saltos de línea */
+}
+
+/* Vista previa ajustada */
+.constrained-preview {
+    width: 100%;
+    /* Ancho del 100% */
+    max-height: 120px;
+    /* Altura máxima de 120px */
+    display: flex;
+    /* Activa flexbox */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    border-radius: 6px;
+    /* Bordes redondeados de 6px */
+    margin-top: 5px;
+    /* Margen superior de 5px */
+    margin-bottom: 10px;
+    /* Margen inferior de 10px */
+}
+
+/* Botón para eliminar imagen */
+.remove-image-button {
+    background-color: #ff4444;
+    /* Fondo rojo */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 5px 10px;
+    /* Relleno interno de 5px arriba/abajo y 10px izquierda/derecha */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 0.75rem;
+    /* Tamaño de fuente de 0.75rem */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra elementos verticalmente */
+    gap: 4px;
+    /* Espacio de 4px entre elementos */
+}
+
+/* Efecto hover para botón de eliminar */
+.remove-image-button:hover {
+    background-color: #cc0000;
+    /* Cambia color de fondo a rojo oscuro */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+/* Icono en botón de eliminar */
+.remove-image-button i {
+    font-size: 0.75rem;
+    /* Tamaño de fuente de 0.75rem */
+}
+
+/* Estilos para el campo de contraseña con toggle */
+.password-input-container {
+    position: relative;
+    /* Posicionamiento relativo */
+    width: 100%;
+    /* Ancho del 100% */
+    margin-bottom: 10px;
+    /* Margen inferior de 10px */
+}
+
+.password-input-container input {
+    width: 100%;
+    /* Ancho del 100% */
+    padding: 10px 40px 10px 10px;
+    /* Relleno interno con espacio para el icono */
+    border: 2px solid black;
+    /* Borde negro de 2px */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+    background-color: white;
+    /* Fondo blanco */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    box-sizing: border-box;
+    /* Modelo de caja border-box */
+    outline: none;
+    /* Elimina el contorno al enfocar */
+}
+
+/* Efecto hover para campos de contraseña */
+.password-input-container input:hover {
+    border-color: rgb(0, 142, 182);
+    /* Cambia color de borde a azul */
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el input */
+}
+
+/* Estilo para el botón de toggle de contraseña */
+.password-toggle {
+    position: absolute;
+    /* Posicionamiento absoluto */
+    right: 10px;
+    /* Posición desde la derecha de 10px */
+    top: 50%;
+    /* Posición desde arriba del 50% */
+    transform: translateY(-50%);
+    /* Centrado vertical */
+    background: none;
+    /* Sin fondo */
+    border: none;
+    /* Sin bordes */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    color: #666;
+    /* Color gris */
+    font-size: 1.2rem;
+    /* Tamaño de fuente de 1.2rem */
+    padding: 5px;
+    /* Relleno interno de 5px */
+    z-index: 2;
+    /* Nivel de apilamiento */
+}
+
+/* Efecto hover para el botón de toggle */
+.password-toggle:hover {
+    color: rgb(0, 142, 182);
+    /* Cambia color a azul */
+}

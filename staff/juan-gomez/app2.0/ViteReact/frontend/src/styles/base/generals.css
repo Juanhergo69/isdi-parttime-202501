@@ -1,0 +1,67 @@
+/* Reset básico para eliminar márgenes y padding predeterminados de todos los elementos */
+* {
+    margin: 0;
+    /* Establece el margen exterior de todos los elementos a 0 */
+    padding: 0;
+    /* Establece el relleno interno de todos los elementos a 0 */
+    box-sizing: border-box;
+    /* Hace que el padding y border se incluyan en el ancho/alto total del elemento */
+}
+
+/* Contenedor principal de la aplicación */
+#app {
+    display: flex;
+    /* Activa el modelo de layout flexbox */
+    min-height: 100vh;
+    /* Establece la altura mínima al 100% del viewport */
+    background: linear-gradient(500deg, white, rgb(0, 142, 182));
+    /* Fondo con gradiente lineal de blanco a azul */
+}
+
+/* Elimina subrayado de todos los Links */
+a {
+    text-decoration: none;
+}
+
+/* Opcional: estilo para hover */
+a:hover {
+    text-decoration: none;
+}
+
+/* Estilos para el modal */
+.modal {
+    position: fixed;
+    /* Posicionamiento fijo en la pantalla */
+    top: 50%;
+    /* Posiciona el 50% desde arriba */
+    left: 50%;
+    /* Posiciona el 50% desde la izquierda */
+    transform: translate(-50%, -50%);
+    /* Centra perfectamente el modal */
+    background-color: white;
+    /* Fondo blanco */
+    padding: 20px;
+    /* Relleno interno de 20px */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    z-index: 1000;
+    /* Nivel de apilamiento alto */
+    font-family: 'Tektur';
+    /* Fuente personalizada */
+    font-size: 1.1rem;
+    /* Tamaño de fuente de 1.1rem */
+    border-radius: 20px;
+    /* Bordes redondeados de 20px */
+    width: fit-content;
+    /* Ancho según contenido */
+    white-space: nowrap;
+    /* Evita saltos de línea */
+}
+
+/* Efecto hover para el modal */
+.modal:hover {
+    cursor: pointer;
+    /* Cambia el cursor a pointer */
+}

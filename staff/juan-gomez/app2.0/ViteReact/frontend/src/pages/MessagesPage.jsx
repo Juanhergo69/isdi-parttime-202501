@@ -14,7 +14,7 @@ import { getMessages, getLoggedUserId, getUsers, createModal } from '../utils/ut
 import { deleteMessage } from '../utils/data.js'
 
 //Importa los estilos CSS para este componente//
-import '../index.css'
+import '../styles/pages/messagesPage.css'
 
 //Define el componente funcional MessagesPage que recibe props de navegación//
 const MessagesPage = ({ navigation }) => {
