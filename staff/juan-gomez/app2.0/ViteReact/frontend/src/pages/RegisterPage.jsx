@@ -22,6 +22,7 @@ import Form from '../components/Forms'
 
 //Importa estilos CSS//
 import '../styles/pages/registerPage.css'
+import '../styles/components/forms.css'
 
 //Componente de página de registro que recibe prop de navegación//
 const RegisterPage = ({ navigation }) => {
@@ -87,14 +88,14 @@ const RegisterPage = ({ navigation }) => {
             {/* Botón con logo para volver a landing - ahora con Link */}
             <Link
                 to="/"
-                className="imgButton"
+                className="registerImgButton"
                 onClick={navigation.navigateToLanding}
             >
                 <img src="/Logo.jpg" alt="Home" />
             </Link>
 
             {/* Título del formulario */}
-            <h1 className="title">REGISTER</h1>
+            <h1 className="registerTitle">REGISTER</h1>
 
             {/* Componente Form reutilizable con campos de contraseña personalizados */}
             <Form
@@ -118,7 +119,7 @@ const RegisterPage = ({ navigation }) => {
                         autoComplete: "new-password",
                         //Input personalizado con botón de toggle//
                         customInput: (
-                            <div className="password-input-container">
+                            <div className="register-password-input-container">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     id="password"
@@ -128,7 +129,7 @@ const RegisterPage = ({ navigation }) => {
                                 />
                                 <button
                                     type="button"
-                                    className="password-toggle"
+                                    className="register-password-toggle"
                                     onClick={() => setShowPassword(!showPassword)}
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                                 >
@@ -147,7 +148,7 @@ const RegisterPage = ({ navigation }) => {
                         autoComplete: "new-password",
                         //Input personalizado con botón de toggle//
                         customInput: (
-                            <div className="password-input-container">
+                            <div className="register-password-input-container">
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     id="confirmation-password"
@@ -157,7 +158,7 @@ const RegisterPage = ({ navigation }) => {
                                 />
                                 <button
                                     type="button"
-                                    className="password-toggle"
+                                    className="register-password-toggle"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                                 >
@@ -177,7 +178,7 @@ const RegisterPage = ({ navigation }) => {
             {/* Botón para ir al login - ahora con Link */}
             <Link
                 to="/login"
-                className="buttonGoToLogin"
+                className="registerButtonGoToLogin"
                 onClick={navigation.navigateToLogin}
             >
                 Go to login

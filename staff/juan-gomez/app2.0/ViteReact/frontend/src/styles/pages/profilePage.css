@@ -13,7 +13,7 @@
 }
 
 /* Encabezado de la página principal */
-.homeHeaderContainer {
+.profileHeaderContainer {
     display: flex;
     /* Activa flexbox */
     justify-content: space-between;
@@ -31,7 +31,7 @@
 }
 
 /* Contenedor de imagen en home */
-.homeImgContainer {
+.profileImgContainer {
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -43,7 +43,7 @@
 }
 
 /* Estilos para la imagen de la página principal */
-.homeImg {
+.profileImg {
     width: 100%;
     /* Ancho del 100% */
     max-width: 100px;
@@ -55,24 +55,63 @@
 }
 
 /* Efecto hover para la imagen de home */
-.homeImg:hover {
+.profileImg:hover {
     transform: scale(1.05);
     /* Escala la imagen al 105% al hacer hover */
 }
 
-/* Estilo específico para botón de volver */
-.menuButton.back-button {
-    padding: 0;
-    /* Sin relleno */
+/* Estilos para el mensaje de la página profile */
+.profileMsg {
+    color: black;
+    /* Color de texto negro */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 2rem;
+    /* Tamaño de fuente de 2rem */
+    text-shadow: 8px 8px 16px rgb(255, 255, 255);
+    /* Sombra de texto blanca */
 }
 
-.menuButton.back-button {
+/* Estilo específico para botón de volver */
+.profileMenuButton-back-button {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 0;
+    /* Sin relleno */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem para el icono */
+    /* Tamaño de fuente de 1.5rem */
+    border-radius: 50%;
+    /* Forma circular */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    width: 70px;
+    /* Ancho fijo de 70px */
+    height: 70px;
+    /* Altura fija de 70px (igual que el ancho para círculo perfecto) */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    position: relative;
+    /* Posicionamiento relativo */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    z-index: 101;
+    /* Nivel de apilamiento */
 }
 
 /* Efecto hover para el botón de menú */
-.menuButton:hover {
+.profileMenuButton-back-button:hover {
     background-color: rgb(255, 255, 255);
     /* Cambia fondo a blanco */
     color: rgb(0, 142, 182);
@@ -82,7 +121,7 @@
 }
 
 /* Contenedor interno del botón de menú */
-.menuButton-content {
+.profileMenuButton-content {
     width: 100%;
     /* Ancho del 100% */
     height: 100%;
@@ -108,7 +147,7 @@
 }
 
 /* Estilos generales para formularios */
-.form {
+.profileForm {
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -140,7 +179,7 @@
 }
 
 /* Estilos para labels en formularios */
-.form label {
+.profileForm label {
     display: block;
     /* Display block */
     text-align: center;
@@ -154,9 +193,9 @@
 }
 
 /* Inputs de email y password */
-.form input[type='email'],
-.form input[type='password'],
-.form input[type='text'] {
+.profileForm input[type='email'],
+.profileForm input[type='password'],
+.profileForm input[type='text'] {
     outline: none;
     /* Elimina el contorno al enfocar */
     width: 100%;
@@ -182,9 +221,9 @@
 }
 
 /* Efecto hover para inputs */
-.form input[type='email']:hover,
-.form input[type='password']:hover,
-.form input[type='text']:hover {
+.profileForm input[type='email']:hover,
+.profileForm input[type='password']:hover,
+.profileForm input[type='text']:hover {
     border-color: rgb(0, 142, 182);
     /* Cambia color de borde a azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
@@ -194,7 +233,7 @@
 }
 
 /* Botón de submit en formularios */
-.form input[type="submit"] {
+.profileForm input[type="submit"] {
     background-color: black;
     /* Fondo negro */
     color: white;
@@ -222,7 +261,7 @@
 }
 
 /* Efecto hover para botón de submit */
-.form input[type="submit"]:hover {
+.profileForm input[type="submit"]:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
     transform: scale(1.05);
@@ -230,7 +269,7 @@
 }
 
 /* Grupo de campos en formulario */
-.form-group {
+.profileForm-group {
     margin-bottom: -0.5rem;
     /* Margen inferior de 0.1rem */
     width: 100%;
@@ -238,7 +277,7 @@
 }
 
 /* Label en grupo de campos */
-.form-group label {
+.profileForm-group label {
     display: block;
     /* Display block */
     margin-bottom: 0.5rem;
@@ -250,9 +289,9 @@
 }
 
 /* Inputs en grupo de campos */
-.form-group input[type="email"],
-.form-group input[type="text"],
-.form-group input[type="password"] {
+.profileForm-group input[type="email"],
+.profileForm-group input[type="text"],
+.profileForm-group input[type="password"] {
     width: 100%;
     /* Ancho del 100% */
     padding: 0.4rem;
@@ -270,7 +309,7 @@
 }
 
 /* Efecto hover para inputs */
-.form-group input:hover {
+.profileForm-group input:hover {
     border-color: rgb(0, 142, 182);
     /* Cambia color de borde a azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
@@ -280,13 +319,13 @@
 }
 
 /* Input con error */
-.form-group input.error {
+.profileForm-group input.error {
     border-color: red;
     /* Borde rojo para indicar error */
 }
 
-.buttonSaveChanges,
-.buttonCancel {
+.profileButtonSaveChanges,
+.profileButtonCancel {
     background-color: black;
     /* Fondo negro */
     color: white;
@@ -312,24 +351,28 @@
     transition: transform 0.3s ease;
     /* Transición suave de transformación */
     margin-bottom: -2rem;
+    /* Margen con respecto al elemento de abajo*/
 }
 
-.buttonSaveChanges:hover,
-.buttonCancel:hover {
+/* Efecto hover para boton SaveChanges y Cancel */
+.profileButtonSaveChanges:hover,
+.profileButtonCancel:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
     transform: scale(1.05);
     /* Escala el botón al 105% */
 }
 
-.delete-account-section {
+/* Estilos para la seccion de eliminación de cuenta */
+.profile-delete-account-section {
     margin-top: 2.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid grey;
     text-align: center;
 }
 
-.buttonDeleteAccount {
+/* Estilos para botón de eliminar cuenta */
+.profileButtonDeleteAccount {
     background-color: #ff4444;
     color: white;
     border: none;
@@ -344,17 +387,19 @@
     margin-top: -1rem;
 }
 
-.buttonDeleteAccount:hover {
+/* Efecto hover para botón de eliminar cuenta */
+.profileButtonDeleteAccount:hover {
     background-color: #cc0000;
     transform: scale(1.05);
 }
 
-.buttonDeleteAccount i {
+/* Estilos para icono de botón eliminar cuenta*/
+.profileButtonDeleteAccount i {
     margin-right: 8px;
 }
 
 /* Mensaje de error */
-.error-message {
+.profile-error-message {
     color: red;
     /* Texto rojo */
     font-family: 'Tektur';
@@ -368,7 +413,7 @@
 }
 
 /* Acciones en formulario */
-.form-actions {
+.profileForm-actions {
     display: flex;
     /* Activa flexbox */
     justify-content: space-between;
@@ -380,13 +425,13 @@
 }
 
 /* Botones en acciones de formulario */
-.form-actions button {
+.profileForm-actions button {
     flex: 1;
     /* Ocupa espacio disponible equitativamente */
 }
 
 /* Sección optimizada para imágenes */
-.optimized-image-section {
+.profile-optimized-image-section {
     width: 100%;
     /* Ancho del 100% */
     margin-bottom: 5px;
@@ -401,10 +446,8 @@
     /* Espacio de 8px entre elementos */
 }
 
-
-
 /* Controles de imagen */
-.image-controls-row {
+.profile-image-controls-row {
     display: flex;
     /* Activa flexbox */
     gap: 10px;
@@ -418,7 +461,7 @@
 }
 
 /* Label para subida de imágenes */
-.image-upload-label {
+.profile-image-upload-label {
     background-color: black;
     /* Fondo negro */
     color: white;
@@ -444,7 +487,7 @@
 }
 
 /* Efecto hover para label de subida */
-.image-upload-label:hover {
+.profile-image-upload-label:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
     transform: scale(1.05);
@@ -452,7 +495,7 @@
 }
 
 /* Sección de carga de imágenes */
-.image-upload-section {
+.profile-image-upload-section {
     width: 100%;
     /* Ancho del 100% */
     margin: 15px 0;
@@ -466,7 +509,7 @@
 }
 
 /* Controles de subida de imágenes */
-.image-upload-controls {
+.profile-image-upload-controls {
     display: flex;
     /* Activa flexbox */
     gap: 10px;
@@ -480,7 +523,7 @@
 }
 
 /* Nombre de archivo para imágenes */
-.image-upload-filename {
+.profile-image-upload-filename {
     font-family: 'Tektur';
     /* Fuente personalizada */
     font-size: 0.9rem;
@@ -500,7 +543,7 @@
 }
 
 /* Información compacta de imagen */
-.compact-image-info {
+.profile-compact-image-info {
     text-align: center;
     /* Alineación de texto centrada */
     margin-top: -5px;
@@ -510,7 +553,7 @@
 }
 
 /* Vista previa compacta de imagen */
-.compact-image-preview {
+.profile-compact-image-preview {
     max-width: 100%;
     /* Ancho máximo del 100% */
     max-height: 80px;
@@ -520,7 +563,7 @@
 }
 
 /* Vista previa ajustada */
-.constrained-preview {
+.profile-constrained-preview {
     width: 100%;
     /* Ancho del 100% */
     max-height: 120px;
@@ -540,7 +583,7 @@
 }
 
 /* Contenedor de vista previa */
-.image-preview-container {
+.profile-image-preview-container {
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -556,7 +599,7 @@
 }
 
 /* Wrapper de vista previa */
-.image-preview-wrapper {
+.profile-image-preview-wrapper {
     width: 100%;
     /* Ancho del 100% */
     max-height: 150px;
@@ -578,7 +621,7 @@
 }
 
 /* Vista previa de imagen */
-.image-preview {
+.profile-image-preview {
     max-width: 100%;
     /* Ancho máximo del 100% */
     max-height: 150px;
@@ -588,7 +631,7 @@
 }
 
 /* Miniaturas de imágenes */
-.image-thumbnail {
+.profile-image-thumbnail {
     width: 100%;
     /* Ancho del 100% */
     height: auto;
@@ -598,7 +641,7 @@
 }
 
 /* Contenedor de información de imagen */
-.image-info-container {
+.profile-image-info-container {
     margin-top: 8px;
     /* Margen superior de 8px */
     width: 100%;
@@ -608,7 +651,7 @@
 }
 
 /* Nombre de archivo */
-.image-filename {
+.profile-image-filename {
     font-family: 'Tektur';
     /* Fuente personalizada */
     font-size: 0.85rem;
@@ -628,7 +671,7 @@
 }
 
 /* Vista previa ajustada */
-.constrained-preview {
+.profile-constrained-preview {
     width: 100%;
     /* Ancho del 100% */
     max-height: 120px;
@@ -648,7 +691,7 @@
 }
 
 /* Botón para eliminar imagen */
-.remove-image-button {
+.profile-remove-image-button {
     background-color: #ff4444;
     /* Fondo rojo */
     color: white;
@@ -676,7 +719,7 @@
 }
 
 /* Efecto hover para botón de eliminar */
-.remove-image-button:hover {
+.profile-remove-image-button:hover {
     background-color: #cc0000;
     /* Cambia color de fondo a rojo oscuro */
     transform: scale(1.05);
@@ -684,13 +727,13 @@
 }
 
 /* Icono en botón de eliminar */
-.remove-image-button i {
+.profile-remove-image-button i {
     font-size: 0.75rem;
     /* Tamaño de fuente de 0.75rem */
 }
 
 /* Estilos para el campo de contraseña con toggle */
-.password-input-container {
+.profile-password-input-container {
     position: relative;
     /* Posicionamiento relativo */
     width: 100%;
@@ -699,7 +742,8 @@
     /* Margen inferior de 10px */
 }
 
-.password-input-container input {
+/* Estilos para input de campo de contraseña */
+.profile-password-input-container input {
     width: 100%;
     /* Ancho del 100% */
     padding: 10px 40px 10px 10px;
@@ -723,7 +767,7 @@
 }
 
 /* Efecto hover para campos de contraseña */
-.password-input-container input:hover {
+.profile-password-input-container input:hover {
     border-color: rgb(0, 142, 182);
     /* Cambia color de borde a azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
@@ -733,7 +777,7 @@
 }
 
 /* Estilo para el botón de toggle de contraseña */
-.password-toggle {
+.profile-password-toggle {
     position: absolute;
     /* Posicionamiento absoluto */
     right: 10px;
@@ -759,7 +803,7 @@
 }
 
 /* Efecto hover para el botón de toggle */
-.password-toggle:hover {
+.profile-password-toggle:hover {
     color: rgb(0, 142, 182);
     /* Cambia color a azul */
 }

@@ -56,8 +56,20 @@
     /* Escala la imagen al 105% al hacer hover */
 }
 
+/* Estilos para el mensaje de la página principal */
+.homeMsg {
+    color: black;
+    /* Color de texto negro */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 2rem;
+    /* Tamaño de fuente de 2rem */
+    text-shadow: 8px 8px 16px rgb(255, 255, 255);
+    /* Sombra de texto blanca */
+}
+
 /* Botón para alternar formulario de mensaje */
-.toggleSendMsgFormButton {
+.home-toggleSendMsgFormButton {
     height: 40px;
     /* Altura fija de 40px */
     width: 100px;
@@ -81,27 +93,15 @@
 }
 
 /* Efecto hover para botón de formulario */
-.toggleSendMsgFormButton:hover {
+.home-toggleSendMsgFormButton:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
     transform: scale(1.05);
     /* Escala el botón al 105% */
 }
 
-/* Estilos para el mensaje de la página principal */
-.homeMsg {
-    color: black;
-    /* Color de texto negro */
-    font-family: 'Zen Dots';
-    /* Fuente personalizada */
-    font-size: 2rem;
-    /* Tamaño de fuente de 2rem */
-    text-shadow: 8px 8px 16px rgb(255, 255, 255);
-    /* Sombra de texto blanca */
-}
-
 /* Estilos base para el botón de menú */
-.menuButton {
+.homeMenuButton {
     background-color: black;
     /* Fondo negro */
     color: white;
@@ -139,7 +139,7 @@
 }
 
 /* Contenedor interno del botón de menú */
-.menuButton-content {
+.homeMenuButton-content {
     width: 100%;
     /* Ancho del 100% */
     height: 100%;
@@ -153,13 +153,13 @@
 }
 
 /* Estilo para botón con avatar */
-.menuButton.with-avatar .menuButton-content {
+.homeMenuButton.with-avatar .menuButton-content {
     background: transparent;
     /* Fondo transparente */
 }
 
 /* Estilos para el avatar en el botón */
-.menuButton-avatar {
+.homeMenuButton-avatar {
     width: 100%;
     /* Ancho del 100% */
     height: 100%;
@@ -171,7 +171,7 @@
 }
 
 /* Estilo para la inicial (cuando no hay avatar) */
-.menuButton-initial {
+.homeMenuButton-initial {
     font-size: 1.5rem;
     /* Tamaño de fuente de 1.5rem */
     line-height: 1;
@@ -179,18 +179,18 @@
 }
 
 /* Estilo específico para botón de volver */
-.menuButton.back-button {
+.homeMenuButton.back-button {
     padding: 0;
     /* Sin relleno */
 }
 
-.menuButton-content i {
+.homeMenuButton-content i {
     font-size: 1.5rem;
     /* Tamaño de fuente de 1.5rem para el icono */
 }
 
 /* Efecto hover para el botón de menú */
-.menuButton:hover {
+.homeMenuButton:hover {
     background-color: rgb(255, 255, 255);
     /* Cambia fondo a blanco */
     color: rgb(0, 142, 182);
@@ -200,7 +200,7 @@
 }
 
 /* Contenedor del menú desplegable */
-.menuDropContainer {
+.homeMenuDropContainer {
     position: absolute;
     /* Posicionamiento absoluto */
     right: 1.1rem;
@@ -234,9 +234,9 @@
 }
 
 /* Estilos para botones del menú desplegable */
-.profileButton,
-.messagesButton,
-.logoutButton {
+.homeProfileButton,
+.homeMessagesButton,
+.homeLogoutButton {
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -272,9 +272,9 @@
 }
 
 /* Efecto hover para botones del menú */
-.profileButton:hover,
-.messagesButton:hover,
-.logoutButton:hover {
+.homeProfileButton:hover,
+.homeMessagesButton:hover,
+.homeLogoutButton:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
     transform: scale(1.05);
@@ -282,7 +282,7 @@
 }
 
 /* Formulario para enviar mensajes */
-.sendMsgForm {
+.homeSendMsgForm {
     position: absolute;
     /* Posicionamiento absoluto */
     display: flex;
@@ -320,7 +320,7 @@
 }
 
 /* Estilos para placeholders en formulario */
-.sendMsgForm ::placeholder {
+.homeSendMsgForm ::placeholder {
     font-family: 'Zen Loop';
     /* Fuente personalizada */
     font-size: 22px;
@@ -328,7 +328,7 @@
 }
 
 /* Input de texto en formulario */
-.sendMsgForm input[type='text'] {
+.homeSendMsgForm input[type='text'] {
     outline: none;
     /* Elimina el contorno al enfocar */
     width: 100%;
@@ -356,7 +356,7 @@
 }
 
 /* Efecto hover para input de texto */
-.sendMsgForm input[type='text']:hover {
+.homeSendMsgForm input[type='text']:hover {
     border-color: rgb(0, 142, 182);
     /* Cambia color de borde a azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
@@ -366,7 +366,7 @@
 }
 
 /* Textarea del formulario */
-.sendMsgForm textarea {
+.homeSendMsgForm textarea {
     outline: none;
     /* Elimina el contorno al enfocar */
     width: 100%;
@@ -406,14 +406,14 @@
 }
 
 /* Personalización de scrollbar para textarea */
-.sendMsgForm textarea::-webkit-scrollbar {
+.homeSendMsgForm textarea::-webkit-scrollbar {
     width: 8px;
     /* Ancho del scrollbar de 8px */
     margin-right: 8px;
     /* Margen derecho de 8px */
 }
 
-.sendMsgForm textarea::-webkit-scrollbar-thumb {
+.homeSendMsgForm textarea::-webkit-scrollbar-thumb {
     background-color: black;
     /* Color del thumb negro */
     border-radius: 5px;
@@ -422,7 +422,7 @@
     /* Transición suave de transformación */
 }
 
-.sendMsgForm textarea::-webkit-scrollbar-track {
+.homeSendMsgForm textarea::-webkit-scrollbar-track {
     background-color: white;
     /* Color del track blanco */
     border-radius: 5px;
@@ -431,7 +431,7 @@
     /* Margen de 2px */
 }
 
-.sendMsgForm textarea::-webkit-scrollbar-thumb:hover {
+.homeSendMsgForm textarea::-webkit-scrollbar-thumb:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color del thumb a azul */
     transform: scale(1.02);
@@ -441,7 +441,7 @@
 }
 
 /* Efecto hover para textarea */
-.sendMsgForm textarea:hover {
+.homeSendMsgForm textarea:hover {
     border-color: rgb(0, 142, 182);
     /* Cambia color de borde a azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
@@ -451,7 +451,7 @@
 }
 
 /* Botón de submit en formulario */
-.sendMsgForm input[type='submit'] {
+.homeSendMsgForm input[type='submit'] {
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -483,7 +483,7 @@
 }
 
 /* Efecto hover para botón de submit */
-.sendMsgForm input[type='submit']:hover {
+.homeSendMsgForm input[type='submit']:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
     transform: scale(1.05);
@@ -491,7 +491,7 @@
 }
 
 /* Sección optimizada para imágenes */
-.optimized-image-section {
+.home-optimized-image-section {
     width: 100%;
     /* Ancho del 100% */
     margin-bottom: 5px;
@@ -507,7 +507,7 @@
 }
 
 /* Controles de imagen */
-.image-controls-row {
+.home-image-controls-row {
     display: flex;
     /* Activa flexbox */
     gap: 10px;
@@ -521,7 +521,7 @@
 }
 
 /* Label para subida de imágenes */
-.image-upload-label {
+.home-image-upload-label {
     background-color: black;
     /* Fondo negro */
     color: white;
@@ -547,7 +547,7 @@
 }
 
 /* Efecto hover para label de subida */
-.image-upload-label:hover {
+.home-image-upload-label:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
     transform: scale(1.05);
@@ -555,7 +555,7 @@
 }
 
 /* Sección de carga de imágenes */
-.image-upload-section {
+.home-image-upload-section {
     width: 100%;
     /* Ancho del 100% */
     margin: 15px 0;
@@ -569,7 +569,7 @@
 }
 
 /* Controles de subida de imágenes */
-.image-upload-controls {
+.home-image-upload-controls {
     display: flex;
     /* Activa flexbox */
     gap: 10px;
@@ -583,7 +583,7 @@
 }
 
 /* Nombre de archivo para imágenes */
-.image-upload-filename {
+.home-image-upload-filename {
     font-family: 'Tektur';
     /* Fuente personalizada */
     font-size: 0.9rem;
@@ -603,7 +603,7 @@
 }
 
 /* Información compacta de imagen */
-.compact-image-info {
+.home-compact-image-info {
     text-align: center;
     /* Alineación de texto centrada */
     margin-top: -5px;
@@ -613,7 +613,7 @@
 }
 
 /* Vista previa compacta de imagen */
-.compact-image-preview {
+.home-compact-image-preview {
     max-width: 100%;
     /* Ancho máximo del 100% */
     max-height: 80px;
@@ -623,7 +623,7 @@
 }
 
 /* Vista previa ajustada */
-.constrained-preview {
+.home-constrained-preview {
     width: 100%;
     /* Ancho del 100% */
     max-height: 120px;
@@ -643,7 +643,7 @@
 }
 
 /* Contenedor de vista previa */
-.image-preview-container {
+.home-image-preview-container {
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -659,7 +659,7 @@
 }
 
 /* Wrapper de vista previa */
-.image-preview-wrapper {
+.home-image-preview-wrapper {
     width: 100%;
     /* Ancho del 100% */
     max-height: 150px;
@@ -681,7 +681,7 @@
 }
 
 /* Vista previa de imagen */
-.image-preview {
+.home-image-preview {
     max-width: 100%;
     /* Ancho máximo del 100% */
     max-height: 150px;
@@ -691,7 +691,7 @@
 }
 
 /* Miniaturas de imágenes */
-.image-thumbnail {
+.home-image-thumbnail {
     width: 100%;
     /* Ancho del 100% */
     height: auto;
@@ -701,7 +701,7 @@
 }
 
 /* Contenedor de información de imagen */
-.image-info-container {
+.home-image-info-container {
     margin-top: 8px;
     /* Margen superior de 8px */
     width: 100%;
@@ -711,7 +711,7 @@
 }
 
 /* Nombre de archivo */
-.image-filename {
+.home-image-filename {
     font-family: 'Tektur';
     /* Fuente personalizada */
     font-size: 0.85rem;
@@ -731,7 +731,7 @@
 }
 
 /* Vista previa ajustada */
-.constrained-preview {
+.home-constrained-preview {
     width: 100%;
     /* Ancho del 100% */
     max-height: 120px;
@@ -751,7 +751,7 @@
 }
 
 /* Botón para eliminar imagen */
-.remove-image-button {
+.home-remove-image-button {
     background-color: #ff4444;
     /* Fondo rojo */
     color: white;
@@ -779,7 +779,7 @@
 }
 
 /* Efecto hover para botón de eliminar */
-.remove-image-button:hover {
+.home-remove-image-button:hover {
     background-color: #cc0000;
     /* Cambia color de fondo a rojo oscuro */
     transform: scale(1.05);
@@ -787,13 +787,13 @@
 }
 
 /* Icono en botón de eliminar */
-.remove-image-button i {
+.home-remove-image-button i {
     font-size: 0.75rem;
     /* Tamaño de fuente de 0.75rem */
 }
 
 /* Formulario de mensajes de usuario */
-.userMsgForm {
+.homeUserMsgForm {
     position: absolute;
     /* Posicionamiento absoluto */
     display: flex;
@@ -827,7 +827,7 @@
 }
 
 /* Versión centrada del formulario */
-.userMsgForm.centered {
+.homeUserMsgForm.centered {
     left: 50%;
     /* Posición desde la izquierda del 50% */
     transform: translateX(-50%);
@@ -839,7 +839,7 @@
 }
 
 /* Contenedor de mensajes de usuario */
-.userMsgContainer {
+.homeUserMsgContainer {
     width: 100%;
     /* Ancho del 100% */
     padding: 10px;
@@ -861,12 +861,12 @@
 }
 
 /* Personalización de scrollbar para contenedor de mensajes */
-.userMsgContainer::-webkit-scrollbar {
+.homeUserMsgContainer::-webkit-scrollbar {
     width: 8px;
     /* Ancho del scrollbar de 8px */
 }
 
-.userMsgContainer::-webkit-scrollbar-thumb {
+.homeUserMsgContainer::-webkit-scrollbar-thumb {
     background-color: black;
     /* Color del thumb negro */
     border-radius: 5px;
@@ -875,14 +875,14 @@
     /* Transición suave de transformación */
 }
 
-.userMsgContainer::-webkit-scrollbar-track {
+.homeUserMsgContainer::-webkit-scrollbar-track {
     background-color: white;
     /* Color del track blanco */
     border-radius: 5px;
     /* Bordes redondeados de 5px */
 }
 
-.userMsgContainer::-webkit-scrollbar-thumb:hover {
+.homeUserMsgContainer::-webkit-scrollbar-thumb:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color del thumb a azul */
     transform: scale(1.02);
@@ -892,7 +892,7 @@
 }
 
 /* Estilos para mensajes individuales */
-.message {
+.homeMessage {
     margin-bottom: 10px;
     /* Margen inferior de 10px */
     padding: 10px;
@@ -916,7 +916,7 @@
 }
 
 /* Efecto hover para mensajes */
-.message:hover {
+.homeMessage:hover {
     border-color: rgb(0, 142, 182);
     /* Cambia color de borde a azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
@@ -926,7 +926,7 @@
 }
 
 /* Estilo para nombre de usuario en mensaje */
-.message-user {
+.home-message-user {
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     font-weight: bold;
@@ -936,14 +936,14 @@
 }
 
 /* Estilo para título de mensaje */
-.message-title {
+.home-message-title {
     font-weight: bold;
     /* Texto en negrita */
 }
 
 /* Estilos comunes para texto de mensaje */
-.message-title,
-.message-text {
+.home-message-title,
+.home-message-text {
     font-family: 'Zen Loop';
     /* Fuente personalizada */
     font-size: 2rem;
@@ -951,10 +951,10 @@
 }
 
 /* Estilos para elementos de mensaje */
-.message-user,
-.message-title,
-.message-text,
-.message-date {
+.home-message-user,
+.home-message-title,
+.home-message-text,
+.home-message-date {
     margin-bottom: 5px;
     /* Margen inferior de 5px */
     word-wrap: break-word;
@@ -962,7 +962,7 @@
 }
 
 /* Estilo para fecha de mensaje */
-.message-date {
+.home-message-date {
     font-size: 0.9rem;
     /* Tamaño de fuente de 0.9rem */
     font-family: 'Tektur';
@@ -972,7 +972,7 @@
 }
 
 /* Contenedor de acciones en mensajes */
-.message-actions {
+.home-message-actions {
     display: flex;
     /* Activa flexbox */
     gap: 16px;
@@ -980,7 +980,7 @@
 }
 
 /* Mensaje cuando no hay mensajes */
-.no-messages {
+.home-no-messages {
     text-align: center;
     /* Alineación de texto centrada */
     font-family: 'Zen Loop';
@@ -994,29 +994,30 @@
 }
 
 /* Estilos para lista de nombres de usuarios */
-.user-names-list {
+.home-user-names-list {
     display: inline;
     /* Display inline */
 }
 
-.user-name {
+/*Estilos para el nombre de usuario*/
+.home-user-name {
     display: inline;
     /* Display inline */
 }
 
 /* Separadores para lista de nombres */
-.user-name:not(:last-child)::after {
+.home-user-name:not(:last-child)::after {
     content: ", ";
     /* Agrega coma como separador */
 }
 
-.user-name:last-child::after {
+.home-user-name:last-child::after {
     content: " and ";
     /* Agrega "and" como separador para el último elemento */
 }
 
 /* Estilo para contador de usuarios */
-.users-count {
+.home-users-count {
     font-style: italic;
     /* Texto en cursiva */
     color: #666;
@@ -1028,7 +1029,7 @@
 }
 
 /* Tooltip para mostrar usuarios */
-.users-tooltip {
+.home-users-tooltip {
     visibility: hidden;
     /* Inicialmente oculto */
     position: absolute;
@@ -1074,7 +1075,7 @@
 }
 
 /* Triángulo indicador para tooltip */
-.users-tooltip::after {
+.home-users-tooltip::after {
     content: "";
     /* Contenido vacío */
     position: absolute;
@@ -1090,30 +1091,30 @@
 }
 
 /* Color para tooltip de likes */
-.likes-tooltip {
+.home-users-tooltip.likes-tooltip {
     border-left: 4px solid green;
     /* Borde izquierdo verde de 4px */
 }
 
-.likes-tooltip::after {
+.home-users-tooltip.likes-tooltip::after {
     border-color: green transparent transparent transparent;
     /* Triángulo verde */
 }
 
 /* Color para tooltip de dislikes */
-.dislikes-tooltip {
+.home-users-tooltip.dislikes-tooltip {
     border-left: 4px solid red;
     /* Borde izquierdo rojo de 4px */
 }
 
-.dislikes-tooltip::after {
+.home-users-tooltip.dislikes-tooltip::after {
     border-color: red transparent transparent transparent;
     /* Triángulo rojo */
 }
 
 /* Contenedores para botones de like/dislike */
-.like-container,
-.dislike-container {
+.home-like-container,
+.home-dislike-container {
     position: relative;
     /* Posicionamiento relativo para contener elementos absolutos */
     display: inline-block;
@@ -1121,8 +1122,8 @@
 }
 
 /* Muestra tooltip al hacer hover */
-.like-container:hover .likes-tooltip,
-.dislike-container:hover .dislikes-tooltip {
+.home-like-container:hover .likes-tooltip,
+.home-dislike-container:hover .dislikes-tooltip {
     visibility: visible;
     /* Hace visible el tooltip */
     opacity: 1;
@@ -1130,8 +1131,8 @@
 }
 
 /* Estilos para botones de like/dislike */
-.like-button,
-.dislike-button {
+.home-like-button,
+.home-dislike-button {
     position: relative;
     /* Posicionamiento relativo */
     background: none;
@@ -1151,6 +1152,7 @@
     gap: 4px;
     /* Espacio de 4px entre elementos */
     font-family: 'Tektur';
+    /* Fuente de texto */
 }
 
 /* Estilo para icono de like vacío */
@@ -1166,13 +1168,13 @@
 }
 
 /* Efecto hover para botón de like */
-.like-button:hover {
+.home-like-button:hover {
     transform: scale(1.1);
     /* Escala el botón al 110% */
 }
 
 /* Contador de likes */
-.message-likes {
+.home-message-likes {
     font-size: 0.9rem;
     /* Tamaño de fuente de 0.9rem */
     color: #666;
@@ -1194,13 +1196,13 @@
 }
 
 /* Efecto hover para botón de dislike */
-.dislike-button:hover {
+.home-dislike-button:hover {
     transform: scale(1.1);
     /* Escala el botón al 110% */
 }
 
 /* Contador de dislikes */
-.message-dislikes {
+.home-message-dislikes {
     font-size: 0.9rem;
     /* Tamaño de fuente de 0.9rem */
     color: #666;
@@ -1210,7 +1212,7 @@
 }
 
 /* Contenedor de imagen en mensajes */
-.message-image-container {
+.home-message-image-container {
     width: 100%;
     /* Ancho del 100% */
     margin: 10px 0;
@@ -1222,7 +1224,7 @@
 }
 
 /* Imagen en mensajes */
-.message-image {
+.home-message-image {
     max-width: 100%;
     /* Ancho máximo del 100% */
     max-height: 300px;
@@ -1240,7 +1242,7 @@
 }
 
 /* Efecto hover para imagen en mensajes */
-.message-image:hover {
+.home-message-image:hover {
     transform: scale(1.02);
     /* Escala la imagen al 102% */
     box-shadow: 0 0 10px rgb(0, 142, 182);

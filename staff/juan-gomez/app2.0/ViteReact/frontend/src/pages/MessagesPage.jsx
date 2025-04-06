@@ -59,25 +59,25 @@ const MessagesPage = ({ navigation }) => {
             {/* Encabezado de la página */}
             <div className="messagesHeaderContainer">
                 {/* Contenedor del logo */}
-                <div className="homeImgContainer">
+                <div className="messagesImgContainer">
                     {/* Enlace a la página de inicio */}
                     {/* Imagen del logo con clases para estilos y texto alternativo */}
                     <img
                         src="/Logo.jpg"       //Ruta de la imagen del logo//
-                        className="homeImg  " //Clase CSS para la imagen//
+                        className="messagesImg" //Clase CSS para la imagen//
                         alt="Logo"            //Texto alternativo para accesibilidad//
                     />
                 </div>
                 {/* Título de la página */}
-                <h1 className="homeMsg">My Messages</h1>
+                <h1 className="messagesMsg">My Messages</h1>
                 {/* Botón para volver a home */}
                 <Link
                     to="/home"
-                    className="menuButton back-button"
+                    className="messagesMenuButton-back-button"
                     onClick={() => navigation.navigateToHome()}
                     aria-label="Back to home"
                 >
-                    <div className="menuButton-content">
+                    <div className="messagesMenuButton-content">
                         {/* Icono de flecha izquierda */}
                         <i className="fas fa-arrow-left"></i>
                     </div>
@@ -89,7 +89,7 @@ const MessagesPage = ({ navigation }) => {
                 {/* Formulario principal */}
                 <div className="messagesForm">
                     {/* Sección de información del usuario */}
-                    <div className="user-info-section">
+                    <div className="messages-user-info-section">
                         {/* Contenedor del avatar */}
                         <div className="user-avatar">
                             {/* Renderizado condicional del avatar */}
@@ -98,17 +98,17 @@ const MessagesPage = ({ navigation }) => {
                                 <img
                                     src={loggedUser.avatar}
                                     alt={`${loggedUser.userName}'s avatar`}
-                                    className="bio-avatar"
+                                    className="messages-avatar"
                                 />
                             ) : (
                                 //Si no tiene avatar, muestra la inicial//
-                                <div className="bio-avatar-initial">
+                                <div className="messages-avatar-initial">
                                     {loggedUser?.userName?.[0]?.toUpperCase() || 'U'}
                                 </div>
                             )}
                         </div>
                         {/* Nombre de usuario */}
-                        <h2 className="bio-username">{loggedUser?.userName || 'User'}</h2>
+                        <h2 className="messages-username">{loggedUser?.userName || 'User'}</h2>
                     </div>
 
                     {/* Contenedor de mensajes */}
@@ -167,9 +167,9 @@ const MessagesPage = ({ navigation }) => {
                                         {/* Contenedor de estadísticas (likes/dislikes) */}
                                         <div className="message-stats">
                                             {/* Contenedor de likes */}
-                                            <div className="like-container">
+                                            <div className="messages-like-container">
                                                 {/* Contador de likes */}
-                                                <div className="like-stats">
+                                                <div className="messages-like-stats">
                                                     {/* Icono de like */}
                                                     <i className="fas fa-thumbs-up"></i>
                                                     {/* Número de likes */}
@@ -177,12 +177,12 @@ const MessagesPage = ({ navigation }) => {
                                                 </div>
                                                 {/* Tooltip de usuarios que dieron like */}
                                                 {likedUsers.length > 0 && (
-                                                    <div className="users-tooltip likes-tooltip">
+                                                    <div className="messages-users-tooltip likes-tooltip">
                                                         {/* Muestra los primeros 3 nombres */}
                                                         {likedUsers.slice(0, 3).join(', ')}
                                                         {/* Si hay más de 3, muestra "and X more" */}
                                                         {likedUsers.length > 3 && (
-                                                            <span className="users-count">
+                                                            <span className="messages-users-count">
                                                                 {` and ${likedUsers.length - 3} more`}
                                                             </span>
                                                         )}
@@ -191,9 +191,9 @@ const MessagesPage = ({ navigation }) => {
                                             </div>
 
                                             {/* Contenedor de dislikes */}
-                                            <div className="dislike-container">
+                                            <div className="messages-dislike-container">
                                                 {/* Contador de dislikes */}
-                                                <div className="dislike-stats">
+                                                <div className="messages-dislike-stats">
                                                     {/* Icono de dislike */}
                                                     <i className="fas fa-thumbs-down"></i>
                                                     {/* Número de dislikes */}
@@ -201,12 +201,12 @@ const MessagesPage = ({ navigation }) => {
                                                 </div>
                                                 {/* Tooltip de usuarios que dieron dislike */}
                                                 {dislikedUsers.length > 0 && (
-                                                    <div className="users-tooltip dislikes-tooltip">
+                                                    <div className="messages-users-tooltip dislikes-tooltip">
                                                         {/* Muestra los primeros 3 nombres */}
                                                         {dislikedUsers.slice(0, 3).join(', ')}
                                                         {/* Si hay más de 3, muestra "and X more" */}
                                                         {dislikedUsers.length > 3 && (
-                                                            <span className="users-count">
+                                                            <span className="messages-users-count">
                                                                 {` and ${dislikedUsers.length - 3} more`}
                                                             </span>
                                                         )}
@@ -217,7 +217,7 @@ const MessagesPage = ({ navigation }) => {
 
                                         {/* Botón para eliminar mensaje */}
                                         <button
-                                            className="delete-message-button"
+                                            className="messages-delete-message-button"
                                             onClick={() => handleDelete(message.date)}
                                         >
                                             {/* Icono de basura */}

@@ -1,247 +1,496 @@
-/* Contenedor principal - Aseguramos el flujo normal */
+/* Contenedor principal de la página de mensajes - Establece el diseño base */
 .messagesPageContainer {
     display: block;
-    /* Cambiado de flex a block */
+    /* Usa el modelo de caja block (no flex) */
     width: 100%;
+    /* Ocupa el 100% del ancho disponible */
     min-height: 100vh;
+    /* Altura mínima igual al viewport (pantalla completa) */
     background: linear-gradient(500deg, white, rgb(0, 142, 182));
+    /* Fondo con gradiente de blanco a azul */
     position: relative;
+    /* Posicionamiento relativo para contener elementos absolutos */
 }
 
-/* Header - Posición absoluta en la parte superior */
+/* Contenedor del encabezado - Posicionamiento fijo en la parte superior */
 .messagesHeaderContainer {
     display: flex;
+    /* Usa flexbox para alinear elementos */
     justify-content: space-between;
+    /* Distribuye espacio entre elementos */
     align-items: center;
+    /* Centra elementos verticalmente */
     width: 100%;
+    /* Ancho completo */
     padding: 20px 40px;
+    /* Relleno interno: 20px arriba/abajo, 40px izquierda/derecha */
     position: absolute;
-    /* Cambiado a absoluto */
+    /* Posicionamiento absoluto respecto al contenedor padre */
     top: 16px;
+    /* Distancia desde la parte superior */
     left: 0;
+    /* Alineado a la izquierda */
     z-index: 10;
+    /* Nivel de apilamiento (sobre otros elementos) */
     background: none;
+    /* Sin fondo */
 }
 
-/* Contenedor de imagen en home */
-.homeImgContainer {
+/* Contenedor de imagen - Organiza elementos en columna */
+.messagesImgContainer {
     display: flex;
-    /* Activa flexbox */
+    /* Usa flexbox */
     flex-direction: column;
-    /* Organiza elementos en columna */
+    /* Apila elementos verticalmente */
     align-items: center;
     /* Centra elementos horizontalmente */
     gap: 0.5rem;
-    /* Espacio de 0.5rem entre elementos */
+    /* Espacio de 0.5rem entre elementos hijos */
 }
 
-/* Estilos para la imagen de la página principal */
-.homeImg {
+/* Estilo para la imagen del logo/mensajes */
+.messagesImg {
     width: 100%;
-    /* Ancho del 100% */
+    /* Ancho completo del contenedor */
     max-width: 100px;
     /* Ancho máximo de 100px */
     border-radius: 10px;
-    /* Bordes redondeados de 10px */
+    /* Esquinas redondeadas */
     transition: transform 0.3s ease;
-    /* Transición suave de transformación durante 0.3s */
+    /* Transición suave para efectos hover */
 }
 
-/* Efecto hover para la imagen de home */
-.homeImg:hover {
+/* Efecto al pasar el mouse sobre la imagen */
+.messagesImg:hover {
     transform: scale(1.05);
-    /* Escala la imagen al 105% al hacer hover */
+    /* Escala la imagen al 105% */
 }
 
-/* Estilo específico para botón de volver */
-.menuButton.back-button {
+/* Estilo para el texto del mensaje principal */
+.messagesMsg {
+    color: black;
+    /* Color de texto negro */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 2rem;
+    /* Tamaño de 2rem (32px si base es 16px) */
+    text-shadow: 8px 8px 16px rgb(255, 255, 255);
+    /* Sombra blanca */
+}
+
+/* Estilo para el botón de volver atrás */
+.messagesMenuButton-back-button {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin bordes */
     padding: 0;
-    /* Sin relleno */
-}
-
-.menuButton.back-button {
+    /* Sin relleno interno */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem para el icono */
-}
-
-/* Efecto hover para el botón de menú */
-.menuButton:hover {
-    background-color: rgb(255, 255, 255);
-    /* Cambia fondo a blanco */
-    color: rgb(0, 142, 182);
-    /* Cambia color de texto a azul */
-    transform: scale(1.05);
-    /* Escala el botón al 105% */
-}
-
-/* Contenedor interno del botón de menú */
-.menuButton-content {
-    width: 100%;
-    /* Ancho del 100% */
-    height: 100%;
-    /* Altura del 100% */
+    /* Tamaño de texto 1.5rem */
+    border-radius: 50%;
+    /* Forma circular perfecta */
+    cursor: pointer;
+    /* Cursor tipo mano */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    width: 70px;
+    /* Ancho fijo */
+    height: 70px;
+    /* Alto fijo (igual que ancho para círculo) */
     display: flex;
-    /* Activa flexbox */
+    /* Usa flexbox */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    position: relative;
+    /* Posicionamiento relativo */
+    overflow: hidden;
+    /* Oculta contenido que sobresale */
+    z-index: 101;
+    /* Nivel de apilamiento alto */
+}
+
+/* Efecto hover para el botón de volver */
+.messagesMenuButton-back-button:hover {
+    background-color: rgb(255, 255, 255);
+    /* Fondo blanco */
+    color: rgb(0, 142, 182);
+    /* Texto azul */
+    transform: scale(1.05);
+    /* Escala al 105% */
+}
+
+/* Contenedor interno del botón */
+.messagesMenuButton-content {
+    width: 100%;
+    /* Ancho completo */
+    height: 100%;
+    /* Alto completo */
+    display: flex;
+    /* Usa flexbox */
     align-items: center;
     /* Centra verticalmente */
     justify-content: center;
     /* Centra horizontalmente */
 }
 
+/* Contenedor principal del formulario */
 .messagesFormContainer {
     display: flex;
-    /* Activa flexbox */
+    /* Usa flexbox */
     justify-content: center;
-    /* Centra elementos horizontalmente */
+    /* Centra horizontalmente */
     padding: 2rem;
     /* Relleno interno de 2rem */
     margin-top: 8.8rem;
-    /* Margen superior de 2rem */
-    width: 100%
+    /* Margen superior para evitar solapamiento con header */
+    width: 100%;
+    /* Ancho completo */
 }
 
-/* Formulario - Mantenemos estilos de BioPage pero con ajustes */
+/* Estilo del formulario */
 .messagesForm {
     display: flex;
+    /* Usa flexbox */
     flex-direction: column;
+    /* Organiza elementos en columna */
     align-items: center;
+    /* Centra elementos horizontalmente */
     background-color: white;
+    /* Fondo blanco */
     border: 1px solid rgb(0, 142, 182);
+    /* Borde azul */
     border-radius: 15px;
+    /* Esquinas redondeadas */
     box-shadow: 0 4px 10px rgb(0, 142, 182);
+    /* Sombra azul */
     padding: 20px;
+    /* Relleno interno */
     width: 700px;
+    /* Ancho fijo */
     max-height: 700px;
+    /* Altura máxima */
     margin: 20px 0;
+    /* Margen vertical */
 }
 
 /* Contenedor de mensajes con scroll */
 .messagesMsgContainer {
     width: 100%;
+    /* Ancho completo */
     padding: 10px;
+    /* Relleno interno */
     border-radius: 5px;
+    /* Esquinas ligeramente redondeadas */
     background-color: white;
+    /* Fondo blanco */
     overflow-y: auto;
+    /* Scroll vertical si es necesario */
     max-height: 600px;
+    /* Altura máxima antes de scroll */
     margin-top: -2rem;
+    /* Margen negativo para ajustar posición */
 }
 
-/* Personalización de scrollbar (igual a BioPage) */
+/* Personalización de la barra de scroll */
 .messagesMsgContainer::-webkit-scrollbar {
     width: 8px;
+    /* Ancho de la barra de scroll */
 }
 
 .messagesMsgContainer::-webkit-scrollbar-thumb {
     background-color: black;
+    /* Color del "pulgarcito" */
     border-radius: 5px;
+    /* Esquinas redondeadas */
     transition: transform 0.3s ease;
+    /* Transición suave */
 }
 
 .messagesMsgContainer::-webkit-scrollbar-track {
     background-color: white;
+    /* Color de fondo de la barra */
     border-radius: 5px;
+    /* Esquinas redondeadas */
 }
 
+/* Efecto hover para la barra de scroll */
 .messagesMsgContainer::-webkit-scrollbar-thumb:hover {
     background-color: rgb(0, 142, 182);
+    /* Cambia color al azul */
     transform: scale(1.02);
+    /* Ligero aumento de tamaño */
     cursor: grab;
+    /* Cursor tipo agarre */
 }
 
-
-
-/* Estilos específicos para los mensajes en MessagesPage */
+/* Contenedor de estadísticas de mensajes (likes/dislikes) */
 .message-stats {
     display: flex;
+    /* Usa flexbox */
     gap: 15px;
+    /* Espacio entre elementos */
     margin: 10px 0;
+    /* Margen vertical */
 }
 
+/* Estilo para cada elemento de estadísticas */
 .message-stats div {
     display: flex;
+    /* Usa flexbox */
     align-items: center;
+    /* Centra verticalmente */
     gap: 5px;
+    /* Espacio entre icono y texto */
     color: #666;
+    /* Color de texto gris */
     font-family: 'Tektur';
+    /* Fuente personalizada */
 }
 
+/* Estilo para iconos en estadísticas */
 .message-stats i {
     color: rgb(0, 142, 182);
+    /* Color azul */
 }
 
-.like-stats,
-.dislike-stats {
+/* Estilos específicos para contadores de likes/dislikes */
+.messages-like-stats,
+.messages-dislike-stats {
     display: flex;
+    /* Usa flexbox */
     align-items: center;
+    /* Centra verticalmente */
     gap: 5px;
+    /* Espacio entre elementos */
     color: #666;
+    /* Color gris */
     font-family: 'Tektur';
+    /* Fuente personalizada */
     font-size: 1.5rem;
+    /* Tamaño de texto */
 }
 
-.delete-message-button {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Zen Dots';
+/* Estilo para contador de usuarios */
+.messages-users-count {
+    font-style: italic;
+    /* Texto en cursiva */
+    color: #666;
+    /* Color gris */
+    display: inline;
+    /* Display inline (en línea con el texto) */
+    margin-left: 4px;
+    /* Margen izquierdo pequeño */
+}
+
+/* Estilo para tooltip que muestra usuarios */
+.messages-users-tooltip {
+    visibility: hidden;
+    /* Oculto por defecto */
+    position: absolute;
+    /* Posicionamiento absoluto */
+    bottom: 100%;
+    /* Posicionado arriba del elemento padre */
+    left: 0;
+    /* Alineado a la izquierda */
+    margin-bottom: 8px;
+    /* Margen inferior */
+    padding: 8px 10px;
+    /* Relleno interno */
+    background-color: white;
+    /* Fondo blanco */
+    color: black;
+    /* Texto negro */
+    border-radius: 4px;
+    /* Esquinas redondeadas */
+    box-shadow: 0 2px 10px rgba(0, 142, 182, 0.3);
+    /* Sombra azul */
+    font-family: 'Tektur';
+    /* Fuente personalizada */
     font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: all 0.3s ease;
+    /* Tamaño de texto pequeño */
+    opacity: 0;
+    /* Inicialmente transparente */
+    transition: opacity 0.2s ease;
+    /* Transición suave */
+    z-index: 100;
+    /* Nivel de apilamiento */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul */
+    max-width: 400px;
+    /* Ancho máximo */
+    white-space: nowrap;
+    /* No permite saltos de línea */
+    overflow: hidden;
+    /* Oculta texto que sobresale */
+    text-overflow: ellipsis;
+    /* Muestra puntos suspensivos si el texto es largo */
+    display: inline-block;
+    /* Display inline-block */
+}
+
+/* Triángulo indicador del tooltip */
+.messages-users-tooltip::after {
+    content: "";
+    /* Contenido vacío */
+    position: absolute;
+    /* Posicionamiento absoluto */
+    top: 100%;
+    /* Posicionado debajo del tooltip */
+    left: 10px;
+    /* Alineado a la izquierda */
+    border-width: 6px;
+    /* Tamaño del triángulo */
+    border-style: solid;
+    /* Estilo del borde */
+}
+
+/* Variante de tooltip para likes */
+.messages-users-tooltip.likes-tooltip {
+    border-left: 4px solid green;
+    /* Borde izquierdo verde */
+}
+
+/* Variante de tooltip para dislikes */
+.messages-users-tooltip.dislikes-tooltip {
+    border-left: 4px solid red;
+    /* Borde izquierdo rojo */
+}
+
+/* Triángulo para tooltip de dislikes */
+.messages-users-tooltip.dislikes-tooltip::after {
+    border-color: red transparent transparent transparent;
+    /* Triángulo rojo */
+}
+
+/* Contenedores para botones de like/dislike */
+.messages-like-container,
+.messages-dislike-container {
+    position: relative;
+    /* Posicionamiento relativo */
+    display: inline-block;
+    /* Display inline-block */
+}
+
+/* Muestra tooltip al hacer hover */
+.messages-like-container:hover .likes-tooltip,
+.messages-dislike-container:hover .dislikes-tooltip {
+    visibility: visible;
+    /* Hace visible el tooltip */
+    opacity: 1;
+    /* Opacidad completa */
+}
+
+/* Estilo para contador de likes */
+.message-likes {
+    font-size: 0.9rem;
+    /* Tamaño de texto pequeño */
+    color: #666;
+    /* Color gris */
     margin-top: 10px;
-    border-radius: 20px;
+    /* Margen superior */
 }
 
-.delete-message-button:hover {
-    background-color: #e60000;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.delete-message-button i {
+/* Estilo para contador de dislikes */
+.message-dislikes {
     font-size: 0.9rem;
+    /* Tamaño de texto pequeño */
+    color: #666;
+    /* Color gris */
+    margin-top: 10px;
+    /* Margen superior */
+}
+
+/* Botón para eliminar mensajes */
+.messages-delete-message-button {
+    background-color: #ff4d4d;
+    /* Fondo rojo */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin bordes */
+    padding: 8px 15px;
+    /* Relleno interno */
+    border-radius: 5px;
+    /* Esquinas redondeadas */
+    cursor: pointer;
+    /* Cursor tipo mano */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 0.9rem;
+    /* Tamaño de texto pequeño */
+    display: flex;
+    /* Usa flexbox */
+    align-items: center;
+    /* Centra verticalmente */
+    gap: 5px;
+    /* Espacio entre icono y texto */
+    transition: all 0.3s ease;
+    /* Transición suave */
+    margin-top: 10px;
+    /* Margen superior */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+}
+
+/* Efecto hover para botón de eliminar */
+.messages-delete-message-button:hover {
+    background-color: #e60000;
+    /* Fondo rojo más oscuro */
+    transform: translateY(-2px);
+    /* Efecto de levitación */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+}
+
+/* Estilo para icono en botón de eliminar */
+.messages-delete-message-button i {
+    font-size: 0.9rem;
+    /* Tamaño de icono pequeño */
 }
 
 /* Sección de información del usuario */
-.user-info-section {
+.messages-user-info-section {
     display: flex;
-    /* Activa flexbox */
+    /* Usa flexbox */
     flex-direction: column;
-    /* Organiza elementos en columna */
+    /* Organiza en columna */
     align-items: center;
-    /* Centra elementos horizontalmente */
+    /* Centra horizontalmente */
     margin-bottom: 2rem;
-    /* Margen inferior de 1.8rem */
+    /* Margen inferior grande */
     gap: 0.1rem;
-    /* Espacio de 0.1rem entre elementos */
+    /* Espacio mínimo entre elementos */
 }
 
-/* Avatar en biografía */
-.bio-avatar {
+/* Estilo para avatar del usuario */
+.messages-avatar {
     width: 70px;
-    /* Ancho fijo de 70px */
+    /* Ancho fijo */
     height: 70px;
-    /* Altura fija de 70px */
+    /* Alto fijo (igual que ancho para círculo) */
     border-radius: 50%;
     /* Forma circular */
     object-fit: cover;
-    /* Ajusta la imagen manteniendo proporciones */
+    /* Ajusta imagen manteniendo proporciones */
     border: 1px solid rgb(0, 142, 182);
-    /* Borde azul de 1px */
+    /* Borde azul */
     box-shadow: 0 4px 10px rgba(0, 142, 182, 0.3);
-    /* Sombra azul con transparencia */
+    /* Sombra azul */
 }
 
-/* Inicial del avatar cuando no hay imagen */
-.bio-avatar-initial {
+/* Estilo para avatar cuando no hay imagen (mostrar inicial) */
+.messages-avatar-initial {
     width: 70px;
-    /* Ancho fijo de 70px */
+    /* Ancho fijo */
     height: 70px;
-    /* Altura fija de 70px */
+    /* Alto fijo */
     border-radius: 50%;
     /* Forma circular */
     background-color: black;
@@ -249,63 +498,63 @@
     color: white;
     /* Texto blanco */
     display: flex;
-    /* Activa flexbox */
+    /* Usa flexbox */
     align-items: center;
-    /* Centra elementos verticalmente */
+    /* Centra verticalmente */
     justify-content: center;
-    /* Centra elementos horizontalmente */
+    /* Centra horizontalmente */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de texto grande */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     border: 1px solid rgb(0, 142, 182);
-    /* Borde azul de 1px */
+    /* Borde azul */
 }
 
-/* Nombre de usuario en biografía */
-.bio-username {
+/* Estilo para nombre de usuario */
+.messages-username {
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de texto grande */
     color: black;
     /* Texto negro */
     text-shadow: 2px 2px 4px rgba(0, 142, 182, 0.5);
-    /* Sombra de texto azul */
+    /* Sombra azul */
 }
 
-/* Estilos para mensajes individuales */
+/* Estilo para cada mensaje individual */
 .message {
     margin-bottom: 10px;
-    /* Margen inferior de 10px */
+    /* Margen inferior */
     padding: 10px;
-    /* Relleno interno de 10px */
+    /* Relleno interno */
     border: 1px solid black;
-    /* Borde negro de 1px */
+    /* Borde negro */
     border-radius: 5px;
-    /* Bordes redondeados de 5px */
+    /* Esquinas redondeadas */
     background-color: white;
     /* Fondo blanco */
     transition: transform 0.3s ease;
-    /* Transición suave de transformación */
+    /* Transición suave */
     overflow-x: hidden;
-    /* No scroll horizontal */
+    /* Oculta scroll horizontal */
     box-sizing: border-box;
-    /* Modelo de caja border-box */
+    /* Modelo de caja incluye padding/border */
     word-wrap: break-word;
     /* Rompe palabras largas */
     white-space: pre-wrap;
-    /* Mantiene saltos de línea */
+    /* Respeta saltos de línea */
 }
 
 /* Efecto hover para mensajes */
 .message:hover {
     border-color: rgb(0, 142, 182);
-    /* Cambia color de borde a azul */
+    /* Borde azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
     /* Sombra azul */
     transform: scale(1.02);
-    /* Escala el mensaje al 102% */
+    /* Ligero aumento de tamaño */
 }
 
 /* Estilo para nombre de usuario en mensaje */
@@ -315,7 +564,7 @@
     font-weight: bold;
     /* Texto en negrita */
     font-size: 1.1rem;
-    /* Tamaño de fuente de 1.1rem */
+    /* Tamaño de texto */
 }
 
 /* Estilo para título de mensaje */
@@ -324,22 +573,22 @@
     /* Texto en negrita */
 }
 
-/* Estilos comunes para texto de mensaje */
+/* Estilos comunes para título y texto de mensaje */
 .message-title,
 .message-text {
     font-family: 'Zen Loop';
     /* Fuente personalizada */
     font-size: 2rem;
-    /* Tamaño de fuente de 2rem */
+    /* Tamaño de texto grande */
 }
 
-/* Estilos para elementos de mensaje */
+/* Estilos para elementos de texto en mensajes */
 .message-user,
 .message-title,
 .message-text,
 .message-date {
     margin-bottom: 5px;
-    /* Margen inferior de 5px */
+    /* Margen inferior pequeño */
     word-wrap: break-word;
     /* Rompe palabras largas */
 }
@@ -347,31 +596,69 @@
 /* Estilo para fecha de mensaje */
 .message-date {
     font-size: 0.9rem;
-    /* Tamaño de fuente de 0.9rem */
+    /* Tamaño de texto pequeño */
     font-family: 'Tektur';
     /* Fuente personalizada */
     color: #666;
-    /* Color de texto gris */
+    /* Color gris */
 }
 
-/* Contenedor de acciones en mensajes */
+/* Contenedor de acciones (like, dislike, eliminar) */
 .message-actions {
     display: flex;
-    /* Activa flexbox */
+    /* Usa flexbox */
     gap: 16px;
-    /* Espacio de 16px entre elementos */
+    /* Espacio entre elementos */
 }
 
-/* Mensaje cuando no hay mensajes */
+/* Mensaje cuando no hay mensajes para mostrar */
 .no-messages {
     text-align: center;
-    /* Alineación de texto centrada */
+    /* Texto centrado */
     font-family: 'Zen Loop';
     /* Fuente personalizada */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de texto */
     color: #666;
-    /* Color de texto gris */
+    /* Color gris */
     margin-top: 2rem;
-    /* Margen superior de 2rem */
+    /* Margen superior */
+}
+
+/* Contenedor para imágenes en mensajes */
+.message-image-container {
+    width: 100%;
+    /* Ancho completo */
+    margin: 10px 0;
+    /* Margen vertical */
+    display: flex;
+    /* Usa flexbox */
+    justify-content: center;
+    /* Centra horizontalmente */
+}
+
+/* Estilo para imágenes en mensajes */
+.message-image {
+    max-width: 100%;
+    /* Ancho máximo del contenedor */
+    max-height: 300px;
+    /* Altura máxima */
+    object-fit: contain;
+    /* Ajusta imagen manteniendo proporciones */
+    border-radius: 10px;
+    /* Esquinas redondeadas */
+    border: 1px solid #ddd;
+    /* Borde gris claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    transition: transform 0.3s ease;
+    /* Transición suave */
+}
+
+/* Efecto hover para imágenes en mensajes */
+.message-image:hover {
+    transform: scale(1.02);
+    /* Ligero aumento de tamaño */
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    /* Sombra azul */
 }

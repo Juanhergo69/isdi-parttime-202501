@@ -47,7 +47,7 @@ const HomePage = ({ navigation }) => {
         //Función que maneja el clic fuera del menú//
         const handleClickOutside = (e) => {
             //Verifica si el clic fue fuera del menú y sus botones//
-            if (showMenu && !e.target.closest('.menuButton') && !e.target.closest('.menuDropContainer')) {
+            if (showMenu && !e.target.closest('.homeMenuButton') && !e.target.closest('.homeMenuDropContainer')) {
                 setShowMenu(false) //Cierra el menú//
             }
         }
@@ -180,7 +180,7 @@ const HomePage = ({ navigation }) => {
                     />
                     {/* Botón para mostrar/ocultar el formulario de mensaje */}
                     <button
-                        className="toggleSendMsgFormButton"
+                        className="home-toggleSendMsgFormButton"
                         onClick={() => setShowMsgForm(!showMsgForm)}
                     >
                         {showMsgForm ? 'Hide Form' : 'New Post'}
@@ -191,21 +191,21 @@ const HomePage = ({ navigation }) => {
 
                 {/* Botón y menú desplegable del usuario */}
                 <button
-                    className={`menuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
+                    className={`homeMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
                     onClick={() => setShowMenu(!showMenu)}
                     aria-expanded={showMenu}
                     aria-label="User menu"
                 >
-                    <div className="menuButton-content">
+                    <div className="homeMenuButton-content">
                         {/* Muestra avatar o inicial del usuario */}
                         {loggedUser?.avatar ? (
                             <img
                                 src={loggedUser.avatar}
-                                className="menuButton-avatar"
+                                className="homeMenuButton-avatar"
                                 alt="User avatar"
                             />
                         ) : (
-                            <span className="menuButton-initial">
+                            <span className="homeMenuButton-initial">
                                 {(loggedUser && loggedUser.userName && loggedUser.userName[0].toUpperCase()) || 'U'}
                             </span>
                         )}
@@ -214,11 +214,11 @@ const HomePage = ({ navigation }) => {
 
                 {/* Menú desplegable cuando está visible */}
                 {showMenu && (
-                    <div className="menuDropContainer">
+                    <div className="homeMenuDropContainer">
                         {/* Botón para ir al perfil - ahora con Link */}
                         <Link
                             to="/profile"
-                            className="profileButton"
+                            className="homeProfileButton"
                             onClick={() => {
                                 navigation.navigateToProfile();
                                 setShowMenu(false);
@@ -230,7 +230,7 @@ const HomePage = ({ navigation }) => {
                         {/* Botón para ir a mensajes - ahora con Link */}
                         <Link
                             to="/messages"
-                            className="messagesButton"
+                            className="homeMessagesButton"
                             onClick={() => {
                                 navigation.navigateToMessages();
                                 setShowMenu(false);
@@ -240,7 +240,7 @@ const HomePage = ({ navigation }) => {
                         </Link>
 
                         {/* Botón para cerrar sesión */}
-                        <button className="logoutButton" onClick={handleLogout}>
+                        <button className="homeLogoutButton" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt"></i> Logout
                         </button>
                     </div>
@@ -248,10 +248,10 @@ const HomePage = ({ navigation }) => {
             </div>
 
             {/* Contenedor principal de contenido */}
-            <div className="msgContainer">
+            <div className="homeMsgContainer">
                 {/* Formulario para nuevo mensaje (solo visible cuando showMsgForm es true) */}
                 {showMsgForm && (
-                    <form id="sendMsgForm" className="sendMsgForm" onSubmit={handleSubmitMessage}>
+                    <form id="sendMsgForm" className="homeSendMsgForm" onSubmit={handleSubmitMessage}>
                         {/* Input para el título del mensaje */}
                         <input
                             type="text"
@@ -271,10 +271,10 @@ const HomePage = ({ navigation }) => {
                         ></textarea>
 
                         {/* Sección para manejar imágenes */}
-                        <div className="optimized-image-section">
-                            <div className="image-controls-row">
+                        <div className="home-optimized-image-section">
+                            <div className="home-image-controls-row">
                                 {/* Label estilizado para el input de archivo */}
-                                <label htmlFor="image-upload" className="image-upload-label">
+                                <label htmlFor="image-upload" className="home-image-upload-label">
                                     <i className="fas fa-image"></i> {selectedImage ? 'Change Image' : 'Add Image'}
                                 </label>
 
@@ -292,7 +292,7 @@ const HomePage = ({ navigation }) => {
                                 {selectedImage && (
                                     <button
                                         type="button"
-                                        className="remove-image-button"
+                                        className="home-remove-image-button"
                                         onClick={removeImage}
                                     >
                                         <i className="fas fa-times"></i> Remove
@@ -302,18 +302,18 @@ const HomePage = ({ navigation }) => {
 
                             {/* Muestra el nombre del archivo seleccionado */}
                             {selectedImage && (
-                                <div className="compact-image-info">
-                                    <span className="image-filename">{selectedImage.name}</span>
+                                <div className="home-compact-image-info">
+                                    <span className="home-image-filename">{selectedImage.name}</span>
                                 </div>
                             )}
 
                             {/* Muestra la vista previa de la imagen seleccionada */}
                             {imagePreview && (
-                                <div className="constrained-preview">
+                                <div className="home-constrained-preview">
                                     <img
                                         src={imagePreview}
                                         alt="Preview"
-                                        className="compact-image-preview"
+                                        className="home-compact-image-preview"
                                     />
                                 </div>
                             )}
@@ -325,8 +325,8 @@ const HomePage = ({ navigation }) => {
                 )}
 
                 {/* Contenedor de mensajes existentes */}
-                <div className={`userMsgForm ${showMsgForm ? 'with-form' : 'centered'}`}>
-                    <div className="userMsgContainer">
+                <div className={`homeUserMsgForm ${showMsgForm ? 'with-form' : 'centered'}`}>
+                    <div className="homeUserMsgContainer">
                         {/* Mapea todos los mensajes para mostrarlos */}
                         {messages.map((message) => {
                             //Encuentra el autor del mensaje actual//
@@ -358,11 +358,11 @@ const HomePage = ({ navigation }) => {
 
                             //Renderiza cada mensaje//
                             return (
-                                <div key={message.date} className="message">
+                                <div key={message.date} className="homeMessage">
                                     {/* Muestra información del autor */}
-                                    <div className="message-user">
+                                    <div className="home-message-user">
                                         User: <span
-                                            className="user-name-link"
+                                            className="home-user-name-link"
                                             onClick={() => navigation.navigateToBio(author.userName)}
                                             style={{ cursor: 'pointer', textDecoration: 'underline' }}
                                         >
@@ -371,31 +371,31 @@ const HomePage = ({ navigation }) => {
                                     </div>
 
                                     {/* Muestra título del mensaje */}
-                                    <div className="message-title">Title: {message.title}</div>
+                                    <div className="home-message-title">Title: {message.title}</div>
 
                                     {/* Muestra contenido del mensaje */}
-                                    <div className="message-text">Message: {message.msg}</div>
+                                    <div className="home-message-text">Message: {message.msg}</div>
 
                                     {/* Muestra imagen adjunta si existe */}
                                     {message.image && (
-                                        <div className="message-image-container">
+                                        <div className="home-message-image-container">
                                             <img
                                                 src={message.image}
                                                 alt="User uploaded content"
-                                                className="message-image"
+                                                className="home-message-image"
                                             />
                                         </div>
                                     )}
 
                                     {/* Muestra fecha del mensaje */}
-                                    <div className="message-date">Date: {message.date}</div>
+                                    <div className="home-message-date">Date: {message.date}</div>
 
                                     {/* Contenedor de acciones (like/dislike) */}
-                                    <div className="message-actions">
+                                    <div className="home-message-actions">
                                         {/* Contenedor y botón de like */}
-                                        <div className="like-container">
+                                        <div className="home-like-container">
                                             <button
-                                                className="like-button"
+                                                className="home-like-button"
                                                 onClick={() => handleLike(message.date)}
                                                 aria-label="Like"
                                             >
@@ -403,15 +403,15 @@ const HomePage = ({ navigation }) => {
                                                 <i className={hasLiked ? "fas fa-thumbs-up" : "far fa-thumbs-up"}></i>
 
                                                 {/* Contador de likes */}
-                                                <span className="message-likes">({likesCount})</span>
+                                                <span className="home-message-likes">({likesCount})</span>
                                             </button>
 
                                             {/* Tooltip con nombres de usuarios que dieron like */}
                                             {likedUsers.length > 0 && (
-                                                <div className="users-tooltip likes-tooltip">
+                                                <div className="home-users-tooltip likes-tooltip">
                                                     {likedUsers.slice(0, 3).join(', ')}
                                                     {likedUsers.length > 3 && (
-                                                        <span className="users-count">
+                                                        <span className="home-users-count">
                                                             {` and ${likedUsers.length - 3} more`}
                                                         </span>
                                                     )}
@@ -420,9 +420,9 @@ const HomePage = ({ navigation }) => {
                                         </div>
 
                                         {/* Contenedor y botón de dislike */}
-                                        <div className="dislike-container">
+                                        <div className="home-dislike-container">
                                             <button
-                                                className="dislike-button"
+                                                className="home-dislike-button"
                                                 onClick={() => handleDislike(message.date)}
                                                 aria-label="Dislike"
                                             >
@@ -430,15 +430,15 @@ const HomePage = ({ navigation }) => {
                                                 <i className={hasDisliked ? "fas fa-thumbs-down" : "far fa-thumbs-down"}></i>
 
                                                 {/* Contador de dislikes */}
-                                                <span className="message-dislikes">({dislikesCount})</span>
+                                                <span className="home-message-dislikes">({dislikesCount})</span>
                                             </button>
 
                                             {/* Tooltip con nombres de usuarios que dieron dislike */}
                                             {dislikedUsers.length > 0 && (
-                                                <div className="users-tooltip dislikes-tooltip">
+                                                <div className="home-users-tooltip dislikes-tooltip">
                                                     {dislikedUsers.slice(0, 3).join(', ')}
                                                     {dislikedUsers.length > 3 && (
-                                                        <span className="users-count">
+                                                        <span className="home-users-count">
                                                             {` and ${dislikedUsers.length - 3} more`}
                                                         </span>
                                                     )}

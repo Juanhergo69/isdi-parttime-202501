@@ -70,25 +70,25 @@ const BioPage = ({ navigation }) => {
         <div className="bioPageContainer">
             {/* Encabezado de la página */}
             <div className="bioHeaderContainer">
-                <div className="homeImgContainer">
+                <div className="bioImgContainer">
                     {/* Imagen del logo con clases para estilos y texto alternativo */}
                     <img
                         src="/Logo.jpg"       //Ruta de la imagen del logo//
-                        className="homeImg  " //Clase CSS para la imagen//
+                        className="bioImg  " //Clase CSS para la imagen//
                         alt="Logo"            //Texto alternativo para accesibilidad//
                     />
                 </div>
                 {/* Título de la página */}
-                <h1 className="homeMsg">User Profile</h1>
+                <h1 className="bioMsg">User Profile</h1>
 
                 {/* Botón para volver a home - ahora con Link */}
                 <Link
                     to="/home"
-                    className="menuButton back-button"
+                    className="bioMenuButton-back-button"
                     onClick={() => navigation.navigateToHome()}
                     aria-label="Back to home"
                 >
-                    <div className="menuButton-content">
+                    <div className="bioMenuButton-content">
                         <i className="fas fa-arrow-left"></i>
                     </div>
                 </Link>
@@ -99,9 +99,9 @@ const BioPage = ({ navigation }) => {
                 {/* Formulario estilo userMsgForm */}
                 <div className="bioForm">
                     {/* Sección de información del usuario */}
-                    <div className="user-info-section">
+                    <div className="bio-user-info-section">
                         {/* Avatar o inicial del usuario */}
-                        <div className="user-avatar">
+                        <div className="bio-user-avatar">
                             {viewedUser.avatar ? (
                                 <img
                                     src={viewedUser.avatar}
@@ -149,33 +149,33 @@ const BioPage = ({ navigation }) => {
 
                                 //Renderiza cada mensaje del usuario//
                                 return (
-                                    <div key={message.date} className="message">
+                                    <div key={message.date} className="bio-message">
                                         {/* Muestra título del mensaje */}
-                                        <div className="message-title">Title: {message.title}</div>
+                                        <div className="bio-message-title">Title: {message.title}</div>
 
                                         {/* Muestra contenido del mensaje */}
-                                        <div className="message-text">Message: {message.msg}</div>
+                                        <div className="bio-message-text">Message: {message.msg}</div>
 
                                         {/* Muestra imagen adjunta si existe */}
                                         {message.image && (
-                                            <div className="message-image-container">
+                                            <div className="bio-message-image-container">
                                                 <img
                                                     src={message.image}
                                                     alt="User uploaded content"
-                                                    className="message-image"
+                                                    className="bio-message-image"
                                                 />
                                             </div>
                                         )}
 
                                         {/* Muestra fecha del mensaje */}
-                                        <div className="message-date">Date: {message.date}</div>
+                                        <div className="bio-message-date">Date: {message.date}</div>
 
                                         {/* Contenedor de acciones (like/dislike) */}
-                                        <div className="message-actions">
+                                        <div className="bio-message-actions">
                                             {/* Contenedor y botón de like */}
-                                            <div className="like-container">
+                                            <div className="bio-like-container">
                                                 <button
-                                                    className="like-button"
+                                                    className="bio-like-button"
                                                     onClick={() => handleLike(message.date)}
                                                     aria-label="Like"
                                                 >
@@ -183,12 +183,12 @@ const BioPage = ({ navigation }) => {
                                                     <i className={hasLiked ? "fas fa-thumbs-up" : "far fa-thumbs-up"}></i>
 
                                                     {/* Contador de likes */}
-                                                    <span className="message-likes">({likesCount})</span>
+                                                    <span className="bio-message-likes">({likesCount})</span>
                                                 </button>
 
                                                 {/* Tooltip con nombres de usuarios que dieron like */}
                                                 {likedUsers.length > 0 && (
-                                                    <div className="users-tooltip likes-tooltip">
+                                                    <div className="bio-users-tooltip likes-tooltip">
                                                         {likedUsers.slice(0, 3).join(', ')}
                                                         {likedUsers.length > 3 && (
                                                             <span className="users-count">
@@ -200,9 +200,9 @@ const BioPage = ({ navigation }) => {
                                             </div>
 
                                             {/* Contenedor y botón de dislike */}
-                                            <div className="dislike-container">
+                                            <div className="bio-dislike-container">
                                                 <button
-                                                    className="dislike-button"
+                                                    className="bio-dislike-button"
                                                     onClick={() => handleDislike(message.date)}
                                                     aria-label="Dislike"
                                                 >
@@ -210,15 +210,15 @@ const BioPage = ({ navigation }) => {
                                                     <i className={hasDisliked ? "fas fa-thumbs-down" : "far fa-thumbs-down"}></i>
 
                                                     {/* Contador de dislikes */}
-                                                    <span className="message-dislikes">({dislikesCount})</span>
+                                                    <span className="bio-message-dislikes">({dislikesCount})</span>
                                                 </button>
 
                                                 {/* Tooltip con nombres de usuarios que dieron dislike */}
                                                 {dislikedUsers.length > 0 && (
-                                                    <div className="users-tooltip dislikes-tooltip">
+                                                    <div className="bio-users-tooltip dislikes-tooltip">
                                                         {dislikedUsers.slice(0, 3).join(', ')}
                                                         {dislikedUsers.length > 3 && (
-                                                            <span className="users-count">
+                                                            <span className="bio-users-count">
                                                                 {` and ${dislikedUsers.length - 3} more`}
                                                             </span>
                                                         )}
@@ -230,7 +230,7 @@ const BioPage = ({ navigation }) => {
                                 )
                             })
                         ) : (
-                            <div className="no-messages">This user hasn't posted any messages yet.</div>
+                            <div className="bio-no-messages">This user hasn't posted any messages yet.</div>
                         )}
                     </div>
                 </div>

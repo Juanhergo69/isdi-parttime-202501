@@ -24,16 +24,27 @@ const LandingPage = ({ navigation }) => {
             <h3 className="landingMsg">
                 Welcome to your social developer network
             </h3>
+            <div className="landingButtonContainer">
+                {/* Botón para unirse/registrarse - ahora usando Link */}
+                <Link
+                    to="/register"         //Ruta a la página de registro//
+                    className="landingButtonSignUp" //Clase CSS para estilos del botón//
+                    onClick={navigation.navigateToRegister} //Función que se ejecuta al hacer clic//
+                >
+                    Sign Up!   {/*Texto del botón*/}
+                </Link>
 
-            {/* Botón para unirse/registrarse - ahora usando Link */}
-            <Link
-                to="/register"         //Ruta a la página de registro//
-                className="buttonJoin" //Clase CSS para estilos del botón//
-                onClick={navigation.navigateToRegister} //Función que se ejecuta al hacer clic//
-            >
-                Join In!   {/*Texto del botón*/}
-            </Link>
+                {/* Botón para unirse/registrarse - ahora usando Link */}
+                <Link
+                    to="/login"         //Ruta a la página de login//
+                    className="landingButtonSignIn" //Clase CSS para estilos del botón//
+                    onClick={navigation.navigateToLogin} //Función que se ejecuta al hacer clic//
+                >
+                    Sign In!   {/*Texto del botón*/}
+                </Link>
+            </div>
         </div>
+
     )
 }
 

@@ -276,43 +276,43 @@ const ProfilePage = ({ navigation }) => {
     return (
         <div className="profilePageContainer">
             {/* Encabezado de la página */}
-            <div className="homeHeaderContainer">
+            <div className="profileHeaderContainer">
                 {/* Contenedor del logo - ahora con Link */}
-                <div className="homeImgContainer">
+                <div className="profileImgContainer">
                     {/* Imagen del logo con clases para estilos y texto alternativo */}
                     <img
                         src="/Logo.jpg"       //Ruta de la imagen del logo//
-                        className="homeImg  " //Clase CSS para la imagen//
+                        className="profileImg  " //Clase CSS para la imagen//
                         alt="Logo"            //Texto alternativo para accesibilidad//
                     />
                 </div>
 
                 {/* Título de la página */}
-                <h1 className="homeMsg">Edit Profile</h1>
+                <h1 className="profileMsg">Edit Profile</h1>
 
                 {/* Botón para volver a home - ahora con Link */}
                 <Link
                     to="/home"
-                    className="menuButton back-button"
+                    className="profileMenuButton-back-button"
                     onClick={() => navigation.navigateToHome()}
                     aria-label="Back to home"
                 >
-                    <div className="menuButton-content">
+                    <div className="profileMenuButton-content">
                         <i className="fas fa-arrow-left"></i>
                     </div>
                 </Link>
             </div>
             {/* Contenedor principal del formulario */}
             <div className="profileFormContainer">
-                <form onSubmit={handleSubmit} className="form">
+                <form onSubmit={handleSubmit} className="profileForm">
                     {/* Sección de imagen de perfil */}
-                    <div className="form-group">
+                    <div className="profileForm-group">
                         <label>Profile Image:</label>
-                        <div className="optimized-image-section">
+                        <div className="profile-optimized-image-section">
                             {/* Controles para subir/remover imagen */}
-                            <div className="image-controls-row">
+                            <div className="profile-image-controls-row">
                                 {/* Label estilizado para input de archivo */}
-                                <label htmlFor="avatar-upload" className="image-upload-label">
+                                <label htmlFor="avatar-upload" className="profile-image-upload-label">
                                     <i className="fas fa-image"></i> {imagePreview ? 'Change Image' : 'Add Image'}
                                 </label>
 
@@ -329,7 +329,7 @@ const ProfilePage = ({ navigation }) => {
                                 {imagePreview && (
                                     <button
                                         type="button"
-                                        className="remove-image-button"
+                                        className="profile-remove-image-button"
                                         onClick={removeImage}
                                     >
                                         <i className="fas fa-times"></i> Remove
@@ -339,18 +339,18 @@ const ProfilePage = ({ navigation }) => {
 
                             {/* Muestra nombre del archivo seleccionado */}
                             {selectedImage && (
-                                <div className="compact-image-info">
-                                    <span className="image-filename">{selectedImage.name}</span>
+                                <div className="profile-compact-image-info">
+                                    <span className="profile-image-filename">{selectedImage.name}</span>
                                 </div>
                             )}
 
                             {/* Muestra vista previa de la imagen */}
                             {imagePreview && (
-                                <div className="constrained-preview">
+                                <div className="profile-constrained-preview">
                                     <img
                                         src={imagePreview}
                                         alt="Preview"
-                                        className="compact-image-preview"
+                                        className="profile-compact-image-preview"
                                     />
                                 </div>
                             )}
@@ -358,7 +358,7 @@ const ProfilePage = ({ navigation }) => {
                     </div>
 
                     {/* Campo para nombre de usuario */}
-                    <div className="form-group">
+                    <div className="profileForm-group">
                         <label htmlFor="userName">Username:</label>
                         <input
                             type="text"
@@ -369,11 +369,11 @@ const ProfilePage = ({ navigation }) => {
                             className={errors.userName ? 'error' : ''} //Clase error si hay problema//
                         />
                         {/* Muestra mensaje de error si existe */}
-                        {errors.userName && <span className="error-message">{errors.userName}</span>}
+                        {errors.userName && <span className="profile-error-message">{errors.userName}</span>}
                     </div>
 
                     {/* Campo para email */}
-                    <div className="form-group">
+                    <div className="profileForm-group">
                         <label htmlFor="email">Email:</label>
                         <input
                             type="email"
@@ -387,9 +387,9 @@ const ProfilePage = ({ navigation }) => {
                     </div>
 
                     {/* Campo para nueva contraseña con toggle de visibilidad */}
-                    <div className="form-group">
+                    <div className="profileForm-group">
                         <label htmlFor="password">New Password:</label>
-                        <div className="password-input-container">
+                        <div className="profile-password-input-container">
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 id="password"
@@ -400,7 +400,7 @@ const ProfilePage = ({ navigation }) => {
                             />
                             <button
                                 type="button"
-                                className="password-toggle"
+                                className="profile-password-toggle"
                                 onClick={() => setShowPassword(!showPassword)}
                                 aria-label={showPassword ? 'Hide password' : 'Show password'}
                             >
@@ -411,9 +411,9 @@ const ProfilePage = ({ navigation }) => {
                     </div>
 
                     {/* Campo para confirmar nueva contraseña con toggle de visibilidad */}
-                    <div className="form-group">
+                    <div className="profileForm-group">
                         <label htmlFor="confirmPassword">Confirm New Password:</label>
-                        <div className="password-input-container">
+                        <div className="profile-password-input-container">
                             <input
                                 type={showConfirmPassword ? 'text' : 'password'}
                                 id="confirmPassword"
@@ -424,7 +424,7 @@ const ProfilePage = ({ navigation }) => {
                             />
                             <button
                                 type="button"
-                                className="password-toggle"
+                                className="profile-password-toggle"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                             >
@@ -435,11 +435,11 @@ const ProfilePage = ({ navigation }) => {
                     </div>
 
                     {/* Botones de acción */}
-                    <div className="form-actions">
-                        <button type="submit" className="buttonSaveChanges">Save Changes</button>
+                    <div className="profileForm-actions">
+                        <button type="submit" className="profileButtonSaveChanges">Save Changes</button>
                         <button
                             type="button"
-                            className="buttonCancel"
+                            className="profileButtonCancel"
                             onClick={() => navigation.navigateToHome()}
                         >
                             Cancel
@@ -447,10 +447,10 @@ const ProfilePage = ({ navigation }) => {
                     </div>
 
                     {/* Botón para eliminar cuenta */}
-                    <div className="delete-account-section">
+                    <div className="profile-delete-account-section">
                         <button
                             type="button"
-                            className="buttonDeleteAccount"
+                            className="profileButtonDeleteAccount"
                             onClick={handleDeleteAccount}
                         >
                             <i className="fas fa-trash-alt"></i> Delete Account

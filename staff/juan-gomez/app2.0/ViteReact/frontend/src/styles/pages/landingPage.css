@@ -70,7 +70,15 @@
     /* Sombra de texto azul */
 }
 
-.buttonJoin {
+/* Estilos para el contenedor de botones*/
+.landingButtonContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+/* Estilos para el boton SignUp */
+.landingButtonSignUp {
     background-color: black;
     /* Fondo negro */
     color: white;
@@ -87,7 +95,7 @@
     /* Cursor tipo pointer */
     transition: background-color 0.3s ease;
     /* Transición suave del color de fondo */
-    width: auto;
+    width: 40%;
     /* Ancho automático */
     max-width: 200px;
     /* Ancho máximo de 200px */
@@ -95,9 +103,48 @@
     /* Fuente personalizada */
     transition: transform 0.3s ease;
     /* Transición suave de transformación */
+    text-align: center;
 }
 
-.buttonJoin:hover {
+/* Efecto de hover para boton SignUp */
+.landingButtonSignUp:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color de fondo a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+/* Estilos para el boton SignIn */
+.landingButtonSignIn {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 8px 16px;
+    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    transition: background-color 0.3s ease;
+    /* Transición suave del color de fondo */
+    width: 40%;
+    /* Ancho automático */
+    max-width: 200px;
+    /* Ancho máximo de 200px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+    text-align: center;
+}
+
+/* Efecto de hover para boton SignIn */
+.landingButtonSignIn:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
     transform: scale(1.05);

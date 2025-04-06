@@ -29,7 +29,7 @@
 }
 
 /* Contenedor de imagen en home */
-.homeImgContainer {
+.bioImgContainer {
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -41,7 +41,7 @@
 }
 
 /* Estilos para la imagen de la página principal */
-.homeImg {
+.bioImg {
     width: 100%;
     /* Ancho del 100% */
     max-width: 100px;
@@ -53,24 +53,63 @@
 }
 
 /* Efecto hover para la imagen de home */
-.homeImg:hover {
+.bioImg:hover {
     transform: scale(1.05);
     /* Escala la imagen al 105% al hacer hover */
 }
 
-/* Estilo específico para botón de volver */
-.menuButton.back-button {
-    padding: 0;
-    /* Sin relleno */
+/* Estilos para el mensaje de la página bio */
+.bioMsg {
+    color: black;
+    /* Color de texto negro */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 2rem;
+    /* Tamaño de fuente de 2rem */
+    text-shadow: 8px 8px 16px rgb(255, 255, 255);
+    /* Sombra de texto blanca */
 }
 
-.menuButton.back-button {
+/* Estilo específico para botón de volver */
+.bioMenuButton-back-button {
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 0;
+    /* Sin relleno */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem para el icono */
+    /* Tamaño de fuente de 1.5rem */
+    border-radius: 50%;
+    /* Forma circular */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    width: 70px;
+    /* Ancho fijo de 70px */
+    height: 70px;
+    /* Altura fija de 70px (igual que el ancho para círculo perfecto) */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    position: relative;
+    /* Posicionamiento relativo */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    z-index: 101;
+    /* Nivel de apilamiento */
 }
 
 /* Efecto hover para el botón de menú */
-.menuButton:hover {
+.bioMenuButton-back-button:hover {
     background-color: rgb(255, 255, 255);
     /* Cambia fondo a blanco */
     color: rgb(0, 142, 182);
@@ -80,7 +119,7 @@
 }
 
 /* Contenedor interno del botón de menú */
-.menuButton-content {
+.bioMenuButton-content {
     width: 100%;
     /* Ancho del 100% */
     height: 100%;
@@ -191,7 +230,7 @@
 }
 
 /* Sección de información del usuario */
-.user-info-section {
+.bio-user-info-section {
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -258,20 +297,6 @@
     /* Sombra de texto azul */
 }
 
-/* Mensaje cuando no hay mensajes */
-.no-messages {
-    text-align: center;
-    /* Alineación de texto centrada */
-    font-family: 'Zen Loop';
-    /* Fuente personalizada */
-    font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
-    color: #666;
-    /* Color de texto gris */
-    margin-top: 2rem;
-    /* Margen superior de 2rem */
-}
-
 .bioMsgContainer {
     width: 100%;
     /* Ancho del 100% */
@@ -327,7 +352,7 @@
 }
 
 /* Estilos para mensajes individuales */
-.message {
+.bio-message {
     margin-bottom: 10px;
     /* Margen inferior de 10px */
     padding: 10px;
@@ -351,7 +376,7 @@
 }
 
 /* Efecto hover para mensajes */
-.message:hover {
+.bio-message:hover {
     border-color: rgb(0, 142, 182);
     /* Cambia color de borde a azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
@@ -361,7 +386,7 @@
 }
 
 /* Estilo para nombre de usuario en mensaje */
-.message-user {
+.bio-message-user {
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     font-weight: bold;
@@ -371,14 +396,14 @@
 }
 
 /* Estilo para título de mensaje */
-.message-title {
+.bio-message-title {
     font-weight: bold;
     /* Texto en negrita */
 }
 
 /* Estilos comunes para texto de mensaje */
-.message-title,
-.message-text {
+.bio-message-title,
+.bio-message-text {
     font-family: 'Zen Loop';
     /* Fuente personalizada */
     font-size: 2rem;
@@ -386,10 +411,10 @@
 }
 
 /* Estilos para elementos de mensaje */
-.message-user,
-.message-title,
-.message-text,
-.message-date {
+.bio-message-user,
+.bio-message-title,
+.bio-message-text,
+.bio-message-date {
     margin-bottom: 5px;
     /* Margen inferior de 5px */
     word-wrap: break-word;
@@ -397,7 +422,7 @@
 }
 
 /* Estilo para fecha de mensaje */
-.message-date {
+.bio-message-date {
     font-size: 0.9rem;
     /* Tamaño de fuente de 0.9rem */
     font-family: 'Tektur';
@@ -407,7 +432,7 @@
 }
 
 /* Contenedor de acciones en mensajes */
-.message-actions {
+.bio-message-actions {
     display: flex;
     /* Activa flexbox */
     gap: 16px;
@@ -415,7 +440,7 @@
 }
 
 /* Mensaje cuando no hay mensajes */
-.no-messages {
+.bio-no-messages {
     text-align: center;
     /* Alineación de texto centrada */
     font-family: 'Zen Loop';
@@ -429,29 +454,30 @@
 }
 
 /* Estilos para lista de nombres de usuarios */
-.user-names-list {
+.bio-user-names-list {
     display: inline;
     /* Display inline */
 }
 
-.user-name {
+/*Estilos para el nombre de usuario*/
+.bio-user-name {
     display: inline;
     /* Display inline */
 }
 
 /* Separadores para lista de nombres */
-.user-name:not(:last-child)::after {
+.bio-user-name:not(:last-child)::after {
     content: ", ";
     /* Agrega coma como separador */
 }
 
-.user-name:last-child::after {
+.bio-user-name:last-child::after {
     content: " and ";
     /* Agrega "and" como separador para el último elemento */
 }
 
 /* Estilo para contador de usuarios */
-.users-count {
+.bio-users-count {
     font-style: italic;
     /* Texto en cursiva */
     color: #666;
@@ -463,7 +489,7 @@
 }
 
 /* Tooltip para mostrar usuarios */
-.users-tooltip {
+.bio-users-tooltip {
     visibility: hidden;
     /* Inicialmente oculto */
     position: absolute;
@@ -509,7 +535,7 @@
 }
 
 /* Triángulo indicador para tooltip */
-.users-tooltip::after {
+.bio-users-tooltip::after {
     content: "";
     /* Contenido vacío */
     position: absolute;
@@ -525,30 +551,30 @@
 }
 
 /* Color para tooltip de likes */
-.likes-tooltip {
+.bio-users-tooltip.likes-tooltip {
     border-left: 4px solid green;
     /* Borde izquierdo verde de 4px */
 }
 
-.likes-tooltip::after {
+.bio-users-tooltip-likes.tooltip::after {
     border-color: green transparent transparent transparent;
     /* Triángulo verde */
 }
 
 /* Color para tooltip de dislikes */
-.dislikes-tooltip {
+.bio-users-tooltip.dislikes-tooltip {
     border-left: 4px solid red;
     /* Borde izquierdo rojo de 4px */
 }
 
-.dislikes-tooltip::after {
+.bio-users-tooltip.dislikes-tooltip::after {
     border-color: red transparent transparent transparent;
     /* Triángulo rojo */
 }
 
 /* Contenedores para botones de like/dislike */
-.like-container,
-.dislike-container {
+.bio-like-container,
+.bio-dislike-container {
     position: relative;
     /* Posicionamiento relativo para contener elementos absolutos */
     display: inline-block;
@@ -556,8 +582,8 @@
 }
 
 /* Muestra tooltip al hacer hover */
-.like-container:hover .likes-tooltip,
-.dislike-container:hover .dislikes-tooltip {
+.bio-like-container:hover .likes-tooltip,
+.bio-dislike-container:hover .dislikes-tooltip {
     visibility: visible;
     /* Hace visible el tooltip */
     opacity: 1;
@@ -565,8 +591,8 @@
 }
 
 /* Estilos para botones de like/dislike */
-.like-button,
-.dislike-button {
+.bio-like-button,
+.bio-dislike-button {
     position: relative;
     /* Posicionamiento relativo */
     background: none;
@@ -601,13 +627,13 @@
 }
 
 /* Efecto hover para botón de like */
-.like-button:hover {
+.bio-like-button:hover {
     transform: scale(1.1);
     /* Escala el botón al 110% */
 }
 
 /* Contador de likes */
-.message-likes {
+.bio-message-likes {
     font-size: 0.9rem;
     /* Tamaño de fuente de 0.9rem */
     color: #666;
@@ -629,13 +655,13 @@
 }
 
 /* Efecto hover para botón de dislike */
-.dislike-button:hover {
+.bio-dislike-button:hover {
     transform: scale(1.1);
     /* Escala el botón al 110% */
 }
 
 /* Contador de dislikes */
-.message-dislikes {
+.bio-message-dislikes {
     font-size: 0.9rem;
     /* Tamaño de fuente de 0.9rem */
     color: #666;
@@ -645,7 +671,7 @@
 }
 
 /* Contenedor de imagen en mensajes */
-.message-image-container {
+.bio-message-image-container {
     width: 100%;
     /* Ancho del 100% */
     margin: 10px 0;
@@ -657,7 +683,7 @@
 }
 
 /* Imagen en mensajes */
-.message-image {
+.bio-message-image {
     max-width: 100%;
     /* Ancho máximo del 100% */
     max-height: 300px;
@@ -675,7 +701,7 @@
 }
 
 /* Efecto hover para imagen en mensajes */
-.message-image:hover {
+.bio-message-image:hover {
     transform: scale(1.02);
     /* Escala la imagen al 102% */
     box-shadow: 0 0 10px rgb(0, 142, 182);

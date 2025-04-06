@@ -15,6 +15,7 @@ import Form from '../components/Forms'
 
 //Importa los estilos CSS//
 import '../styles/pages/loginPage.css'
+import '../styles/components/forms.css'
 
 //Define el componente LoginPage que recibe la prop navigation//
 const LoginPage = ({ navigation }) => {
@@ -61,14 +62,14 @@ const LoginPage = ({ navigation }) => {
             {/* Botón con logo para volver a la página de inicio - ahora con Link */}
             <Link
                 to="/"
-                className="imgButton"
+                className="loginImgButton"
                 onClick={navigation.navigateToLanding}
             >
                 <img src="/Logo.jpg" alt="Home" />
             </Link>
 
             {/* Título del formulario */}
-            <h1 className="title">LOGIN</h1>
+            <h1 className="loginTitle">LOGIN</h1>
 
             {/* Componente Form reutilizable con configuración específica para login */}
             <Form
@@ -92,7 +93,7 @@ const LoginPage = ({ navigation }) => {
                         autoComplete: "current-password",
                         //Input personalizado con botón de toggle//
                         customInput: (
-                            <div className="password-input-container">
+                            <div className="login-password-input-container">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     id="password"
@@ -102,7 +103,7 @@ const LoginPage = ({ navigation }) => {
                                 />
                                 <button
                                     type="button"
-                                    className="password-toggle"
+                                    className="login-password-toggle"
                                     onClick={() => setShowPassword(!showPassword)}
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                                 >
@@ -129,7 +130,7 @@ const LoginPage = ({ navigation }) => {
             {/* Botón para redirigir al registro - ahora con Link */}
             <Link
                 to="/register"
-                className="buttonGoToRegister"
+                className="loginButtonGoToRegister"
                 onClick={navigation.navigateToRegister}
             >
                 Register now!
