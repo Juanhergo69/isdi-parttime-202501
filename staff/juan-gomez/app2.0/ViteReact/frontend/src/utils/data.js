@@ -20,6 +20,7 @@ export const storeMsg = (loggedUserUserId, title, msg, date, image = null) => {
         date: date.toLocaleString(), //Fecha formateada como string//
         likes: [],                   //Array para likes (inicia vacío)//
         dislikes: [],                //Array para dislikes (inicia vacío)//
+        favorite: [],                //Array para favoritos (inicia vacío)//
         image: image                 //Imagen adjunta (opcional)//
     }
 
@@ -61,7 +62,9 @@ export const toggleLike = (messageId, userId) => {
 
 //Función para manejar dislikes en mensajes (similar a toggleLike)//
 export const toggleDislike = (messageId, userId) => {
+    //Obtiene todos los mensajes//
     const messages = getMessages()
+    //Busca el mensaje específico por su fecha (que funciona como ID)//
     const message = messages.find(msg => msg.date === messageId)
 
     if (message) {
@@ -87,9 +90,36 @@ export const toggleDislike = (messageId, userId) => {
     }
 }
 
+//Función para manejar favoritos en mensajes//
+export const toggleFavorite = (messageId, userId) => {
+    //Obtiene todos los mensajes//
+    const messages = getMessages()
+    //Busca el mensaje específico por su fecha (que funciona como ID)//
+    const message = messages.find(msg => msg.date === messageId)
+
+    if (message) {
+        //Verifica si el usuario ya dio favorito//
+        const userFavoriteIndex = message.favorite.indexOf(userId)
+        //Si el usuario no había dado favorito antes//
+        if (userFavoriteIndex === -1) {
+            //Agrega el favorito//
+            message.favorite.push(userId)
+        } else {
+            //Si ya tenía favorito, lo remueve//
+            message.favorite.splice(userFavoriteIndex, 1)
+        }
+        //Guarda los cambios//
+        saveMessages(messages)
+    }
+}
+
+
 //Función para manejar la eliminación de mensajes//
 export const deleteMessage = (messageId) => {
+    //Obtiene todos los mensajes//
     const messages = getMessages()
-    const updatedMessages = messages.filter(msg => msg.date !== messageId) //Filtra para excluir el mensaje cuyo campo date coincide con messageId//
+    //Filtra para excluir el mensaje cuyo campo date coincide con messageId//
+    const updatedMessages = messages.filter(msg => msg.date !== messageId)
+    //Guarda la lista de mensajes actualizados (eliminando el mensaje que se ha filtrado) en localStorage//
     localStorage.setItem('messages', JSON.stringify(updatedMessages))
 }

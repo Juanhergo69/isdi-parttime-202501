@@ -1,99 +1,101 @@
-/* Contenedor de página de biografía */
+/* Contenedor principal de la página de biografía */
 .bioPageContainer {
     display: flex;
-    /* Activa flexbox */
+    /* Activa el modelo de caja flexible (Flexbox) */
     flex-direction: column;
-    /* Organiza elementos en columna */
+    /* Organiza los elementos hijos en columna vertical */
     height: 100vh;
-    /* Altura mínima del 100% del viewport */
+    /* Altura igual al 100% del viewport (ventana visible) */
     width: 100%;
-    /* Ancho del 100% */
+    /* Ancho del 100% del contenedor padre */
     overflow: hidden;
+    /* Oculta cualquier contenido que desborde el contenedor */
 }
 
+/* Contenedor del encabezado de la biografía */
 .bioHeaderContainer {
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     justify-content: space-between;
-    /* Distribuye espacio entre elementos */
+    /* Distribuye el espacio entre los elementos hijos */
     align-items: center;
-    /* Centra elementos verticalmente */
+    /* Centra los elementos verticalmente */
     width: 100%;
-    /* Ancho del 100% */
+    /* Ancho completo */
     height: 1%;
-    /* Altura mínima del 1% */
+    /* Altura mínima del 1% (podría ser min-height en su lugar) */
     padding: 40px;
-    /* Relleno interno de 40px */
+    /* Espaciado interno de 40px en todos los lados */
     margin-top: 3rem;
-    /* Margen superior de 3rem */
+    /* Margen superior de 3 unidades rem */
 }
 
-/* Contenedor de imagen en home */
+/* Contenedor de la imagen de biografía */
 .bioImgContainer {
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     flex-direction: column;
-    /* Organiza elementos en columna */
+    /* Organiza los elementos en columna */
     align-items: center;
-    /* Centra elementos horizontalmente */
+    /* Centra los elementos horizontalmente */
     gap: 0.5rem;
-    /* Espacio de 0.5rem entre elementos */
+    /* Espacio de 0.5rem entre elementos hijos */
 }
 
-/* Estilos para la imagen de la página principal */
+/* Estilos para la imagen de biografía */
 .bioImg {
     width: 100%;
-    /* Ancho del 100% */
+    /* Ancho del 100% del contenedor */
     max-width: 100px;
-    /* Ancho máximo de 100px */
+    /* Ancho máximo limitado a 100px */
     border-radius: 10px;
-    /* Bordes redondeados de 10px */
+    /* Bordes redondeados con radio de 10px */
     transition: transform 0.3s ease;
-    /* Transición suave de transformación durante 0.3s */
+    /* Transición suave para transformaciones */
 }
 
-/* Efecto hover para la imagen de home */
+/* Efecto al pasar el ratón sobre la imagen */
 .bioImg:hover {
     transform: scale(1.05);
-    /* Escala la imagen al 105% al hacer hover */
+    /* Escala la imagen al 105% de su tamaño */
 }
 
-/* Estilos para el mensaje de la página bio */
+/* Estilos para el mensaje principal de biografía */
 .bioMsg {
     color: black;
     /* Color de texto negro */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     font-size: 2rem;
-    /* Tamaño de fuente de 2rem */
+    /* Tamaño de fuente de 2rem (32px normalmente) */
     text-shadow: 8px 8px 16px rgb(255, 255, 255);
-    /* Sombra de texto blanca */
+    /* Sombra blanca difuminada */
 }
 
-/* Estilo específico para botón de volver */
+/* Estilos para el botón de retroceso */
 .bioMenuButton-back-button {
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
-    /* Sin borde */
+    /* Sin bordes */
     padding: 0;
-    /* Sin relleno */
+    /* Sin relleno interno */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de fuente de 1.5rem (24px) */
     border-radius: 50%;
-    /* Forma circular */
+    /* Forma circular perfecta */
     cursor: pointer;
-    /* Cursor tipo pointer */
+    /* Cursor en forma de mano */
     transition: all 0.3s ease;
     /* Transición suave para todas las propiedades */
     width: 70px;
     /* Ancho fijo de 70px */
     height: 70px;
-    /* Altura fija de 70px (igual que el ancho para círculo perfecto) */
+    /* Altura fija de 70px (igual que ancho para círculo perfecto) */
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     align-items: center;
     /* Centra verticalmente */
     justify-content: center;
@@ -105,294 +107,241 @@
     overflow: hidden;
     /* Oculta contenido que desborde */
     z-index: 101;
-    /* Nivel de apilamiento */
+    /* Nivel de apilamiento alto */
 }
 
-/* Efecto hover para el botón de menú */
+/* Efecto al pasar el ratón sobre el botón */
 .bioMenuButton-back-button:hover {
     background-color: rgb(255, 255, 255);
-    /* Cambia fondo a blanco */
+    /* Fondo blanco */
     color: rgb(0, 142, 182);
-    /* Cambia color de texto a azul */
+    /* Texto azul */
     transform: scale(1.05);
     /* Escala el botón al 105% */
 }
 
-/* Contenedor interno del botón de menú */
+/* Contenido interno del botón */
 .bioMenuButton-content {
     width: 100%;
-    /* Ancho del 100% */
+    /* Ancho completo */
     height: 100%;
-    /* Altura del 100% */
+    /* Altura completa */
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     align-items: center;
     /* Centra verticalmente */
     justify-content: center;
     /* Centra horizontalmente */
 }
 
-/* Contenedor de formulario de biografía */
+/* Contenedor del formulario de biografía */
 .bioFormContainer {
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     justify-content: center;
-    /* Centra elementos horizontalmente */
+    /* Centra horizontalmente */
     padding: 2rem;
     /* Relleno interno de 2rem */
     margin-top: 2rem;
     /* Margen superior de 2rem */
 }
 
+/* Formulario de biografía */
 .bioForm {
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     flex-direction: column;
     /* Organiza elementos en columna */
     align-items: center;
-    /* Centra elementos horizontalmente */
+    /* Centra horizontalmente */
     margin-top: 0.1rem;
-    /* Margen superior de 0.1rem */
+    /* Margen superior mínimo */
     left: 64rem;
-    /* Posición desde la izquierda de 64rem */
+    /* Posición desde la izquierda (podría ser problemático) */
     font-size: 1rem;
-    /* Tamaño de fuente de 1rem */
+    /* Tamaño de fuente base */
     background-color: white;
     /* Fondo blanco */
     border: 1px solid rgb(0, 142, 182);
-    /* Borde azul de 1px */
+    /* Borde azul delgado */
     border-radius: 15px;
-    /* Bordes redondeados de 15px */
+    /* Bordes redondeados */
     box-shadow: 0 4px 10px rgb(0, 142, 182);
     /* Sombra azul */
     gap: 1rem;
-    /* Espacio de 1rem entre elementos */
+    /* Espacio entre elementos hijos */
     padding: 20px;
-    /* Relleno interno de 20px */
+    /* Relleno interno */
     width: 700px;
-    /* Ancho fijo de 700px */
+    /* Ancho fijo */
     height: 700px;
-    /* Altura fija de 700px */
+    /* Altura fija */
 }
 
+/* Contenedor de mensajes de biografía */
 .bioMsgContainer {
     width: 100%;
-    /* Ancho del 100% */
+    /* Ancho completo */
     padding: 10px;
-    /* Relleno interno de 10px */
+    /* Relleno interno */
     border-radius: 5px;
-    /* Bordes redondeados de 5px */
+    /* Bordes ligeramente redondeados */
     background-color: white;
     /* Fondo blanco */
     overflow-y: auto;
-    /* Scroll vertical */
+    /* Scroll vertical si es necesario */
     overflow-x: hidden;
-    /* No scroll horizontal */
+    /* No permite scroll horizontal */
     height: calc(600px - 1px);
     /* Altura calculada */
-    width: 100%;
-    /* Ancho del 100% */
     transition: transform 0.3s ease;
-    /* Transición suave de transformación */
+    /* Transición suave */
     margin-top: -3rem;
-    /* Margen superior negativo de 3rem */
+    /* Margen superior negativo (solapa elementos) */
 }
 
-/* Personalización de scrollbar para contenedor de mensajes */
+/* Personalización de la barra de scroll (WebKit) */
 .bioMsgContainer::-webkit-scrollbar {
     width: 8px;
-    /* Ancho del scrollbar de 8px */
+    /* Ancho del scrollbar */
 }
 
 .bioMsgContainer::-webkit-scrollbar-thumb {
-    background-color: black;
-    /* Color del thumb negro */
+    background-color: rgb(57, 58, 58);
+    /* Color del control deslizante */
     border-radius: 5px;
-    /* Bordes redondeados de 5px */
+    /* Bordes redondeados */
     transition: transform 0.3s ease;
-    /* Transición suave de transformación */
+    /* Transición suave */
 }
 
 .bioMsgContainer::-webkit-scrollbar-track {
     background-color: white;
-    /* Color del track blanco */
+    /* Color de la pista */
     border-radius: 5px;
-    /* Bordes redondeados de 5px */
+    /* Bordes redondeados */
 }
 
+/* Efecto al pasar el ratón sobre el scrollbar */
 .bioMsgContainer::-webkit-scrollbar-thumb:hover {
     background-color: rgb(0, 142, 182);
-    /* Cambia color del thumb a azul */
+    /* Cambia a azul */
     transform: scale(1.02);
-    /* Escala ligeramente el thumb */
+    /* Ligero aumento de tamaño */
     cursor: grab;
-    /* Cursor tipo grab */
+    /* Cursor de agarre */
 }
 
 /* Sección de información del usuario */
 .bio-user-info-section {
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     flex-direction: column;
-    /* Organiza elementos en columna */
+    /* Organiza en columna */
     align-items: center;
-    /* Centra elementos horizontalmente */
+    /* Centra horizontalmente */
     margin-bottom: 2rem;
-    /* Margen inferior de 1.8rem */
+    /* Margen inferior */
     gap: 0.1rem;
-    /* Espacio de 0.1rem entre elementos */
+    /* Espacio mínimo entre elementos */
 }
 
-/* Avatar en biografía */
+/* Avatar del usuario */
 .bio-avatar {
     width: 70px;
-    /* Ancho fijo de 70px */
+    /* Tamaño fijo */
     height: 70px;
-    /* Altura fija de 70px */
+    /* Tamaño fijo (igual que ancho para círculo) */
     border-radius: 50%;
     /* Forma circular */
     object-fit: cover;
-    /* Ajusta la imagen manteniendo proporciones */
+    /* Ajuste de imagen manteniendo relación de aspecto */
     border: 1px solid rgb(0, 142, 182);
-    /* Borde azul de 1px */
+    /* Borde azul */
     box-shadow: 0 4px 10px rgba(0, 142, 182, 0.3);
-    /* Sombra azul con transparencia */
+    /* Sombra azul difuminada */
 }
 
-/* Inicial del avatar cuando no hay imagen */
+/* Inicial del avatar (cuando no hay imagen) */
 .bio-avatar-initial {
     width: 70px;
-    /* Ancho fijo de 70px */
+    /* Mismo tamaño que avatar */
     height: 70px;
-    /* Altura fija de 70px */
+    /* Mismo tamaño que avatar */
     border-radius: 50%;
     /* Forma circular */
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     align-items: center;
-    /* Centra elementos verticalmente */
+    /* Centra verticalmente */
     justify-content: center;
-    /* Centra elementos horizontalmente */
+    /* Centra horizontalmente */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de fuente */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     border: 1px solid rgb(0, 142, 182);
-    /* Borde azul de 1px */
+    /* Borde azul */
 }
 
-/* Nombre de usuario en biografía */
+/* Nombre de usuario */
 .bio-username {
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de fuente */
     color: black;
     /* Texto negro */
     text-shadow: 2px 2px 4px rgba(0, 142, 182, 0.5);
-    /* Sombra de texto azul */
-}
-
-.bioMsgContainer {
-    width: 100%;
-    /* Ancho del 100% */
-    padding: 10px;
-    /* Relleno interno de 10px */
-    border-radius: 5px;
-    /* Bordes redondeados de 5px */
-    background-color: white;
-    /* Fondo blanco */
-    overflow-y: auto;
-    /* Scroll vertical */
-    overflow-x: hidden;
-    /* No scroll horizontal */
-    height: calc(600px - 1px);
-    /* Altura calculada */
-    width: 100%;
-    /* Ancho del 100% */
-    transition: transform 0.3s ease;
-    /* Transición suave de transformación */
-    margin-top: -3rem;
-    /* Margen superior negativo de 3rem */
-}
-
-/* Personalización de scrollbar para contenedor de mensajes */
-.bioMsgContainer::-webkit-scrollbar {
-    width: 8px;
-    /* Ancho del scrollbar de 8px */
-}
-
-.bioMsgContainer::-webkit-scrollbar-thumb {
-    background-color: black;
-    /* Color del thumb negro */
-    border-radius: 5px;
-    /* Bordes redondeados de 5px */
-    transition: transform 0.3s ease;
-    /* Transición suave de transformación */
-}
-
-.bioMsgContainer::-webkit-scrollbar-track {
-    background-color: white;
-    /* Color del track blanco */
-    border-radius: 5px;
-    /* Bordes redondeados de 5px */
-}
-
-.bioMsgContainer::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(0, 142, 182);
-    /* Cambia color del thumb a azul */
-    transform: scale(1.02);
-    /* Escala ligeramente el thumb */
-    cursor: grab;
-    /* Cursor tipo grab */
+    /* Sombra azul difuminada */
 }
 
 /* Estilos para mensajes individuales */
 .bio-message {
     margin-bottom: 10px;
-    /* Margen inferior de 10px */
+    /* Espacio entre mensajes */
     padding: 10px;
-    /* Relleno interno de 10px */
-    border: 1px solid black;
-    /* Borde negro de 1px */
+    /* Relleno interno */
+    border: 2px solid rgb(57, 58, 58);
+    /* Borde gris */
     border-radius: 5px;
-    /* Bordes redondeados de 5px */
+    /* Bordes redondeados */
     background-color: white;
     /* Fondo blanco */
     transition: transform 0.3s ease;
-    /* Transición suave de transformación */
+    /* Transición suave */
     overflow-x: hidden;
     /* No scroll horizontal */
     box-sizing: border-box;
-    /* Modelo de caja border-box */
+    /* Modelo de caja que incluye padding en el ancho */
     word-wrap: break-word;
     /* Rompe palabras largas */
     white-space: pre-wrap;
-    /* Mantiene saltos de línea */
+    /* Mantiene saltos de línea y espacios */
 }
 
 /* Efecto hover para mensajes */
 .bio-message:hover {
     border-color: rgb(0, 142, 182);
-    /* Cambia color de borde a azul */
+    /* Borde azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
     /* Sombra azul */
     transform: scale(1.02);
-    /* Escala el mensaje al 102% */
+    /* Ligero aumento de tamaño */
 }
 
-/* Estilo para nombre de usuario en mensaje */
+/* Estilo para el nombre de usuario en mensaje */
 .bio-message-user {
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     font-weight: bold;
     /* Texto en negrita */
     font-size: 1.1rem;
-    /* Tamaño de fuente de 1.1rem */
+    /* Tamaño de fuente */
 }
 
 /* Estilo para título de mensaje */
@@ -401,22 +350,22 @@
     /* Texto en negrita */
 }
 
-/* Estilos comunes para texto de mensaje */
+/* Estilos compartidos para título y texto */
 .bio-message-title,
 .bio-message-text {
     font-family: 'Zen Loop';
     /* Fuente personalizada */
     font-size: 2rem;
-    /* Tamaño de fuente de 2rem */
+    /* Tamaño de fuente grande */
 }
 
-/* Estilos para elementos de mensaje */
+/* Estilos comunes para elementos de mensaje */
 .bio-message-user,
 .bio-message-title,
 .bio-message-text,
 .bio-message-date {
     margin-bottom: 5px;
-    /* Margen inferior de 5px */
+    /* Margen inferior */
     word-wrap: break-word;
     /* Rompe palabras largas */
 }
@@ -424,68 +373,68 @@
 /* Estilo para fecha de mensaje */
 .bio-message-date {
     font-size: 0.9rem;
-    /* Tamaño de fuente de 0.9rem */
+    /* Tamaño de fuente pequeño */
     font-family: 'Tektur';
     /* Fuente personalizada */
     color: #666;
-    /* Color de texto gris */
+    /* Color gris */
 }
 
-/* Contenedor de acciones en mensajes */
+/* Contenedor de acciones (like, dislike) */
 .bio-message-actions {
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     gap: 16px;
-    /* Espacio de 16px entre elementos */
+    /* Espacio entre elementos */
 }
 
 /* Mensaje cuando no hay mensajes */
 .bio-no-messages {
     text-align: center;
-    /* Alineación de texto centrada */
+    /* Texto centrado */
     font-family: 'Zen Loop';
     /* Fuente personalizada */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de fuente */
     color: #666;
-    /* Color de texto gris */
+    /* Color gris */
     margin-top: 2rem;
-    /* Margen superior de 2rem */
+    /* Margen superior */
 }
 
-/* Estilos para lista de nombres de usuarios */
+/* Estilos para lista de nombres de usuario */
 .bio-user-names-list {
     display: inline;
-    /* Display inline */
+    /* Muestra en línea */
 }
 
-/*Estilos para el nombre de usuario*/
+/* Estilo para cada nombre de usuario */
 .bio-user-name {
     display: inline;
-    /* Display inline */
+    /* Muestra en línea */
 }
 
-/* Separadores para lista de nombres */
+/* Separadores entre nombres */
 .bio-user-name:not(:last-child)::after {
     content: ", ";
-    /* Agrega coma como separador */
+    /* Agrega coma después de cada nombre excepto el último */
 }
 
 .bio-user-name:last-child::after {
     content: " and ";
-    /* Agrega "and" como separador para el último elemento */
+    /* Agrega "and" antes del último nombre */
 }
 
-/* Estilo para contador de usuarios */
+/* Contador de usuarios */
 .bio-users-count {
     font-style: italic;
     /* Texto en cursiva */
     color: #666;
-    /* Color de texto gris */
+    /* Color gris */
     display: inline;
-    /* Display inline */
+    /* Muestra en línea */
     margin-left: 4px;
-    /* Margen izquierdo de 4px */
+    /* Margen izquierdo */
 }
 
 /* Tooltip para mostrar usuarios */
@@ -495,104 +444,96 @@
     position: absolute;
     /* Posicionamiento absoluto */
     bottom: 100%;
-    /* Posición desde abajo del 100% */
+    /* Posiciona encima del elemento padre */
     left: 0;
-    /* Posición desde la izquierda de 0 */
+    /* Alineado a la izquierda */
     margin-bottom: 8px;
-    /* Margen inferior de 8px */
+    /* Margen inferior */
     padding: 8px 10px;
-    /* Relleno interno de 8px arriba/abajo y 10px izquierda/derecha */
+    /* Relleno interno */
     background-color: white;
     /* Fondo blanco */
     color: black;
     /* Texto negro */
     border-radius: 4px;
-    /* Bordes redondeados de 4px */
+    /* Bordes redondeados */
     box-shadow: 0 2px 10px rgba(0, 142, 182, 0.3);
-    /* Sombra azul con transparencia */
+    /* Sombra azul */
     font-family: 'Tektur';
     /* Fuente personalizada */
     font-size: 0.9rem;
-    /* Tamaño de fuente de 0.9rem */
+    /* Tamaño de fuente pequeño */
     opacity: 0;
     /* Inicialmente transparente */
     transition: opacity 0.2s ease;
-    /* Transición suave de opacidad */
+    /* Transición suave */
     z-index: 100;
     /* Nivel de apilamiento */
     border: 1px solid rgb(0, 142, 182);
-    /* Borde azul de 1px */
+    /* Borde azul */
     max-width: 400px;
-    /* Ancho máximo de 400px */
+    /* Ancho máximo */
     white-space: nowrap;
-    /* Evita saltos de línea */
+    /* No permite saltos de línea */
     overflow: hidden;
-    /* Oculta contenido que desborde */
+    /* Oculta texto que desborde */
     text-overflow: ellipsis;
-    /* Muestra puntos suspensivos si el texto es muy largo */
+    /* Muestra puntos suspensivos si el texto es largo */
     display: inline-block;
-    /* Display inline-block */
+    /* Muestra como bloque en línea */
 }
 
-/* Triángulo indicador para tooltip */
+/* Triángulo indicador del tooltip */
 .bio-users-tooltip::after {
     content: "";
     /* Contenido vacío */
     position: absolute;
     /* Posicionamiento absoluto */
     top: 100%;
-    /* Posición desde arriba del 100% */
+    /* Debajo del tooltip */
     left: 10px;
-    /* Posición desde la izquierda de 10px */
+    /* Posición desde la izquierda */
     border-width: 6px;
-    /* Tamaño del borde de 6px */
+    /* Tamaño del triángulo */
     border-style: solid;
-    /* Estilo del borde sólido */
+    /* Estilo del borde */
 }
 
-/* Color para tooltip de likes */
+/* Variante de tooltip para likes */
 .bio-users-tooltip.likes-tooltip {
     border-left: 4px solid green;
-    /* Borde izquierdo verde de 4px */
+    /* Borde izquierdo verde */
 }
 
-.bio-users-tooltip-likes.tooltip::after {
-    border-color: green transparent transparent transparent;
-    /* Triángulo verde */
-}
-
-/* Color para tooltip de dislikes */
+/* Variante de tooltip para dislikes */
 .bio-users-tooltip.dislikes-tooltip {
     border-left: 4px solid red;
-    /* Borde izquierdo rojo de 4px */
+    /* Borde izquierdo rojo */
 }
 
-.bio-users-tooltip.dislikes-tooltip::after {
-    border-color: red transparent transparent transparent;
-    /* Triángulo rojo */
-}
-
-/* Contenedores para botones de like/dislike */
+/* Contenedores para botones de interacción */
 .bio-like-container,
-.bio-dislike-container {
+.bio-dislike-container,
+.bio-favorite-container {
     position: relative;
-    /* Posicionamiento relativo para contener elementos absolutos */
+    /* Posicionamiento relativo */
     display: inline-block;
-    /* Display inline-block */
+    /* Muestra como bloque en línea */
 }
 
 /* Muestra tooltip al hacer hover */
 .bio-like-container:hover .likes-tooltip,
 .bio-dislike-container:hover .dislikes-tooltip {
     visibility: visible;
-    /* Hace visible el tooltip */
+    /* Hace visible */
     opacity: 1;
     /* Opacidad completa */
 }
 
-/* Estilos para botones de like/dislike */
+/* Estilos para botones de interacción */
 .bio-like-button,
-.bio-dislike-button {
+.bio-dislike-button,
+.bio-favorite-button {
     position: relative;
     /* Posicionamiento relativo */
     background: none;
@@ -600,110 +541,95 @@
     border: none;
     /* Sin bordes */
     cursor: pointer;
-    /* Cursor tipo pointer */
+    /* Cursor de mano */
     padding: 0 8px;
-    /* Relleno interno de 0 arriba/abajo y 8px izquierda/derecha */
+    /* Relleno horizontal */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de fuente */
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     align-items: center;
-    /* Centra elementos verticalmente */
+    /* Centra verticalmente */
     gap: 4px;
-    /* Espacio de 4px entre elementos */
+    /* Espacio entre elementos */
     font-family: 'Tektur';
+    /* Fuente personalizada */
 }
 
-/* Estilo para icono de like vacío */
+/* Estilos para iconos de like/dislike */
 .far.fa-thumbs-up {
     color: black;
-    /* Color negro */
 }
 
-/* Estilo para icono de like lleno */
+/* Like vacío - negro */
 .fas.fa-thumbs-up {
     color: green;
-    /* Color verde */
 }
 
-/* Efecto hover para botón de like */
-.bio-like-button:hover {
-    transform: scale(1.1);
-    /* Escala el botón al 110% */
-}
-
-/* Contador de likes */
-.bio-message-likes {
-    font-size: 0.9rem;
-    /* Tamaño de fuente de 0.9rem */
-    color: #666;
-    /* Color de texto gris */
-    margin-top: 10px;
-    /* Margen superior de 10px */
-}
-
-/* Estilo para icono de dislike vacío */
+/* Like lleno - verde */
 .far.fa-thumbs-down {
     color: black;
-    /* Color negro */
 }
 
-/* Estilo para icono de dislike lleno */
+/* Dislike vacío - negro */
 .fas.fa-thumbs-down {
     color: red;
-    /* Color rojo */
 }
 
-/* Efecto hover para botón de dislike */
+/* Dislike lleno - rojo */
+
+/* Efectos hover para botones */
+.bio-like-button:hover,
 .bio-dislike-button:hover {
     transform: scale(1.1);
-    /* Escala el botón al 110% */
+    /* Aumenta tamaño al 110% */
 }
 
-/* Contador de dislikes */
+/* Contadores de interacciones */
+.bio-message-likes,
 .bio-message-dislikes {
     font-size: 0.9rem;
-    /* Tamaño de fuente de 0.9rem */
+    /* Tamaño pequeño */
     color: #666;
-    /* Color de texto gris */
+    /* Color gris */
     margin-top: 10px;
-    /* Margen superior de 10px */
+    /* Margen superior */
 }
 
-/* Contenedor de imagen en mensajes */
+/* Contenedor de imágenes en mensajes */
 .bio-message-image-container {
     width: 100%;
-    /* Ancho del 100% */
+    /* Ancho completo */
     margin: 10px 0;
-    /* Margen vertical de 10px */
+    /* Margen vertical */
     display: flex;
-    /* Activa flexbox */
+    /* Activa Flexbox */
     justify-content: center;
-    /* Centra elementos horizontalmente */
+    /* Centra horizontalmente */
 }
 
-/* Imagen en mensajes */
+/* Imágenes en mensajes */
 .bio-message-image {
     max-width: 100%;
-    /* Ancho máximo del 100% */
+    /* Ancho máximo */
     max-height: 300px;
-    /* Altura máxima de 300px */
+    /* Altura máxima */
     object-fit: contain;
-    /* Ajusta la imagen manteniendo proporciones */
+    /* Ajuste manteniendo proporciones */
     border-radius: 10px;
-    /* Bordes redondeados de 10px */
+    /* Bordes redondeados */
     border: 1px solid #ddd;
-    /* Borde gris claro de 1px */
+    /* Borde gris claro */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* Sombra suave */
     transition: transform 0.3s ease;
-    /* Transición suave de transformación */
+    /* Transición suave */
 }
 
-/* Efecto hover para imagen en mensajes */
+/* Efecto hover para imágenes */
 .bio-message-image:hover {
     transform: scale(1.02);
-    /* Escala la imagen al 102% */
+    /* Ligero aumento de tamaño */
     box-shadow: 0 0 10px rgb(0, 142, 182);
     /* Sombra azul */
 }

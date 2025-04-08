@@ -35,7 +35,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     /* Sombra suave */
     border: 1px solid rgb(0, 142, 182);
-    /* Borde de 2px (nota: falta 'solid' para ser válido) */
+    /* Borde azul de 1px */
 }
 
 /* Contenedor de la imagen/icono */
@@ -98,13 +98,13 @@
     /* Centra los elementos verticalmente */
     gap: 8px;
     /* Espacio entre icono y texto */
-    padding: 10px 20px;
+    padding: 16px 32px;
     /* Relleno interno */
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
-    border-radius: 20px;
+    border-radius: 5px;
     /* Bordes muy redondeados (pastilla) */
     text-decoration: none;
     /* Quita subrayado de enlaces */

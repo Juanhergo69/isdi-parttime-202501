@@ -1,0 +1,669 @@
+/* Contenedor de página de favoritos */
+.favoritePageContainer {
+    display: flex;
+    /* Activa el modelo de caja flexible (Flexbox) */
+    flex-direction: column;
+    /* Organiza los elementos en columna vertical */
+    height: 100vh;
+    /* Altura mínima del 100% del viewport */
+    width: 100%;
+    /* Ancho del 100% */
+    overflow: hidden;
+}
+
+.favoriteHeaderContainer {
+    display: flex;
+    /* Activa flexbox */
+    justify-content: space-between;
+    /* Distribuye espacio entre elementos */
+    align-items: center;
+    /* Centra elementos verticalmente */
+    width: 100%;
+    /* Ancho del 100% */
+    height: 1%;
+    /* Altura mínima del 1% */
+    padding: 40px;
+    /* Relleno interno de 40px */
+    margin-top: 3rem;
+    /* Margen superior de 3rem */
+}
+
+/* Contenedor de imagen en home */
+.favoriteImgContainer {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: center;
+    /* Centra elementos horizontalmente */
+    gap: 0.5rem;
+    /* Espacio de 0.5rem entre elementos */
+}
+
+/* Estilos para la imagen de la página principal */
+.favoriteImg {
+    width: 100%;
+    /* Ancho del 100% */
+    max-width: 100px;
+    /* Ancho máximo de 100px */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación durante 0.3s */
+}
+
+/* Efecto hover para la imagen de home */
+.favoriteImg:hover {
+    transform: scale(1.05);
+    /* Escala la imagen al 105% al hacer hover */
+}
+
+/* Estilos para el mensaje de la página favoritos */
+.favoriteMsg {
+    color: black;
+    /* Color de texto negro */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 2rem;
+    /* Tamaño de fuente de 2rem */
+    text-shadow: 8px 8px 16px rgb(255, 255, 255);
+    /* Sombra de texto blanca */
+}
+
+/* Estilo específico para botón de volver */
+.favoriteMenuButton-back-button {
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 0;
+    /* Sin relleno */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    border-radius: 50%;
+    /* Forma circular */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    width: 70px;
+    /* Ancho fijo de 70px */
+    height: 70px;
+    /* Altura fija de 70px (igual que el ancho para círculo perfecto) */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    position: relative;
+    /* Posicionamiento relativo */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    z-index: 101;
+    /* Nivel de apilamiento */
+}
+
+/* Efecto hover para el botón de menú */
+.favoriteMenuButton-back-button:hover {
+    background-color: rgb(255, 255, 255);
+    /* Cambia fondo a blanco */
+    color: rgb(0, 142, 182);
+    /* Cambia color de texto a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+/* Contenedor interno del botón de menú */
+.favoriteMenuButton-content {
+    width: 100%;
+    /* Ancho del 100% */
+    height: 100%;
+    /* Altura del 100% */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+}
+
+/* Contenedor de formulario de favoritos */
+.favoriteFormContainer {
+    display: flex;
+    /* Activa flexbox */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+    padding: 2rem;
+    /* Relleno interno de 2rem */
+    margin-top: 2rem;
+    /* Margen superior de 2rem */
+}
+
+.favoriteForm {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: center;
+    /* Centra elementos horizontalmente */
+    margin-top: 0.1rem;
+    /* Margen superior de 0.1rem */
+    left: 64rem;
+    /* Posición desde la izquierda de 64rem */
+    font-size: 1rem;
+    /* Tamaño de fuente de 1rem */
+    background-color: white;
+    /* Fondo blanco */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+    border-radius: 15px;
+    /* Bordes redondeados de 15px */
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    gap: 1rem;
+    /* Espacio de 1rem entre elementos */
+    padding: 20px;
+    /* Relleno interno de 20px */
+    width: 700px;
+    /* Ancho fijo de 700px */
+    height: 700px;
+    /* Altura fija de 700px */
+}
+
+.favoriteMsgContainer {
+    width: 100%;
+    /* Ancho del 100% */
+    padding: 10px;
+    /* Relleno interno de 10px */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+    background-color: white;
+    /* Fondo blanco */
+    overflow-y: auto;
+    /* Scroll vertical */
+    overflow-x: hidden;
+    /* No scroll horizontal */
+    height: calc(600px - 1px);
+    /* Altura calculada */
+    width: 100%;
+    /* Ancho del 100% */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+    margin-top: -3rem;
+    /* Margen superior negativo de 3rem */
+}
+
+/* Personalización de scrollbar para contenedor de mensajes */
+.favoriteMsgContainer::-webkit-scrollbar {
+    width: 8px;
+    /* Ancho del scrollbar de 8px */
+}
+
+.favoriteMsgContainer::-webkit-scrollbar-thumb {
+    background-color: rgb(57, 58, 58);
+    /* Color del thumb gris oscuro */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+}
+
+.favoriteMsgContainer::-webkit-scrollbar-track {
+    background-color: white;
+    /* Color del track blanco */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+}
+
+.favoriteMsgContainer::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color del thumb a azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el thumb */
+    cursor: grab;
+    /* Cursor tipo grab */
+}
+
+/* Sección de información del usuario */
+.favorite-user-info-section {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: center;
+    /* Centra elementos horizontalmente */
+    margin-bottom: 2rem;
+    /* Margen inferior de 1.8rem */
+    gap: 0.1rem;
+    /* Espacio de 0.1rem entre elementos */
+}
+
+/* Avatar en favoritos */
+.favorite-avatar {
+    width: 70px;
+    /* Ancho fijo de 70px */
+    height: 70px;
+    /* Altura fija de 70px */
+    border-radius: 50%;
+    /* Forma circular */
+    object-fit: cover;
+    /* Ajusta la imagen manteniendo proporciones */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+    box-shadow: 0 4px 10px rgba(0, 142, 182, 0.3);
+    /* Sombra azul con transparencia */
+}
+
+/* Inicial del avatar cuando no hay imagen */
+.favorite-avatar-initial {
+    width: 70px;
+    /* Ancho fijo de 70px */
+    height: 70px;
+    /* Altura fija de 70px */
+    border-radius: 50%;
+    /* Forma circular */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
+    color: white;
+    /* Texto blanco */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra elementos verticalmente */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+}
+
+/* Nombre de usuario en favoritos */
+.favorite-username {
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    color: black;
+    /* Texto negro */
+    text-shadow: 2px 2px 4px rgba(0, 142, 182, 0.5);
+    /* Sombra de texto azul */
+}
+
+/* Estilos para mensajes individuales */
+.favorite-message {
+    margin-bottom: 10px;
+    /* Margen inferior de 10px */
+    padding: 10px;
+    /* Relleno interno de 10px */
+    border: 2px solid rgb(57, 58, 58);
+    /* Borde gris oscuro de 2px */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+    background-color: white;
+    /* Fondo blanco */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+    overflow-x: hidden;
+    /* No scroll horizontal */
+    box-sizing: border-box;
+    /* Modelo de caja border-box */
+    word-wrap: break-word;
+    /* Rompe palabras largas */
+    white-space: pre-wrap;
+    /* Mantiene saltos de línea */
+}
+
+/* Efecto hover para mensajes */
+.favorite-message:hover {
+    border-color: rgb(0, 142, 182);
+    /* Cambia color de borde a azul */
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    transform: scale(1.02);
+    /* Escala el mensaje al 102% */
+}
+
+/* Estilo para nombre de usuario en mensaje */
+.favorite-message-user {
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    font-weight: bold;
+    /* Texto en negrita */
+    font-size: 1.1rem;
+    /* Tamaño de fuente de 1.1rem */
+}
+
+/* Estilo para título de mensaje */
+.favorite-message-title {
+    font-weight: bold;
+    /* Texto en negrita */
+}
+
+/* Estilos comunes para texto de mensaje */
+.favorite-message-title,
+.favorite-message-text {
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+    font-size: 2rem;
+    /* Tamaño de fuente de 2rem */
+}
+
+/* Estilos para elementos de mensaje */
+.favorite-message-user,
+.favorite-message-title,
+.favorite-message-text,
+.favorite-message-date {
+    margin-bottom: 5px;
+    /* Margen inferior de 5px */
+    word-wrap: break-word;
+    /* Rompe palabras largas */
+}
+
+/* Estilo para fecha de mensaje */
+.favorite-message-date {
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
+    font-family: 'Tektur';
+    /* Fuente personalizada */
+    color: #666;
+    /* Color de texto gris */
+}
+
+/* Contenedor de acciones en mensajes */
+.favorite-message-actions {
+    display: flex;
+    /* Activa flexbox */
+    gap: 16px;
+    /* Espacio de 16px entre elementos */
+}
+
+/* Mensaje cuando no hay mensajes */
+.favorite-no-messages {
+    text-align: center;
+    /* Alineación de texto centrada */
+    font-family: 'Zen Loop';
+    /* Fuente personalizada */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    color: #666;
+    /* Color de texto gris */
+    margin-top: 2rem;
+    /* Margen superior de 2rem */
+}
+
+/* Estilos para lista de nombres de usuarios */
+.favorite-user-names-list {
+    display: inline;
+    /* Display inline */
+}
+
+/*Estilos para el nombre de usuario*/
+.favorite-user-name {
+    display: inline;
+    /* Display inline */
+}
+
+/* Separadores para lista de nombres */
+.favorite-user-name:not(:last-child)::after {
+    content: ", ";
+    /* Agrega coma como separador */
+}
+
+.favorite-user-name:last-child::after {
+    content: " and ";
+    /* Agrega "and" como separador para el último elemento */
+}
+
+/* Estilo para contador de usuarios */
+.favorite-users-count {
+    font-style: italic;
+    /* Texto en cursiva */
+    color: #666;
+    /* Color de texto gris */
+    display: inline;
+    /* Display inline */
+    margin-left: 4px;
+    /* Margen izquierdo de 4px */
+}
+
+/* Tooltip para mostrar usuarios */
+.favorite-users-tooltip {
+    visibility: hidden;
+    /* Inicialmente oculto */
+    position: absolute;
+    /* Posicionamiento absoluto */
+    bottom: 100%;
+    /* Posición desde abajo del 100% */
+    left: 0;
+    /* Posición desde la izquierda de 0 */
+    margin-bottom: 8px;
+    /* Margen inferior de 8px */
+    padding: 8px 10px;
+    /* Relleno interno de 8px arriba/abajo y 10px izquierda/derecha */
+    background-color: white;
+    /* Fondo blanco */
+    color: black;
+    /* Texto negro */
+    border-radius: 4px;
+    /* Bordes redondeados de 4px */
+    box-shadow: 0 2px 10px rgba(0, 142, 182, 0.3);
+    /* Sombra azul con transparencia */
+    font-family: 'Tektur';
+    /* Fuente personalizada */
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
+    opacity: 0;
+    /* Inicialmente transparente */
+    transition: opacity 0.2s ease;
+    /* Transición suave de opacidad */
+    z-index: 100;
+    /* Nivel de apilamiento */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+    max-width: 400px;
+    /* Ancho máximo de 400px */
+    white-space: nowrap;
+    /* Evita saltos de línea */
+    overflow: hidden;
+    /* Oculta contenido que desborde */
+    text-overflow: ellipsis;
+    /* Muestra puntos suspensivos si el texto es muy largo */
+    display: inline-block;
+    /* Display inline-block */
+}
+
+/* Triángulo indicador para tooltip */
+.favorite-users-tooltip::after {
+    content: "";
+    /* Contenido vacío */
+    position: absolute;
+    /* Posicionamiento absoluto */
+    top: 100%;
+    /* Posición desde arriba del 100% */
+    left: 10px;
+    /* Posición desde la izquierda de 10px */
+    border-width: 6px;
+    /* Tamaño del borde de 6px */
+    border-style: solid;
+    /* Estilo del borde sólido */
+}
+
+/* Color para tooltip de likes */
+.favorite-users-tooltip.likes-tooltip {
+    border-left: 4px solid green;
+    /* Borde izquierdo verde de 4px */
+}
+
+.favorite-users-tooltip-likes.tooltip::after {
+    border-color: green transparent transparent transparent;
+    /* Triángulo verde */
+}
+
+/* Color para tooltip de dislikes */
+.favorite-users-tooltip.dislikes-tooltip {
+    border-left: 4px solid red;
+    /* Borde izquierdo rojo de 4px */
+}
+
+.favorite-users-tooltip.dislikes-tooltip::after {
+    border-color: red transparent transparent transparent;
+    /* Triángulo rojo */
+}
+
+/* Contenedores para botones de like/dislike */
+.favorite-like-container,
+.favorite-dislike-container,
+.favorite-favorite-container {
+    position: relative;
+    /* Posicionamiento relativo para contener elementos absolutos */
+    display: inline-block;
+    /* Display inline-block */
+}
+
+/* Muestra tooltip al hacer hover */
+.favorite-like-container:hover .likes-tooltip,
+.favorite-dislike-container:hover .dislikes-tooltip {
+    visibility: visible;
+    /* Hace visible el tooltip */
+    opacity: 1;
+    /* Opacidad completa */
+}
+
+/* Estilos para botones de like/dislike */
+.favorite-like-button,
+.favorite-dislike-button,
+.favorite-favorite-button {
+    position: relative;
+    /* Posicionamiento relativo */
+    background: none;
+    /* Sin fondo */
+    border: none;
+    /* Sin bordes */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    padding: 0 8px;
+    /* Relleno interno de 0 arriba/abajo y 8px izquierda/derecha */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra elementos verticalmente */
+    gap: 4px;
+    /* Espacio de 4px entre elementos */
+    font-family: 'Tektur';
+}
+
+/* Estilo para icono de like vacío */
+.far.fa-thumbs-up {
+    color: black;
+    /* Color negro */
+}
+
+/* Estilo para icono de like lleno */
+.fas.fa-thumbs-up {
+    color: green;
+    /* Color verde */
+}
+
+/* Efecto hover para botón de like */
+.favorite-like-button:hover {
+    transform: scale(1.1);
+    /* Escala el botón al 110% */
+}
+
+/* Estilo para icono de dislike vacío */
+.far.fa-thumbs-down {
+    color: black;
+    /* Color negro */
+}
+
+/* Estilo para icono de dislike lleno */
+.fas.fa-thumbs-down {
+    color: red;
+    /* Color rojo */
+}
+
+/* Contador de likes */
+.favorite-message-likes {
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
+    color: #666;
+    /* Color de texto gris */
+    margin-top: 10px;
+    /* Margen superior de 10px */
+}
+
+/* Estilo para icono de dislike vacío */
+.far.fa-thumbs-down {
+    color: black;
+    /* Color negro */
+}
+
+/* Estilo para icono de dislike lleno */
+.fas.fa-thumbs-down {
+    color: red;
+    /* Color rojo */
+}
+
+/* Efecto hover para botón de dislike */
+.favorite-dislike-button:hover {
+    transform: scale(1.1);
+    /* Escala el botón al 110% */
+}
+
+/* Contador de dislikes */
+.favorite-message-dislikes {
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
+    color: #666;
+    /* Color de texto gris */
+    margin-top: 10px;
+    /* Margen superior de 10px */
+}
+
+/* Contenedor de imagen en mensajes */
+.favorite-message-image-container {
+    width: 100%;
+    /* Ancho del 100% */
+    margin: 10px 0;
+    /* Margen vertical de 10px */
+    display: flex;
+    /* Activa flexbox */
+    justify-content: center;
+    /* Centra elementos horizontalmente */
+}
+
+/* Imagen en mensajes */
+.favorite-message-image {
+    max-width: 100%;
+    /* Ancho máximo del 100% */
+    max-height: 300px;
+    /* Altura máxima de 300px */
+    object-fit: contain;
+    /* Ajusta la imagen manteniendo proporciones */
+    border-radius: 10px;
+    /* Bordes redondeados de 10px */
+    border: 1px solid #ddd;
+    /* Borde gris claro de 1px */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+}
+
+/* Efecto hover para imagen en mensajes */
+.favorite-message-image:hover {
+    transform: scale(1.02);
+    /* Escala la imagen al 102% */
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    /* Sombra azul */
+}

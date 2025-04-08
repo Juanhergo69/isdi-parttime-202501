@@ -36,6 +36,8 @@
     /* Centra elementos horizontalmente */
     gap: 0.5rem;
     /* Espacio de 0.5rem entre elementos */
+    margin-top: 2.9rem;
+    /* Margen superior */
 }
 
 /* Estilos para la imagen de la página principal */
@@ -76,10 +78,10 @@
     /* Ancho fijo de 100px */
     align-items: center;
     /* Centra elementos verticalmente */
-    background-color: black;
-    /* Fondo negro */
-    border-radius: 20px;
-    /* Bordes muy redondeados */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
+    border-radius: 5px;
+    /* Bordes redondeados */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     color: white;
@@ -102,8 +104,8 @@
 
 /* Estilos base para el botón de menú */
 .homeMenuButton {
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
@@ -236,6 +238,7 @@
 /* Estilos para botones del menú desplegable */
 .homeProfileButton,
 .homeMessagesButton,
+.homeFavoritesButton,
 .homeLogoutButton {
     display: flex;
     /* Activa flexbox */
@@ -243,8 +246,8 @@
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra elementos horizontalmente */
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
@@ -274,6 +277,7 @@
 /* Efecto hover para botones del menú */
 .homeProfileButton:hover,
 .homeMessagesButton:hover,
+.homeFavoritesButton:hover,
 .homeLogoutButton:hover {
     background-color: rgb(0, 142, 182);
     /* Cambia color de fondo a azul */
@@ -335,8 +339,8 @@
     /* Ancho del 100% */
     padding: 10px;
     /* Relleno interno de 10px */
-    border: 1px solid black;
-    /* Borde negro de 1px */
+    border: 2px solid rgb(57, 58, 58);
+    /* Borde gris oscuro de 2px */
     border-radius: 10px;
     /* Bordes redondeados de 10px */
     font-size: 1rem;
@@ -373,8 +377,8 @@
     /* Ancho del 100% */
     padding: 10px;
     /* Relleno interno de 10px */
-    border: 1px solid black;
-    /* Borde negro de 1px */
+    border: 2px solid rgb(57, 58, 58);
+    /* Borde gris oscuro de 2px */
     border-radius: 10px;
     /* Bordes redondeados de 10px */
     font-size: 1rem;
@@ -414,8 +418,8 @@
 }
 
 .homeSendMsgForm textarea::-webkit-scrollbar-thumb {
-    background-color: black;
-    /* Color del thumb negro */
+    background-color: rgb(57, 58, 58);
+    /* Color del thumb gris */
     border-radius: 5px;
     /* Bordes redondeados de 5px */
     transition: transform 0.3s ease;
@@ -458,18 +462,18 @@
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra elementos horizontalmente */
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
     /* Sin borde */
     padding: 8px 16px;
     /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
-    font-size: 0.9rem;
+    font-size: 1rem;
     /* Tamaño de fuente de 0.9rem */
-    border-radius: 20px;
-    /* Bordes muy redondeados */
+    border-radius: 5px;
+    /* Bordes redondeados */
     cursor: pointer;
     /* Cursor tipo pointer */
     transition: background-color 0.3s ease;
@@ -522,19 +526,19 @@
 
 /* Label para subida de imágenes */
 .home-image-upload-label {
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     padding: 8px 16px;
     /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
-    border-radius: 20px;
+    border-radius: 5px;
     /* Bordes muy redondeados */
     cursor: pointer;
     /* Cursor tipo pointer */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
-    font-size: 0.9rem;
+    font-size: 1rem;
     /* Tamaño de fuente de 0.9rem */
     transition: all 0.3s ease;
     /* Transición suave para todas las propiedades */
@@ -606,9 +610,9 @@
 .home-compact-image-info {
     text-align: center;
     /* Alineación de texto centrada */
-    margin-top: -5px;
+    margin-top: 5px;
     /* Margen superior negativo de 5px */
-    margin-bottom: -10px;
+    margin-bottom: -15px;
     /* Margen inferior negativo de 10px */
 }
 
@@ -760,13 +764,13 @@
     /* Sin borde */
     padding: 5px 10px;
     /* Relleno interno de 5px arriba/abajo y 10px izquierda/derecha */
-    border-radius: 20px;
+    border-radius: 5px;
     /* Bordes muy redondeados */
     cursor: pointer;
     /* Cursor tipo pointer */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
-    font-size: 0.75rem;
+    font-size: 1rem;
     /* Tamaño de fuente de 0.75rem */
     transition: all 0.3s ease;
     /* Transición suave para todas las propiedades */
@@ -867,8 +871,8 @@
 }
 
 .homeUserMsgContainer::-webkit-scrollbar-thumb {
-    background-color: black;
-    /* Color del thumb negro */
+    background-color: rgb(57, 58, 58);
+    /* Color del thumb gris */
     border-radius: 5px;
     /* Bordes redondeados de 5px */
     transition: transform 0.3s ease;
@@ -897,8 +901,8 @@
     /* Margen inferior de 10px */
     padding: 10px;
     /* Relleno interno de 10px */
-    border: 1px solid black;
-    /* Borde negro de 1px */
+    border: 2px solid rgb(57, 58, 58);
+    /* Borde gris oscuro de 2px */
     border-radius: 5px;
     /* Bordes redondeados de 5px */
     background-color: white;
@@ -1114,7 +1118,8 @@
 
 /* Contenedores para botones de like/dislike */
 .home-like-container,
-.home-dislike-container {
+.home-dislike-container,
+.home-favorite-container {
     position: relative;
     /* Posicionamiento relativo para contener elementos absolutos */
     display: inline-block;
@@ -1132,7 +1137,8 @@
 
 /* Estilos para botones de like/dislike */
 .home-like-button,
-.home-dislike-button {
+.home-dislike-button,
+.home-favorite-button {
     position: relative;
     /* Posicionamiento relativo */
     background: none;
@@ -1199,6 +1205,14 @@
 .home-dislike-button:hover {
     transform: scale(1.1);
     /* Escala el botón al 110% */
+}
+
+.far.fa-heart {
+    color: black;
+}
+
+.fas.fa-heart {
+    color: red;
 }
 
 /* Contador de dislikes */

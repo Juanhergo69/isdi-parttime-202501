@@ -28,6 +28,9 @@ import BioPage from './pages/BioPage'
 //Importa MessagesPage//
 import MessagesPage from './pages/MessagesPage'
 
+//Importa FavoritesPage//
+import FavoritesPage from './pages/FavoritesPage'
+
 //Importa NotFoundPage//
 import NotFoundPage from './pages/NotFoundPage'
 
@@ -63,6 +66,13 @@ const App = () => {
         return
       }
 
+      //Si intenta acceder a FavoritesPage sin estar logueado, redirige a Login//
+      if (page === 'FavoritesPage' && !isLoggedIn()) {
+        setCurrentPage('LoginPage')
+        navigate('/login')
+        return
+      }
+
       setCurrentPage(page)          //Actualiza el estado de la página//
       setPageParams(params)         //Guarda los parámetros en el estado//
       window.scrollTo(0, 0)        //Scroll al inicio de la página//
@@ -84,6 +94,12 @@ const App = () => {
         case 'BioPage':
           navigate(`/bio/${params.userName || ''}`)
           break
+        case 'MessagesPage':
+          navigate('/messages')
+          break
+        case 'FavoritesPage':
+          navigate('/favorites')
+          break
         case 'NotFoundPage':
           navigate('/not-found')
           break
@@ -93,35 +109,38 @@ const App = () => {
       }
     },
 
-    //Navegación específica a Landing Page - ahora con verificación de autenticación//
+    //Navegación específica a LandingPage - ahora con verificación de autenticación//
     navigateToLanding: () => {
       isLoggedIn() ? navigation.navigateToHome() : navigation.navigateTo('LandingPage')
     },
 
-    //Navegación específica a Register Page//
+    //Navegación específica a RegisterPage//
     navigateToRegister: () => navigation.navigateTo('RegisterPage'),
 
-    //Navegación específica a Login Page//
+    //Navegación específica a LoginPage//
     navigateToLogin: () => navigation.navigateTo('LoginPage'),
 
-    //Navegación específica a Home Page//
+    //Navegación específica a HomePage//
     navigateToHome: () => {
       //Limpia localStorage si hay sesión en sessionStorage//
       sessionStorage.id && localStorage.removeItem('id')
       navigation.navigateTo('HomePage')
     },
 
-    //Navegación específica a Profile Page//
+    //Navegación específica a ProfilePage//
     navigateToProfile: () => navigation.navigateTo('ProfilePage'),
 
-    //Navegación específica a Messages Page//
+    //Navegación específica a MessagesPage//
     navegateToMessages: () => navigation.navigateTo('MessagesPage'),
 
-    //Navegación específica a Bio Page//
+    //Navegación específica a BioPage//
     //Recibe el nombre de usuario como parámetro//
     navigateToBio: (userName) => navigation.navigateTo('BioPage', { userName }),
 
-    //Navegación específica a NotFound Page//
+    //Navegación específica a FavoritesPage//
+    navigateToFavorites: () => navigation.navigateTo('FavoritesPage'),
+
+    //Navegación específica a NotFoundPage//
     navigateToNotFound: () => navigation.navigateTo('NotFoundPage')
   }
 
@@ -165,6 +184,8 @@ const App = () => {
       } else {
         setCurrentPage('MessagesPage')
       }
+    } else if (path === '/favorites' && currentPage !== 'FavoritesPage') {
+      setCurrentPage('FavoritesPage')
     }
   }, [location.pathname])
 
@@ -180,9 +201,11 @@ const App = () => {
       case 'ProfilePage':
         return <ProfilePage navigation={navigation} />                            //Renderiza ProfilePage//
       case 'MessagesPage':
-        return <MessagesPage navigation={navigation} />
+        return <MessagesPage navigation={navigation} />                           //Renderiza MessagesPage//
+      case 'FavoritesPage':
+        return <FavoritesPage navigation={navigation} />                          //Renderiza FavoritesPage//
       case 'BioPage':
-        return <BioPage navigation={navigation} userName={pageParams.userName} /> //Renderiza Bio con parámetro//
+        return <BioPage navigation={navigation} userName={pageParams.userName} /> //Renderiza BioPage con parámetro de nombre de usuario//
       case 'LandingPage':
         return <LandingPage navigation={navigation} />                            //Renderiza LandingPage//
       default:
@@ -198,6 +221,7 @@ const App = () => {
       <Route path="/login" element={currentPage === 'LoginPage' ? renderPage() : null} />
       <Route path="/profile" element={currentPage === 'ProfilePage' ? renderPage() : null} />
       <Route path="/messages" element={currentPage === 'MessagesPage' ? renderPage() : null} />
+      <Route path="/favorites" element={currentPage === 'FavoritesPage' ? renderPage() : null} />
       <Route path="/bio/:userName" element={currentPage === 'BioPage' ? renderPage() : null} />
       <Route path="/not-found" element={currentPage === 'NotFoundPage' ? <NotFoundPage navigation={navigation} /> : null} />
       <Route path="*" element={<NotFoundPage navigation={navigation} />} />

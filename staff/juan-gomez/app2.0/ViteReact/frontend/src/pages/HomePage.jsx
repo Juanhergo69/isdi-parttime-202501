@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 //Importa funciones específicas para manejar likes/dislikes y almacenar mensajes desde un archivo de datos//
-import { toggleLike, toggleDislike, storeMsg } from '../utils/data.js'
+import { toggleLike, toggleDislike, toggleFavorite, storeMsg } from '../utils/data.js'
 
 //Importa funciones utilitarias generales desde un archivo de utilidades//
 import { getMessages, getLoggedUserId, getUsers, createModal, validateTitle, validateTextarea } from '../utils/utils.js'
@@ -94,6 +94,12 @@ const HomePage = ({ navigation }) => {
     //Maneja el evento de dislike en un mensaje//
     const handleDislike = (messageId) => {
         toggleDislike(messageId, loggedUserId) //Llama a la función para alternar el dislike//
+        setMessages(getMessages()) //Actualiza la lista de mensajes//
+    }
+
+    //Maneja el evento de favorito en un mensaje//
+    const handleFavorite = (messageId) => {
+        toggleFavorite(messageId, loggedUserId) //Llama a la función para alternar el favorito//
         setMessages(getMessages()) //Actualiza la lista de mensajes//
     }
 
@@ -232,11 +238,23 @@ const HomePage = ({ navigation }) => {
                             to="/messages"
                             className="homeMessagesButton"
                             onClick={() => {
-                                navigation.navigateToMessages();
+                                navigation.navigateToMessages()
                                 setShowMenu(false);
                             }}
                         >
                             <i className="fas fa-envelope"></i> My Msg
+                        </Link>
+
+                        {/* Botón para ir a favoritos - ahora con Link */}
+                        <Link
+                            to="/favorites"
+                            className="homeFavoritesButton"
+                            onClick={() => {
+                                navigation.navigateToNotFound() //No desarrollada la página Favoritos todavía//
+                                setShowMenu(false)
+                            }}
+                        >
+                            <i className="fas fa-star"></i> My Fav
                         </Link>
 
                         {/* Botón para cerrar sesión */}
@@ -356,6 +374,9 @@ const HomePage = ({ navigation }) => {
                                 })
                                 : []
 
+                            //Verifica si el usuario actual dio favorito a este mensaje//
+                            const hasFavorited = message.favorite && message.favorite.includes(loggedUserId)
+
                             //Renderiza cada mensaje//
                             return (
                                 <div key={message.date} className="homeMessage">
@@ -444,6 +465,17 @@ const HomePage = ({ navigation }) => {
                                                     )}
                                                 </div>
                                             )}
+                                        </div>
+                                        {/* Contenedor y botón de favorito */}
+                                        <div className="home-favorite-container">
+                                            <button
+                                                className="home-favorite-button"
+                                                onClick={() => handleFavorite(message.date)}
+                                                aria-label="Favorite"
+                                            >
+                                                {/* Icono de dislike (lleno o vacío según estado) */}
+                                                <i className={hasFavorited ? "fas fa-heart" : "far fa-heart"}></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

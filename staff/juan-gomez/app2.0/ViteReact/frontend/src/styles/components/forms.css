@@ -1,121 +1,119 @@
 /* Estilos generales para formularios */
 .form {
     display: flex;
-    /* Activa flexbox */
+    /* Establece el contenedor como flexbox */
     flex-direction: column;
-    /* Organiza elementos en columna */
+    /* Organiza los elementos hijos en columna vertical */
     align-items: stretch;
-    /* Estira elementos para llenar el contenedor */
+    /* Estira los elementos hijos para que ocupen todo el ancho */
     border: 1px solid rgb(0, 142, 182);
-    /* Borde azul de 1px */
+    /* Borde sólido azul de 1px de grosor */
     border-radius: 20px;
-    /* Bordes muy redondeados */
+    /* Bordes redondeados con radio de 20px */
     background-color: white;
-    /* Fondo blanco */
+    /* Fondo blanco para el formulario */
     box-shadow: 0 4px 10px rgb(0, 142, 182);
-    /* Sombra azul */
+    /* Sombra azul difuminada */
     padding: 20px;
-    /* Relleno interno de 20px */
+    /* Espaciado interno de 20px en todos los lados */
     width: 100%;
-    /* Ancho del 100% */
-    max-width: 400px;
-    /* Ancho máximo de 400px */
+    /* Ocupa el 100% del ancho disponible */
+    max-width: 500px;
+    /* Ancho máximo limitado a 500px */
     font-family: 'Zen Dots';
-    /* Fuente personalizada */
+    /* Tipo de letra personalizado */
     font-size: 1rem;
-    /* Tamaño de fuente de 1rem */
+    /* Tamaño de fuente base de 1rem (16px normalmente) */
     color: black;
     /* Color de texto negro */
     gap: 0.5rem;
-    /* Espacio de 0.5rem entre elementos */
+    /* Espacio vertical de 0.5rem entre elementos hijos */
 }
 
-/* Estilos para labels en formularios */
+/* Estilos para las etiquetas (labels) del formulario */
 .form label {
     display: block;
-    /* Display block */
+    /* Muestra las etiquetas como elementos de bloque */
     text-align: center;
-    /* Alineación de texto centrada */
+    /* Alinea el texto al centro */
     margin-bottom: 8px;
     /* Margen inferior de 8px */
     font-family: 'Zen Dots';
-    /* Fuente personalizada */
-    display: block;
-    /* Display block (redundante) */
+    /* Tipo de letra personalizado */
 }
 
-/* Inputs de email y password */
+/* Estilos para inputs de tipo email, password y text */
 .form input[type='email'],
 .form input[type='password'],
 .form input[type='text'] {
     outline: none;
-    /* Elimina el contorno al enfocar */
+    /* Elimina el contorno que aparece al hacer focus */
     width: 100%;
-    /* Ancho del 100% */
+    /* Ocupa el 100% del ancho disponible */
     padding: 10px;
-    /* Relleno interno de 10px */
-    border: 2px solid black;
-    /* Borde negro de 2px */
+    /* Espaciado interno de 10px */
+    border: 2px solid rgb(57, 58, 58);
+    /* Borde gris oscuro de 2px */
     border-radius: 10px;
-    /* Bordes redondeados de 10px */
-    font-size: 1rem;
-    /* Tamaño de fuente de 1rem */
+    /* Bordes redondeados con radio de 10px */
     background-color: white;
-    /* Fondo blanco */
+    /* Fondo blanco para los inputs */
     margin-bottom: 10px;
     /* Margen inferior de 10px */
     transition: transform 0.3s ease;
-    /* Transición suave de transformación */
+    /* Transición suave para efectos de transformación */
     font-family: 'Zen Loop';
-    /* Fuente personalizada */
+    /* Tipo de letra diferente para los inputs */
     font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    /* Tamaño de fuente más grande (1.5rem = 24px normalmente) */
 }
 
-/* Efecto hover para inputs */
+/* Efectos al pasar el ratón sobre los inputs */
 .form input[type='email']:hover,
 .form input[type='password']:hover,
 .form input[type='text']:hover {
     border-color: rgb(0, 142, 182);
-    /* Cambia color de borde a azul */
+    /* Cambia el color del borde a azul */
     box-shadow: 0 0 10px rgb(0, 142, 182);
-    /* Sombra azul */
+    /* Añade sombra azul difuminada */
     transform: scale(1.02);
-    /* Escala ligeramente el input */
+    /* Escala el input al 102% de su tamaño */
 }
 
-/* Botón de submit en formularios */
+/* Estilos para el botón de submit */
 .form input[type="submit"] {
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
-    /* Sin borde */
-    padding: 10px 20px;
-    /* Relleno interno de 10px arriba/abajo y 20px izquierda/derecha */
-    font-size: 1rem;
-    /* Tamaño de fuente de 1rem */
-    border-radius: 20px;
-    /* Bordes muy redondeados */
+    /* Sin bordes */
+    padding: 16px 32px;
+    /* Espaciado interno: 16px arriba/abajo, 32px izquierda/derecha */
+    font-size: 1.2rem;
+    /* Tamaño de fuente de 1.2rem (19.2px normalmente) */
+    border-radius: 5px;
+    /* Bordes ligeramente redondeados */
     cursor: pointer;
-    /* Cursor tipo pointer */
+    /* Cambia el cursor a mano al pasar sobre el botón */
     font-family: 'Zen Dots';
-    /* Fuente personalizada */
+    /* Tipo de letra personalizado */
     display: inline-block;
-    /* Display inline-block */
+    /* Muestra como elemento inline-block */
     width: auto;
-    /* Ancho automático */
+    /* Ancho automático según su contenido */
+    max-width: 300px;
+    /* Ancho máximo limitado a 300px */
     margin: 0 auto;
-    /* Margen automático (centrado horizontal) */
+    /* Centrado horizontal con márgenes automáticos */
     transition: background-color 0.3s ease, transform 0.3s ease;
-    /* Transiciones suaves */
+    /* Transiciones suaves para color y transformación */
 }
 
-/* Efecto hover para botón de submit */
+/* Efectos al pasar el ratón sobre el botón */
 .form input[type="submit"]:hover {
     background-color: rgb(0, 142, 182);
-    /* Cambia color de fondo a azul */
+    /* Cambia el fondo a azul */
     transform: scale(1.05);
-    /* Escala el botón al 105% */
+    /* Escala el botón al 105% de su tamaño */
 }

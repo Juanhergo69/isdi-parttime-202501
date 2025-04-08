@@ -80,8 +80,8 @@
 
 /* Estilo para el botón de volver atrás */
 .messagesMenuButton-back-button {
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
@@ -205,8 +205,8 @@
 }
 
 .messagesMsgContainer::-webkit-scrollbar-thumb {
-    background-color: black;
-    /* Color del "pulgarcito" */
+    background-color: rgb(57, 58, 58);
+    /* Color del "pulgarcito" gris */
     border-radius: 5px;
     /* Esquinas redondeadas */
     transition: transform 0.3s ease;
@@ -415,7 +415,7 @@
     /* Texto blanco */
     border: none;
     /* Sin bordes */
-    padding: 8px 15px;
+    padding: 8px 16px;
     /* Relleno interno */
     border-radius: 5px;
     /* Esquinas redondeadas */
@@ -435,8 +435,6 @@
     /* Transición suave */
     margin-top: 10px;
     /* Margen superior */
-    border-radius: 20px;
-    /* Bordes muy redondeados */
 }
 
 /* Efecto hover para botón de eliminar */
@@ -493,7 +491,7 @@
     /* Alto fijo */
     border-radius: 50%;
     /* Forma circular */
-    background-color: black;
+    background-color: rgb(57, 58, 58);
     /* Fondo negro */
     color: white;
     /* Texto blanco */
@@ -529,7 +527,7 @@
     /* Margen inferior */
     padding: 10px;
     /* Relleno interno */
-    border: 1px solid black;
+    border: 2px solid rgb(57, 58, 58);
     /* Borde negro */
     border-radius: 5px;
     /* Esquinas redondeadas */

@@ -8,10 +8,10 @@
     /* Centra los elementos verticalmente */
     align-items: center;
     /* Centra los elementos horizontalmente */
-    gap: 30px;
-    /* Espacio de 30px entre elementos hijos */
-    padding: 20px;
-    /* Relleno interno de 20px */
+    gap: 60px;
+    /* Espacio de 60px entre elementos hijos */
+    padding: 100px;
+    /* Relleno interno de 100px */
     background: white;
     /* Fondo blanco */
     border-radius: 20px;
@@ -24,23 +24,21 @@
     /* Borde azul de 1px */
     width: 100%;
     /* Ancho del 100% */
-    max-width: 45rem;
+    max-width: 80rem;
     /* Ancho máximo de 45rem */
     margin: auto;
     /* Centrado automático horizontal */
     position: relative;
     /* Posicionamiento relativo */
-    top: 10%;
-    /* Posiciona el elemento 10% desde arriba */
-    transform: translateY(-10%);
-    /* Mueve el elemento hacia arriba un 10% de su altura */
+    top: 50%;
+    /* Posiciona el elemento 50% desde arriba */
 }
 
 /* Estilos para la imagen de la página de inicio */
 .landingImg {
     width: 100%;
     /* Ancho del 100% del contenedor */
-    max-width: 200px;
+    max-width: 300px;
     /* Ancho máximo de 200px */
     border-radius: 20px;
     /* Bordes redondeados de 20px */
@@ -64,7 +62,7 @@
     /* Margen inferior de 20px */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
-    font-size: 1.5rem;
+    font-size: 2rem;
     /* Tamaño de fuente de 1.5rem */
     text-shadow: 2px 2px 4px rgb(0, 142, 182);
     /* Sombra de texto azul */
@@ -73,32 +71,35 @@
 /* Estilos para el contenedor de botones*/
 .landingButtonContainer {
     display: flex;
+    /* Activa flexbox */
     width: 100%;
-    justify-content: space-around;
+    /* Ancho del 100% del contenedor */
+    justify-content: space-evenly;
+    /* Distribuye uniformemente el espacio entre elementos hijos */
 }
 
 /* Estilos para el boton SignUp */
 .landingButtonSignUp {
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
     /* Sin borde */
-    padding: 8px 16px;
-    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
-    font-size: 1rem;
-    /* Tamaño de fuente de 1rem */
-    border-radius: 20px;
-    /* Bordes muy redondeados */
+    padding: 16px 32px;
+    /* Relleno interno de 16px arriba/abajo y 32px izquierda/derecha */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    border-radius: 5px;
+    /* Bordes redondeados */
     cursor: pointer;
     /* Cursor tipo pointer */
     transition: background-color 0.3s ease;
     /* Transición suave del color de fondo */
-    width: 40%;
+    width: auto;
     /* Ancho automático */
-    max-width: 200px;
-    /* Ancho máximo de 200px */
+    max-width: 300px;
+    /* Ancho máximo de 300px */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     transition: transform 0.3s ease;
@@ -116,26 +117,26 @@
 
 /* Estilos para el boton SignIn */
 .landingButtonSignIn {
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
     /* Sin borde */
-    padding: 8px 16px;
-    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
-    font-size: 1rem;
-    /* Tamaño de fuente de 1rem */
-    border-radius: 20px;
-    /* Bordes muy redondeados */
+    padding: 16px 32px;
+    /* Relleno interno de 16px arriba/abajo y 32px izquierda/derecha */
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    border-radius: 5px;
+    /* Bordes redondeados */
     cursor: pointer;
     /* Cursor tipo pointer */
     transition: background-color 0.3s ease;
     /* Transición suave del color de fondo */
-    width: 40%;
+    width: auto;
     /* Ancho automático */
-    max-width: 200px;
-    /* Ancho máximo de 200px */
+    max-width: 300px;
+    /* Ancho máximo de 300px */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     transition: transform 0.3s ease;

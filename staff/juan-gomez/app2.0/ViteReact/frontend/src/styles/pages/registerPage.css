@@ -12,8 +12,8 @@
 
 /* Estilo para imagen en botón */
 .registerImgButton img {
-    width: 100px;
-    /* Ancho fijo de 100px */
+    width: 150px;
+    /* Ancho fijo de 150px */
     height: auto;
     /* Altura automática */
     border-radius: 10px;
@@ -34,15 +34,16 @@
 
 /* Estilos para mensaje de registro */
 .registerMsg {
-    font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
     color: black;
     /* Color de texto negro */
     text-align: center;
     /* Alineación de texto centrada */
-    margin: 0 auto;
+    margin-top: 1rem;
     /* Margen automático (centrado horizontal) */
-    font-family: 'Zen Loop';
+    margin-bottom: -0.5rem;
+    font-family: 'Tektur';
     /* Fuente personalizada */
 }
 
@@ -68,8 +69,8 @@
     /* Relleno interno de 20px */
     width: 100%;
     /* Ancho del 100% */
-    max-width: 400px;
-    /* Ancho máximo de 400px */
+    max-width: 600px;
+    /* Ancho máximo de 600px */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     margin: auto;
@@ -92,26 +93,26 @@
 
 /* Estilos para botón de ir a login */
 .registerButtonGoToLogin {
-    background-color: black;
-    /* Fondo negro */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
     /* Sin borde */
-    padding: 8px 16px;
-    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
-    font-size: 1rem;
-    /* Tamaño de fuente de 1rem */
-    border-radius: 20px;
-    /* Bordes muy redondeados */
+    padding: 16px 32px;
+    /* Relleno interno de 16px arriba/abajo y 32px izquierda/derecha */
+    font-size: 1.2rem;
+    /* Tamaño de fuente de 1.2rem */
+    border-radius: 5px;
+    /* Bordes redondeados */
     cursor: pointer;
     /* Cursor tipo pointer */
     transition: background-color 0.3s ease;
     /* Transición suave del color de fondo */
     width: auto;
     /* Ancho automático */
-    max-width: 200px;
-    /* Ancho máximo de 200px */
+    max-width: 300px;
+    /* Ancho máximo de 300px */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     transition: transform 0.3s ease;
@@ -142,8 +143,8 @@
     /* Ancho del 100% */
     padding: 10px 40px 10px 10px;
     /* Relleno interno con espacio para el icono */
-    border: 2px solid black;
-    /* Borde negro de 2px */
+    border: 2px solid rgb(57, 58, 58);
+    /* Borde gris oscuro de 2px */
     border-radius: 10px;
     /* Bordes redondeados de 10px */
     font-size: 1.5rem;
