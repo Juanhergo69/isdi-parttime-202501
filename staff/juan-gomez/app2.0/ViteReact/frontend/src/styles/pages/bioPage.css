@@ -633,3 +633,8 @@
     box-shadow: 0 0 10px rgb(0, 142, 182);
     /* Sombra azul */
 }
+
+.bio-user-status {
+    font-family: 'Comic Sans MS';
+    font-size: 1.2rem;
+}

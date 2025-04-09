@@ -2,6 +2,7 @@
 .homePageContainer {
     display: flex;
     /* Activa flexbox */
+    flex-direction: column;
     min-height: 100vh;
     /* Altura mínima del 100% del viewport */
     width: 100%;
@@ -295,7 +296,7 @@
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra elementos horizontalmente */
-    margin-top: 12rem;
+    margin-top: 5rem;
     /* Margen superior de 12rem */
     left: 15rem;
     /* Posición desde la izquierda de 15rem */
@@ -806,7 +807,7 @@
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra elementos horizontalmente */
-    margin-top: 12rem;
+    margin-top: 5rem;
     /* Margen superior de 12rem */
     left: 64rem;
     /* Posición desde la izquierda de 64rem */

@@ -38,6 +38,25 @@ export const getLoggedUserId = () => {
         JSON.parse(sessionStorage.getItem(STORAGE_KEYS.ID)) //Si no, busca en sessionStorage//
 }
 
+//Función para guardar el estado del usuario//
+export const saveUserStatus = (userId, status) => {
+    const users = getUsers();
+    const updatedUsers = users.map(user => {
+        if (user.id === userId) {
+            return { ...user, status }
+        }
+        return user
+    })
+    localStorage.setItem('users', JSON.stringify(updatedUsers))
+}
+
+//Función para obtener el estado del usuario//
+export const getUserStatus = (userId) => {
+    const users = getUsers();
+    const user = users.find(u => u.id === userId)
+    return user?.status || ''
+}
+
 //Valida formato de email con expresión regular//
 export const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ //texto@texto.texto//

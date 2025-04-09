@@ -17,6 +17,7 @@ import {
     getLoggedUserId,   //Obtiene ID del usuario logueado//
     getMessages,       //Obtiene lista de mensajes//
     saveMessages,      //Guarda mensajes en almacenamiento//
+    saveUserStatus,    //Guarda estado en almacenamiento// 
 } from '../utils/utils'
 
 //Importa estilos CSS//
@@ -27,6 +28,12 @@ const ProfilePage = ({ navigation }) => {
     //Estados para controlar visibilidad de contraseñas//
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    //Estado para controlar la visibilidad del nuevo formulario de estado//
+    const [showStatusForm, setShowStatusForm] = useState(false);
+
+    //Estado para el texto del nuevo estado//
+    const [statusText, setStatusText] = useState('');
 
     //Obtiene la lista completa de usuarios//
     const users = getUsers()
@@ -152,7 +159,7 @@ const ProfilePage = ({ navigation }) => {
         return Object.keys(newErrors).length === 0 //Retorna true si no hay errores//
     }
 
-    //Maneja el envío del formulario//
+    //Maneja el envío del formulario de perfil//
     const handleSubmit = (e) => {
         e.preventDefault() //Previene el comportamiento por defecto del formulario//
 
@@ -231,6 +238,15 @@ const ProfilePage = ({ navigation }) => {
         }
     }
 
+    //Maneja el envío del formulario de estado//
+    const handleStatusSubmit = (e) => {
+        e.preventDefault() //Prevenimos comportamiento predeterminado del formulario //
+        saveUserStatus(loggedUserId, statusText) //Seteamos el estado del usuario en base a su id y al texto introducido//
+        createModal('Status updated successfully!') //Creamos modal para indicar que se ha realizado con exito//
+        setStatusText('') //Seteamos el estado del texto a vacío//
+        setShowStatusForm(false) //Ocultamos el formaulario de estado//
+    }
+
     //Función para borrar completamente la cuenta del usuario//
     const handleDeleteAccount = () => {
 
@@ -285,6 +301,14 @@ const ProfilePage = ({ navigation }) => {
                         className="profileImg  " //Clase CSS para la imagen//
                         alt="Logo"            //Texto alternativo para accesibilidad//
                     />
+
+                    {/* Botón para mostrar/ocultar el formulario de estado */}
+                    <button
+                        className="profile-toggleStatusFormButton"
+                        onClick={() => setShowStatusForm(!showStatusForm)}
+                    >
+                        {showStatusForm ? 'Hide Form' : 'New Status'}
+                    </button>
                 </div>
 
                 {/* Título de la página */}
@@ -302,9 +326,25 @@ const ProfilePage = ({ navigation }) => {
                     </div>
                 </Link>
             </div>
+
             {/* Contenedor principal del formulario */}
             <div className="profileFormContainer">
-                <form onSubmit={handleSubmit} className="profileForm">
+                {/* Formulario de estado (solo visible cuando showStatusForm es true) */}
+                {showStatusForm && (
+                    <form onSubmit={handleStatusSubmit} className="profileStatusForm">
+                        <label>Change your status:</label>
+                        <textarea
+                            value={statusText}
+                            onChange={(e) => setStatusText(e.target.value)}
+                            placeholder="Enter your status"
+                            required
+                        />
+                        <button type="submit">Save Status</button>
+                    </form>
+                )}
+
+                {/* Formulario de perfil */}
+                <form onSubmit={handleSubmit} className={`profileForm ${showStatusForm ? 'with-status-form' : 'centered'}`}>
                     {/* Sección de imagen de perfil */}
                     <div className="profileForm-group">
                         <label>Profile Image:</label>

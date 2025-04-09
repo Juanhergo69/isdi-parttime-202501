@@ -123,6 +123,13 @@ const BioPage = ({ navigation }) => {
 
                         {/* Nombre del usuario */}
                         <h2 className="bio-username">{viewedUser.userName}</h2>
+
+                        {/* Estado del usuario */}
+                        {viewedUser.status && (
+                            <div className="bio-user-status">
+                                <p>{viewedUser.status}</p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Lista de mensajes del usuario */}
