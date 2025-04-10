@@ -35,6 +35,9 @@ const ProfilePage = ({ navigation }) => {
     //Estado para el texto del nuevo estado//
     const [statusText, setStatusText] = useState('');
 
+    //Estado para controlar la visibilidad del menú desplegable del usuario//
+    const [showMenu, setShowMenu] = useState(false)
+
     //Obtiene la lista completa de usuarios//
     const users = getUsers()
 
@@ -76,6 +79,23 @@ const ProfilePage = ({ navigation }) => {
         navigation.navigateToLogin() //Navega a la página de login//
         return null //No renderiza nada//
     }
+
+    //Efecto secundario para cerrar el menú al hacer clic fuera de él//
+    useEffect(() => {
+        //Función que maneja el clic fuera del menú//
+        const handleClickOutside = (e) => {
+            //Verifica si el clic fue fuera del menú y sus botones//
+            if (showMenu && !e.target.closest('.profileMenuButton') && !e.target.closest('.profileMenuDropContainer')) {
+                setShowMenu(false) //Cierra el menú//
+            }
+        }
+
+        //Agrega el event listener al documento//
+        document.addEventListener('click', handleClickOutside)
+
+        //Función de limpieza que remueve el event listener al desmontar el componente//
+        return () => document.removeEventListener('click', handleClickOutside)
+    }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
 
     //Maneja cambios en los inputs del formulario//
     const handleChange = (e) => {
@@ -247,6 +267,61 @@ const ProfilePage = ({ navigation }) => {
         setShowStatusForm(false) //Ocultamos el formaulario de estado//
     }
 
+    //Maneja el cierre de sesión del usuario//
+    const handleLogout = () => {
+        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
+        localStorage.removeItem('id') //Elimina el ID de localStorage//
+        navigation.navigateToLogin() //Redirige a la página de login//
+    }
+
+    //Función para llamar a una Api externa//
+    const RandomJoke = () => {
+        //Crea una nueva instancia de XMLHttpRequest para hacer peticiones HTTP//
+        const xhr = new XMLHttpRequest()
+
+        //Inicializa la petición HTTP con el método GET hacia la API de chistes de programación//
+        //El tercer parámetro 'true' indica que la petición será asíncrona//
+        xhr.open('GET', 'https://v2.jokeapi.dev/joke/Programming?type=single', true)
+
+        //Define la función que se ejecutará cuando la petición se complete exitosamente//
+        xhr.onload = function () {
+            //Verifica si el código de estado HTTP está en el rango 200-299 (éxito)//
+            if (this.status >= 200 && this.status < 300) {
+                try {
+                    //Intenta parsear la respuesta JSON a un objeto JavaScript//
+                    const data = JSON.parse(this.responseText)
+
+                    //Verifica si existe la propiedad 'joke' en los datos recibidos//
+                    if (data.joke) {
+                        //Si existe, llama a setStatusText con el texto del chiste//
+                        setStatusText(data.joke)
+                    } else {
+                        //Si no existe la propiedad joke, muestra un modal de error//
+                        createModal('Failed to get a joke. Try again!')
+                    }
+                } catch (e) {
+                    //Si hay un error al parsear el JSON, lo registra en consola y muestra modal//
+                    console.error('Error parsing response:', e)
+                    createModal('Error processing joke data')
+                }
+            } else {
+                //Si el código de estado no es exitoso, muestra modal de error//
+                createModal('Failed to fetch joke from API')
+            }
+        }
+
+        //Define la función que se ejecutará si hay un error en la petición (ej: problemas de red)//
+        xhr.onerror = function () {
+            //Registra el error en consola//
+            console.error('Request failed')
+            //Muestra un modal informando del error de conexión//
+            createModal('Error connecting to JokeAPI')
+        }
+
+        //Envía la petición HTTP al servidor//
+        xhr.send()
+    }
+
     //Función para borrar completamente la cuenta del usuario//
     const handleDeleteAccount = () => {
 
@@ -314,17 +389,74 @@ const ProfilePage = ({ navigation }) => {
                 {/* Título de la página */}
                 <h1 className="profileMsg">Edit Profile</h1>
 
-                {/* Botón para volver a home - ahora con Link */}
-                <Link
-                    to="/home"
-                    className="profileMenuButton-back-button"
-                    onClick={() => navigation.navigateToHome()}
-                    aria-label="Back to home"
+                {/* Botón y menú desplegable del usuario */}
+                <button
+                    className={`profileMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
+                    onClick={() => setShowMenu(!showMenu)}
+                    aria-expanded={showMenu}
+                    aria-label="User menu"
                 >
                     <div className="profileMenuButton-content">
-                        <i className="fas fa-arrow-left"></i>
+                        {/* Muestra avatar o inicial del usuario */}
+                        {loggedUser?.avatar ? (
+                            <img
+                                src={loggedUser.avatar}
+                                className="profileMenuButton-avatar"
+                                alt="User avatar"
+                            />
+                        ) : (
+                            <span className="profileMenuButton-initial">
+                                {(loggedUser && loggedUser.userName && loggedUser.userName[0].toUpperCase()) || 'U'}
+                            </span>
+                        )}
                     </div>
-                </Link>
+                </button>
+
+                {/* Menú desplegable cuando está visible */}
+                {showMenu && (
+                    <div className="profileMenuDropContainer">
+                        {/* Botón para ir a home - ahora con Link */}
+                        <Link
+                            to="/home"
+                            className="profileHomeButton"
+                            onClick={() => {
+                                navigation.navigateToHome();
+                                setShowMenu(false);
+                            }}
+                        >
+                            <i className="fas fa-house"></i> Home
+                        </Link>
+
+                        {/* Botón para ir a messages - ahora con Link */}
+                        <Link
+                            to="/messages"
+                            className="profileMessagesButton"
+                            onClick={() => {
+                                navigation.navigateToMessages()
+                                setShowMenu(false);
+                            }}
+                        >
+                            <i className="fas fa-envelope"></i> My Msg
+                        </Link>
+
+                        {/* Botón para ir a favoritos - ahora con Link */}
+                        <Link
+                            to="/favorites"
+                            className="profileFavoritesButton"
+                            onClick={() => {
+                                navigation.navigateToNotFound()
+                                setShowMenu(false)
+                            }}
+                        >
+                            <i className="fas fa-star"></i> My Fav
+                        </Link>
+
+                        {/* Botón para cerrar sesión */}
+                        <button className="profileLogoutButton" onClick={handleLogout}>
+                            <i className="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Contenedor principal del formulario */}
@@ -339,7 +471,16 @@ const ProfilePage = ({ navigation }) => {
                             placeholder="Enter your status"
                             required
                         />
-                        <button type="submit">Save Status</button>
+                        <div className="profileStatusForm-actions">
+                            <button type="submit">Save Status</button>
+                            <button
+                                type="button"
+                                className="profileRandomizeButton"
+                                onClick={RandomJoke}
+                            >
+                                Randomize
+                            </button>
+                        </div>
                     </form>
                 )}
 
@@ -499,7 +640,7 @@ const ProfilePage = ({ navigation }) => {
                 </form>
             </div>
         </div>
-    );
+    )
 }
 
 //Exporta el componente como exportación por defecto//

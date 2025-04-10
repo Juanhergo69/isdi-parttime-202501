@@ -23,6 +23,9 @@ import '../styles/pages/bioPage.css'
 
 //Define el componente funcional Bio que recibe props de navegación//
 const BioPage = ({ navigation }) => {
+    //Estado para controlar la visibilidad del menú desplegable del usuario//
+    const [showMenu, setShowMenu] = useState(false)
+
     //Obtiene el parámetro userName de la URL//
     const { userName } = useParams()
 
@@ -31,6 +34,9 @@ const BioPage = ({ navigation }) => {
 
     //Obtiene el ID del usuario actualmente logueado//
     const loggedUserId = getLoggedUserId()
+
+    //Busca y obtiene los datos del usuario logueado//
+    const loggedUser = users.find(user => user.id === loggedUserId)
 
     //Busca el usuario cuyo perfil se está viendo//
     const viewedUser = users.find(user => user.userName === userName)
@@ -62,6 +68,13 @@ const BioPage = ({ navigation }) => {
         setMessages(getMessages()) //Actualiza la lista de mensajes//
     }
 
+    //Maneja el cierre de sesión del usuario//
+    const handleLogout = () => {
+        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
+        localStorage.removeItem('id') //Elimina el ID de localStorage//
+        navigation.navigateToLogin() //Redirige a la página de login//
+    }
+
     if (!viewedUser) {
         //Usamos useEffect para redirigir después del renderizado inicial//
         useEffect(() => {
@@ -70,6 +83,23 @@ const BioPage = ({ navigation }) => {
 
         return null //No renderiza nada mientras redirige//
     }
+
+    //Efecto secundario para cerrar el menú al hacer clic fuera de él//
+    useEffect(() => {
+        //Función que maneja el clic fuera del menú//
+        const handleClickOutside = (e) => {
+            //Verifica si el clic fue fuera del menú y sus botones//
+            if (showMenu && !e.target.closest('.bioMenuButton') && !e.target.closest('.bioMenuDropContainer')) {
+                setShowMenu(false) //Cierra el menú//
+            }
+        }
+
+        //Agrega el event listener al documento//
+        document.addEventListener('click', handleClickOutside)
+
+        //Función de limpieza que remueve el event listener al desmontar el componente//
+        return () => document.removeEventListener('click', handleClickOutside)
+    }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
 
     //Renderizado del componente//
     return (
@@ -85,19 +115,88 @@ const BioPage = ({ navigation }) => {
                     />
                 </div>
                 {/* Título de la página */}
-                <h1 className="bioMsg">User Profile</h1>
+                <h1 className="bioMsg">Bio</h1>
 
-                {/* Botón para volver a home - ahora con Link */}
-                <Link
-                    to="/home"
-                    className="bioMenuButton-back-button"
-                    onClick={() => navigation.navigateToHome()}
-                    aria-label="Back to home"
+                {/* Botón y menú desplegable del usuario */}
+                <button
+                    className={`bioMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
+                    onClick={() => setShowMenu(!showMenu)}
+                    aria-expanded={showMenu}
+                    aria-label="User menu"
                 >
                     <div className="bioMenuButton-content">
-                        <i className="fas fa-arrow-left"></i>
+                        {/* Muestra avatar o inicial del usuario */}
+                        {loggedUser?.avatar ? (
+                            <img
+                                src={loggedUser.avatar}
+                                className="bioMenuButton-avatar"
+                                alt="User avatar"
+                            />
+                        ) : (
+                            <span className="bioMenuButton-initial">
+                                {(loggedUser && loggedUser.userName && loggedUser.userName[0].toUpperCase()) || 'U'}
+                            </span>
+                        )}
                     </div>
-                </Link>
+                </button>
+
+                {/* Menú desplegable cuando está visible */}
+                {showMenu && (
+                    <div className="bioMenuDropContainer">
+                        {/* Botón para ir a home- ahora con Link */}
+                        <Link
+                            to="/home"
+                            className="bioHomeButton"
+                            onClick={() => {
+                                navigation.navigateToHome()
+                                setShowMenu(false)
+                            }}
+                        >
+                            <i className="fas fa-house"></i> Home
+                        </Link>
+
+                        {/* Botón para ir a profile - ahora con Link */}
+                        <Link
+                            to="/profile"
+                            className="bioProfileButton"
+                            onClick={() => {
+                                navigation.navigateToProfile()
+                                setShowMenu(false);
+                            }}
+                        >
+                            <i className="fas fa-user"></i> Profile
+                        </Link>
+
+                        {/* Botón para ir a messages - ahora con Link */}
+                        <Link
+                            to="/messages"
+                            className="bioMessagesButton"
+                            onClick={() => {
+                                navigation.navigateToMessages()
+                                setShowMenu(false)
+                            }}
+                        >
+                            <i className="fas fa-envelope"></i> My Msg
+                        </Link>
+
+                        {/* Botón para ir a favoritos - ahora con Link */}
+                        <Link
+                            to="/favorites"
+                            className="bioFavoritesButton"
+                            onClick={() => {
+                                navigation.navigateToFavorites()
+                                setShowMenu(false)
+                            }}
+                        >
+                            <i className="fas fa-star"></i> My Fav
+                        </Link>
+
+                        {/* Botón para cerrar sesión */}
+                        <button className="homeLogoutButton" onClick={handleLogout}>
+                            <i className="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Contenedor principal del perfil */}

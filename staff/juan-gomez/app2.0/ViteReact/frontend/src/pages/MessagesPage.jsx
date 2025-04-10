@@ -2,7 +2,7 @@
 import React from 'react'
 
 //Importa función useState para crear estados//
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 //Importa el componente Link de react-router-dom para navegación entre páginas//
 import { Link } from 'react-router-dom'
@@ -18,6 +18,9 @@ import '../styles/pages/messagesPage.css'
 
 //Define el componente funcional MessagesPage que recibe props de navegación//
 const MessagesPage = ({ navigation }) => {
+    //Estado para controlar la visibilidad del menú desplegable del usuario//
+    const [showMenu, setShowMenu] = useState(false)
+
     //Obtiene el ID del usuario actualmente logueado//
     const loggedUserId = getLoggedUserId()
 
@@ -52,6 +55,30 @@ const MessagesPage = ({ navigation }) => {
         return null //No renderiza nada mientras redirige//
     }
 
+    //Efecto secundario para cerrar el menú al hacer clic fuera de él//
+    useEffect(() => {
+        //Función que maneja el clic fuera del menú//
+        const handleClickOutside = (e) => {
+            //Verifica si el clic fue fuera del menú y sus botones//
+            if (showMenu && !e.target.closest('.messagesMenuButton') && !e.target.closest('.messagesMenuDropContainer')) {
+                setShowMenu(false) //Cierra el menú//
+            }
+        }
+
+        //Agrega el event listener al documento//
+        document.addEventListener('click', handleClickOutside)
+
+        //Función de limpieza que remueve el event listener al desmontar el componente//
+        return () => document.removeEventListener('click', handleClickOutside)
+    }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
+
+    //Maneja el cierre de sesión del usuario//
+    const handleLogout = () => {
+        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
+        localStorage.removeItem('id') //Elimina el ID de localStorage//
+        navigation.navigateToLogin() //Redirige a la página de login//
+    }
+
     //Renderiza el componente//
     return (
         //Contenedor principal de la página//
@@ -70,18 +97,74 @@ const MessagesPage = ({ navigation }) => {
                 </div>
                 {/* Título de la página */}
                 <h1 className="messagesMsg">My Messages</h1>
-                {/* Botón para volver a home */}
-                <Link
-                    to="/home"
-                    className="messagesMenuButton-back-button"
-                    onClick={() => navigation.navigateToHome()}
-                    aria-label="Back to home"
+                {/* Botón y menú desplegable del usuario */}
+                <button
+                    className={`messagesMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
+                    onClick={() => setShowMenu(!showMenu)}
+                    aria-expanded={showMenu}
+                    aria-label="User menu"
                 >
                     <div className="messagesMenuButton-content">
-                        {/* Icono de flecha izquierda */}
-                        <i className="fas fa-arrow-left"></i>
+                        {/* Muestra avatar o inicial del usuario */}
+                        {loggedUser?.avatar ? (
+                            <img
+                                src={loggedUser.avatar}
+                                className="messagesMenuButton-avatar"
+                                alt="User avatar"
+                            />
+                        ) : (
+                            <span className="messagesMenuButton-initial">
+                                {(loggedUser && loggedUser.userName && loggedUser.userName[0].toUpperCase()) || 'U'}
+                            </span>
+                        )}
                     </div>
-                </Link>
+                </button>
+
+                {/* Menú desplegable cuando está visible */}
+                {showMenu && (
+                    <div className="messagesMenuDropContainer">
+                        {/* Botón para ir a home - ahora con Link */}
+                        <Link
+                            to="/home"
+                            className="messagesHomeButton"
+                            onClick={() => {
+                                navigation.navigateToHome();
+                                setShowMenu(false);
+                            }}
+                        >
+                            <i className="fas fa-house"></i> Home
+                        </Link>
+
+                        {/* Botón para ir a profile - ahora con Link */}
+                        <Link
+                            to="/profile"
+                            className="messagesProfileButton"
+                            onClick={() => {
+                                navigation.navigateToProfile()
+                                setShowMenu(false);
+                            }}
+                        >
+                            <i className="fas fa-user"></i> Profile
+                        </Link>
+
+                        {/* Botón para ir a favoritos - ahora con Link */}
+                        <Link
+                            to="/favorites"
+                            className="messagesFavoritesButton"
+                            onClick={() => {
+                                navigation.navigateToFavorites()
+                                setShowMenu(false)
+                            }}
+                        >
+                            <i className="fas fa-star"></i> My Fav
+                        </Link>
+
+                        {/* Botón para cerrar sesión */}
+                        <button className="messagesLogoutButton" onClick={handleLogout}>
+                            <i className="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Contenedor principal del contenido */}

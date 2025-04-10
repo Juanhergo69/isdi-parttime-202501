@@ -3,6 +3,7 @@
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
+    /* Organiza los elementos en columna */
     min-height: 100vh;
     /* Altura mínima del 100% del viewport */
     width: 100%;

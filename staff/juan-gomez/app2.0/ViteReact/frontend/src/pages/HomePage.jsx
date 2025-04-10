@@ -250,7 +250,7 @@ const HomePage = ({ navigation }) => {
                             to="/favorites"
                             className="homeFavoritesButton"
                             onClick={() => {
-                                navigation.navigateToNotFound() //No desarrollada la página Favoritos todavía//
+                                navigation.navigateToFavorites()
                                 setShowMenu(false)
                             }}
                         >

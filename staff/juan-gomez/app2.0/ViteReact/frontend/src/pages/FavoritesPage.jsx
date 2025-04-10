@@ -23,6 +23,9 @@ import '../styles/pages/favoritesPage.css'
 
 //Define el componente funcional FavoritesPage que recibe props de navegación//
 const FavoritesPage = ({ navigation }) => {
+    //Estado para controlar la visibilidad del menú desplegable del usuario//
+    const [showMenu, setShowMenu] = useState(false)
+
     //Obtiene la lista completa de usuarios registrados//
     const users = getUsers()
 
@@ -58,12 +61,38 @@ const FavoritesPage = ({ navigation }) => {
         setMessages(getMessages()) //Actualiza la lista de mensajes//
     }
 
+    //Maneja el cierre de sesión del usuario//
+    const handleLogout = () => {
+        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
+        localStorage.removeItem('id') //Elimina el ID de localStorage//
+        navigation.navigateToLogin() //Redirige a la página de login//
+    }
+
     //Efecto para redirigir a login si no hay usuario loguead//
     useEffect(() => {
         if (!loggedUser) {
             navigation.navigateToLogin()
         }
     }, [loggedUser, navigation])
+
+
+    //Efecto secundario para cerrar el menú al hacer clic fuera de él//
+    useEffect(() => {
+        //Función que maneja el clic fuera del menú//
+        const handleClickOutside = (e) => {
+            //Verifica si el clic fue fuera del menú y sus botones//
+            if (showMenu && !e.target.closest('.favoriteMenuButton') && !e.target.closest('.favoriteMenuDropContainer')) {
+                setShowMenu(false) //Cierra el menú//
+            }
+        }
+
+        //Agrega el event listener al documento//
+        document.addEventListener('click', handleClickOutside)
+
+        //Función de limpieza que remueve el event listener al desmontar el componente//
+        return () => document.removeEventListener('click', handleClickOutside)
+    }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
+
 
     if (!loggedUser) { //Si no hay usuario logueado, no se renderiza nada//
         return null
@@ -85,17 +114,74 @@ const FavoritesPage = ({ navigation }) => {
                 {/* Título de la página */}
                 <h1 className="favoriteMsg">Favorite Messages</h1>
 
-                {/* Botón para volver a home */}
-                <Link
-                    to="/home"
-                    className="favoriteMenuButton-back-button"
-                    onClick={() => navigation.navigateToHome()}
-                    aria-label="Back to home"
+                {/* Botón y menú desplegable del usuario */}
+                <button
+                    className={`favoriteMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
+                    onClick={() => setShowMenu(!showMenu)}
+                    aria-expanded={showMenu}
+                    aria-label="User menu"
                 >
                     <div className="favoriteMenuButton-content">
-                        <i className="fas fa-arrow-left"></i>
+                        {/* Muestra avatar o inicial del usuario */}
+                        {loggedUser?.avatar ? (
+                            <img
+                                src={loggedUser.avatar}
+                                className="favoriteMenuButton-avatar"
+                                alt="User avatar"
+                            />
+                        ) : (
+                            <span className="favoriteMenuButton-initial">
+                                {(loggedUser && loggedUser.userName && loggedUser.userName[0].toUpperCase()) || 'U'}
+                            </span>
+                        )}
                     </div>
-                </Link>
+                </button>
+
+                {/* Menú desplegable cuando está visible */}
+                {showMenu && (
+                    <div className="favoriteMenuDropContainer">
+                        {/* Botón para ir a home - ahora con Link */}
+                        <Link
+                            to="/home"
+                            className="favoriteHomeButton"
+                            onClick={() => {
+                                navigation.navigateToHome();
+                                setShowMenu(false);
+                            }}
+                        >
+                            <i className="fas fa-house"></i> Home
+                        </Link>
+
+                        {/* Botón para ir a profile - ahora con Link */}
+                        <Link
+                            to="/profile"
+                            className="favoriteProfileButton"
+                            onClick={() => {
+                                navigation.navigateToProfile()
+                                setShowMenu(false);
+                            }}
+                        >
+                            <i className="fas fa-user"></i> Profile
+                        </Link>
+
+                        {/* Botón para ir a messages - ahora con Link */}
+                        <Link
+                            to="/messages"
+                            className="favoriteMessagesButton"
+                            onClick={() => {
+                                navigation.navigateToMessages()
+                                setShowMenu(false)
+                            }}
+                        >
+                            <i className="fas fa-envelope"></i> My Msg
+                        </Link>
+
+                        {/* Botón para cerrar sesión */}
+                        <button className="favoriteLogoutButton" onClick={handleLogout}>
+                            <i className="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Contenedor principal */}
@@ -160,9 +246,17 @@ const FavoritesPage = ({ navigation }) => {
                                 //Renderiza cada mensaje favorito//
                                 return (
                                     <div key={message.date} className="favorite-message">
-                                        {/* Muestra autor del mensaje */}
+                                        {/* Muestra autor del mensaje con enlace a su bio */}
                                         {messageAuthor && (
-                                            <div className="favorite-message-user">From: {messageAuthor.userName}</div>
+                                            <div className="favorite-message-user">
+                                                From: <span
+                                                    className="favorite-user-name-link"
+                                                    onClick={() => navigation.navigateToBio(messageAuthor.userName)}
+                                                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                                >
+                                                    {messageAuthor.userName}
+                                                </span>
+                                            </div>
                                         )}
 
                                         {/* Muestra título del mensaje */}

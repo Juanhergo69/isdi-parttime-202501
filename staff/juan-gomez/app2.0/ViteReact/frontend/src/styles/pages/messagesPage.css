@@ -1,39 +1,31 @@
 /* Contenedor principal de la página de mensajes - Establece el diseño base */
 .messagesPageContainer {
-    display: block;
-    /* Usa el modelo de caja block (no flex) */
-    width: 100%;
-    /* Ocupa el 100% del ancho disponible */
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza los elementos en columna */
     min-height: 100vh;
-    /* Altura mínima igual al viewport (pantalla completa) */
-    background: linear-gradient(500deg, white, rgb(0, 142, 182));
-    /* Fondo con gradiente de blanco a azul */
-    position: relative;
-    /* Posicionamiento relativo para contener elementos absolutos */
+    /* Altura mínima del 100% del viewport */
+    width: 100%;
+    /* Ancho del 100% */
 }
 
 /* Contenedor del encabezado - Posicionamiento fijo en la parte superior */
 .messagesHeaderContainer {
     display: flex;
-    /* Usa flexbox para alinear elementos */
+    /* Activa flexbox */
     justify-content: space-between;
-    /* Distribuye espacio entre elementos */
+    /* Distribuye el espacio entre elementos */
     align-items: center;
-    /* Centra elementos verticalmente */
+    /* Centra los elementos verticalmente */
     width: 100%;
-    /* Ancho completo */
-    padding: 20px 40px;
-    /* Relleno interno: 20px arriba/abajo, 40px izquierda/derecha */
-    position: absolute;
-    /* Posicionamiento absoluto respecto al contenedor padre */
-    top: 16px;
-    /* Distancia desde la parte superior */
-    left: 0;
-    /* Alineado a la izquierda */
-    z-index: 10;
-    /* Nivel de apilamiento (sobre otros elementos) */
-    background: none;
-    /* Sin fondo */
+    /* Ancho del 100% */
+    height: 1%;
+    /* Altura mínima del 1% */
+    padding: 40px;
+    /* Relleno interno de 40px */
+    margin-top: 3rem;
+    /* Margen superior de 3rem */
 }
 
 /* Contenedor de imagen - Organiza elementos en columna */
@@ -78,30 +70,30 @@
     /* Sombra blanca */
 }
 
-/* Estilo para el botón de volver atrás */
-.messagesMenuButton-back-button {
+/* Estilos base para el botón de menú */
+.messagesMenuButton {
     background-color: rgb(57, 58, 58);
     /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
     border: none;
-    /* Sin bordes */
+    /* Sin borde */
     padding: 0;
-    /* Sin relleno interno */
+    /* Sin relleno */
     font-size: 1.5rem;
-    /* Tamaño de texto 1.5rem */
+    /* Tamaño de fuente de 1.5rem */
     border-radius: 50%;
-    /* Forma circular perfecta */
+    /* Forma circular */
     cursor: pointer;
-    /* Cursor tipo mano */
+    /* Cursor tipo pointer */
     transition: all 0.3s ease;
     /* Transición suave para todas las propiedades */
     width: 70px;
-    /* Ancho fijo */
+    /* Ancho fijo de 70px */
     height: 70px;
-    /* Alto fijo (igual que ancho para círculo) */
+    /* Altura fija de 70px (igual que el ancho para círculo perfecto) */
     display: flex;
-    /* Usa flexbox */
+    /* Activa flexbox */
     align-items: center;
     /* Centra verticalmente */
     justify-content: center;
@@ -111,33 +103,154 @@
     position: relative;
     /* Posicionamiento relativo */
     overflow: hidden;
-    /* Oculta contenido que sobresale */
+    /* Oculta contenido que desborde */
     z-index: 101;
-    /* Nivel de apilamiento alto */
+    /* Nivel de apilamiento */
 }
 
-/* Efecto hover para el botón de volver */
-.messagesMenuButton-back-button:hover {
-    background-color: rgb(255, 255, 255);
-    /* Fondo blanco */
-    color: rgb(0, 142, 182);
-    /* Texto azul */
-    transform: scale(1.05);
-    /* Escala al 105% */
-}
-
-/* Contenedor interno del botón */
+/* Contenedor interno del botón de menú */
 .messagesMenuButton-content {
     width: 100%;
-    /* Ancho completo */
+    /* Ancho del 100% */
     height: 100%;
-    /* Alto completo */
+    /* Altura del 100% */
     display: flex;
-    /* Usa flexbox */
+    /* Activa flexbox */
     align-items: center;
     /* Centra verticalmente */
     justify-content: center;
     /* Centra horizontalmente */
+}
+
+/* Estilo para botón con avatar */
+.messagesMenuButton.with-avatar .menuButton-content {
+    background: transparent;
+    /* Fondo transparente */
+}
+
+/* Estilos para el avatar en el botón */
+.messagesMenuButton-avatar {
+    width: 100%;
+    /* Ancho del 100% */
+    height: 100%;
+    /* Altura del 100% */
+    object-fit: cover;
+    /* Ajusta la imagen manteniendo proporciones */
+    border-radius: 50%;
+    /* Forma circular */
+}
+
+/* Estilo para la inicial (cuando no hay avatar) */
+.messagesMenuButton-initial {
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem */
+    line-height: 1;
+    /* Altura de línea de 1 */
+}
+
+/* Estilo específico para botón de volver */
+.messagesMenuButton.back-button {
+    padding: 0;
+    /* Sin relleno */
+}
+
+.messagesMenuButton-content i {
+    font-size: 1.5rem;
+    /* Tamaño de fuente de 1.5rem para el icono */
+}
+
+/* Efecto hover para el botón de menú */
+.messagesMenuButton:hover {
+    background-color: rgb(255, 255, 255);
+    /* Cambia fondo a blanco */
+    color: rgb(0, 142, 182);
+    /* Cambia color de texto a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
+}
+
+/* Contenedor del menú desplegable */
+.messagesMenuDropContainer {
+    position: absolute;
+    /* Posicionamiento absoluto */
+    right: 1.1rem;
+    /* Posición desde la derecha de 1.1rem */
+    top: 8rem;
+    /* Posición desde arriba de 8rem */
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: flex-end;
+    /* Alinea elementos a la derecha */
+    gap: 5px;
+    /* Espacio de 5px entre elementos */
+    padding: 6px;
+    /* Relleno interno de 6px */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+    width: auto;
+    /* Ancho automático */
+    border: 1px solid rgb(0, 142, 182);
+    /* Borde azul de 1px */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    background-color: white;
+    /* Fondo blanco */
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    /* Sombra azul */
+    z-index: 100;
+    /* Nivel de apilamiento */
+}
+
+/* Estilos para botones del menú desplegable */
+.messagesHomeButton,
+.messagesProfileButton,
+.messagesFavoritesButton,
+.messagesLogoutButton {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Organiza elementos en columna */
+    align-items: center;
+    /* Centra elementos horizontalmente */
+    background-color: rgb(57, 58, 58);
+    /* Fondo gris oscuro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    /* Sin borde */
+    padding: 8px 16px;
+    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
+    font-size: 0.9rem;
+    /* Tamaño de fuente de 0.9rem */
+    border-radius: 20px;
+    /* Bordes muy redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+    transition: background-color 0.3s ease;
+    /* Transición suave del color de fondo */
+    width: auto;
+    /* Ancho automático */
+    min-width: 100px;
+    /* Ancho mínimo de 100px */
+    max-width: 100px;
+    /* Ancho máximo de 100px */
+    font-family: 'Zen Dots';
+    /* Fuente personalizada */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+}
+
+/* Efecto hover para botones del menú */
+.messagesHomeButton:hover,
+.messagesProfileButton:hover,
+.messagesFavoritesButton:hover,
+.messagesLogoutButton:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color de fondo a azul */
+    transform: scale(1.05);
+    /* Escala el botón al 105% */
 }
 
 /* Contenedor principal del formulario */
@@ -148,7 +261,7 @@
     /* Centra horizontalmente */
     padding: 2rem;
     /* Relleno interno de 2rem */
-    margin-top: 8.8rem;
+    margin-top: 1.7rem;
     /* Margen superior para evitar solapamiento con header */
     width: 100%;
     /* Ancho completo */
