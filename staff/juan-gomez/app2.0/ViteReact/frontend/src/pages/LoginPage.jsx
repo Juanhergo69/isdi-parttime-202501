@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 //Importa funciones utilitarias para obtener usuarios y mostrar modales//
-import { getUsers, createModal } from '../utils/utils'
+import { createModal } from '../utils/utils'
 
 //Importa el componente Form para reutilizar el formulario//
 import Form from '../components/Forms'
@@ -22,38 +22,65 @@ const LoginPage = ({ navigation }) => {
     //Estado para controlar visibilidad de contraseña//
     const [showPassword, setShowPassword] = useState(false);
 
-    //Función que maneja el envío del formulario de login//
-    const handleSubmit = (formData) => {
-        //Obtiene todos los usuarios registrados//
-        const users = getUsers()
-        //Busca el usuario por email//
-        const userLoginCheckout = users.find(user => user.email === formData.email)
-
-        //Si no encuentra el usuario//
-        if (!userLoginCheckout) {
-            //Muestra modal de error y redirige a registro//
-            createModal('The email is not registered yet. Please, create an account first', () => {
-                navigation.navigateToRegister()
-            })
-            return
-        }
-
-        //Si la contraseña no coincide//
-        if (userLoginCheckout.password !== formData.password) {
-            createModal('Incorrect password, Please, try again')
-            return
-        }
-
-        //Guarda el ID del usuario según la opción "Remember me"//
-        if (formData.rememberme) {
-            localStorage.setItem('id', userLoginCheckout.id) //Persistente//
+//Define una función llamada handleSubmit que recibe formData como parámetro//
+const handleSubmit = (formData) => {
+    //Crea una nueva instancia de XMLHttpRequest para hacer peticiones HTTP//
+    const xhr = new XMLHttpRequest()
+    
+    //Inicializa la petición como POST a la URL del endpoint de login//
+    //El tercer parámetro 'true' indica que será asíncrona//
+    xhr.open('POST', 'http://localhost:3001/api/auth/login', true)
+    
+    //Establece el header Content-Type como application/json//
+    //Indica que enviaremos datos en formato JSON//
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    
+    //Define la función que se ejecutará cuando la petición se complete//
+    xhr.onload = function() {
+        //Si el status de la respuesta es 200 (OK)//
+        if (xhr.status === 200) {
+            //Parsea la respuesta JSON a objeto JavaScript//
+            const response = JSON.parse(xhr.responseText)
+            
+            //Si la respuesta indica éxito (success: true)//
+            if (response.success) {
+                //Guardar el ID del usuario según rememberme//
+                if (formData.rememberme) {
+                    //Si rememberme es true, guarda en localStorage (persistente)//
+                    localStorage.setItem('id', response.userId)
+                } else {
+                    //Si rememberme es false, guarda en sessionStorage (solo para esta sesión)//
+                    sessionStorage.setItem('id', response.userId)
+                }
+                
+                //Redirigir a Home llamando al método navigateToHome del objeto navigation//
+                navigation.navigateToHome()
+            }
         } else {
-            sessionStorage.setItem('id', userLoginCheckout.id) //Solo para la sesión//
+            //Si el status no es 200, parsea el mensaje de error//
+            const errorResponse = JSON.parse(xhr.responseText)
+            
+            //Crea un modal mostrando el mensaje de error//
+            //El segundo parámetro es un callback que se ejecuta al cerrar el modal//
+            createModal(errorResponse.message, () => {
+                //Si es error 401 y el mensaje incluye "not registered"//
+                if (xhr.status === 401 && errorResponse.message.includes('not registered')) {
+                    //Redirige a la página de registro//
+                    navigation.navigateToRegister()
+                }
+            })
         }
-
-        //Redirige a la página de Home//
-        navigation.navigateToHome()
     }
+    
+    //Define la función que maneja errores de conexión//
+    xhr.onerror = function() {
+        //Muestra un modal con mensaje genérico de error de conexión//
+        createModal('Error de conexión con el servidor')
+    }
+    
+    //Envía la petición al servidor, convirtiendo formData a JSON//
+    xhr.send(JSON.stringify(formData))
+}
 
     //Renderizado del componente//
     return (
