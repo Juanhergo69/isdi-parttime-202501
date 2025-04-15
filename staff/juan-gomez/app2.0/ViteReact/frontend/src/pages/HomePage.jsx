@@ -1,174 +1,237 @@
-//Importa la biblioteca React para crear componentes//
+//Importa la librería React//
 import React from 'react'
-
-//Importa funciones useState y useEffect para crear estados y efectos//
+//Importa los hooks useState y useEffect de React//
 import { useState, useEffect } from 'react'
-
 //Importa el componente Link de react-router-dom para navegación//
 import { Link } from 'react-router-dom'
-
-//Importa funciones específicas para manejar likes/dislikes y almacenar mensajes desde un archivo de datos//
-import { toggleLike, toggleDislike, toggleFavorite, storeMsg } from '../utils/data.js'
-
-//Importa funciones utilitarias generales desde un archivo de utilidades//
-import { getMessages, getLoggedUserId, getUsers, createModal, validateTitle, validateTextarea } from '../utils/utils.js'
-
-//Importa los estilos CSS para este componente//
+//Importa funciones utilitarias desde el archivo utils//
+import { createModal, validateTitle, validateTextarea, getUsers, getLoggedUserId } from '../utils/utils'
+//Importa los estilos CSS para esta página//
 import '../styles/pages/homePage.css'
 
-//Define el componente funcional HomePage que recibe props de navegación//
+//Define el componente HomePage que recibe la prop navigation//
 const HomePage = ({ navigation }) => {
-    //Estado para controlar la visibilidad del menú desplegable del usuario//
+    //Estado para controlar la visibilidad del menú de usuario//
     const [showMenu, setShowMenu] = useState(false)
-
-    //Estado para controlar la visibilidad del formulario de mensaje//
+    //Estado para controlar la visibilidad del formulario de mensajes//
     const [showMsgForm, setShowMsgForm] = useState(false)
-
-    //Estado para almacenar y actualizar la lista de mensajes//
-    const [messages, setMessages] = useState(getMessages())
-
-    //Estado para guardar la imagen seleccionada para un nuevo mensaje//
+    //Estado para almacenar la lista de mensajes//
+    const [messages, setMessages] = useState([])
+    //Estado para almacenar la imagen seleccionada//
     const [selectedImage, setSelectedImage] = useState(null)
-
-    //Estado para mostrar una vista previa de la imagen seleccionada//
+    //Estado para almacenar la previsualización de la imagen
     const [imagePreview, setImagePreview] = useState(null)
-
-    //Obtiene la lista completa de usuarios registrados//
+    
+    //Obtiene todos los usuarios registrados//
     const users = getUsers()
-
-    //Obtiene el ID del usuario actualmente logueado//
+    //Obtiene el ID del usuario logueado//
     const loggedUserId = getLoggedUserId()
-
-    //Busca y obtiene los datos del usuario logueado//
+    //Busca el usuario logueado en la lista de usuarios//
     const loggedUser = users.find(user => user.id === loggedUserId)
 
-    //Efecto secundario para cerrar el menú al hacer clic fuera de él//
+    //Efecto que se ejecuta al montar el componente y cuando cambia showMenu//
     useEffect(() => {
-        //Función que maneja el clic fuera del menú//
+        //Carga los mensajes al iniciar//
+        loadMessages()
+        
+        //Función para cerrar el menú al hacer clic fuera de él//
         const handleClickOutside = (e) => {
-            //Verifica si el clic fue fuera del menú y sus botones//
             if (showMenu && !e.target.closest('.homeMenuButton') && !e.target.closest('.homeMenuDropContainer')) {
-                setShowMenu(false) //Cierra el menú//
+                setShowMenu(false)
             }
         }
 
-        //Agrega el event listener al documento//
-        document.addEventListener('click', handleClickOutside)
-
-        //Función de limpieza que remueve el event listener al desmontar el componente//
+        //Agrega el event listener para clicks//
+        document.addEventListener('click', handleClickOutside);
+        //Limpieza: remueve el event listener al desmontar el componente//
         return () => document.removeEventListener('click', handleClickOutside)
-    }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
+    }, [showMenu])
 
-    //Maneja el cambio de imagen seleccionada en el formulario//
-    const handleImageChange = (e) => {
-        const file = e.target.files[0] //Obtiene el archivo seleccionado//
-        if (file) {
-            setSelectedImage(file) //Guarda el archivo en el estado//
-
-            //Crea un FileReader para leer la imagen//
-            const reader = new FileReader()
-
-            //Define qué hacer cuando se complete la lectura//
-            reader.onload = () => {
-                setImagePreview(reader.result) //Guarda la vista previa como URL de datos//
+    //Función para cargar mensajes desde el servidor//
+    const loadMessages = () => {
+        //Crea una nueva petición XMLHttpRequest//
+        const xhr = new XMLHttpRequest();
+        //Configura la petición GET al endpoint de mensajes//
+        xhr.open('GET', 'http://localhost:3001/api/posts', true)
+        
+        //Define qué hacer cuando la petición se complete//
+        xhr.onload = function() {
+            //Si la respuesta es exitosa (código 200)//
+            if (this.status === 200) {
+                //Parsea la respuesta JSON//
+                const response = JSON.parse(this.responseText)
+                //Si la respuesta indica éxito, actualiza los mensajes//
+                if (response.success) {
+                    setMessages(response.messages)
+                }
             }
+        }
+        
+        //Envía la petición//
+        xhr.send()
+    }
 
+    //Maneja el cambio de imagen seleccionada//
+    const handleImageChange = (e) => {
+        //Obtiene el archivo seleccionado//
+        const file = e.target.files[0]
+        if (file) {
+            //Guarda el archivo seleccionado//
+            setSelectedImage(file)
+            //Crea un FileReader para previsualizar la imagen//
+            const reader = new FileReader()
+            //Cuando se cargue la imagen, actualiza la previsualización//
+            reader.onload = () => {
+                setImagePreview(reader.result)
+            }
             //Lee el archivo como URL de datos//
             reader.readAsDataURL(file)
         }
     }
 
-    //Elimina la imagen seleccionada del formulario//
+    //Remueve la imagen seleccionada//
     const removeImage = () => {
-        setSelectedImage(null) //Limpia la imagen seleccionada//
-        setImagePreview(null) //Limpia la vista previa//
-        document.getElementById('image-upload').value = '' //Resetea el input de archivo//
+        setSelectedImage(null)
+        setImagePreview(null)
+        //Resetea el input de archivo//
+        document.getElementById('image-upload').value = ''
     }
 
-    //Maneja el evento de like en un mensaje//
+    //Maneja el like a un mensaje//
     const handleLike = (messageId) => {
-        toggleLike(messageId, loggedUserId) //Llama a la función para alternar el like//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', 'http://localhost:3001/api/posts/like', true)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        
+        xhr.onload = function() {
+            if (this.status === 200) {
+                //Recarga los mensajes después de dar like//
+                loadMessages()
+            }
+        }
+        
+        //Envía los datos del like//
+        xhr.send(JSON.stringify({
+            messageId,
+            userId: loggedUserId
+        }))
     }
 
-    //Maneja el evento de dislike en un mensaje//
+    //Maneja el dislike a un mensaje//
     const handleDislike = (messageId) => {
-        toggleDislike(messageId, loggedUserId) //Llama a la función para alternar el dislike//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', 'http://localhost:3001/api/posts/dislike', true)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        
+        xhr.onload = function() {
+            if (this.status === 200) {
+                //Recarga los mensajes después de dar dislike//
+                loadMessages()
+            }
+        }
+        
+        //Envía los datos del dislike//
+        xhr.send(JSON.stringify({
+            messageId,
+            userId: loggedUserId
+        }))
     }
 
-    //Maneja el evento de favorito en un mensaje//
+    //Maneja el favorito de un mensaje//
     const handleFavorite = (messageId) => {
-        toggleFavorite(messageId, loggedUserId) //Llama a la función para alternar el favorito//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
+        const xhr = new XMLHttpRequest()
+        xhr.open('PUT', 'http://localhost:3001/api/posts/favorite', true)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        
+        xhr.onload = function() {
+            if (this.status === 200) {
+                //Recarga los mensajes después de marcar como favorito//
+                loadMessages()
+            }
+        };
+        
+        //Envía los datos del favorito//
+        xhr.send(JSON.stringify({
+            messageId,
+            userId: loggedUserId
+        }))
     }
 
-    //Maneja el envío del formulario de nuevo mensaje//
+    //Maneja el envío del formulario de mensaje//
     const handleSubmitMessage = (e) => {
-        e.preventDefault() //Previene el comportamiento por defecto del formulario//
-
+        //Previene el comportamiento por defecto del formulario//
+        e.preventDefault()
         //Obtiene los valores del formulario//
         const title = e.target.title.value
         const msg = e.target.msg.value
 
-        //Valida el título del mensaje//
+        //Valida el título//
         if (!validateTitle(title)) {
-            createModal('Title cannot exceed 5 words') //Muestra error//
-            return //Detiene la ejecución//
+            createModal('Title cannot exceed 5 words')
+            return
         }
 
-        //Valida el contenido del mensaje//
+        //Valida el mensaje//
         if (!validateTextarea(msg)) {
-            createModal('Message cannot exceed 100 words') //Muestra error//
-            return //Detiene la ejecución//
+            createModal('Message cannot exceed 100 words')
+            return
         }
 
-        //Manejo de imagen si fue seleccionada//
-        if (selectedImage) {
-            const reader = new FileReader()
-
-            //Cuando se complete la lectura de la imagen//
-            reader.onload = (event) => {
-                const imageBase64 = event.target.result //Obtiene la imagen como base64//
-
-                //Almacena el mensaje con imagen//
-                storeMsg(loggedUserId, title, msg, new Date(), imageBase64)
-
-                resetForm() //Resetea el formulario//
-                createModal('Message stored successfully!') //Muestra confirmación//
+        //Crea la petición para enviar el mensaje//
+        const xhr = new XMLHttpRequest()
+        xhr.open('POST', 'http://localhost:3001/api/posts', true)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        
+        xhr.onload = function() {
+            //Si la respuesta es exitosa (código 2xx)//
+            if (this.status >= 200 && this.status < 300) {
+                const response = JSON.parse(this.responseText)
+                if (response.success) {
+                    //Muestra mensaje de éxito, resetea el formulario y recarga mensajes//
+                    createModal(response.message)
+                    resetForm()
+                    loadMessages()
+                } else {
+                    createModal(response.message)
+                }
+            } else {
+                createModal('Error creating post')
             }
-
-            //Lee la imagen como URL de datos//
-            reader.readAsDataURL(selectedImage)
-        } else {
-            //Almacena el mensaje sin imagen//
-            storeMsg(loggedUserId, title, msg, new Date())
-
-            resetForm() //Resetea el formulario//
-            createModal('Message stored successfully!') //Muestra confirmación//
         }
+        
+        //Prepara los datos del mensaje//
+        const postData = {
+            userId: loggedUserId,
+            title,
+            msg,
+            image: imagePreview || null
+        }
+        
+        //Envía la petición con los datos del mensaje//
+        xhr.send(JSON.stringify(postData))
     }
 
-    //Resetea el formulario a su estado inicial//
+    //Resetea el formulario de mensaje//
     const resetForm = () => {
-        setMessages(getMessages()) //Actualiza los mensajes//
-        setSelectedImage(null) //Limpia la imagen seleccionada//
-        setImagePreview(null) //Limpia la vista previa//
-        document.getElementById('sendMsgForm').reset() //Resetea el formulario//
-        setShowMsgForm(false) //Oculta el formulario//
+        setSelectedImage(null)
+        setImagePreview(null)
+        document.getElementById('sendMsgForm').reset()
+        setShowMsgForm(false)
     }
 
-    //Maneja el cierre de sesión del usuario//
+    // Maneja el logout del usuario
     const handleLogout = () => {
-        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
-        localStorage.removeItem('id') //Elimina el ID de localStorage//
-        navigation.navigateToLogin() //Redirige a la página de login//
+        //Remueve el ID de usuario de sessionStorage y localStorage//
+        sessionStorage.removeItem('id')
+        localStorage.removeItem('id')
+        //Navega a la página de login//
+        navigation.navigateToLogin()
     }
 
-    //Redirige a login si no hay usuario logueado//
+    //Si no hay usuario logueado, redirige a login//
     if (!loggedUserId) {
-        navigation.navigateToLogin() //Navega a login//
-        return null //No renderiza nada//
+        navigation.navigateToLogin();
+        return null;
     }
 
     //Renderiza el componente//
@@ -176,15 +239,10 @@ const HomePage = ({ navigation }) => {
         <div className="homePageContainer">
             {/* Contenedor del encabezado */}
             <div className="homeHeaderContainer">
-                {/* Contenedor de logo y botón de nuevo post */}
                 <div className="homeImgContainer">
-                    {/* Imagen del logo con clases para estilos y texto alternativo */}
-                    <img
-                        src="/Logo.jpg"       //Ruta de la imagen del logo//
-                        className="homeImg  " //Clase CSS para la imagen//
-                        alt="Logo"            //Texto alternativo para accesibilidad//
-                    />
-                    {/* Botón para mostrar/ocultar el formulario de mensaje */}
+                    {/* Logo de la aplicación */}
+                    <img src="/Logo.jpg" className="homeImg" alt="Logo" />
+                    {/* Botón para mostrar/ocultar formulario de mensaje */}
                     <button
                         className="home-toggleSendMsgFormButton"
                         onClick={() => setShowMsgForm(!showMsgForm)}
@@ -195,7 +253,7 @@ const HomePage = ({ navigation }) => {
                 {/* Mensaje de bienvenida con nombre de usuario */}
                 <h1 className="homeMsg">Welcome, {(loggedUser && loggedUser.userName) || 'User'}</h1>
 
-                {/* Botón y menú desplegable del usuario */}
+                {/* Botón del menú de usuario */}
                 <button
                     className={`homeMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
                     onClick={() => setShowMenu(!showMenu)}
@@ -205,11 +263,7 @@ const HomePage = ({ navigation }) => {
                     <div className="homeMenuButton-content">
                         {/* Muestra avatar o inicial del usuario */}
                         {loggedUser?.avatar ? (
-                            <img
-                                src={loggedUser.avatar}
-                                className="homeMenuButton-avatar"
-                                alt="User avatar"
-                            />
+                            <img src={loggedUser.avatar} className="homeMenuButton-avatar" alt="User avatar" />
                         ) : (
                             <span className="homeMenuButton-initial">
                                 {(loggedUser && loggedUser.userName && loggedUser.userName[0].toUpperCase()) || 'U'}
@@ -218,10 +272,10 @@ const HomePage = ({ navigation }) => {
                     </div>
                 </button>
 
-                {/* Menú desplegable cuando está visible */}
+                {/* Menú desplegable del usuario */}
                 {showMenu && (
                     <div className="homeMenuDropContainer">
-                        {/* Botón para ir al perfil - ahora con Link */}
+                        {/* Enlace al perfil */}
                         <Link
                             to="/profile"
                             className="homeProfileButton"
@@ -233,31 +287,31 @@ const HomePage = ({ navigation }) => {
                             <i className="fas fa-user"></i> Profile
                         </Link>
 
-                        {/* Botón para ir a mensajes - ahora con Link */}
+                        {/* Enlace a mensajes del usuario */}
                         <Link
                             to="/messages"
                             className="homeMessagesButton"
                             onClick={() => {
-                                navigation.navigateToMessages()
+                                navigation.navigateToMessages();
                                 setShowMenu(false);
                             }}
                         >
                             <i className="fas fa-envelope"></i> My Msg
                         </Link>
 
-                        {/* Botón para ir a favoritos - ahora con Link */}
+                        {/* Enlace a favoritos del usuario */}
                         <Link
                             to="/favorites"
                             className="homeFavoritesButton"
                             onClick={() => {
-                                navigation.navigateToFavorites()
-                                setShowMenu(false)
+                                navigation.navigateToFavorites();
+                                setShowMenu(false);
                             }}
                         >
                             <i className="fas fa-star"></i> My Fav
                         </Link>
 
-                        {/* Botón para cerrar sesión */}
+                        {/* Botón de logout */}
                         <button className="homeLogoutButton" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt"></i> Logout
                         </button>
@@ -265,12 +319,12 @@ const HomePage = ({ navigation }) => {
                 )}
             </div>
 
-            {/* Contenedor principal de contenido */}
+            {/* Contenedor principal de mensajes */}
             <div className="homeMsgContainer">
-                {/* Formulario para nuevo mensaje (solo visible cuando showMsgForm es true) */}
+                {/* Formulario para crear mensajes (condicional) */}
                 {showMsgForm && (
                     <form id="sendMsgForm" className="homeSendMsgForm" onSubmit={handleSubmitMessage}>
-                        {/* Input para el título del mensaje */}
+                        {/* Input para el título */}
                         <input
                             type="text"
                             id="title"
@@ -279,7 +333,7 @@ const HomePage = ({ navigation }) => {
                             name="title"
                         />
 
-                        {/* Textarea para el contenido del mensaje */}
+                        {/* Textarea para el mensaje */}
                         <textarea
                             id="msg"
                             className="textarea"
@@ -288,15 +342,13 @@ const HomePage = ({ navigation }) => {
                             name="msg"
                         ></textarea>
 
-                        {/* Sección para manejar imágenes */}
+                        {/* Sección para subir imagen */}
                         <div className="home-optimized-image-section">
                             <div className="home-image-controls-row">
-                                {/* Label estilizado para el input de archivo */}
+                                {/* Botón para seleccionar imagen */}
                                 <label htmlFor="image-upload" className="home-image-upload-label">
                                     <i className="fas fa-image"></i> {selectedImage ? 'Change Image' : 'Add Image'}
                                 </label>
-
-                                {/* Input real para subir archivos (oculto) */}
                                 <input
                                     type="file"
                                     id="image-upload"
@@ -305,8 +357,7 @@ const HomePage = ({ navigation }) => {
                                     onChange={handleImageChange}
                                     style={{ display: 'none' }}
                                 />
-
-                                {/* Botón para remover imagen (solo visible cuando hay imagen) */}
+                                {/* Botón para remover imagen */}
                                 {selectedImage && (
                                     <button
                                         type="button"
@@ -318,14 +369,14 @@ const HomePage = ({ navigation }) => {
                                 )}
                             </div>
 
-                            {/* Muestra el nombre del archivo seleccionado */}
+                            {/* Muestra nombre del archivo de imagen */}
                             {selectedImage && (
                                 <div className="home-compact-image-info">
                                     <span className="home-image-filename">{selectedImage.name}</span>
                                 </div>
                             )}
 
-                            {/* Muestra la vista previa de la imagen seleccionada */}
+                            {/* Muestra previsualización de la imagen */}
                             {imagePreview && (
                                 <div className="home-constrained-preview">
                                     <img
@@ -342,22 +393,19 @@ const HomePage = ({ navigation }) => {
                     </form>
                 )}
 
-                {/* Contenedor de mensajes existentes */}
+                {/* Contenedor de mensajes de usuarios */}
                 <div className={`homeUserMsgForm ${showMsgForm ? 'with-form' : 'centered'}`}>
                     <div className="homeUserMsgContainer">
-                        {/* Mapea todos los mensajes para mostrarlos */}
+                        {/* Mapea cada mensaje para renderizarlo */}
                         {messages.map((message) => {
-                            //Encuentra el autor del mensaje actual//
-                            const author = users.find(u => u.id === message.userId)
-
-                            //Verifica si el usuario actual dio like/dislike a este mensaje//
+                            //Determina si el usuario actual dio like//
                             const hasLiked = message.likes && message.likes.includes(loggedUserId)
+                            //Determina si el usuario actual dio dislike//
                             const hasDisliked = message.dislikes && message.dislikes.includes(loggedUserId)
-
-                            //Cuenta los likes/dislikes//
+                            //Cuenta los likes//
                             const likesCount = (message.likes && message.likes.length) || 0
+                            //Cuenta los dislikes//
                             const dislikesCount = (message.dislikes && message.dislikes.length) || 0
-
                             //Obtiene nombres de usuarios que dieron like//
                             const likedUsers = message.likes
                                 ? message.likes.map(likeUserId => {
@@ -365,7 +413,6 @@ const HomePage = ({ navigation }) => {
                                     return user ? user.userName : 'Unknown'
                                 })
                                 : []
-
                             //Obtiene nombres de usuarios que dieron dislike//
                             const dislikedUsers = message.dislikes
                                 ? message.dislikes.map(dislikeUserId => {
@@ -373,31 +420,29 @@ const HomePage = ({ navigation }) => {
                                     return user ? user.userName : 'Unknown'
                                 })
                                 : []
-
-                            //Verifica si el usuario actual dio favorito a este mensaje//
-                            const hasFavorited = message.favorite && message.favorite.includes(loggedUserId)
+                            //Determina si el usuario actual marcó como favorito//
+                            const hasFavorited = message.favorite && message.favorite.includes(loggedUserId);
 
                             //Renderiza cada mensaje//
                             return (
                                 <div key={message.date} className="homeMessage">
-                                    {/* Muestra información del autor */}
+                                    {/* Información del usuario que publicó */}
                                     <div className="home-message-user">
                                         User: <span
                                             className="home-user-name-link"
-                                            onClick={() => navigation.navigateToBio(author.userName)}
+                                            onClick={() => navigation.navigateToBio(message.userName)}
                                             style={{ cursor: 'pointer', textDecoration: 'underline' }}
                                         >
-                                            {(author && author.userName) || 'Unknown'}
+                                            {message.userName || 'Unknown'}
                                         </span>
                                     </div>
 
-                                    {/* Muestra título del mensaje */}
+                                    {/* Título del mensaje */}
                                     <div className="home-message-title">Title: {message.title}</div>
-
-                                    {/* Muestra contenido del mensaje */}
+                                    {/* Contenido del mensaje */}
                                     <div className="home-message-text">Message: {message.msg}</div>
 
-                                    {/* Muestra imagen adjunta si existe */}
+                                    {/* Imagen adjunta (si existe) */}
                                     {message.image && (
                                         <div className="home-message-image-container">
                                             <img
@@ -408,25 +453,23 @@ const HomePage = ({ navigation }) => {
                                         </div>
                                     )}
 
-                                    {/* Muestra fecha del mensaje */}
+                                    {/* Fecha del mensaje */}
                                     <div className="home-message-date">Date: {message.date}</div>
 
-                                    {/* Contenedor de acciones (like/dislike) */}
+                                    {/* Acciones del mensaje (like, dislike, favorito) */}
                                     <div className="home-message-actions">
-                                        {/* Contenedor y botón de like */}
+                                        {/* Contenedor de like */}
                                         <div className="home-like-container">
                                             <button
                                                 className="home-like-button"
                                                 onClick={() => handleLike(message.date)}
                                                 aria-label="Like"
                                             >
-                                                {/* Icono de like (lleno o vacío según estado) */}
+                                                {/* Icono de like (sólido si ya dio like, outline si no) */}
                                                 <i className={hasLiked ? "fas fa-thumbs-up" : "far fa-thumbs-up"}></i>
-
                                                 {/* Contador de likes */}
                                                 <span className="home-message-likes">({likesCount})</span>
                                             </button>
-
                                             {/* Tooltip con nombres de usuarios que dieron like */}
                                             {likedUsers.length > 0 && (
                                                 <div className="home-users-tooltip likes-tooltip">
@@ -440,20 +483,18 @@ const HomePage = ({ navigation }) => {
                                             )}
                                         </div>
 
-                                        {/* Contenedor y botón de dislike */}
+                                        {/* Contenedor de dislike */}
                                         <div className="home-dislike-container">
                                             <button
                                                 className="home-dislike-button"
                                                 onClick={() => handleDislike(message.date)}
                                                 aria-label="Dislike"
                                             >
-                                                {/* Icono de dislike (lleno o vacío según estado) */}
+                                                {/* Icono de dislike */}
                                                 <i className={hasDisliked ? "fas fa-thumbs-down" : "far fa-thumbs-down"}></i>
-
                                                 {/* Contador de dislikes */}
                                                 <span className="home-message-dislikes">({dislikesCount})</span>
                                             </button>
-
                                             {/* Tooltip con nombres de usuarios que dieron dislike */}
                                             {dislikedUsers.length > 0 && (
                                                 <div className="home-users-tooltip dislikes-tooltip">
@@ -466,27 +507,27 @@ const HomePage = ({ navigation }) => {
                                                 </div>
                                             )}
                                         </div>
-                                        {/* Contenedor y botón de favorito */}
+                                        {/* Contenedor de favorito */}
                                         <div className="home-favorite-container">
                                             <button
                                                 className="home-favorite-button"
                                                 onClick={() => handleFavorite(message.date)}
                                                 aria-label="Favorite"
                                             >
-                                                {/* Icono de dislike (lleno o vacío según estado) */}
+                                                {/* Icono de corazón (sólido si es favorito, outline si no) */}
                                                 <i className={hasFavorited ? "fas fa-heart" : "far fa-heart"}></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            );
+                            )
                         })}
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 
-//Exporta el componente como exportación por defecto//
+//Exporta el componente HomePage como exportación por defecto//
 export default HomePage

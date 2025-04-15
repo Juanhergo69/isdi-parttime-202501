@@ -1,9 +1,7 @@
 //Importa la biblioteca React para crear componentes//
 import React from 'react'
-
 //Importa el componente Link de react-router-dom para la navegación entre páginas//
 import { Link } from 'react-router-dom'
-
 //Importa los estilos CSS asociados al componente//
 import '../styles/pages/notFoundPage.css'
 

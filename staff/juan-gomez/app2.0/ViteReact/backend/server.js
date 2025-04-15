@@ -9,6 +9,11 @@ const cors = require('cors')
 //'./routes/authRoutes' indica la ruta relativa al archivo de rutas//
 const authRoutes = require('./routes/authRoutes')
 
+
+//Importa las rutas de de autentificación desde el archivo postRoutes.js//
+//'./routes/postRoutes' indica la ruta relativa del archivo de rutas//
+const postRoutes = require('./routes/postRoutes')
+
 //Crea una instancia de la aplicación Express//
 //Esta será nuestro servidor backend//
 const app = express()
@@ -29,6 +34,11 @@ app.use(express.urlencoded({ extended: true }))
 //Monta las rutas de autenticación bajo el prefijo '/api/auth'//
 //Todas las rutas definidas en authRoutes ahora empezarán con /api/auth//
 app.use('/api/auth', authRoutes)
+
+//Configuración de Rutas//
+//Monta las rutas de autentificación bajo el prefijo '/api/'//
+//Todas las rutas definidas en postRoutes ahora empezarán con /api///
+app.use('/api', postRoutes)
 
 //Inicialización del Servidor//
 //Define el puerto donde correrá el servidor (3001 es común para desarrollo)//

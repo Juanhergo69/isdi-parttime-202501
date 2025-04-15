@@ -1,72 +1,93 @@
-//Importa el módulo 'fs' (File System) para trabajar con el sistema de archivos//
+//Importa el módulo 'fs' (File System) de Node.js para operaciones de sistema de archivos//
 const fs = require('fs');
-//Importa el módulo 'path' para trabajar con rutas de archivos y directorios//
+//Importa el módulo 'path' de Node.js para manejar y transformar rutas de archivos//
 const path = require('path');
 
-//Define la ruta al archivo JSON donde se almacenarán los usuarios//
-//__dirname representa el directorio actual y '../storage/users.json' es la ruta relativa al archivo//
+//Define la ruta completa al archivo JSON de usuarios usando path.join para compatibilidad entre sistemas//
+//__dirname representa el directorio actual del archivo//
 const USERS_FILE = path.join(__dirname, '../storage/users.json')
 
 //Función para leer todos los usuarios desde el archivo JSON//
 const getUsers = () => {
     try {
-        //Lee el contenido del archivo de usuarios de forma síncrona con codificación UTF-8//
+        //Lee el contenido del archivo de forma síncrona con codificación UTF-8//
         const data = fs.readFileSync(USERS_FILE, 'utf8');
-        //Parsea el contenido JSON a un objeto JavaScript y lo retorna//
-        return JSON.parse(data);
+        //Convierte el contenido de texto JSON a un objeto JavaScript//
+        return JSON.parse(data)
     } catch (err) {
-        //Si ocurre un error (ej. archivo no existe), retorna un array vacío//
+        //Si hay error (ej. archivo no existe), devuelve array vacío//
         return []
     }
 }
 
 //Función para guardar la lista de usuarios en el archivo JSON//
 const saveUsers = (users) => {
-    //Escribe los datos en el archivo de forma síncrona//
-    //Convierte el objeto JavaScript a formato JSON con formato legible (2 espacios de indentación)//
-    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2))
+    //Escribe el array de usuarios en el archivo, convirtiéndolo a JSON formateado//
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+}
+
+//Controlador para obtener información del usuario actual//
+exports.getCurrentUser = (req, res) => {
+    //Convierte el ID de usuario de los parámetros de la ruta a número entero//
+    const userId = parseInt(req.params.userId);
+    //Obtiene todos los usuarios registrados//
+    const users = getUsers();
+    //Busca el usuario con el ID correspondiente//
+    const user = users.find(u => u.id === userId);
+    
+    //Si no encuentra el usuario, devuelve error 404//
+    if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' })
+    }
+    
+    //Devuelve los datos del usuario (excluyendo información sensible como password)//
+    res.json({
+        success: true,
+        user: {
+            id: user.id,
+            userName: user.userName,
+            email: user.email
+        }
+    })
 }
 
 //Función para capitalizar la primera letra de un string//
 const capitalizeFirstLetter = (str) => {
-    //Toma el primer carácter, lo convierte a mayúscula y lo concatena con el resto del string//
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    //Toma el primer carácter, lo convierte a mayúscula y lo concatena con el resto//
+    return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 //Función para validar el formato de un email//
 const validateEmail = (email) => {
-    //Expresión regular para validar formato básico de email (texto@texto.texto)//
+    //Expresión regular que verifica estructura básica de email (texto@texto.texto)//
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     //Retorna true si el email coincide con el patrón//
-    return emailRegex.test(email)
+    return emailRegex.test(email);
 }
 
 //Función para validar la fortaleza de una contraseña//
 const validatePassword = (password) => {
-    // Expresión regular que requiere:
+    // Expresión regular que verifica:
     // - Al menos una minúscula (?=.*[a-z])
     // - Al menos una mayúscula (?=.*[A-Z])
     // - Al menos un número (?=.*\d)
     // - Al menos un carácter especial (?=.*[@$!%*?&])
     // - Mínimo 6 caracteres {6,}
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
-
-    //Retorna true si la contraseña cumple con todos los requisitos//
-    return passwordRegex.test(password)
+    //Retorna true si la contraseña cumple todos los requisitos//
+    return passwordRegex.test(password);
 }
 
 //Controlador para el proceso de login//
 exports.login = (req, res) => {
     //Extrae email, password y rememberme del cuerpo de la solicitud//
-    const { email, password, rememberme } = req.body
-    
+    const { email, password, rememberme } = req.body;
     //Obtiene todos los usuarios registrados//
-    const users = getUsers()
+    const users = getUsers();
+    //Busca un usuario con el email proporcionado//
+    const user = users.find(u => u.email === email);
     
-    //Busca un usuario que coincida con el email proporcionado//
-    const user = users.find(u => u.email === email)
-    
-    //Si no encuentra el usuario, retorna error 401 (No autorizado)//
+    //Si no encuentra el usuario, devuelve error 401 (No autorizado)//
     if (!user) {
         return res.status(401).json({
             success: false,
@@ -74,28 +95,29 @@ exports.login = (req, res) => {
         });
     }
     
-    //Si la contraseña no coincide, retorna error 401 (No autorizado)//
+    //Si la contraseña no coincide, devuelve error 401 (No autorizado)//
     if (user.password !== password) {
         return res.status(401).json({
             success: false,
             message: 'Incorrect password, Please, try again'
-        });
+        })
     }
     
-    //Si las credenciales son correctas, retorna éxito con el ID de usuario y opción rememberme//
+    //Si las credenciales son correctas, devuelve éxito con datos del usuario//
     res.json({
         success: true,
         userId: user.id,
+        userName: user.userName,
         rememberme: rememberme || false
     })
 }
 
 //Controlador para el proceso de registro//
 exports.register = (req, res) => {
-    //Extrae los datos del cuerpo de la solicitud//
+    // Extrae datos del cuerpo de la solicitud
     const { email, password, confirmationPassword } = req.body
     //Obtiene todos los usuarios registrados//
-    const users = getUsers()
+    const users = getUsers();
 
     //Valida el formato del email//
     if (!validateEmail(email)) {
@@ -113,7 +135,7 @@ exports.register = (req, res) => {
         })
     }
 
-    //Verifica que la contraseña y su confirmación coincidan//
+    //Verifica que contraseña y confirmación coincidan//
     if (password !== confirmationPassword) {
         return res.status(400).json({
             success: false,
@@ -130,11 +152,11 @@ exports.register = (req, res) => {
         })
     }
 
-    //Crea un nombre de usuario a partir del email (parte antes del @)//
+    //Crea nombre de usuario a partir de la parte antes del @ en el email//
     const userName = email.split('@')[0];
     //Capitaliza la primera letra del nombre de usuario//
     const capitalizedUserName = capitalizeFirstLetter(userName);
-    //Crea el nuevo objeto usuario//
+    //Crea nuevo objeto usuario con ID basado en timestamp actual//
     const newUser = {
         email,
         password,
@@ -143,14 +165,15 @@ exports.register = (req, res) => {
     }
 
     //Agrega el nuevo usuario al array de usuarios//
-    users.push(newUser)
+    users.push(newUser);
     //Guarda los usuarios actualizados en el archivo//
-    saveUsers(users)
+    saveUsers(users);
 
-    //Retorna respuesta exitosa con código 201//
+    //Devuelve respuesta exitosa con código 201 (Creado)//
     res.status(201).json({
         success: true,
         userId: newUser.id,
+        userName: newUser.userName,
         message: 'User registered successfully'
     })
 }

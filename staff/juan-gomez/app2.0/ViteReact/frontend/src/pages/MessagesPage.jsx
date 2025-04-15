@@ -1,18 +1,13 @@
 //Importa la biblioteca React para crear componentes//
 import React from 'react'
-
 //Importa función useState para crear estados//
 import { useState, useEffect } from 'react'
-
 //Importa el componente Link de react-router-dom para navegación entre páginas//
 import { Link } from 'react-router-dom'
-
 //Importa funciones utilitarias desde el archivo utils.js//
 import { getMessages, getLoggedUserId, getUsers, createModal } from '../utils/utils.js'
-
 //Importa la función para eliminar mensajes desde data.js//
 import { deleteMessage } from '../utils/data.js'
-
 //Importa los estilos CSS para este componente//
 import '../styles/pages/messagesPage.css'
 

@@ -1,0 +1,17 @@
+[
+  {
+    "userId": 1744619598499,
+    "userName": "Juan",
+    "title": "Hola",
+    "msg": "Soy Juan",
+    "date": "14/4/2025, 10:33:31",
+    "likes": [
+      1744619598499
+    ],
+    "dislikes": [],
+    "favorite": [
+      1744619598499
+    ],
+    "image": null
+  }
+]

@@ -1,21 +1,23 @@
 //Importa la librería React para crear componentes//
 import React from 'react'
-
 //Importa el hook useState de React para manejar estado en componentes funcionales//
 import { useState } from 'react'
-
 //Importa el componente Link de react-router-dom para navegación entre páginas//
 import { Link } from 'react-router-dom'
-
+//Importa getUsers//
+import { getUsers } from '../logic/getUsers'
+//Importa saveUsers//
+import { saveUsers } from '../logic/saveUsers'
 //Importa la función createModal desde el archivo de utilidades//
-import { createModal } from '../utils/utils'
-
+import { createModal } from '../utils/modal'
+//Importa validateEmail y validatePassword//
+import { validateEmail, validatePassword } from '../utils/validators'
+//Importa capitalizeFirstLetter//
+import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter'
 //Importa los estilos CSS específicos para la página de registro//
 import '../styles/pages/registerPage.css'
-
 //Importa los estilos CSS para los formularios//
 import '../styles/components/forms.css'
-
 //Importa el componente Form que contiene la lógica de los formularios//
 import Form from '../components/Forms'
 
@@ -29,58 +31,54 @@ const RegisterPage = ({ navigation }) => {
 
     //Función que maneja el envío del formulario de registro//
     const handleSubmit = (formData) => {
-        //Crea una nueva instancia de XMLHttpRequest para hacer peticiones HTTP//
-        const xhr = new XMLHttpRequest();
-        
-        //Configura la petición POST asíncrona al endpoint de registro//
-        xhr.open('POST', 'http://localhost:3001/api/auth/register', true);
-        
-        //Establece el header para indicar que enviamos datos JSON//
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        
-        //Define qué hacer cuando la petición se complete//
-        xhr.onload = function() {
-            //Si el status está entre 200 y 299 (éxito)//
-            if (this.status >= 200 && this.status < 300) {
-                //Parsea la respuesta JSON//
-                const response = JSON.parse(this.responseText);
-                
-                //Si el registro fue exitoso//
-                if (response.success) {
-                    //Guarda el ID del usuario en sessionStorage (solo para esta sesión)//
-                    sessionStorage.setItem('id', response.userId)
-                    
-                    //Redirige a la página de inicio//
-                    navigation.navigateToHome()
-                } else {
-                    //Muestra mensaje de error si el registro falló//
-                    createModal(response.message)
-                }
-            } else {
-                try {
-                    //Intenta parsear el mensaje de error del servidor//
-                    const errorResponse = JSON.parse(this.responseText);
-                    
-                    //Muestra el mensaje de error o uno por defecto//
-                    createModal(errorResponse.message || 'Registration failed');
-                } catch (e) {
-                    //Si hay error al parsear, muestra mensaje genérico//
-                    createModal('Registration failed - server error')
-                }
-            }
+        //Valida formato de email//
+        if (!validateEmail(formData.email)) {
+            createModal('Email must contain text + @ + text + valid termination (example .com, .es, .net, etc...)');
+            return
         }
-        
-        //Maneja errores de red/conección//
-        xhr.onerror = function() {
-            createModal('Network error - please try again later')
+
+        //Valida fortaleza de contraseña//
+        if (!validatePassword(formData.password)) {
+            createModal('Password must contain 6 characters, 1 upper letter, 1 lower letter, 1 number and 1 special character');
+            return
         }
-        
-        //Envía los datos del formulario convertidos a JSON//
-        xhr.send(JSON.stringify({
+ 
+        //Verifica que las contraseñas coincidan//
+        if (formData.password !== formData['confirmation-password']) {
+            createModal('Passwords are not the same. Please, try again')
+            return
+        }
+ 
+        //Obtiene usuarios existentes//
+        const users = getUsers()
+        //Verifica si el email ya está registrado//
+        const doesUserExist = users.some(user => user.email === formData.email)
+
+        if (doesUserExist) {
+            createModal('This mail is already in use');
+            return
+        }
+
+        //Crea nombre de usuario a partir del email (parte antes del @)//
+        const userName = formData.email.split('@')[0]
+        //Capitaliza la primera letra del nombre de usuario//
+        const capitalizedUserName = capitalizeFirstLetter(userName)
+        //Crea objeto con datos del nuevo usuario//
+        const userCreated = {
             email: formData.email,
             password: formData.password,
-            confirmationPassword: formData['confirmation-password']
-        }))
+            userName: capitalizedUserName,
+            id: Date.now() //Usa timestamp como ID único//
+        }
+
+        //Agrega el nuevo usuario al array//
+        users.push(userCreated)
+        //Guarda los usuarios actualizados//
+        saveUsers(users)
+        //Establece sesión del usuario//
+        sessionStorage.setItem('id', userCreated.id)
+        //Redirige a la página de Home//
+        navigation.navigateToHome()
     }
 
     //Retorna el JSX que representa el componente//

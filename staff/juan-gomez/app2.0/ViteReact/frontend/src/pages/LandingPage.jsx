@@ -1,9 +1,7 @@
 //Importa la librería React para poder crear componentes//
 import React from 'react'
-
 //Importa el componente Link de react-router-dom para navegación//
 import { Link } from 'react-router-dom'
-
 //Importa los estilos CSS para esta página//
 import '../styles/pages/landingPage.css'
 

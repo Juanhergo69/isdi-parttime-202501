@@ -1,12 +1,9 @@
 //Importa la biblioteca React para crear componentes//
 import React from 'react'
-
 //Importa funciones useState y useEffect para crear estados y efectos//
 import { useState, useEffect } from 'react'
-
 //Importa el componente Link de react-router-dom para navegación//
 import { Link } from 'react-router-dom'
-
 //Importa funciones utilitarias específicas desde el archivo utils//
 import {
     getUsers,          //Obtiene lista de usuarios//
@@ -19,7 +16,6 @@ import {
     saveMessages,      //Guarda mensajes en almacenamiento//
     saveUserStatus,    //Guarda estado en almacenamiento// 
 } from '../utils/utils'
-
 //Importa estilos CSS//
 import '../styles/pages/profilePage.css'
 
