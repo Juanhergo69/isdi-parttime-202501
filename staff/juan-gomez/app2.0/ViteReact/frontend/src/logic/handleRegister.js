@@ -9,7 +9,7 @@ import { createModal } from '../utils/createModal'
 //Importa capitalizaFirstLetter//
 import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter'
 
-//Función principal de manejo de registro (ahora solo maneja datos)//
+//Exporta la función handleRegister para que pueda ser utilizada en otros módulos//
 export const handleRegister = (formData) => {
     //Valida formato de email//
     if (!validateEmail(formData.email)) {

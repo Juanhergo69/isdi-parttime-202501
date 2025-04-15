@@ -10,18 +10,18 @@ import { getMessages } from '../logic/getMessages'
 import { getLoggedUserId } from '../logic/getLoggedUserId'
 //Importa getUsers//
 import { getUsers } from '../logic/getUsers'
-//Importa toggleLike//
-import { toggleLike } from '../logic/toggleLike'
-//Importa toggleDislike//
-import { toggleDislike } from '../logic/toggleDislike'
-//Importa toggleFavorite//
-import { toggleFavorite } from '../logic/toggleFavorite'
-//Importa storeMsg//
-import { storeMsg } from '../logic/storeMsg'
-//Importa validateTitle y validateTextarea//
-import { validateTitle, validateTextarea} from '../utils/validators'
-//Importa createModal//
-import { createModal } from '../utils/createModal'
+//Importa handleLike//
+import { handleLike } from '../logic/handleLike'
+//Importa handleDislike//
+import { handleDislike } from '../logic/handleDislike'
+//Importa handleFavorite//
+import { handleFavorite } from '../logic/handleFavorite'
+//Importa handleImageChange//
+import { handleImageChange } from '../logic/handleImageChange'
+//Importa handleLogout//
+import { handleLogout } from '../logic/handleLogout'
+//Importa handleSumbitMessage//
+import { handleSubmitMessage } from '../logic/handleSubmitMessage'
 //Importa los estilos CSS para esta página//
 import '../styles/pages/homePage.css'
 
@@ -55,122 +55,116 @@ const HomePage = ({ navigation }) => {
         }
 
         //Agrega el event listener para clicks//
-        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('click', handleClickOutside)
         //Limpieza: remueve el event listener al desmontar el componente//
         return () => document.removeEventListener('click', handleClickOutside)
     }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
 
-    //Maneja el cambio de imagen seleccionada//
-    const handleImageChange = (e) => {
-        //Obtiene el archivo seleccionado//
-        const file = e.target.files[0]
-        if (file) {
-            //Guarda el archivo seleccionado//
-            setSelectedImage(file)
-            //Crea un FileReader para previsualizar la imagen//
-            const reader = new FileReader()
-            //Cuando se cargue la imagen, actualiza la previsualización//
-            reader.onload = () => {
-                setImagePreview(reader.result) //Guarda la vista previa como URL de datos//
-            }
-            //Lee el archivo como URL de datos//
-            reader.readAsDataURL(file)
-        }
+//Maneja el cambio de imagen seleccionada//
+const onImageChange = (e) => {
+    // Obtiene el primer archivo seleccionado del input file//
+    const file = e.target.files[0]
+    //Verifica si se seleccionó un archivo válido//
+    if (file) {
+        //Guarda el archivo seleccionado en el estado//
+        setSelectedImage(file)
+        //Llama al handler de cambio de imagen pasando el archivo y un callback//
+        handleImageChange(file, (result) => {
+            //Cuando el handler completa la conversión, guarda el resultado (base64) en el estado para previsualización//
+            setImagePreview(result)
+        })
+    }
+}
+
+//Remueve la imagen seleccionada//
+const removeImage = () => {
+    //Limpia la imagen seleccionada del estado//
+    setSelectedImage(null)
+    //Limpia la previsualización de imagen del estado//
+    setImagePreview(null)
+    //Resetea el valor del input file para permitir volver a seleccionar la misma imagen//
+    document.getElementById('image-upload').value = ''
+}
+
+//Maneja el like a un mensaje//
+const onLike = (messageId) => {
+    //Llama al handler de like pasando el ID del mensaje y el ID del usuario logueado//
+    //El handler devuelve la lista actualizada de mensajes//
+    const updatedMessages = handleLike(messageId, loggedUserId)
+    //Actualiza el estado de mensajes con la lista actualizada//
+    setMessages(updatedMessages)
+}
+
+//Maneja el dislike a un mensaje//
+const onDislike = (messageId) => {
+    //Llama al handler de dislike pasando el ID del mensaje y el ID del usuario logueado//
+    //El handler devuelve la lista actualizada de mensajes//
+    const updatedMessages = handleDislike(messageId, loggedUserId)
+    //Actualiza el estado de mensajes con la lista actualizada//
+    setMessages(updatedMessages)
+}
+
+//Maneja el favorito de un mensaje//
+const onFavorite = (messageId) => {
+    //Llama al handler de favorito pasando el ID del mensaje y el ID del usuario logueado//
+    //El handler devuelve la lista actualizada de mensajes//
+    const updatedMessages = handleFavorite(messageId, loggedUserId)
+    //Actualiza el estado de mensajes con la lista actualizada//
+    setMessages(updatedMessages)
+}
+
+//Maneja el envío del formulario de mensaje//
+const onSubmitMessage = (e) => {
+    //Previene el comportamiento por defecto del formulario (recarga de página)//
+    e.preventDefault()
+    //Crea un objeto con los datos del formulario//
+    const formData = {
+        title: e.target.title.value,  //Obtiene el valor del campo título//
+        msg: e.target.msg.value      //Obtiene el valor del campo mensaje//
     }
 
-    //Remueve la imagen seleccionada//
-    const removeImage = () => {
-        setSelectedImage(null) //Limpia la imagen seleccionada//
-         setImagePreview(null) //Limpia la vista previa//
-         document.getElementById('image-upload').value = '' //Resetea el input de archivo//
+    //Llama al handler de envío de mensaje pasando://
+    //- Los datos del formulario//
+    //- El ID del usuario logueado//
+    //- La imagen seleccionada (puede ser null)//
+    //- Un callback que se ejecutará cuando el mensaje se guarde exitosamente//
+    const success = handleSubmitMessage(formData, loggedUserId, selectedImage, () => {
+        //Callback: resetea el formulario cuando el mensaje se guarda correctamente//
+        resetForm()
+    })
+
+    //Si el handler devuelve éxito (true), actualiza la lista de mensajes//
+    if (success) {
+        setMessages(getMessages())
     }
+}
 
-    //Maneja el like a un mensaje//
-    const handleLike = (messageId) => {
-        toggleLike(messageId, loggedUserId) //Llama a la función para alternar el like//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
-    }
+//Resetea el formulario de mensaje//
+const resetForm = () => {
+    //Actualiza la lista de mensajes obteniendo la versión más reciente//
+    setMessages(getMessages())
+    //Limpia la imagen seleccionada//
+    setSelectedImage(null)
+    //Limpia la previsualización de imagen//
+    setImagePreview(null)
+    //Resetea los campos del formulario a sus valores iniciales//
+    document.getElementById('sendMsgForm').reset()
+    //Oculta el formulario de mensaje//
+    setShowMsgForm(false)
+}
 
-    //Maneja el dislike a un mensaje//
-    const handleDislike = (messageId) => {
-        toggleDislike(messageId, loggedUserId) //Llama a la función para alternar el dislike//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
-    }
-
-    //Maneja el favorito de un mensaje//
-    const handleFavorite = (messageId) => {
-        toggleFavorite(messageId, loggedUserId) //Llama a la función para alternar el favorito//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
-    }
-
-    //Maneja el envío del formulario de mensaje//
-    const handleSubmitMessage = (e) => {
-        //Previene el comportamiento por defecto del formulario//
-        e.preventDefault()
-        //Obtiene los valores del formulario//
-        const title = e.target.title.value
-        const msg = e.target.msg.value
-
-        //Valida el título//
-        if (!validateTitle(title)) {
-            createModal('Title cannot exceed 5 words')
-            return
-        }
-
-        //Valida el mensaje//
-        if (!validateTextarea(msg)) {
-            createModal('Message cannot exceed 100 words')
-            return
-        }
-
-        //Manejo de imagen si fue seleccionada//
-        if (selectedImage) {
-            const reader = new FileReader()
-
-            //Cuando se complete la lectura de la imagen//
-            reader.onload = (event) => {
-                const imageBase64 = event.target.result //Obtiene la imagen como base64//
-
-                //Almacena el mensaje con imagen//
-                storeMsg(loggedUserId, title, msg, new Date(), imageBase64)
-
-                resetForm() //Resetea el formulario//
-                createModal('Message stored successfully!') //Muestra confirmación
-
-            }
-             //Lee la imagen como URL de datos//
-             reader.readAsDataURL(selectedImage)
-         } else {
-             //Almacena el mensaje sin imagen//
-             storeMsg(loggedUserId, title, msg, new Date())
- 
-             resetForm() //Resetea el formulario//
-             createModal('Message stored successfully!') //Muestra confirmación//
-
-            }
-        
-        }
-
-    //Resetea el formulario de mensaje//
-    const resetForm = () => {
-        setMessages(getMessages()) //Actualiza los mensajes//
-        setSelectedImage(null) //Limpia la imagen seleccionada//
-        setImagePreview(null) //Limpia la vista previa//
-        document.getElementById('sendMsgForm').reset() //Resetea el formulario//
-        setShowMsgForm(false) //Oculta el formulario//
-    }
-
-    //Maneja el logout del usuario//
-    const handleLogout = () => {
-        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
-        localStorage.removeItem('id') //Elimina el ID de localStorage//
-        navigation.navigateToLogin() //Redirige a la página de login//
-    }
+//Maneja el logout del usuario//
+const onLogout = () => {
+    //Ejecuta el handler de logout que limpia los datos de sesión//
+    handleLogout()
+    //Navega a la página de login usando la función de navegación proporcionada//
+    navigation.navigateToLogin()
+}
 
     //Si no hay usuario logueado, redirige a login//
     if (!loggedUserId) {
-        navigation.navigateToLogin() //Navega a login//
-        return null //No renderiza nada//
+        navigation.navigateToLogin()
+        return null
     }
 
     //Renderiza el componente//
@@ -252,7 +246,7 @@ const HomePage = ({ navigation }) => {
                         </Link>
 
                         {/* Botón de logout */}
-                        <button className="homeLogoutButton" onClick={handleLogout}>
+                        <button className="homeLogoutButton" onClick={onLogout}>
                             <i className="fas fa-sign-out-alt"></i> Logout
                         </button>
                     </div>
@@ -263,7 +257,7 @@ const HomePage = ({ navigation }) => {
             <div className="homeMsgContainer">
                 {/* Formulario para crear mensajes (condicional) */}
                 {showMsgForm && (
-                    <form id="sendMsgForm" className="homeSendMsgForm" onSubmit={handleSubmitMessage}>
+                    <form id="sendMsgForm" className="homeSendMsgForm" onSubmit={onSubmitMessage}>
                         {/* Input para el título */}
                         <input
                             type="text"
@@ -294,7 +288,7 @@ const HomePage = ({ navigation }) => {
                                     id="image-upload"
                                     accept="image/*"
                                     name="image"
-                                    onChange={handleImageChange}
+                                    onChange={onImageChange}
                                     style={{ display: 'none' }}
                                 />
                                 {/* Botón para remover imagen */}
@@ -404,7 +398,7 @@ const HomePage = ({ navigation }) => {
                                         <div className="home-like-container">
                                             <button
                                                 className="home-like-button"
-                                                onClick={() => handleLike(message.date)}
+                                                onClick={() => onLike(message.date)}
                                                 aria-label="Like"
                                             >
                                                 {/* Icono de like (sólido si ya dio like, outline si no) */}
@@ -429,7 +423,7 @@ const HomePage = ({ navigation }) => {
                                         <div className="home-dislike-container">
                                             <button
                                                 className="home-dislike-button"
-                                                onClick={() => handleDislike(message.date)}
+                                                onClick={() => onDislike(message.date)}
                                                 aria-label="Dislike"
                                             >
                                                 {/* Icono de dislike */}
@@ -453,7 +447,7 @@ const HomePage = ({ navigation }) => {
                                         <div className="home-favorite-container">
                                             <button
                                                 className="home-favorite-button"
-                                                onClick={() => handleFavorite(message.date)}
+                                                onClick={() => onFavorite(message.date)}
                                                 aria-label="Favorite"
                                             >
                                                 {/* Icono de corazón (sólido si es favorito, outline si no) */}
