@@ -4,8 +4,23 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 //Importa el componente Link de react-router-dom para navegación//
 import { Link } from 'react-router-dom'
-//Importa funciones utilitarias desde el archivo utils//
-import { createModal, validateTitle, validateTextarea, getUsers, getLoggedUserId } from '../utils/utils'
+//Importa getMessages//
+import { getMessages } from '../logic/getMessages'
+//Importa getLoggedUserId//
+import { getLoggedUserId } from '../logic/getLoggedUserId'
+//Importa getUsers//
+import { getUsers } from '../logic/getUsers'
+//Importa toggleLike//
+import { toggleLike } from '../logic/toggleLike'
+//Importa toggleDislike//
+import { toggleDislike } from '../logic/toggleDislike'
+//Importa toggleFavorite//
+import { toggleFavorite } from '../logic/toggleFavorite'
+//Importa storeMsg//
+import { storeMsg } from '../logic/storeMsg'
+import { validateTitle, validateTextarea} from '../utils/validators'
+//Importa createModal//
+import { createModal } from '../utils/modal'
 //Importa los estilos CSS para esta página//
 import '../styles/pages/homePage.css'
 
@@ -16,7 +31,7 @@ const HomePage = ({ navigation }) => {
     //Estado para controlar la visibilidad del formulario de mensajes//
     const [showMsgForm, setShowMsgForm] = useState(false)
     //Estado para almacenar la lista de mensajes//
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState(getMessages())
     //Estado para almacenar la imagen seleccionada//
     const [selectedImage, setSelectedImage] = useState(null)
     //Estado para almacenar la previsualización de la imagen
@@ -31,13 +46,10 @@ const HomePage = ({ navigation }) => {
 
     //Efecto que se ejecuta al montar el componente y cuando cambia showMenu//
     useEffect(() => {
-        //Carga los mensajes al iniciar//
-        loadMessages()
-        
         //Función para cerrar el menú al hacer clic fuera de él//
         const handleClickOutside = (e) => {
             if (showMenu && !e.target.closest('.homeMenuButton') && !e.target.closest('.homeMenuDropContainer')) {
-                setShowMenu(false)
+                setShowMenu(false) //Cierra el menu//
             }
         }
 
@@ -45,31 +57,7 @@ const HomePage = ({ navigation }) => {
         document.addEventListener('click', handleClickOutside);
         //Limpieza: remueve el event listener al desmontar el componente//
         return () => document.removeEventListener('click', handleClickOutside)
-    }, [showMenu])
-
-    //Función para cargar mensajes desde el servidor//
-    const loadMessages = () => {
-        //Crea una nueva petición XMLHttpRequest//
-        const xhr = new XMLHttpRequest();
-        //Configura la petición GET al endpoint de mensajes//
-        xhr.open('GET', 'http://localhost:3001/api/posts', true)
-        
-        //Define qué hacer cuando la petición se complete//
-        xhr.onload = function() {
-            //Si la respuesta es exitosa (código 200)//
-            if (this.status === 200) {
-                //Parsea la respuesta JSON//
-                const response = JSON.parse(this.responseText)
-                //Si la respuesta indica éxito, actualiza los mensajes//
-                if (response.success) {
-                    setMessages(response.messages)
-                }
-            }
-        }
-        
-        //Envía la petición//
-        xhr.send()
-    }
+    }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
 
     //Maneja el cambio de imagen seleccionada//
     const handleImageChange = (e) => {
@@ -82,7 +70,7 @@ const HomePage = ({ navigation }) => {
             const reader = new FileReader()
             //Cuando se cargue la imagen, actualiza la previsualización//
             reader.onload = () => {
-                setImagePreview(reader.result)
+                setImagePreview(reader.result) //Guarda la vista previa como URL de datos//
             }
             //Lee el archivo como URL de datos//
             reader.readAsDataURL(file)
@@ -91,70 +79,27 @@ const HomePage = ({ navigation }) => {
 
     //Remueve la imagen seleccionada//
     const removeImage = () => {
-        setSelectedImage(null)
-        setImagePreview(null)
-        //Resetea el input de archivo//
-        document.getElementById('image-upload').value = ''
+        setSelectedImage(null) //Limpia la imagen seleccionada//
+         setImagePreview(null) //Limpia la vista previa//
+         document.getElementById('image-upload').value = '' //Resetea el input de archivo//
     }
 
     //Maneja el like a un mensaje//
     const handleLike = (messageId) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', 'http://localhost:3001/api/posts/like', true)
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        
-        xhr.onload = function() {
-            if (this.status === 200) {
-                //Recarga los mensajes después de dar like//
-                loadMessages()
-            }
-        }
-        
-        //Envía los datos del like//
-        xhr.send(JSON.stringify({
-            messageId,
-            userId: loggedUserId
-        }))
+        toggleLike(messageId, loggedUserId) //Llama a la función para alternar el like//
+        setMessages(getMessages()) //Actualiza la lista de mensajes//
     }
 
     //Maneja el dislike a un mensaje//
     const handleDislike = (messageId) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', 'http://localhost:3001/api/posts/dislike', true)
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        
-        xhr.onload = function() {
-            if (this.status === 200) {
-                //Recarga los mensajes después de dar dislike//
-                loadMessages()
-            }
-        }
-        
-        //Envía los datos del dislike//
-        xhr.send(JSON.stringify({
-            messageId,
-            userId: loggedUserId
-        }))
+        toggleDislike(messageId, loggedUserId) //Llama a la función para alternar el dislike//
+        setMessages(getMessages()) //Actualiza la lista de mensajes//
     }
 
     //Maneja el favorito de un mensaje//
     const handleFavorite = (messageId) => {
-        const xhr = new XMLHttpRequest()
-        xhr.open('PUT', 'http://localhost:3001/api/posts/favorite', true)
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        
-        xhr.onload = function() {
-            if (this.status === 200) {
-                //Recarga los mensajes después de marcar como favorito//
-                loadMessages()
-            }
-        };
-        
-        //Envía los datos del favorito//
-        xhr.send(JSON.stringify({
-            messageId,
-            userId: loggedUserId
-        }))
+        toggleFavorite(messageId, loggedUserId) //Llama a la función para alternar el favorito//
+        setMessages(getMessages()) //Actualiza la lista de mensajes//
     }
 
     //Maneja el envío del formulario de mensaje//
@@ -177,61 +122,54 @@ const HomePage = ({ navigation }) => {
             return
         }
 
-        //Crea la petición para enviar el mensaje//
-        const xhr = new XMLHttpRequest()
-        xhr.open('POST', 'http://localhost:3001/api/posts', true)
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        
-        xhr.onload = function() {
-            //Si la respuesta es exitosa (código 2xx)//
-            if (this.status >= 200 && this.status < 300) {
-                const response = JSON.parse(this.responseText)
-                if (response.success) {
-                    //Muestra mensaje de éxito, resetea el formulario y recarga mensajes//
-                    createModal(response.message)
-                    resetForm()
-                    loadMessages()
-                } else {
-                    createModal(response.message)
-                }
-            } else {
-                createModal('Error creating post')
+        //Manejo de imagen si fue seleccionada//
+        if (selectedImage) {
+            const reader = new FileReader()
+
+            //Cuando se complete la lectura de la imagen//
+            reader.onload = (event) => {
+                const imageBase64 = event.target.result //Obtiene la imagen como base64//
+
+                //Almacena el mensaje con imagen//
+                storeMsg(loggedUserId, title, msg, new Date(), imageBase64)
+
+                resetForm() //Resetea el formulario//
+                createModal('Message stored successfully!') //Muestra confirmación
+
             }
-        }
+             //Lee la imagen como URL de datos//
+             reader.readAsDataURL(selectedImage)
+         } else {
+             //Almacena el mensaje sin imagen//
+             storeMsg(loggedUserId, title, msg, new Date())
+ 
+             resetForm() //Resetea el formulario//
+             createModal('Message stored successfully!') //Muestra confirmación//
+
+            }
         
-        //Prepara los datos del mensaje//
-        const postData = {
-            userId: loggedUserId,
-            title,
-            msg,
-            image: imagePreview || null
         }
-        
-        //Envía la petición con los datos del mensaje//
-        xhr.send(JSON.stringify(postData))
-    }
 
     //Resetea el formulario de mensaje//
     const resetForm = () => {
-        setSelectedImage(null)
-        setImagePreview(null)
-        document.getElementById('sendMsgForm').reset()
-        setShowMsgForm(false)
+        setMessages(getMessages()) //Actualiza los mensajes//
+        setSelectedImage(null) //Limpia la imagen seleccionada//
+        setImagePreview(null) //Limpia la vista previa//
+        document.getElementById('sendMsgForm').reset() //Resetea el formulario//
+        setShowMsgForm(false) //Oculta el formulario//
     }
 
-    // Maneja el logout del usuario
+    //Maneja el logout del usuario//
     const handleLogout = () => {
-        //Remueve el ID de usuario de sessionStorage y localStorage//
-        sessionStorage.removeItem('id')
-        localStorage.removeItem('id')
-        //Navega a la página de login//
-        navigation.navigateToLogin()
+        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
+        localStorage.removeItem('id') //Elimina el ID de localStorage//
+        navigation.navigateToLogin() //Redirige a la página de login//
     }
 
     //Si no hay usuario logueado, redirige a login//
     if (!loggedUserId) {
-        navigation.navigateToLogin();
-        return null;
+        navigation.navigateToLogin() //Navega a login//
+        return null //No renderiza nada//
     }
 
     //Renderiza el componente//
@@ -239,6 +177,7 @@ const HomePage = ({ navigation }) => {
         <div className="homePageContainer">
             {/* Contenedor del encabezado */}
             <div className="homeHeaderContainer">
+                {/* Contenedor de logo y botón de nuevo post */}
                 <div className="homeImgContainer">
                     {/* Logo de la aplicación */}
                     <img src="/Logo.jpg" className="homeImg" alt="Logo" />
@@ -292,8 +231,8 @@ const HomePage = ({ navigation }) => {
                             to="/messages"
                             className="homeMessagesButton"
                             onClick={() => {
-                                navigation.navigateToMessages();
-                                setShowMenu(false);
+                                navigation.navigateToMessages()
+                                setShowMenu(false)
                             }}
                         >
                             <i className="fas fa-envelope"></i> My Msg
@@ -304,8 +243,8 @@ const HomePage = ({ navigation }) => {
                             to="/favorites"
                             className="homeFavoritesButton"
                             onClick={() => {
-                                navigation.navigateToFavorites();
-                                setShowMenu(false);
+                                navigation.navigateToFavorites()
+                                setShowMenu(false)
                             }}
                         >
                             <i className="fas fa-star"></i> My Fav
@@ -398,6 +337,8 @@ const HomePage = ({ navigation }) => {
                     <div className="homeUserMsgContainer">
                         {/* Mapea cada mensaje para renderizarlo */}
                         {messages.map((message) => {
+                            //Encuentra el autor del mensaje actual//
+                            const author = users.find(u => u.id === message.userId)
                             //Determina si el usuario actual dio like//
                             const hasLiked = message.likes && message.likes.includes(loggedUserId)
                             //Determina si el usuario actual dio dislike//
@@ -430,10 +371,10 @@ const HomePage = ({ navigation }) => {
                                     <div className="home-message-user">
                                         User: <span
                                             className="home-user-name-link"
-                                            onClick={() => navigation.navigateToBio(message.userName)}
+                                            onClick={() => navigation.navigateToBio(author.userName)}
                                             style={{ cursor: 'pointer', textDecoration: 'underline' }}
                                         >
-                                            {message.userName || 'Unknown'}
+                                            {(author && author.userName) || 'Unknown'}
                                         </span>
                                     </div>
 
