@@ -4,22 +4,14 @@ import React from 'react'
 import { useState } from 'react'
 //Importa el componente Link de react-router-dom para navegación entre páginas//
 import { Link } from 'react-router-dom'
-//Importa getUsers//
-import { getUsers } from '../logic/getUsers'
-//Importa saveUsers//
-import { saveUsers } from '../logic/saveUsers'
-//Importa la función createModal desde el archivo de utilidades//
-import { createModal } from '../utils/createModal'
-//Importa validateEmail y validatePassword//
-import { validateEmail, validatePassword } from '../utils/validators'
-//Importa capitalizeFirstLetter//
-import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter'
+//Importa el componente Form que contiene la lógica de los formularios//
+import Form from '../components/Forms'
+//Importa handleRegister//
+import { handleRegister } from '../logic/handleRegister'
 //Importa los estilos CSS específicos para la página de registro//
 import '../styles/pages/registerPage.css'
 //Importa los estilos CSS para los formularios//
 import '../styles/components/forms.css'
-//Importa el componente Form que contiene la lógica de los formularios//
-import Form from '../components/Forms'
 
 //Define el componente funcional RegisterPage que recibe navigation como prop//
 const RegisterPage = ({ navigation }) => {
@@ -31,55 +23,15 @@ const RegisterPage = ({ navigation }) => {
 
     //Función que maneja el envío del formulario de registro//
     const handleSubmit = (formData) => {
-        //Valida formato de email//
-        if (!validateEmail(formData.email)) {
-            createModal('Email must contain text + @ + text + valid termination (example .com, .es, .net, etc...)');
-            return
-        }
-
-        //Valida fortaleza de contraseña//
-        if (!validatePassword(formData.password)) {
-            createModal('Password must contain 6 characters, 1 upper letter, 1 lower letter, 1 number and 1 special character');
-            return
-        }
- 
-        //Verifica que las contraseñas coincidan//
-        if (formData.password !== formData['confirmation-password']) {
-            createModal('Passwords are not the same. Please, try again')
-            return
-        }
- 
-        //Obtiene usuarios existentes//
-        const users = getUsers()
-        //Verifica si el email ya está registrado//
-        const doesUserExist = users.some(user => user.email === formData.email)
-
-        if (doesUserExist) {
-            createModal('This mail is already in use');
-            return
-        }
-
-        //Crea nombre de usuario a partir del email (parte antes del @)//
-        const userName = formData.email.split('@')[0]
-        //Capitaliza la primera letra del nombre de usuario//
-        const capitalizedUserName = capitalizeFirstLetter(userName)
-        //Crea objeto con datos del nuevo usuario//
-        const userCreated = {
-            email: formData.email,
-            password: formData.password,
-            userName: capitalizedUserName,
-            id: Date.now() //Usa timestamp como ID único//
-        }
-
-        //Agrega el nuevo usuario al array//
-        users.push(userCreated)
-        //Guarda los usuarios actualizados//
-        saveUsers(users)
-        //Establece sesión del usuario//
-        sessionStorage.setItem('id', userCreated.id)
-        //Redirige a la página de Home//
-        navigation.navigateToHome()
+    const { success, user } = handleRegister(formData)
+    
+    if (success && user) {
+      //Establece sesión del usuario//
+      sessionStorage.setItem('id', user.id)
+      //Redirige a la página de Home (navegación manejada en el componente)//
+      navigation.navigateToHome()
     }
+  }
 
     //Retorna el JSX que representa el componente//
     return (

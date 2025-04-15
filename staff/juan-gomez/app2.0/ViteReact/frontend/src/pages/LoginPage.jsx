@@ -4,12 +4,10 @@ import React from 'react'
 import { useState } from 'react'
 //Importa el componente Link de react-router-dom para navegación//
 import { Link } from 'react-router-dom'
-//Importa getUsers//
-import { getUsers } from '../logic/getUsers'
-//Importa funciones utilitarias para obtener usuarios y mostrar modales//
-import { createModal } from '../utils/createModal'
-//Importa el componente Form para reutilizar el formulario//
+//Importa el componente Form que contiene la lógica de los formularios//
 import Form from '../components/Forms'
+//Importa handleLogin//
+import { handleLogin } from '../logic/handleLogin'
 //Importa los estilos CSS//
 import '../styles/pages/loginPage.css'
 import '../styles/components/forms.css'
@@ -21,34 +19,33 @@ const LoginPage = ({ navigation }) => {
 
 //Define una función llamada handleSubmit que recibe formData como parámetro//
 const handleSubmit = (formData) => {
-        //Obtiene todos los usuarios registrados//
-        const users = getUsers()
-        //Busca el usuario por email//
-        const userLoginCheckout = users.find(user => user.email === formData.email)
-
-        //Si no encuentra el usuario//
-        if (!userLoginCheckout) {
-            //Muestra modal de error y redirige a registro//
-            createModal('The email is not registered yet. Please, create an account first', () => {
-                navigation.navigateToRegister()
-            })
-            return
-        }
-        //Si la contraseña no coincide//
-        if (userLoginCheckout.password !== formData.password) {
-            createModal('Incorrect password, Please, try again')
-            return
-        }
-        //Guarda el ID del usuario según la opción "Remember me"//
-        if (formData.rememberme) {
-            localStorage.setItem('id', userLoginCheckout.id) //Persistente//
-        } else {
-            sessionStorage.setItem('id', userLoginCheckout.id) //Solo para la sesión//
-        }
- 
-        //Redirige a la página de Home//
+    //Llama a la función handleLogin pasando los datos del formulario//
+    //Y obtiene el resultado de la operación de login//
+    const result = handleLogin(formData);
+    
+    //Verifica si el login fue exitoso (success === true)//
+    if (result.success) {
+        //Decide qué mecanismo de almacenamiento usar según rememberSession://
+        //- localStorage si el usuario marcó "Remember me" (persistente)//
+        //- sessionStorage si no lo marcó (solo para esta sesión)//
+        const storage = result.rememberSession ? localStorage : sessionStorage;
+        
+        //Almacena el ID del usuario en el storage seleccionado//
+        //Esto mantendrá la sesión iniciada//
+        storage.setItem('id', result.user.id)
+        
+        //Redirige al usuario a la página de inicio (Home)//
         navigation.navigateToHome()
+    } 
+    //Si el login falló Y se debe redirigir al usuario a registro//
+    else if (result.shouldRedirect) {
+        //Usa setTimeout para programar la redirección después de que://
+        //1. El modal se haya mostrado completamente//
+        //2. El ciclo actual de eventos de JavaScript termine//
+        //El delay de 0ms asegura que se ejecute en el próximo tick del event loop//
+        setTimeout(() => navigation.navigateToRegister(), 0)
     }
+}
 
     //Renderizado del componente//
     return (
