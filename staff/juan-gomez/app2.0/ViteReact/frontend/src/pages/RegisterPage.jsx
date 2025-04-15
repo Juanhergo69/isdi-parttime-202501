@@ -9,7 +9,7 @@ import { getUsers } from '../logic/getUsers'
 //Importa saveUsers//
 import { saveUsers } from '../logic/saveUsers'
 //Importa la función createModal desde el archivo de utilidades//
-import { createModal } from '../utils/modal'
+import { createModal } from '../utils/createModal'
 //Importa validateEmail y validatePassword//
 import { validateEmail, validatePassword } from '../utils/validators'
 //Importa capitalizeFirstLetter//

@@ -18,9 +18,10 @@ import { toggleDislike } from '../logic/toggleDislike'
 import { toggleFavorite } from '../logic/toggleFavorite'
 //Importa storeMsg//
 import { storeMsg } from '../logic/storeMsg'
+//Importa validateTitle y validateTextarea//
 import { validateTitle, validateTextarea} from '../utils/validators'
 //Importa createModal//
-import { createModal } from '../utils/modal'
+import { createModal } from '../utils/createModal'
 //Importa los estilos CSS para esta página//
 import '../styles/pages/homePage.css'
 

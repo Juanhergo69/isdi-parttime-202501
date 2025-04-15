@@ -4,14 +4,18 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 //Importa el componente Link y useParams de react-router-dom para navegación//
 import { Link, useParams } from 'react-router-dom'
-//Importa funciones utilitarias específicas desde el archivo utils//
-import {
-    getUsers,          //Obtiene lista de usuarios//
-    getMessages,       //Obtiene todos los mensajes//
-    getLoggedUserId    //Obtiene ID del usuario logueado//
-} from '../utils/utils'
-//Importa funciones para manejar likes/dislikes//
-import { toggleLike, toggleDislike, toggleFavorite } from '../utils/data.js'
+//Importa getUsers//
+import { getUsers } from '../logic/getUsers.js'
+//Importa getMessages//
+import { getMessages } from '../logic/getMessages.js'
+//Importa getLoggedUserId//   
+import { getLoggedUserId } from '../logic/getLoggedUserId.js'
+//Importa toggleLike//
+import { toggleLike } from '../logic/toggleLike.js'
+//Importa toggleDislike// 
+import { toggleDislike } from '../logic/toggleDislike.js'
+//Importa toggleFavorite//
+import { toggleFavorite } from '../logic/toggleFavorite.js'
 //Importa estilos CSS//
 import '../styles/pages/bioPage.css'
 

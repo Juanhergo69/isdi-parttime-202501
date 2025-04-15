@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 //Importa getUsers//
 import { getUsers } from '../logic/getUsers'
 //Importa funciones utilitarias para obtener usuarios y mostrar modales//
-import { createModal } from '../utils/modal'
+import { createModal } from '../utils/createModal'
 //Importa el componente Form para reutilizar el formulario//
 import Form from '../components/Forms'
 //Importa los estilos CSS//

@@ -1,4 +1,4 @@
-//Importamos STORAGE_KEYS//
+//Importa STORAGE_KEYS//
 import { STORAGE_KEYS } from "../utils/STORAGE_KEYS"
 
 //Obtiene todos los mensajes almacenados//

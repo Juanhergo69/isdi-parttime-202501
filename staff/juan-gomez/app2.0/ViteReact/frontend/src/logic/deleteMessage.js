@@ -1,4 +1,4 @@
-//Importamos getMessages//
+//Importa getMessages//
 import { getMessages } from "./getMessages"
 
 //Función para manejar la eliminación de mensajes//

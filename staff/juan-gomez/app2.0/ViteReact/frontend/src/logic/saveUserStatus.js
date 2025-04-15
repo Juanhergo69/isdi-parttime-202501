@@ -1,4 +1,4 @@
-//Importamos getUsers//
+//Importa getUsers//
 import { getUsers } from "./getUsers"
 
 //Función para guardar el estado del usuario//

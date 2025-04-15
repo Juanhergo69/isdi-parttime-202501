@@ -4,18 +4,22 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 //Importa el componente Link de react-router-dom para navegación//
 import { Link } from 'react-router-dom'
-//Importa funciones utilitarias específicas desde el archivo utils//
-import {
-    getUsers,          //Obtiene lista de usuarios//
-    saveUsers,         //Guarda usuarios en almacenamiento//
-    validateEmail,     //Valida formato de email//
-    validatePassword,  //Valida fortaleza de contraseña//
-    createModal,       //Crea modales de notificación//
-    getLoggedUserId,   //Obtiene ID del usuario logueado//
-    getMessages,       //Obtiene lista de mensajes//
-    saveMessages,      //Guarda mensajes en almacenamiento//
-    saveUserStatus,    //Guarda estado en almacenamiento// 
-} from '../utils/utils'
+//Importa getUsers//
+import { getUsers } from '../logic/getUsers'
+//Importa saveUsers//
+import { saveUsers } from '../logic/saveUsers'
+//Importa getLoggedUserId//
+import { getLoggedUserId } from '../logic/getLoggedUserId'
+//Importa getMessages//
+import { getMessages } from '../logic/getMessages'
+//Importa saveMessages//
+import { saveMessages } from '../logic/saveMessages'
+//Importa saveUserStatus//
+import { saveUserStatus } from '../logic/saveUserStatus'
+//Importa validateEmail y validatePassword//
+import { validateEmail, validatePassword} from '../utils/validators'
+//Importa createModal//
+ import { createModal } from '../utils/createModal'
 //Importa estilos CSS//
 import '../styles/pages/profilePage.css'
 

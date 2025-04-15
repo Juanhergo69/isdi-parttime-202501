@@ -189,17 +189,41 @@ const App = () => {
     }
   }, [location.pathname])
 
+   //Renderizado condicional basado en la página actual//
+   const renderPage = () => {
+    switch (currentPage) {
+      case 'HomePage':
+        return <HomePage navigation={navigation} />                               //Renderiza HomePage//
+      case 'RegisterPage':
+        return <RegisterPage navigation={navigation} />                           //Renderiza RegisterPage//
+      case 'LoginPage':
+        return <LoginPage navigation={navigation} />                              //Renderiza LoginPage//
+      case 'ProfilePage':
+        return <ProfilePage navigation={navigation} />                            //Renderiza ProfilePage//
+      case 'MessagesPage':
+        return <MessagesPage navigation={navigation} />                           //Renderiza MessagesPage//
+      case 'FavoritesPage':
+        return <FavoritesPage navigation={navigation} />                          //Renderiza FavoritesPage//
+      case 'BioPage':
+        return <BioPage navigation={navigation} userName={pageParams.userName} /> //Renderiza BioPage con parámetro de nombre de usuario//
+      case 'LandingPage':
+        return <LandingPage navigation={navigation} />                            //Renderiza LandingPage//
+      default:
+        return <NotFoundPage navigation={navigation} />                           //Renderiza NotFoundPage para rutas desconocidas//
+    }
+  }
+
   return (
     <Routes>
-      <Route path="/" element={<LandingPage navigation={navigation} />} />
-      <Route path="/home" element={<HomePage navigation={navigation} />} />
-      <Route path="/register" element={<RegisterPage navigation={navigation} />} />
-      <Route path="/login" element={<LoginPage navigation={navigation} />} />
-      <Route path="/profile" element={<ProfilePage navigation={navigation} />} />
-      <Route path="/messages" element={<MessagesPage navigation={navigation} />} />
-      <Route path="/favorites" element={<FavoritesPage navigation={navigation} />} />
-      <Route path="/bio/:userName" element={<BioPage navigation={navigation} />} />
-      <Route path="/not-found" element={<NotFoundPage navigation={navigation} />} />
+       <Route path="/" element={currentPage === 'LandingPage' ? renderPage() : null} />
+       <Route path="/home" element={currentPage === 'HomePage' ? renderPage() : null} />
+       <Route path="/register" element={currentPage === 'RegisterPage' ? renderPage() : null} />
+       <Route path="/login" element={currentPage === 'LoginPage' ? renderPage() : null} />
+       <Route path="/profile" element={currentPage === 'ProfilePage' ? renderPage() : null} />
+       <Route path="/messages" element={currentPage === 'MessagesPage' ? renderPage() : null} />
+       <Route path="/favorites" element={currentPage === 'FavoritesPage' ? renderPage() : null} />
+       <Route path="/bio/:userName" element={currentPage === 'BioPage' ? renderPage() : null} />
+       <Route path="/not-found" element={currentPage === 'NotFoundPage' ? <NotFoundPage navigation={navigation} /> : null} />
       <Route path="*" element={<NotFoundPage navigation={navigation} />} />
     </Routes>
   )

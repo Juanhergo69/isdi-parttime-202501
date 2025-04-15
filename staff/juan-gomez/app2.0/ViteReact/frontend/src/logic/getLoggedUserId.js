@@ -1,4 +1,4 @@
-//Importamos STORAGE_kEYS//
+//Importa STORAGE_kEYS//
 import { STORAGE_KEYS } from "../utils/STORAGE_KEYS"
 
 //Obtiene el ID del usuario logueado (de localStorage o sessionStorage)//

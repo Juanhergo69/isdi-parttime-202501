@@ -1,10 +1,8 @@
-//Importamos createModal//
-import { createModal } from '../utils/modal'
-
-//Importamos getMessages//
+//Importa createModal//
+import { createModal } from '../utils/createModal'
+//Importa getMessages//
 import { getMessages } from './getMessages'
-
-//Importamos saveMessages//
+//Importa saveMessages//
 import { saveMessages } from './saveMessages'
 
 //Función para almacenar un nuevo mensaje//

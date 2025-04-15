@@ -1,6 +1,6 @@
-//Importamos getMessages//
+//Importa getMessages//
 import { getMessages } from "./getMessages"
-//Importamos saveMessages//
+//Importa saveMessages//
 import { saveMessages } from "./saveMessages"
 
 //Función para manejar dislikes en mensajes (similar a toggleLike)//
