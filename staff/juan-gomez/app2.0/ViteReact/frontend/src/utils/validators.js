@@ -22,3 +22,34 @@ export const validateTextarea = (textarea) => {
     const words = textarea.split(/\s+/).filter(word => word.length > 0)
     return words.length <= 100 //True si tiene 100 palabras o menos//
 }
+
+//Función para validar todos los campos del formulario//
+export const validateForm = (formData, setErrors) => {
+    const newErrors = {}
+    
+    if (!formData.userName.trim()) {
+        newErrors.userName = 'Username is required'
+    }
+
+    if (!formData.email.trim()) {
+        newErrors.email = 'Email is required'
+    } else if (!validateEmail(formData.email)) {
+        newErrors.email = 'Invalid email format'
+    }
+
+    if (formData.password || formData.confirmPassword) {
+        if (formData.password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters'
+        }
+        else if (!validatePassword(formData.password)) {
+            newErrors.password = 'Password must contain at least one uppercase, one lowercase, one number and one special character'
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = 'Passwords do not match'
+        }
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+}

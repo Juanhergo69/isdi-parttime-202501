@@ -62,6 +62,9 @@ export const handleSubmitMessage = (formData, loggedUserId, selectedImage, callb
         
         //Muestra modal de éxito//
         createModal('Message stored successfully!')
+
+        //Si existe callback, lo ejecuta pasando true (éxito)//
+        if (callback) callback(true)
         
         //Retorna true indicando éxito en el envío//
         return true

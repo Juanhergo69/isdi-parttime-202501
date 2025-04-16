@@ -773,7 +773,7 @@
 }
 
 /* Mensaje de error */
-.profile-error-message {
+.error-message {
     color: red;
     /* Texto rojo */
     font-family: 'Tektur';

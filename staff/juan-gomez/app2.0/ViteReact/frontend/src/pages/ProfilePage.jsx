@@ -10,14 +10,16 @@ import { getUsers } from '../logic/getUsers'
 import { saveUsers } from '../logic/saveUsers'
 //Importa getLoggedUserId//
 import { getLoggedUserId } from '../logic/getLoggedUserId'
-//Importa getMessages//
-import { getMessages } from '../logic/getMessages'
-//Importa saveMessages//
-import { saveMessages } from '../logic/saveMessages'
 //Importa saveUserStatus//
 import { saveUserStatus } from '../logic/saveUserStatus'
-//Importa validateEmail y validatePassword//
-import { validateEmail, validatePassword} from '../utils/validators'
+//Importa handleImageChange//
+import { handleImageChange } from '../logic/handleImageChange'
+//Importa handleLogout//
+import { handleLogout } from '../logic/handleLogout'
+//Importa deleteUserAccount//
+import { handleDeleteAccount } from '../logic/handleDeleteAccount'
+//Importa validateForm//
+import { validateForm } from '../utils/validators'
 //Importa createModal//
  import { createModal } from '../utils/createModal'
 //Importa estilos CSS//
@@ -97,41 +99,19 @@ const ProfilePage = ({ navigation }) => {
         return () => document.removeEventListener('click', handleClickOutside)
     }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
 
-    //Maneja cambios en los inputs del formulario//
-    const handleChange = (e) => {
-        const { name, value } = e.target //Extrae nombre y valor del input//
-
-        //Actualiza el estado del formulario manteniendo los valores anteriores//
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }))
-
-        //Limpia el error correspondiente si existe//
-        if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }))
-        }
-    }
-
-    //Maneja cambio de imagen de avatar//
-    const handleImageChange = (e) => {
-        const file = e.target.files[0] //Obtiene el archivo seleccionado//
+    //Maneja el cambio de imagen seleccionada//
+    const onImageChange = (e) => {
+        // Obtiene el primer archivo seleccionado del input file//
+        const file = e.target.files[0]
+        //Verifica si se seleccionó un archivo válido//
         if (file) {
-            setSelectedImage(file) //Guarda el archivo en el estado//
-
-            //Crea un FileReader para leer la imagen//
-            const reader = new FileReader()
-
-            //Cuando se complete la lectura//
-            reader.onload = () => {
-                setImagePreview(reader.result) //Guarda la vista previa como URL de datos//
-            }
-
-            //Lee el archivo como URL de datos//
-            reader.readAsDataURL(file)
+            //Guarda el archivo seleccionado en el estado//
+            setSelectedImage(file)
+            //Llama al handler de cambio de imagen pasando el archivo y un callback//
+            handleImageChange(file, (result) => {
+            //Cuando el handler completa la conversión, guarda el resultado (base64) en el estado para previsualización//
+            setImagePreview(result)
+            })
         }
     }
 
@@ -142,49 +122,12 @@ const ProfilePage = ({ navigation }) => {
         document.getElementById('avatar-upload').value = '' //Resetea el input de archivo//
     }
 
-    //Valida todos los campos del formulario//
-    const validateForm = () => {
-        const newErrors = {} //Objeto para acumular errores//
-
-        //Validación de nombre de usuario//
-        if (!formData.userName.trim()) {
-            newErrors.userName = 'Username is required'
-        }
-
-        //Validación de email//
-        if (!formData.email.trim()) {
-            newErrors.email = 'Email is required'
-        } else if (!validateEmail(formData.email)) {
-            newErrors.email = 'Invalid email format'
-        }
-
-        //Validaciones de contraseña (solo si se está cambiando)//
-        if (formData.password || formData.confirmPassword) {
-            //Longitud mínima//
-            if (formData.password.length < 6) {
-                newErrors.password = 'Password must be at least 6 characters'
-            }
-            //Complejidad (mayúscula, minúscula, número, caracter especial)//
-            else if (!validatePassword(formData.password)) {
-                newErrors.password = 'Password must contain at least one uppercase, one lowercase, one number and one special character'
-            }
-
-            //Coincidencia de contraseñas//
-            if (formData.password !== formData.confirmPassword) {
-                newErrors.confirmPassword = 'Passwords do not match'
-            }
-        }
-
-        setErrors(newErrors) //Actualiza los errores//
-        return Object.keys(newErrors).length === 0 //Retorna true si no hay errores//
-    }
-
     //Maneja el envío del formulario de perfil//
     const handleSubmit = (e) => {
         e.preventDefault() //Previene el comportamiento por defecto del formulario//
 
         //Valida el formulario y sale si hay errores//
-        if (!validateForm()) return
+        if (!validateForm(formData, setErrors)) return
 
         //Prepara los datos actualizados del usuario sin la imagen (se manejará por separado)//
         const updatedUsers = users.map(user => {
@@ -209,7 +152,7 @@ const ProfilePage = ({ navigation }) => {
         const saveProfile = (usersToSave) => {
             saveUsers(usersToSave)                                  //Guarda los usuarios actualizados//
             createModal('Profile updated successfully!', () => {
-                setShouldRedirect(true)                             //Activa la redirección después de cerrar el modal//
+            setShouldRedirect(true)                                 //Activa la redirección después de cerrar el modal//
             })
         }
 
@@ -258,6 +201,25 @@ const ProfilePage = ({ navigation }) => {
         }
     }
 
+    //Maneja cambios en los inputs del formulario//
+    const handleChange = (e) => {
+        const { name, value } = e.target //Extrae nombre y valor del input//
+
+        //Actualiza el estado del formulario manteniendo los valores anteriores//
+        setFormData(prev => ({
+        ...prev,
+        [name]: value
+    }))
+
+    //Limpia el error correspondiente si existe//
+    if (errors[name]) {
+        setErrors(prev => ({
+            ...prev,
+            [name]: ''
+        }))
+    }
+}
+
     //Maneja el envío del formulario de estado//
     const handleStatusSubmit = (e) => {
         e.preventDefault() //Prevenimos comportamiento predeterminado del formulario //
@@ -267,11 +229,12 @@ const ProfilePage = ({ navigation }) => {
         setShowStatusForm(false) //Ocultamos el formaulario de estado//
     }
 
-    //Maneja el cierre de sesión del usuario//
-    const handleLogout = () => {
-        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
-        localStorage.removeItem('id') //Elimina el ID de localStorage//
-        navigation.navigateToLogin() //Redirige a la página de login//
+    //Maneja el logout del usuario//
+    const onLogout = () => {
+        //Ejecuta el handler de logout que limpia los datos de sesión//
+        handleLogout()
+        //Navega a la página de login usando la función de navegación proporcionada//
+        navigation.navigateToLogin()
     }
 
     //Función para llamar a una Api externa//
@@ -323,43 +286,23 @@ const ProfilePage = ({ navigation }) => {
     }
 
     //Función para borrar completamente la cuenta del usuario//
-    const handleDeleteAccount = () => {
-
-        //Confirmación antes de borrar la cuenta//
-        const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.')
-
-        if (confirmDelete) {
-            //1.Obtener datos actuales//
-            const users = getUsers()
-            const messages = getMessages()
-            const loggedUserId = getLoggedUserId()
-
-            //2.Eliminar al usuario de la lista de usuarios//
-            const updatedUsers = users.filter(user => user.id !== loggedUserId)
-            saveUsers(updatedUsers)
-
-            //3.Eliminar todos los mensajes del usuario//
-            const updatedMessages = messages.filter(message => message.userId !== loggedUserId)
-            saveMessages(updatedMessages)
-
-            //4.Eliminar likes/dislikes del usuario en los mensajes restantes//
-            const finalMessages = updatedMessages.map(message => {
-                return {
-                    ...message,
-                    likes: message.likes.filter(like => like !== loggedUserId),
-                    dislikes: message.dislikes.filter(dislike => dislike !== loggedUserId)
-                }
-            })
-            saveMessages(finalMessages)
-
-            //5.Limpiar el almacenamiento local/sesión//
-            localStorage.removeItem('id')
-            sessionStorage.removeItem('id')
-
-            //6.Redirigir a la página de inicio//
-            createModal('Account deleted successfully', () => {
-                navigation.navigateTo('RegisterPage')
-            })
+    const OnDeleteAccount = () => {
+        const confirmDelete = window.confirm(
+            'Are you sure you want to delete your account? ' +
+            'This action cannot be undone and will permanently remove all your data.'
+        )
+    
+        if (!confirmDelete) return
+    
+        try {
+            const success = handleDeleteAccount()
+            if (success) {
+                createModal('Account deleted successfully', () => {
+                    navigation.navigateTo('RegisterPage')
+                })
+            }
+        } catch (error) {
+            createModal(`Error deleting account: ${error.message}`)
         }
     }
 
@@ -452,7 +395,7 @@ const ProfilePage = ({ navigation }) => {
                         </Link>
 
                         {/* Botón para cerrar sesión */}
-                        <button className="profileLogoutButton" onClick={handleLogout}>
+                        <button className="profileLogoutButton" onClick={onLogout}>
                             <i className="fas fa-sign-out-alt"></i> Logout
                         </button>
                     </div>
@@ -502,7 +445,7 @@ const ProfilePage = ({ navigation }) => {
                                     type="file"
                                     id="avatar-upload"
                                     accept="image/*"
-                                    onChange={handleImageChange}
+                                    onChange={onImageChange}
                                     style={{ display: 'none' }}
                                 />
 
@@ -632,7 +575,7 @@ const ProfilePage = ({ navigation }) => {
                         <button
                             type="button"
                             className="profileButtonDeleteAccount"
-                            onClick={handleDeleteAccount}
+                            onClick={OnDeleteAccount}
                         >
                             <i className="fas fa-trash-alt"></i> Delete Account
                         </button>
