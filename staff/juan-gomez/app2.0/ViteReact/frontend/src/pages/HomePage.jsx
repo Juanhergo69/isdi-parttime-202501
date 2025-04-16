@@ -161,11 +161,12 @@ const onLogout = () => {
     navigation.navigateToLogin()
 }
 
-    //Si no hay usuario logueado, redirige a login//
-    if (!loggedUserId) {
+//Efecto para redirigir a login si no hay usuario logueado//
+useEffect(() => {
+    if (!loggedUser) {
         navigation.navigateToLogin()
-        return null
     }
+}, [loggedUser, navigation])
 
     //Renderiza el componente//
     return (

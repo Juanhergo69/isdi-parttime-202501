@@ -10,12 +10,14 @@ import { getUsers } from '../logic/getUsers.js'
 import { getMessages } from '../logic/getMessages.js'
 //Importa getLoggedUserId//
 import { getLoggedUserId } from '../logic/getLoggedUserId.js'
-//Importa toggleLike//
-import { toggleLike } from '../logic/toggleLike.js'
-//Importa toggleDislike//
-import { toggleDislike } from  '../logic/toggleDislike.js'
-//Importa toggleFavorite//
-import { toggleFavorite } from '../logic/toggleFavorite.js'
+//Importa handleLike//
+import { handleLike } from '../logic/handleLike.js'
+//Importa handleDislike//
+import { handleDislike } from  '../logic/handleDislike.js'
+//Importa handleFavorite//
+import { handleFavorite } from '../logic/handleFavorite.js'
+//Importa handleLogout//
+import { handleLogout } from '../logic/handleLogout.js'
 //Importa estilos CSS//
 import '../styles/pages/favoritesPage.css'
 
@@ -41,32 +43,42 @@ const FavoritesPage = ({ navigation }) => {
         message.favorite && message.favorite.includes(loggedUserId)
     )
 
-    //Maneja el evento de like en un mensaje//
-    const handleLike = (messageId) => {
-        toggleLike(messageId, loggedUserId) //Llama a la función para alternar el like//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
-    }
+   //Maneja el like a un mensaje//
+   const onLike = (messageId) => {
+       //Llama al handler de like pasando el ID del mensaje y el ID del usuario logueado//
+       //El handler devuelve la lista actualizada de mensajes//
+       const updatedMessages = handleLike(messageId, loggedUserId)
+       //Actualiza el estado de mensajes con la lista actualizada//
+       setMessages(updatedMessages)
+   }
+   
+   //Maneja el dislike a un mensaje//
+   const onDislike = (messageId) => {
+       //Llama al handler de dislike pasando el ID del mensaje y el ID del usuario logueado//
+       //El handler devuelve la lista actualizada de mensajes//
+       const updatedMessages = handleDislike(messageId, loggedUserId)
+       //Actualiza el estado de mensajes con la lista actualizada//
+       setMessages(updatedMessages)
+   }
+   
+   //Maneja el favorito de un mensaje//
+   const onFavorite = (messageId) => {
+       //Llama al handler de favorito pasando el ID del mensaje y el ID del usuario logueado//
+       //El handler devuelve la lista actualizada de mensajes//
+       const updatedMessages = handleFavorite(messageId, loggedUserId)
+       //Actualiza el estado de mensajes con la lista actualizada//
+       setMessages(updatedMessages)
+   }
 
-    //Maneja el evento de dislike en un mensaje//
-    const handleDislike = (messageId) => {
-        toggleDislike(messageId, loggedUserId) //Llama a la función para alternar el dislike//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
-    }
+   //Maneja el logout del usuario//
+   const onLogout = () => {
+       //Ejecuta el handler de logout que limpia los datos de sesión//
+       handleLogout()
+       //Navega a la página de login usando la función de navegación proporcionada//
+       navigation.navigateToLogin()
+   }
 
-    //Maneja el evento de favorito en un mensaje//
-    const handleFavorite = (messageId) => {
-        toggleFavorite(messageId, loggedUserId) //Llama a la funcion para alternar el favorito//
-        setMessages(getMessages()) //Actualiza la lista de mensajes//
-    }
-
-    //Maneja el cierre de sesión del usuario//
-    const handleLogout = () => {
-        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
-        localStorage.removeItem('id') //Elimina el ID de localStorage//
-        navigation.navigateToLogin() //Redirige a la página de login//
-    }
-
-    //Efecto para redirigir a login si no hay usuario loguead//
+    //Efecto para redirigir a login si no hay usuario logueado//
     useEffect(() => {
         if (!loggedUser) {
             navigation.navigateToLogin()
@@ -175,7 +187,7 @@ const FavoritesPage = ({ navigation }) => {
                         </Link>
 
                         {/* Botón para cerrar sesión */}
-                        <button className="favoriteLogoutButton" onClick={handleLogout}>
+                        <button className="favoriteLogoutButton" onClick={onLogout}>
                             <i className="fas fa-sign-out-alt"></i> Logout
                         </button>
                     </div>
@@ -283,7 +295,7 @@ const FavoritesPage = ({ navigation }) => {
                                             <div className="favorite-like-container">
                                                 <button
                                                     className="favorite-like-button"
-                                                    onClick={() => handleLike(message.date)}
+                                                    onClick={() => onLike(message.date)}
                                                     aria-label="Like"
                                                 >
                                                     {/* Icono de like (lleno o vacío según estado) */}
@@ -310,7 +322,7 @@ const FavoritesPage = ({ navigation }) => {
                                             <div className="favorite-dislike-container">
                                                 <button
                                                     className="favorite-dislike-button"
-                                                    onClick={() => handleDislike(message.date)}
+                                                    onClick={() => onDislike(message.date)}
                                                     aria-label="Dislike"
                                                 >
                                                     {/* Icono de dislike (lleno o vacío según estado) */}
@@ -336,7 +348,7 @@ const FavoritesPage = ({ navigation }) => {
                                             <div className="favorite-favorite-container">
                                                 <button
                                                     className="favorite-favorite-button"
-                                                    onClick={() => handleFavorite(message.date)}
+                                                    onClick={() => onFavorite(message.date)}
                                                     aria-label="Favorite"
                                                 >
                                                     {/* Icono de favorito (lleno o vacío según estado) */}

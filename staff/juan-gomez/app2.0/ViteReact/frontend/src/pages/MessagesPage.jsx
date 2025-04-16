@@ -12,6 +12,8 @@ import { getLoggedUserId } from '../logic/getLoggedUserId.js'
 import { getMessages } from '../logic/getMessages.js'
 //Importa deleteMessage//
 import { deleteMessage } from '../logic/deleteMessage.js'
+//Importa handleLogout//
+import { handleLogout } from '../logic/handleLogout.js'
 //Importa createModal//
 import { createModal } from '../utils/createModal.js' 
 //Importa los estilos CSS para este componente//
@@ -73,11 +75,12 @@ const MessagesPage = ({ navigation }) => {
         return () => document.removeEventListener('click', handleClickOutside)
     }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
 
-    //Maneja el cierre de sesión del usuario//
-    const handleLogout = () => {
-        sessionStorage.removeItem('id') //Elimina el ID de sessionStorage//
-        localStorage.removeItem('id') //Elimina el ID de localStorage//
-        navigation.navigateToLogin() //Redirige a la página de login//
+    //Maneja el logout del usuario//
+    const onLogout = () => {
+        //Ejecuta el handler de logout que limpia los datos de sesión//
+        handleLogout()
+        //Navega a la página de login usando la función de navegación proporcionada//
+        navigation.navigateToLogin()
     }
 
     //Renderiza el componente//
@@ -161,7 +164,7 @@ const MessagesPage = ({ navigation }) => {
                         </Link>
 
                         {/* Botón para cerrar sesión */}
-                        <button className="messagesLogoutButton" onClick={handleLogout}>
+                        <button className="messagesLogoutButton" onClick={onLogout}>
                             <i className="fas fa-sign-out-alt"></i> Logout
                         </button>
                     </div>

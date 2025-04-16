@@ -76,11 +76,12 @@ const ProfilePage = ({ navigation }) => {
         }
     }, [shouldRedirect, navigation])
 
-    //Redirige a login si no hay usuario logueado//
-    if (!loggedUserId) {
-        navigation.navigateToLogin() //Navega a la página de login//
-        return null //No renderiza nada//
-    }
+    //Efecto para redirigir a login si no hay usuario logueado//
+    useEffect(() => {
+        if (!loggedUser) {
+            navigation.navigateToLogin()
+        }
+    }, [loggedUser, navigation])
 
     //Efecto secundario para cerrar el menú al hacer clic fuera de él//
     useEffect(() => {

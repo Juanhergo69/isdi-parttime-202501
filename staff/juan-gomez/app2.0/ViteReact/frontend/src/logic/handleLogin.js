@@ -1,7 +1,45 @@
-//Importa getUsers//
-import { getUsers } from './getUsers'
-//Importa createModal//
-import { createModal } from '../utils/createModal'
+//Objeto con constantes para las claves de almacenamiento//
+export const STORAGE_KEYS = {
+    USERS: 'users',       //Clave para usuarios en localStorage//
+    MESSAGES: 'messages', //Clave para mensajes//
+    ID: 'id'              //Clave para ID de usuario//
+}
+
+//Obtiene todos los usuarios almacenados//
+export const getUsers = () => {
+    const usersJson = localStorage.getItem(STORAGE_KEYS.USERS) //Obtiene datos como JSON string//
+    return usersJson ? JSON.parse(usersJson) : [] //Convierte a objeto JS o retorna array vacío//
+}
+
+//Crea y muestra un modal con mensaje//
+export const createModal = (message, onCloseCallback) => {
+    //Crea elemento div para el modal//
+    const modal = document.createElement('div');
+    modal.className = 'modal' //Clase CSS para estilos//
+
+    //HTML interno del modal. Muestra el mensaje recibido//
+    modal.innerHTML = `
+        <div class="modal-content">
+            <p>${message}</p> 
+        </div>
+    `
+
+    //Agrega el modal al body del documento//
+    document.body.appendChild(modal)
+
+    //Función para cerrar el modal//
+    const closeModal = () => {
+        modal.remove() //Elimina el modal del DOM//
+        if (onCloseCallback) onCloseCallback() //Ejecuta callback si existe//
+    }
+
+    //Cierra al hacer click en cualquier parte del modal//
+    modal.addEventListener('click', closeModal)
+    //Cierra automáticamente después de 6 segundos//
+    setTimeout(closeModal, 6000)
+
+    return modal //Devuelve el modal creado//
+}
 
 //Exporta la función handleLogin para que pueda ser utilizada en otros módulos//
 export const handleLogin = (formData) => {
