@@ -2,146 +2,101 @@
 import React from 'react'
 //Importa el hook useState de React para manejar estado en componentes funcionales//
 import { useState } from 'react'
-//Importa el componente Link de react-router-dom para navegación entre páginas//
-import { Link } from 'react-router-dom'
 //Importa el componente Form que contiene la lógica de los formularios//
 import Form from '../components/Forms'
-//Importa handleRegister//
+//Importa el componente personalizado para inputs de contraseña//
+import RegisterPasswordInput from '../components/RegisterPasswordInput'
+//Importa el componente Header específico para registro//
+import RegisterHeader from '../components/RegisterHeader'
+//Importa el componente Footer específico para registro//
+import RegisterFooter from '../components/RegisterFooter'
+//Importa la función handleRegister que contiene la lógica de registro//
 import { handleRegister } from '../logic/handleRegister'
 //Importa los estilos CSS específicos para la página de registro//
 import '../styles/pages/registerPage.css'
-//Importa los estilos CSS para los formularios//
+//Importa los estilos CSS generales para formularios//
 import '../styles/components/forms.css'
 
 //Define el componente funcional RegisterPage que recibe navigation como prop//
 const RegisterPage = ({ navigation }) => {
-    //Estado para controlar si se muestra la contraseña (inicialmente oculta)//
+    //Estado para controlar visibilidad de contraseña (inicialmente false/oculta)//
     const [showPassword, setShowPassword] = useState(false);
-    
-    //Estado para controlar si se muestra la confirmación de contraseña (inicialmente oculta)//
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    //Estado para controlar visibilidad de confirmación de contraseña//
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-    //Función que maneja el envío del formulario de registro//
+    //Función que maneja el envío del formulario (recibe formData como parámetro)//
     const handleSubmit = (formData) => {
-    const { success, user } = handleRegister(formData)
-    
-    if (success && user) {
-      //Establece sesión del usuario//
-      sessionStorage.setItem('id', user.id)
-      //Redirige a la página de Home (navegación manejada en el componente)//
-      navigation.navigateToHome()
+        //Ejecuta handleRegister y obtiene success y user del resultado//
+        const { success, user } = handleRegister(formData)
+        
+        //Si el registro fue exitoso y existe user//
+        if (success && user) {
+            //Almacena el ID de usuario en sessionStorage//
+            sessionStorage.setItem('id', user.id)
+            //Navega a Home usando la función pasada en navigation prop//
+            navigation.navigateToHome()
+        }
     }
-  }
 
-    //Retorna el JSX que representa el componente//
+    //Retorna la estructura JSX del componente//
     return (
-        //Contenedor principal del formulario de registro//
+        //Contenedor principal con clase CSS registerForm//
         <div className="registerForm">
-            {/* Enlace/logo que lleva a la página principal */}
-            <Link
-                to="/"
-                className="registerImgButton"
-                onClick={navigation.navigateToLanding}
-            >
-                {/* Imagen del logo */}
-                <img src="/Logo.jpg" alt="Home" />
-            </Link>
-
-            {/* Título de la página de registro */}
-            <h1 className="registerTitle">REGISTER</h1>
-
-            {/* Componente Form que renderiza los campos del formulario */}
+            {/* Componente Header con prop para navegación a Landing */}
+            <RegisterHeader navigateToLanding={navigation.navigateToLanding} />
+            
+            {/* Componente Form con configuración de inputs */}
             <Form
                 //Array que define los campos del formulario//
                 inputsArray={[
-                    //Campo para el email//
                     {
-                        label: 'Email', //Etiqueta del campo//
-                        inputType: 'email', //Tipo de input//
+                        label: 'Email', //Texto del label//
+                        inputType: 'email', //Tipo de input HTML5//
                         inputPlaceholder: 'my@email.com', //Placeholder//
-                        inputId: 'email', //ID del campo//
+                        inputId: 'email', //ID único para el input//
                         isRequired: true, //Campo obligatorio//
                         autoComplete: "email" //Autocompletado del navegador//
                     },
-                    // Campo para la contraseña
                     {
                         label: 'Password',
-                        inputType: showPassword ? 'text' : 'password', //Alterna entre tipo text/password//
-                        inputPlaceholder: '*******',
                         inputId: 'password',
                         isRequired: true,
-                        autoComplete: "new-password",
-                        //Input personalizado con botón para mostrar/ocultar contraseña//
+                        //Usa componente personalizado para contraseña//
                         customInput: (
-                            <div className="register-password-input-container">
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    id="password"
-                                    placeholder="*******"
-                                    required
-                                    autoComplete="new-password"
-                                />
-                                <button
-                                    type="button"
-                                    className="register-password-toggle"
-                                    onClick={() => setShowPassword(!showPassword)} //Alterna estado al hacer click//
-                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                >
-                                    {/* Icono que cambia según el estado */}
-                                    {showPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
-                                </button>
-                            </div>
+                            <RegisterPasswordInput
+                                id="password"
+                                placeholder="*******"
+                                showPassword={showPassword} //Estado de visibilidad//
+                                setShowPassword={setShowPassword} //Setter del estado//
+                            />
                         )
                     },
-                    //Campo para confirmar contraseña//
                     {
                         label: 'Confirm password',
-                        inputType: showConfirmPassword ? 'text' : 'password',
-                        inputPlaceholder: '*******',
                         inputId: 'confirmation-password',
                         isRequired: true,
-                        autoComplete: "new-password",
+                        //Segundo componente personalizado para confirmación//
                         customInput: (
-                            <div className="register-password-input-container">
-                                <input
-                                    type={showConfirmPassword ? 'text' : 'password'}
-                                    id="confirmation-password"
-                                    placeholder="*******"
-                                    required
-                                    autoComplete="new-password"
-                                />
-                                <button
-                                    type="button"
-                                    className="register-password-toggle"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
-                                >
-                                    {showConfirmPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
-                                </button>
-                            </div>
+                            <RegisterPasswordInput
+                                id="confirmation-password"
+                                placeholder="*******"
+                                showPassword={showConfirmPassword}
+                                setShowPassword={setShowConfirmPassword}
+                            />
                         )
                     }
                 ]}
-                // Texto del botón de submit
+                //Texto del botón de submit//
                 submitButtonText="Register"
-                // Función que maneja el envío del formulario
+                //Función que maneja el envío del formulario//
                 onSubmit={handleSubmit}
             />
-
-            {/* Mensaje para usuarios que ya tienen cuenta */}
-            <h4 className="registerMsg">Have you an account?</h4>
-
-            {/* Enlace para ir a la página de login */}
-            <Link
-                to="/login"
-                className="registerButtonGoToLogin"
-                onClick={navigation.navigateToLogin}
-            >
-                Go to login
-            </Link>
+            
+            {/* Componente Footer con prop para navegación a Login */}
+            <RegisterFooter navigateToLogin={navigation.navigateToLogin} />
         </div>
     )
 }
 
-//Exporta el componente para poder usarlo en otros archivos//
+//Exporta el componente para poder ser usado en otros archivos//
 export default RegisterPage

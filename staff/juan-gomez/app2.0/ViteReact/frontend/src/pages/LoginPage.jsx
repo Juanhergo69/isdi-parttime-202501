@@ -2,10 +2,15 @@
 import React from 'react'
 //Importa función useState para crear estados//
 import { useState } from 'react'
-//Importa el componente Link de react-router-dom para navegación//
-import { Link } from 'react-router-dom'
 //Importa el componente Form que contiene la lógica de los formularios//
 import Form from '../components/Forms'
+//Importa el componente personalizado para inputs de contraseña//
+import LoginPasswordInput from '../components/LoginPasswordInput'
+//Importa el componente Header específico para login//
+import LoginHeader from '../components/LoginHeader'
+//Importa el componente Footer específico para login//
+import LoginFooter from '../components/LoginFooter'
+
 //Importa handleLogin//
 import { handleLogin } from '../logic/handleLogin'
 //Importa los estilos CSS//
@@ -47,89 +52,58 @@ const handleSubmit = (formData) => {
     }
 }
 
-    //Renderizado del componente//
+    //Retorna la estructura JSX del componenete//
     return (
-        //Contenedor principal del formulario de login//
+        //Contenedor principal con clase CSS loginForm//
         <div className="loginForm">
-            {/* Botón con logo para volver a la página de inicio - ahora con Link */}
-            <Link
-                to="/"
-                className="loginImgButton"
-                onClick={navigation.navigateToLanding}
-            >
-                <img src="/Logo.jpg" alt="Home" />
-            </Link>
-
-            {/* Título del formulario */}
-            <h1 className="loginTitle">LOGIN</h1>
-
-            {/* Componente Form reutilizable con configuración específica para login */}
-            <Form
-                inputsArray={[
-                    //Campo de email//
-                    {
-                        label: 'Email',
-                        inputType: 'email',
-                        inputPlaceholder: 'my@email.com',
-                        inputId: 'email',
-                        isRequired: true,
-                        autoComplete: "email"
-                    },
-                    //Campo de contraseña con toggle de visibilidad//
-                    {
-                        label: 'Password',
-                        inputType: showPassword ? 'text' : 'password',
-                        inputPlaceholder: '*******',
-                        inputId: 'password',
-                        isRequired: true,
-                        autoComplete: "current-password",
-                        //Input personalizado con botón de toggle//
-                        customInput: (
-                            <div className="login-password-input-container">
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    id="password"
-                                    placeholder="*******"
-                                    required
-                                    autoComplete="current-password"
-                                />
-                                <button
-                                    type="button"
-                                    className="login-password-toggle"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                >
-                                    {showPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
-                                </button>
-                            </div>
-                        )
-                    },
-                    //Checkbox para recordar sesión//
-                    {
-                        label: 'Remember me',
-                        inputType: 'checkbox',
-                        inputId: 'rememberme',
-                        isRequired: false
-                    }
-                ]}
-                submitButtonText="Login"  //Texto del botón de submit//
-                onSubmit={handleSubmit}  //Función que maneja el envío//
-            />
-
-            {/* Mensaje para usuarios sin cuenta */}
-            <h4 className="loginMsg">You don't have an account?</h4>
-
-            {/* Botón para redirigir al registro - ahora con Link */}
-            <Link
-                to="/register"
-                className="loginButtonGoToRegister"
-                onClick={navigation.navigateToRegister}
-            >
-                Register now!
-            </Link>
+           {/* Componente Header con prop para navegación a Landing */} 
+          <LoginHeader navigateToLanding={navigation.navigateToLanding} />
+          
+          {/* Componente Form con configuración de inputs */}
+          <Form
+            //Array que define los campos del formulario//
+            inputsArray={[
+              {
+                label: 'Email', //Texto del label//
+                inputType: 'email', //Tipo de input HTML5//
+                inputPlaceholder: 'my@email.com', //Placeholder//
+                inputId: 'email', //ID único para el input//
+                isRequired: true, //Campo obligatorio//
+                autoComplete: "email" //Autocompletado del navegador//
+              },
+              {
+                label: 'Password',
+                inputId: 'password',
+                isRequired: true,
+                autoComplete: "current-password",
+                //Usa componenete personalizado para contraseña//
+                customInput: (
+                  <LoginPasswordInput
+                    id="password" 
+                    placeholder="*******" 
+                    showPassword={showPassword} //Estado de visibilidad//
+                    setShowPassword={setShowPassword} //Setter del estado//
+                    autoComplete="current-password" //Autocompletado del navegador//
+                  />
+                )
+              },
+              {
+                label: 'Remember me', //Texto del label//
+                inputType: 'checkbox', //Tipo de input HTML5//
+                inputId: 'rememberme', //ID único para el input//
+                isRequired: false //Campo no obligatorio//
+              }
+            ]}
+            //Texto del botón de submit//
+            submitButtonText="Login"
+            //Función que maneja el envío del formulario//
+            onSubmit={handleSubmit}
+          />
+          {/* Componenete Footer con prop de navegación a Register */}
+          <LoginFooter navigateToRegister={navigation.navigateToRegister} />
         </div>
-    )
-}
-
-//Exporta el componente LoginPage como exportación por defecto//
-export default LoginPage
+      )
+    }
+    
+    //Exporta el componenete para poder ser usado en otros archivos//
+    export default LoginPage

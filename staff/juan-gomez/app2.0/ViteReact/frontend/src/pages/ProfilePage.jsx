@@ -2,8 +2,6 @@
 import React from 'react'
 //Importa funciones useState y useEffect para crear estados y efectos//
 import { useState, useEffect } from 'react'
-//Importa el componente Link de react-router-dom para navegación//
-import { Link } from 'react-router-dom'
 //Importa getUsers//
 import { getUsers } from '../logic/getUsers'
 //Importa saveUsers//
@@ -18,28 +16,21 @@ import { handleImageChange } from '../logic/handleImageChange'
 import { handleLogout } from '../logic/handleLogout'
 //Importa deleteUserAccount//
 import { handleDeleteAccount } from '../logic/handleDeleteAccount'
+//Importa el componente Header específico para perfil//
+import ProfileHeader from '../components/ProfileHeader'
+//Importa el componenete StatusForm específico para perfil//
+import ProfileStatusForm from '../components/ProfileStatusForm'
+//Importa el componenete Form específico para perfil//
+import ProfileForm from '../components/ProfileForm'
 //Importa validateForm//
 import { validateForm } from '../utils/validators'
 //Importa createModal//
- import { createModal } from '../utils/createModal'
+import { createModal } from '../utils/createModal'
 //Importa estilos CSS//
 import '../styles/pages/profilePage.css'
 
 //Define el componente funcional ProfilePage que recibe props de navegación//
 const ProfilePage = ({ navigation }) => {
-    //Estados para controlar visibilidad de contraseñas//
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-    //Estado para controlar la visibilidad del nuevo formulario de estado//
-    const [showStatusForm, setShowStatusForm] = useState(false);
-
-    //Estado para el texto del nuevo estado//
-    const [statusText, setStatusText] = useState('');
-
-    //Estado para controlar la visibilidad del menú desplegable del usuario//
-    const [showMenu, setShowMenu] = useState(false)
-
     //Obtiene la lista completa de usuarios//
     const users = getUsers()
 
@@ -49,6 +40,19 @@ const ProfilePage = ({ navigation }) => {
     //Busca y obtiene los datos del usuario logueado//
     const loggedUser = users.find(user => user.id === loggedUserId)
 
+    //Estados para controlar visibilidad de contraseñas//
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    //Estado para controlar la visibilidad del nuevo formulario de estado//
+    const [showStatusForm, setShowStatusForm] = useState(false);
+
+    //Estado para controlar la visibilidad del menú desplegable del usuario//
+    const [showMenu, setShowMenu] = useState(false)
+
+    //Estado para el texto del nuevo estado//
+    const [statusText, setStatusText] = useState('');
+
     //Estado para manejar los datos del formulario con valores iniciales//
     const [formData, setFormData] = useState({
         userName: (loggedUser && loggedUser.userName) || '',       //Nombre de usuario o cadena vacía//
@@ -56,7 +60,7 @@ const ProfilePage = ({ navigation }) => {
         password: '',                                              //Contraseña vacía por defecto//
         confirmPassword: ''                                        //Confirmación vacía por defecto//
     })
-
+ 
     //Estado para manejar errores de validación//
     const [errors, setErrors] = useState({})
 
@@ -69,6 +73,7 @@ const ProfilePage = ({ navigation }) => {
     //Estado para controlar redirección explícita//
     const [shouldRedirect, setShouldRedirect] = useState(false)
 
+   
     //Efecto para manejar redirección//
     useEffect(() => {
         if (shouldRedirect) {
@@ -202,25 +207,6 @@ const ProfilePage = ({ navigation }) => {
         }
     }
 
-    //Maneja cambios en los inputs del formulario//
-    const handleChange = (e) => {
-        const { name, value } = e.target //Extrae nombre y valor del input//
-
-        //Actualiza el estado del formulario manteniendo los valores anteriores//
-        setFormData(prev => ({
-        ...prev,
-        [name]: value
-    }))
-
-    //Limpia el error correspondiente si existe//
-    if (errors[name]) {
-        setErrors(prev => ({
-            ...prev,
-            [name]: ''
-        }))
-    }
-}
-
     //Maneja el envío del formulario de estado//
     const handleStatusSubmit = (e) => {
         e.preventDefault() //Prevenimos comportamiento predeterminado del formulario //
@@ -238,8 +224,8 @@ const ProfilePage = ({ navigation }) => {
         navigation.navigateToLogin()
     }
 
-    //Función para llamar a una Api externa//
-    const RandomJoke = () => {
+     //Función para llamar a una Api externa//
+     const RandomJoke = () => {
         //Crea una nueva instancia de XMLHttpRequest para hacer peticiones HTTP//
         const xhr = new XMLHttpRequest()
 
@@ -307,285 +293,82 @@ const ProfilePage = ({ navigation }) => {
         }
     }
 
-    //Renderizado del componente//
+    //Maneja cambios en los inputs del formulario//
+    const handleChange = (e) => {
+        const { name, value } = e.target //Extrae nombre y valor del input//
+
+        //Actualiza el estado del formulario manteniendo los valores anteriores//
+        setFormData(prev => ({
+        ...prev,
+        [name]: value
+    }))
+
+    //Limpia el error correspondiente si existe//
+    if (errors[name]) {
+        setErrors(prev => ({
+            ...prev,
+            [name]: ''
+        }))
+    }
+}
+
+    //Retorna la estructura JSX del componente//
     return (
+        //Contenedor principal de la página de perfil//
         <div className="profilePageContainer">
-            {/* Encabezado de la página */}
-            <div className="profileHeaderContainer">
-                {/* Contenedor del logo - ahora con Link */}
-                <div className="profileImgContainer">
-                    {/* Imagen del logo con clases para estilos y texto alternativo */}
-                    <img
-                        src="/Logo.jpg"       //Ruta de la imagen del logo//
-                        className="profileImg  " //Clase CSS para la imagen//
-                        alt="Logo"            //Texto alternativo para accesibilidad//
-                    />
+            {/* Componente ProfileHeader que muestra:
+            - Logo 
+            - Título de la página
+            - Menú de usuario con avatar
+            - Botón para mostrar formulario de estado */}
+            <ProfileHeader 
+                loggedUser={loggedUser}               //Objeto con datos del usuario logueado//
+                navigation={navigation}               //Objeto para manejar navegación entre páginas//
+                onLogout={onLogout}                   //Función para cerrar sesión//
+                setShowMenu={setShowMenu}             //Función para controlar visibilidad del menú//
+                showMenu={showMenu}                   //Estado que indica si el menú está visible//
+                setShowStatusForm={setShowStatusForm} //Función para mostrar/ocultar formulario de estado//
+                showStatusForm={showStatusForm}       //Estado que controla visibilidad del formulario de estado//
+            />
 
-                    {/* Botón para mostrar/ocultar el formulario de estado */}
-                    <button
-                        className="profile-toggleStatusFormButton"
-                        onClick={() => setShowStatusForm(!showStatusForm)}
-                    >
-                        {showStatusForm ? 'Hide Form' : 'New Status'}
-                    </button>
-                </div>
-
-                {/* Título de la página */}
-                <h1 className="profileMsg">Edit Profile</h1>
-
-                {/* Botón y menú desplegable del usuario */}
-                <button
-                    className={`profileMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
-                    onClick={() => setShowMenu(!showMenu)}
-                    aria-expanded={showMenu}
-                    aria-label="User menu"
-                >
-                    <div className="profileMenuButton-content">
-                        {/* Muestra avatar o inicial del usuario */}
-                        {loggedUser?.avatar ? (
-                            <img
-                                src={loggedUser.avatar}
-                                className="profileMenuButton-avatar"
-                                alt="User avatar"
-                            />
-                        ) : (
-                            <span className="profileMenuButton-initial">
-                                {(loggedUser && loggedUser.userName && loggedUser.userName[0].toUpperCase()) || 'U'}
-                            </span>
-                        )}
-                    </div>
-                </button>
-
-                {/* Menú desplegable cuando está visible */}
-                {showMenu && (
-                    <div className="profileMenuDropContainer">
-                        {/* Botón para ir a home - ahora con Link */}
-                        <Link
-                            to="/home"
-                            className="profileHomeButton"
-                            onClick={() => {
-                                navigation.navigateToHome();
-                                setShowMenu(false);
-                            }}
-                        >
-                            <i className="fas fa-house"></i> Home
-                        </Link>
-
-                        {/* Botón para ir a messages - ahora con Link */}
-                        <Link
-                            to="/messages"
-                            className="profileMessagesButton"
-                            onClick={() => {
-                                navigation.navigateToMessages()
-                                setShowMenu(false);
-                            }}
-                        >
-                            <i className="fas fa-envelope"></i> My Msg
-                        </Link>
-
-                        {/* Botón para ir a favoritos - ahora con Link */}
-                        <Link
-                            to="/favorites"
-                            className="profileFavoritesButton"
-                            onClick={() => {
-                                navigation.navigateToNotFound()
-                                setShowMenu(false)
-                            }}
-                        >
-                            <i className="fas fa-star"></i> My Fav
-                        </Link>
-
-                        {/* Botón para cerrar sesión */}
-                        <button className="profileLogoutButton" onClick={onLogout}>
-                            <i className="fas fa-sign-out-alt"></i> Logout
-                        </button>
-                    </div>
-                )}
-            </div>
-
-            {/* Contenedor principal del formulario */}
+            {/* Contenedor del formulario de perfil */}
             <div className="profileFormContainer">
-                {/* Formulario de estado (solo visible cuando showStatusForm es true) */}
+                {/* Renderizado condicional del formulario de estado (solo visible cuando showStatusForm es true) */}
                 {showStatusForm && (
-                    <form onSubmit={handleStatusSubmit} className="profileStatusForm">
-                        <label>Change your status:</label>
-                        <textarea
-                            value={statusText}
-                            onChange={(e) => setStatusText(e.target.value)}
-                            placeholder="Enter your status"
-                            required
-                        />
-                        <div className="profileStatusForm-actions">
-                            <button type="submit">Save Status</button>
-                            <button
-                                type="button"
-                                className="profileRandomizeButton"
-                                onClick={RandomJoke}
-                            >
-                                Randomize
-                            </button>
-                        </div>
-                    </form>
+                    <ProfileStatusForm
+                        statusText={statusText}                 //Texto actual del estado//
+                        setStatusText={setStatusText}           //Función para actualizar el texto del estado//
+                        handleStatusSubmit={handleStatusSubmit} //Función para enviar el nuevo estado//
+                        RandomJoke={RandomJoke}                 //Función para generar chiste aleatorio//
+                    />
                 )}
 
-                {/* Formulario de perfil */}
-                <form onSubmit={handleSubmit} className={`profileForm ${showStatusForm ? 'with-status-form' : 'centered'}`}>
-                    {/* Sección de imagen de perfil */}
-                    <div className="profileForm-group">
-                        <label>Profile Image:</label>
-                        <div className="profile-optimized-image-section">
-                            {/* Controles para subir/remover imagen */}
-                            <div className="profile-image-controls-row">
-                                {/* Label estilizado para input de archivo */}
-                                <label htmlFor="avatar-upload" className="profile-image-upload-label">
-                                    <i className="fas fa-image"></i> {imagePreview ? 'Change Image' : 'Add Image'}
-                                </label>
-
-                                {/* Input real para subir archivo (oculto) */}
-                                <input
-                                    type="file"
-                                    id="avatar-upload"
-                                    accept="image/*"
-                                    onChange={onImageChange}
-                                    style={{ display: 'none' }}
-                                />
-
-                                {/* Botón para remover imagen (visible solo cuando hay imagen) */}
-                                {imagePreview && (
-                                    <button
-                                        type="button"
-                                        className="profile-remove-image-button"
-                                        onClick={removeImage}
-                                    >
-                                        <i className="fas fa-times"></i> Remove
-                                    </button>
-                                )}
-                            </div>
-
-                            {/* Muestra nombre del archivo seleccionado */}
-                            {selectedImage && (
-                                <div className="profile-compact-image-info">
-                                    <span className="profile-image-filename">{selectedImage.name}</span>
-                                </div>
-                            )}
-
-                            {/* Muestra vista previa de la imagen */}
-                            {imagePreview && (
-                                <div className="profile-constrained-preview">
-                                    <img
-                                        src={imagePreview}
-                                        alt="Preview"
-                                        className="profile-compact-image-preview"
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Campo para nombre de usuario */}
-                    <div className="profileForm-group">
-                        <label htmlFor="userName">Username:</label>
-                        <input
-                            type="text"
-                            id="userName"
-                            name="userName"
-                            value={formData.userName}
-                            onChange={handleChange}
-                            className={errors.userName ? 'error' : ''} //Clase error si hay problema//
-                        />
-                        {/* Muestra mensaje de error si existe */}
-                        {errors.userName && <span className="profile-error-message">{errors.userName}</span>}
-                    </div>
-
-                    {/* Campo para email */}
-                    <div className="profileForm-group">
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className={errors.email ? 'error' : ''}
-                        />
-                        {errors.email && <span className="error-message">{errors.email}</span>}
-                    </div>
-
-                    {/* Campo para nueva contraseña con toggle de visibilidad */}
-                    <div className="profileForm-group">
-                        <label htmlFor="password">New Password:</label>
-                        <div className="profile-password-input-container">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className={errors.password ? 'error' : ''}
-                            />
-                            <button
-                                type="button"
-                                className="profile-password-toggle"
-                                onClick={() => setShowPassword(!showPassword)}
-                                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                            >
-                                {showPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
-                            </button>
-                        </div>
-                        {errors.password && <span className="error-message">{errors.password}</span>}
-                    </div>
-
-                    {/* Campo para confirmar nueva contraseña con toggle de visibilidad */}
-                    <div className="profileForm-group">
-                        <label htmlFor="confirmPassword">Confirm New Password:</label>
-                        <div className="profile-password-input-container">
-                            <input
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                className={errors.confirmPassword ? 'error' : ''}
-                            />
-                            <button
-                                type="button"
-                                className="profile-password-toggle"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
-                            >
-                                {showConfirmPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
-                            </button>
-                        </div>
-                        {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
-                    </div>
-
-                    {/* Botones de acción */}
-                    <div className="profileForm-actions">
-                        <button type="submit" className="profileButtonSaveChanges">Save Changes</button>
-                        <button
-                            type="button"
-                            className="profileButtonCancel"
-                            onClick={() => navigation.navigateToHome()}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-
-                    {/* Botón para eliminar cuenta */}
-                    <div className="profile-delete-account-section">
-                        <button
-                            type="button"
-                            className="profileButtonDeleteAccount"
-                            onClick={OnDeleteAccount}
-                        >
-                            <i className="fas fa-trash-alt"></i> Delete Account
-                        </button>
-                    </div>
-                </form>
+                {/* Componente ProfileForm que contiene:
+                - Formulario de edición de perfil
+                - Campos para usuario, email, contraseñas
+                - Gestión de imagen de perfil
+                - Botones de acción */}
+                <ProfileForm
+                    formData={formData}                             //Objeto con datos del formulario//
+                    errors={errors}                                 //Objeto con mensajes de error de validación//
+                    handleChange={handleChange}                     //Función para manejar cambios en inputs//
+                    handleSubmit={handleSubmit}                     //Función para enviar el formulario//
+                    showPassword={showPassword}                     //Estado que controla visibilidad de contraseña//
+                    setShowPassword={setShowPassword}               //Función para alternar visibilidad de contraseña//
+                    showConfirmPassword={showConfirmPassword}       //Estado para visibilidad de confirmación//
+                    setShowConfirmPassword={setShowConfirmPassword} //Función para alternar visibilidad//
+                    imagePreview={imagePreview}                     //URL de previsualización de imagen//
+                    selectedImage={selectedImage}                   //Archivo de imagen seleccionado//
+                    onImageChange={onImageChange}                   //Función para manejar cambio de imagen//
+                    removeImage={removeImage}                       //Función para eliminar imagen seleccionada//
+                    navigation={navigation}                         //Objeto para navegación//
+                    OnDeleteAccount={OnDeleteAccount}               //Función para borrar cuenta//
+                    showStatusForm={showStatusForm}                 //Estado que indica si formulario de estado está visible//
+                />
             </div>
         </div>
     )
 }
 
-//Exporta el componente como exportación por defecto//
+//Exporta el componente para poder ser usado en otros archivos//
 export default ProfilePage
