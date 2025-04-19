@@ -41,7 +41,7 @@ const HomePage = ({ navigation }) => {
     const [selectedImage, setSelectedImage] = useState(null)
     //Estado para almacenar la previsualización de la imagen
     const [imagePreview, setImagePreview] = useState(null)
-    
+
     //Obtiene todos los usuarios registrados//
     const users = getUsers()
     //Obtiene el ID del usuario logueado//
@@ -49,27 +49,29 @@ const HomePage = ({ navigation }) => {
     //Busca el usuario logueado en la lista de usuarios//
     const loggedUser = users.find(user => user.id === loggedUserId)
 
-    //Efecto que se ejecuta al montar el componente y cuando cambia showMenu//
+    //Efecto para redirigir a login si no hay usuario logueado//
     useEffect(() => {
-        //Función para cerrar el menú al hacer clic fuera de él//
+        if (!loggedUser) {
+            navigation.navigateToLogin()
+        }
+    }, [loggedUser, navigation])
+
+    //Efecto secundario para cerrar el menú al hacer clic fuera de él//
+    useEffect(() => {
+        //Función que maneja el clic fuera del menú//
         const handleClickOutside = (e) => {
+            //Verifica si el clic fue fuera del menú y sus botones//
             if (showMenu && !e.target.closest('.homeMenuButton') && !e.target.closest('.homeMenuDropContainer')) {
-                setShowMenu(false) //Cierra el menu//
+                setShowMenu(false) //Cierra el menú//
             }
         }
 
-        //Agrega el event listener para clicks//
+        //Agrega el event listener al documento//
         document.addEventListener('click', handleClickOutside)
-        //Limpieza: remueve el event listener al desmontar el componente//
+
+        //Función de limpieza que remueve el event listener al desmontar el componente//
         return () => document.removeEventListener('click', handleClickOutside)
     }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
-
-    //Efecto para redirigir a login si no hay usuario logueado//
-    useEffect(() => {
-    if (!loggedUser) {
-        navigation.navigateToLogin()
-        }
-    }, [loggedUser, navigation])
 
     //Maneja el cambio de imagen seleccionada//
     const onImageChange = (e) => {
@@ -134,17 +136,17 @@ const HomePage = ({ navigation }) => {
             msg: e.target.msg.value      //Obtiene el valor del campo mensaje//
         }
 
-    //Llama al handler de envío de mensaje pasando://
-    //- Los datos del formulario//
-    //- El ID del usuario logueado//
-    //- La imagen seleccionada (puede ser null)//
-    //- Un callback que se ejecutará cuando el mensaje se guarde exitosamente//
+        //Llama al handler de envío de mensaje pasando://
+        //- Los datos del formulario//
+        //- El ID del usuario logueado//
+        //- La imagen seleccionada (puede ser null)//
+        //- Un callback que se ejecutará cuando el mensaje se guarde exitosamente//
         const success = handleSubmitMessage(formData, loggedUserId, selectedImage, () => {
             //Callback: resetea el formulario cuando el mensaje se guarda correctamente//
             resetForm()
         })
 
-    //Si el handler devuelve éxito (true), actualiza la lista de mensajes//
+        //Si el handler devuelve éxito (true), actualiza la lista de mensajes//
         if (success) {
             setMessages(getMessages())
         }
@@ -181,7 +183,7 @@ const HomePage = ({ navigation }) => {
                 - Botón de nuevo post
                 - Menú de usuario
                 - Información del usuario logueado */}
-            <HomeHeader 
+            <HomeHeader
                 loggedUser={loggedUser}       //Objeto con datos del usuario logueado//
                 navigation={navigation}       //Objeto de navegación entre páginas//
                 onLogout={onLogout}           //Función para cerrar sesión//
@@ -190,7 +192,7 @@ const HomePage = ({ navigation }) => {
                 setShowMenu={setShowMenu}     //Función para mostrar/ocultar menú usuario//
                 showMenu={showMenu}           //Estado que controla visibilidad del menú//
             />
-    
+
             {/* Contenedor principal de los mensajes */}
             <div className="homeMsgContainer">
                 {/* Render condicional del formulario para crear mensajes */}
@@ -203,7 +205,7 @@ const HomePage = ({ navigation }) => {
                         imagePreview={imagePreview}       //URL de previsualización de la imagen//
                     />
                 )}
-    
+
                 {/* Contenedor de los mensajes de los usuarios con clase condicional:
                     - 'with-form' cuando el formulario está visible
                     - 'centered' cuando el formulario está oculto */}
@@ -214,7 +216,7 @@ const HomePage = ({ navigation }) => {
                         {messages.map((message) => {
                             //Busca el autor del mensaje actual en el array de usuarios//
                             const author = users.find(u => u.id === message.userId)
-                            
+
                             //Para cada mensaje, renderiza el componente HomeMessageItem//
                             return (
                                 <HomeMessageItem

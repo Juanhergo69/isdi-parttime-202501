@@ -1,13 +1,13 @@
 //Importa el componente Link de react-router-dom para manejar la navegación entre páginas//
 import { Link } from 'react-router-dom'
 
-//Define el componente funcional FavoritesHeader que recibe las siguientes props://
-//- loggedUser: objeto con información del usuario logueado//
-//- navigation: objeto con funciones de navegación//
-//- onLogout: función para manejar el cierre de sesión//
-//- setShowMenu: función para controlar la visibilidad del menú//
-//- showMenu: estado booleano que indica si el menú está visible//
-const FavoritesHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMenu }) => {
+const FavoritesHeader = ({
+    loggedUser,          //Objeto con información del usuario logueado//
+    navigation,          //Objeto con funciones de navegación//
+    onLogout,            //Función para manejar el cierre de sesión//
+    setShowMenu,         //Función para controlar visibilidad del menú//
+    showMenu             //Estado booleano que indica si el menú está visible//
+}) => {
     //Retorna la estructura JSX del componente//
     return (
         //Contenedor principal del encabezado//
@@ -24,10 +24,10 @@ const FavoritesHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMe
                     alt="Logo"
                 />
             </div>
-            
+
             {/* Título de la página de favoritos */}
             <h1 className="favoriteMsg">Favorite Messages</h1>
-            
+
             {/* Botón del menú de usuario con:
                 - className dinámico que añade 'with-avatar' si el usuario tiene avatar
                 - onClick que alterna la visibilidad del menú
@@ -102,7 +102,7 @@ const FavoritesHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMe
                     </Link>
 
                     {/* Botón para cerrar sesión */}
-                    <button 
+                    <button
                         className="favoriteLogoutButton" //Clase CSS//
                         onClick={onLogout}               //Ejecuta función de logout//
                     >

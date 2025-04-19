@@ -1,13 +1,14 @@
 //Importa el componente Link de react-router-dom para la navegación//
 import { Link } from 'react-router-dom'
 
-//Define el componente funcional MessagesHeader que recibe props://
-//- loggedUser: objeto con datos del usuario logueado//
-//- navigation: objeto con funciones de navegación//
-//- onLogout: función para cerrar sesión//
-//- setShowMenu: función para controlar visibilidad del menú//
-//- showMenu: estado booleano que indica si el menú está visible//
-const MessagesHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMenu }) => {
+//Define el componente funcional MessagesHeader que recibe props como parámetros//
+const MessagesHeader = ({
+    loggedUser,         //Objeto con datos del usuario logueado//
+    navigation,         //Objeto con funciones de navegación//
+    onLogout,           //Función para cerrar sesión//
+    setShowMenu,        //Función para controlar visibilidad del menú//
+    showMenu            //Estado booleano que indica si el menú está visible//
+}) => {
     //Retorna la estructura JSX del encabezado//
     return (
         //Contenedor principal del encabezado//
@@ -21,10 +22,10 @@ const MessagesHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMen
                     alt="Logo"              //Texto alternativo//
                 />
             </div>
-            
+
             {/* Título de la página */}
             <h1 className="messagesMsg">My Messages</h1>
-            
+
             {/* Botón del menú de usuario */}
             <button
                 className={`messagesMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`} //Clases CSS condicionales (añade 'with-avatar' si hay avatar)//
@@ -92,7 +93,7 @@ const MessagesHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMen
                     </Link>
 
                     {/* Botón para cerrar sesión */}
-                    <button 
+                    <button
                         className="messagesLogoutButton" //Clase CSS//
                         onClick={onLogout}               //Ejecuta función de logout//
                     >

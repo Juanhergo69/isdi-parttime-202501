@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 
 //Componente funcional ProfileHeader que recibe varias props como parámetros//
-const ProfileHeader = ({ 
+const ProfileHeader = ({
     loggedUser,         //Objeto con información del usuario logueado//
     navigation,         //Objeto con métodos de navegación//
     onLogout,           //Función para manejar el logout//
@@ -33,7 +33,7 @@ const ProfileHeader = ({
 
             {/* Botón del menú de usuario */}
             <button
-                // Clases condicionales basadas en si el usuario tiene avatar
+                //Clases condicionales basadas en si el usuario tiene avatar//
                 className={`profileMenuButton ${loggedUser?.avatar ? 'with-avatar' : ''}`}
                 onClick={() => setShowMenu(!showMenu)}  //Alterna la visibilidad del menú//
                 aria-expanded={showMenu}  //Atributo de accesibilidad//

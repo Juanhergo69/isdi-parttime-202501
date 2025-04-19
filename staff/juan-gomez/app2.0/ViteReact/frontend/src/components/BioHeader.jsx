@@ -1,18 +1,19 @@
 //Importa el componente Link de react-router-dom para manejar navegación entre páginas//
 import { Link } from 'react-router-dom'
 
-//Define el componente funcional BioHeader que recibe las siguientes props://
-//- loggedUser: objeto con datos del usuario logueado (puede ser undefined/null)//
-//- navigation: objeto con métodos de navegación//
-//- onLogout: función para manejar cierre de sesión//
-//- setShowMenu: función para controlar visibilidad del menú desplegable//  
-//- showMenu: estado booleano que indica si el menú está visible//
-const BioHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMenu }) => {
+//Define el componente funcional BioHeader que recibe props como parámetros//
+const BioHeader = ({
+    loggedUser,     //Objeto con datos del usuario logueado//
+    navigation,     //Objeto con métodos de navegación//
+    onLogout,       //Función para manejar cierre de sesión//
+    setShowMenu,    //Función para controlor visibilidad del menú desplegable//
+    showMenu        //Estado booleano que indica si el menú esta visible//
+}) => {
     //Retorna la estructura JSX del componente//
     return (
         //Contenedor principal del header con clase CSS//
         <div className="bioHeaderContainer">
-            
+
             {/* Contenedor del logo con clase CSS 'bioImgContainer' */}
             <div className="bioImgContainer">
                 {/* Imagen del logo con:
@@ -25,10 +26,10 @@ const BioHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMenu }) 
                     alt="Logo"
                 />
             </div>
-            
+
             {/* Título de la página con clase CSS 'bioMsg' */}
             <h1 className="bioMsg">Bio</h1>
-            
+
             {/* Botón del menú de usuario con:
                 - className dinámico (añade 'with-avatar' si existe avatar)
                 - onClick que alterna la visibilidad del menú
@@ -116,8 +117,8 @@ const BioHeader = ({ loggedUser, navigation, onLogout, setShowMenu, showMenu }) 
                     </Link>
 
                     {/* Botón de Logout */}
-                    <button 
-                        className="homeLogoutButton" 
+                    <button
+                        className="homeLogoutButton"
                         onClick={onLogout}
                     >
                         <i className="fas fa-sign-out-alt"></i> Logout
