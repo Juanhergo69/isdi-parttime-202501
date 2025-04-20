@@ -4,8 +4,8 @@
     /* Activa flexbox */
     flex-direction: column;
     /* Organiza elementos en columna */
-    height: 100vh;
-    /* Altura del 100% del viewport */
+    min-height: 100vh;
+    /* Altura mínima del 100% del viewport */
     width: 100%;
     /* Ancho del 100% */
 }
@@ -288,15 +288,13 @@
 }
 
 .profileStatusForm {
-    position: absolute;
-    /* Posicionamiento absoluto */
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra elementos horizontalmente */
-    left: 27rem;
+    left: 12rem;
     /* Posición desde la izquierda de 15rem */
     font-size: 1rem;
     /* Tamaño de fuente de 1rem */
@@ -312,12 +310,10 @@
     /* Espacio de 0.8rem entre elementos */
     padding: 20px;
     /* Relleno interno de 20px */
-    width: 500px;
-    /* Ancho fijo de 700px */
-    height: auto !important;
-    /* Altura automática (importante para sobrescribir) */
-    min-height: 700px;
-    /* Altura mínima de 700px */
+    width: 35%;
+    /* Ancho del 35% */
+    height: 90%;
+    /* Altura fija del 100% */
     padding-bottom: 20px;
     /* Relleno inferior de 20px */
 }
@@ -358,8 +354,8 @@
     /* Deshabilita redimensionamiento */
     transition: transform 0.3s ease;
     /* Transición suave de transformación */
-    height: 200px;
-    /* Altura fija de 100px */
+    height: 300px;
+    /* Altura fija de 300px */
     width: 100%;
     /* Ancho del 100% */
     overflow-y: auto;
@@ -451,7 +447,7 @@
     /* Activa flexbox */
     flex-direction: column;
     /* Organiza en columna los elementos */
-    gap: 10px;
+    gap: 20px;
     /* Separación entre elementos */
 }
 
@@ -489,18 +485,20 @@
 .profileFormContainer {
     display: flex;
     /* Activa flexbox */
-    justify-content: center;
-    /* Centra elementos horizontalmente */
-    padding: 2rem;
-    /* Relleno interno de 2rem */
-    margin-top: 3rem;
-    /* Margen superior de 2rem */
+    justify-content: space-evenly;
+    /* Distribuye uniformemente el espacio entre elementos hijos */
+    align-items: start;
+    /* Alinea los elementos al comienzo */
+    margin-top: 6rem;
+    /* Margen superior */
+    width: 100%;
+    /* Ancho del 100% */
+    height: 100%;
+    /* Alto del 100% */
 }
 
 /* Estilos generales para formularios */
 .profileForm {
-    position: absolute;
-    /* Posicionamiento absoluto */
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
@@ -519,26 +517,22 @@
     /* Bordes redondeados de 15px */
     box-shadow: 0 4px 10px rgb(0, 142, 182);
     /* Sombra azul */
-    gap: 0.5rem;
-    /* Espacio de 1rem entre elementos */
     padding: 20px;
     /* Relleno interno de 20px */
-    width: 500px;
-    /* Ancho fijo de 700px */
-    height: 700px;
-    /* Altura fija de 700px */
+    width: 35%;
+    /* Ancho fijo del 35% */
+    height: 90%;
+    /* Altura fija del 100% */
 }
 
 /* Versión centrada del formulario */
 .profileForm.centered {
     left: 50%;
     /* Posición desde la izquierda del 50% */
-    transform: translateX(-50%);
-    /* Centrado horizontal */
-    width: 500px;
-    /* Ancho fijo de 700px */
-    height: 700px;
-    /* Altura fija de 700px */
+    width: 35%;
+    /* Ancho fijo del 35% */
+    height: 90%;
+    /* Altura fija del 100% */
 }
 
 /* Estilos para labels en formularios */
@@ -547,12 +541,8 @@
     /* Display block */
     text-align: center;
     /* Alineación de texto centrada */
-    margin-bottom: 8px;
-    /* Margen inferior de 8px */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
-    display: block;
-    /* Display block (redundante) */
 }
 
 /* Inputs de email y password */
@@ -569,7 +559,7 @@
     /* Borde gris oscuro de 2px */
     border-radius: 10px;
     /* Bordes redondeados de 10px */
-    font-size: 1rem;
+    font-size: 0.9rem;
     /* Tamaño de fuente de 1rem */
     background-color: white;
     /* Fondo blanco */
@@ -579,8 +569,6 @@
     /* Transición suave de transformación */
     font-family: 'Zen Loop';
     /* Fuente personalizada */
-    font-size: 1.5rem;
-    /* Tamaño de fuente de 1.5rem */
 }
 
 /* Efecto hover para inputs */
@@ -633,7 +621,7 @@
 
 /* Grupo de campos en formulario */
 .profileForm-group {
-    margin-bottom: -0.5rem;
+    margin-bottom: 0.1rem;
     /* Margen inferior de 0.1rem */
     width: 100%;
     /* Ancho del 100% */
@@ -643,7 +631,7 @@
 .profileForm-group label {
     display: block;
     /* Display block */
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
     /* Margen inferior de 0.5rem */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
@@ -704,15 +692,14 @@
     transition: background-color 0.3s ease;
     /* Transición suave del color de fondo */
     width: 200px;
-    /* Ancho */
     max-width: 200px;
     /* Ancho máximo de 200px */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     transition: transform 0.3s ease;
     /* Transición suave de transformación */
-    margin-bottom: -2rem;
-    /* Margen inferior negativo*/
+    padding: 8px 16px;
+    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
 }
 
 /* Efecto hover para boton SaveChanges y Cancel */
@@ -726,10 +713,16 @@
 
 /* Estilos para la seccion de eliminación de cuenta */
 .profile-delete-account-section {
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid grey;
+    display: flex;
+    /* Activa flexbox */
+    width: 100%;
+    /* Ancho del 100% */
+    justify-content: center;
+    /* Centra el contenido */
+    padding-top: 0.5rem;
+    /* Padding superior */
     text-align: center;
+    /* Centra el texto */
 }
 
 /* Estilos para botón de eliminar cuenta */
@@ -754,8 +747,6 @@
     /* Fuente personalizada */
     transition: transform 0.3s ease;
     /* Transición suave de transformación */
-    margin-top: -1rem;
-    /* Margen superior negativo*/
 }
 
 /* Efecto hover para botón de eliminar cuenta */
@@ -780,8 +771,9 @@
     /* Fuente personalizada */
     font-size: 0.9rem;
     /* Tamaño de fuente de 0.9rem */
-    margin-top: 0.5rem;
+    margin-top: -1rem;
     /* Margen superior de 0.5rem */
+    margin-bottom: 0.2rem;
     display: block;
     /* Display block */
 }
@@ -790,33 +782,25 @@
 .profileForm-actions {
     display: flex;
     /* Activa flexbox */
-    justify-content: space-evenly;
+    justify-content: center;
     /* Distribuye espacio entre elementos */
-    gap: 2rem;
-    /* Espacio de 0.7rem entre elementos */
-    margin-top: 0.5rem;
-    /* Margen superior de 1.1rem */
-}
-
-/* Botones en acciones de formulario */
-.profileForm-actions button {
-    flex: 1;
-    /* Ocupa espacio disponible equitativamente */
+    gap: 40px;
+    width: 100%;
+    /* Ancho del 100% */
+    margin-top: 0.2rem;
 }
 
 /* Sección optimizada para imágenes */
 .profile-optimized-image-section {
     width: 100%;
     /* Ancho del 100% */
-    margin-bottom: 5px;
-    /* Margen inferior de 5px */
-    margin-top: 20px;
+    margin-top: 5px;
     /* Margen superior de 20px */
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
     /* Organiza elementos en columna */
-    gap: 8px;
+    gap: 7px;
     /* Espacio de 8px entre elementos */
 }
 
@@ -824,7 +808,7 @@
 .profile-image-controls-row {
     display: flex;
     /* Activa flexbox */
-    gap: 10px;
+    gap: 8px;
     /* Espacio de 10px entre elementos */
     justify-content: center;
     /* Centra elementos horizontalmente */
@@ -856,7 +840,7 @@
     /* Activa flexbox */
     align-items: center;
     /* Centra elementos verticalmente */
-    gap: 8px;
+    gap: 7px;
     /* Espacio de 8px entre elementos */
 }
 
@@ -872,7 +856,7 @@
 .profile-image-upload-section {
     width: 100%;
     /* Ancho del 100% */
-    margin: 15px 0;
+    margin: 10px 0;
     /* Margen vertical de 15px */
     display: flex;
     /* Activa flexbox */
@@ -886,7 +870,7 @@
 .profile-image-upload-controls {
     display: flex;
     /* Activa flexbox */
-    gap: 10px;
+    gap: 8px;
     /* Espacio de 10px entre elementos */
     align-items: center;
     /* Centra elementos verticalmente */
@@ -920,7 +904,7 @@
 .profile-compact-image-info {
     text-align: center;
     /* Alineación de texto centrada */
-    margin-top: -5px;
+    margin-top: -10px;
     /* Margen superior negativo de 5px */
     margin-bottom: -17px;
     /* Margen inferior negativo de 17px */

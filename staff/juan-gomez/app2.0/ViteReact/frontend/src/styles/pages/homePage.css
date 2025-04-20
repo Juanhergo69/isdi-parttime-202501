@@ -287,20 +287,29 @@
     /* Escala el botón al 105% */
 }
 
+.homeMsgContainer {
+    display: flex;
+    /* Activa flexbox */
+    justify-content: space-evenly;
+    /* Distribuye el contenido equitativamente */
+    align-items: start;
+    /* Alinea al comienzo */
+    margin-top: 6rem;
+    /* Margen superior */
+    height: 100%;
+    /* Alto del 100% */
+    width: 100%;
+    /* Ancho del 100% */
+}
+
 /* Formulario para enviar mensajes */
 .homeSendMsgForm {
-    position: absolute;
-    /* Posicionamiento absoluto */
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra elementos horizontalmente */
-    margin-top: 5rem;
-    /* Margen superior de 12rem */
-    left: 15rem;
-    /* Posición desde la izquierda de 15rem */
     font-size: 1rem;
     /* Tamaño de fuente de 1rem */
     background-color: white;
@@ -315,14 +324,10 @@
     /* Espacio de 0.8rem entre elementos */
     padding: 20px;
     /* Relleno interno de 20px */
-    width: 700px;
-    /* Ancho fijo de 700px */
-    height: auto !important;
-    /* Altura automática (importante para sobrescribir) */
-    min-height: 700px;
-    /* Altura mínima de 700px */
-    padding-bottom: 20px;
-    /* Relleno inferior de 20px */
+    width: 35%;
+    /* Ancho fijo del 35% */
+    height: 90%;
+    /* Altura fija del 100% */
 }
 
 /* Estilos para placeholders en formulario */
@@ -397,10 +402,10 @@
     /* Deshabilita redimensionamiento */
     transition: transform 0.3s ease;
     /* Transición suave de transformación */
-    height: 300px;
-    /* Altura fija de 300px */
-    min-height: 200px;
-    /* Altura mínima de 200px */
+    height: 150px;
+    /* Altura fija de 150px */
+    min-height: 150px;
+    /* Altura mínima de 150px */
     width: 100%;
     /* Ancho del 100% */
     overflow-y: auto;
@@ -800,16 +805,12 @@
 
 /* Formulario de mensajes de usuario */
 .homeUserMsgForm {
-    position: absolute;
-    /* Posicionamiento absoluto */
     display: flex;
     /* Activa flexbox */
     flex-direction: column;
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra elementos horizontalmente */
-    margin-top: 5rem;
-    /* Margen superior de 12rem */
     left: 64rem;
     /* Posición desde la izquierda de 64rem */
     font-size: 1rem;
@@ -826,22 +827,20 @@
     /* Espacio de 1rem entre elementos */
     padding: 20px;
     /* Relleno interno de 20px */
-    width: 700px;
-    /* Ancho fijo de 700px */
-    height: 700px;
-    /* Altura fija de 700px */
+    width: 35%;
+    /* Ancho fijo del 35% */
+    height: 90%;
+    /* Altura fija del 100% */
 }
 
 /* Versión centrada del formulario */
 .homeUserMsgForm.centered {
     left: 50%;
     /* Posición desde la izquierda del 50% */
-    transform: translateX(-50%);
-    /* Centrado horizontal */
-    width: 700px;
-    /* Ancho fijo de 700px */
-    height: 700px;
-    /* Altura fija de 700px */
+    width: 35%;
+    /* Ancho fijo del 35% */
+    height: 90%;
+    /* Altura fija del 100% */
 }
 
 /* Contenedor de mensajes de usuario */
@@ -911,7 +910,7 @@
     /* Fondo blanco */
     transition: transform 0.3s ease;
     /* Transición suave de transformación */
-    overflow-x: hidden;
+    overflow-x: auto;
     /* No scroll horizontal */
     box-sizing: border-box;
     /* Modelo de caja border-box */
@@ -929,6 +928,37 @@
     /* Sombra azul */
     transform: scale(1.02);
     /* Escala el mensaje al 102% */
+}
+
+/* Personalización de scrollbar para mensajes */
+.homeMessage::-webkit-scrollbar {
+    height: 8px;
+    /* Alto del scrollbar de 8px */
+}
+
+.homeMessage::-webkit-scrollbar-thumb {
+    background-color: rgb(57, 58, 58);
+    /* Color del thumb gris */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+}
+
+.homeMessage::-webkit-scrollbar-track {
+    background-color: white;
+    /* Color del track blanco */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+}
+
+.homeMessage::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color del thumb a azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el thumb */
+    cursor: grab;
+    /* Cursor tipo grab */
 }
 
 /* Estilo para nombre de usuario en mensaje */
@@ -1264,3 +1294,5 @@
     box-shadow: 0 0 10px rgb(0, 142, 182);
     /* Sombra azul */
 }
+
+

@@ -8,7 +8,6 @@
     /* Altura mínima del 100% del viewport */
     width: 100%;
     /* Ancho del 100% */
-    overflow: hidden;
 }
 
 .favoriteHeaderContainer {
@@ -259,10 +258,14 @@
     /* Activa flexbox */
     justify-content: center;
     /* Centra elementos horizontalmente */
-    padding: 2rem;
-    /* Relleno interno de 2rem */
-    margin-top: 2rem;
-    /* Margen superior de 2rem */
+    align-items: start;
+    /* Alinea al comienzo */
+    margin-top: 6rem;
+    /* Margen superior */
+    height: 100%;
+    /* Alto del 100% */
+    width: 100%;
+    /* Ancho del 100% */
 }
 
 .favoriteForm {
@@ -272,10 +275,6 @@
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra elementos horizontalmente */
-    margin-top: 0.1rem;
-    /* Margen superior de 0.1rem */
-    left: 64rem;
-    /* Posición desde la izquierda de 64rem */
     font-size: 1rem;
     /* Tamaño de fuente de 1rem */
     background-color: white;
@@ -286,14 +285,14 @@
     /* Bordes redondeados de 15px */
     box-shadow: 0 4px 10px rgb(0, 142, 182);
     /* Sombra azul */
-    gap: 1rem;
-    /* Espacio de 1rem entre elementos */
+    gap: 0.8rem;
+    /* Espacio de 0.8rem entre elementos */
     padding: 20px;
     /* Relleno interno de 20px */
-    width: 700px;
-    /* Ancho fijo de 700px */
-    height: 700px;
-    /* Altura fija de 700px */
+    width: 35%;
+    /* Ancho fijo del 35% */
+    height: 90%;
+    /* Altura fija del 90% */
 }
 
 .favoriteMsgContainer {
@@ -307,15 +306,9 @@
     /* Fondo blanco */
     overflow-y: auto;
     /* Scroll vertical */
-    overflow-x: hidden;
-    /* No scroll horizontal */
-    height: calc(600px - 1px);
-    /* Altura calculada */
-    width: 100%;
-    /* Ancho del 100% */
-    transition: transform 0.3s ease;
-    /* Transición suave de transformación */
-    margin-top: -3rem;
+    max-height: 590px;
+    /* Altura máxima antes de scroll */
+    margin-top: -2rem;
     /* Margen superior negativo de 3rem */
 }
 
@@ -432,7 +425,7 @@
     /* Fondo blanco */
     transition: transform 0.3s ease;
     /* Transición suave de transformación */
-    overflow-x: hidden;
+    overflow-x: auto;
     /* No scroll horizontal */
     box-sizing: border-box;
     /* Modelo de caja border-box */
@@ -440,6 +433,37 @@
     /* Rompe palabras largas */
     white-space: pre-wrap;
     /* Mantiene saltos de línea */
+}
+
+/* Personalización de scrollbar para mensajes */
+.favorite-message::-webkit-scrollbar {
+    height: 8px;
+    /* Alto del scrollbar de 8px */
+}
+
+.favorite-message::-webkit-scrollbar-thumb {
+    background-color: rgb(57, 58, 58);
+    /* Color del thumb gris oscuro */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+}
+
+.favorite-message::-webkit-scrollbar-track {
+    background-color: white;
+    /* Color del track blanco */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+}
+
+.favorite-message::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color del thumb a azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el thumb */
+    cursor: grab;
+    /* Cursor tipo grab */
 }
 
 /* Efecto hover para mensajes */

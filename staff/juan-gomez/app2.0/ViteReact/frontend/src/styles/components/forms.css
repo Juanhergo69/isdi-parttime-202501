@@ -16,10 +16,8 @@
     /* Sombra azul difuminada */
     padding: 20px;
     /* Espaciado interno de 20px en todos los lados */
-    width: 100%;
+    width: 90%;
     /* Ocupa el 100% del ancho disponible */
-    max-width: 500px;
-    /* Ancho máximo limitado a 500px */
     font-family: 'Zen Dots';
     /* Tipo de letra personalizado */
     font-size: 1rem;
@@ -116,4 +114,105 @@
     /* Cambia el fondo a azul */
     transform: scale(1.05);
     /* Escala el botón al 105% de su tamaño */
+}
+
+/* Media Queries para responsive design */
+
+/* Tablets y pantallas medianas (768px - 1024px) */
+@media (max-width: 1024px) {
+    .form {
+        width: 80%;
+        padding: 18px;
+    }
+    
+    .form input[type='email'],
+    .form input[type='password'],
+    .form input[type='text'] {
+        font-size: 1.3rem;
+        padding: 8px;
+    }
+    
+    .form input[type="submit"] {
+        padding: 14px 28px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Tablets pequeñas (576px - 768px) */
+@media (max-width: 768px) {
+    .form {
+        width: 85%;
+        padding: 15px;
+        border-radius: 15px;
+    }
+    
+    .form label {
+        font-size: 0.9rem;
+    }
+    
+    .form input[type="submit"] {
+        max-width: 250px;
+    }
+}
+
+/* Móviles grandes (400px - 576px) */
+@media (max-width: 576px) {
+    .form {
+        width: 90%;
+        padding: 12px;
+        gap: 0.4rem;
+    }
+    
+    .form input[type='email'],
+    .form input[type='password'],
+    .form input[type='text'] {
+        font-size: 1.1rem;
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .form input[type="submit"] {
+        padding: 12px 24px;
+        font-size: 1rem;
+        max-width: 220px;
+    }
+}
+
+/* Móviles pequeños (hasta 400px) */
+@media (max-width: 400px) {
+    .form {
+        width: 95%;
+        padding: 10px;
+        border-radius: 12px;
+    }
+    
+    .form label {
+        font-size: 0.8rem;
+        margin-bottom: 6px;
+    }
+    
+    .form input[type='email'],
+    .form input[type='password'],
+    .form input[type='text'] {
+        font-size: 1rem;
+        padding: 6px;
+    }
+    
+    .form input[type="submit"] {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        max-width: 200px;
+    }
+}
+
+/* Pantallas muy pequeñas (hasta 320px) */
+@media (max-width: 320px) {
+    .form {
+        padding: 8px;
+    }
+    
+    .form input[type="submit"] {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
 }

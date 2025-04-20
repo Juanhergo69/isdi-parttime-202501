@@ -259,12 +259,14 @@
     /* Usa flexbox */
     justify-content: center;
     /* Centra horizontalmente */
-    padding: 2rem;
-    /* Relleno interno de 2rem */
-    margin-top: 1.7rem;
+    align-items: start;
+    /* Alinea los elementos al comienzo */
+    margin-top: 6rem;
     /* Margen superior para evitar solapamiento con header */
     width: 100%;
-    /* Ancho completo */
+    /* Ancho del 100% */
+    height: 100%;
+    /* Alto del 100% */
 }
 
 /* Estilo del formulario */
@@ -285,12 +287,10 @@
     /* Sombra azul */
     padding: 20px;
     /* Relleno interno */
-    width: 700px;
-    /* Ancho fijo */
-    max-height: 700px;
-    /* Altura máxima */
-    margin: 20px 0;
-    /* Margen vertical */
+    width: 35%;
+    /* Ancho fijo del 35% */
+    height: 90%;
+    /* Altura máxima del 100% */
 }
 
 /* Contenedor de mensajes con scroll */
@@ -305,7 +305,7 @@
     /* Fondo blanco */
     overflow-y: auto;
     /* Scroll vertical si es necesario */
-    max-height: 600px;
+    max-height: 590px;
     /* Altura máxima antes de scroll */
     margin-top: -2rem;
     /* Margen negativo para ajustar posición */
@@ -648,14 +648,45 @@
     /* Fondo blanco */
     transition: transform 0.3s ease;
     /* Transición suave */
-    overflow-x: hidden;
-    /* Oculta scroll horizontal */
+    overflow-x: auto;
+    /* Scroll horizontal */
     box-sizing: border-box;
     /* Modelo de caja incluye padding/border */
     word-wrap: break-word;
     /* Rompe palabras largas */
     white-space: pre-wrap;
     /* Respeta saltos de línea */
+}
+
+/* Personalización de scrollbar para mensajes */
+.message::-webkit-scrollbar {
+    height: 8px;
+    /* Alto del scrollbar de 8px */
+}
+
+.message::-webkit-scrollbar-thumb {
+    background-color: rgb(57, 58, 58);
+    /* Color del thumb gris oscuro */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+}
+
+.message::-webkit-scrollbar-track {
+    background-color: white;
+    /* Color del track blanco */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+}
+
+.message::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color del thumb a azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el thumb */
+    cursor: grab;
+    /* Cursor tipo grab */
 }
 
 /* Efecto hover para mensajes */

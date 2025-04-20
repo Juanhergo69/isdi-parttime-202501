@@ -22,14 +22,10 @@
     /* Sombra exterior azul */
     border: 1px solid rgb(0, 142, 182);
     /* Borde azul de 1px */
-    width: 100%;
+    width: 50%;
     /* Ancho del 100% */
-    max-width: 80rem;
-    /* Ancho máximo de 45rem */
     margin: auto;
     /* Centrado automático horizontal */
-    position: relative;
-    /* Posicionamiento relativo */
     top: 50%;
     /* Posiciona el elemento 50% desde arriba */
 }
@@ -38,10 +34,10 @@
 .landingImg {
     width: 100%;
     /* Ancho del 100% del contenedor */
-    max-width: 300px;
+    max-width: 200px;
     /* Ancho máximo de 200px */
-    border-radius: 20px;
-    /* Bordes redondeados de 20px */
+    border-radius: 15px;
+    /* Bordes redondeados de 15px */
     transition: transform 0.3s ease;
     /* Transición suave de transformación durante 0.3s */
 }
@@ -62,7 +58,7 @@
     /* Margen inferior de 20px */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
-    font-size: 2rem;
+    font-size: 1.5rem;
     /* Tamaño de fuente de 1.5rem */
     text-shadow: 2px 2px 4px rgb(0, 142, 182);
     /* Sombra de texto azul */
@@ -150,4 +146,95 @@
     /* Cambia color de fondo a azul */
     transform: scale(1.05);
     /* Escala el botón al 105% */
+}
+
+/* Para tablets y pantallas medianas */
+@media (max-width: 1024px) {
+    .landingContainer {
+        width: 70%;
+        padding: 80px;
+        gap: 50px;
+    }
+    
+    .landingMsg {
+        font-size: 1.5rem;
+    }
+    
+    .landingButtonSignUp,
+    .landingButtonSignIn {
+        padding: 14px 28px;
+        font-size: 1.3rem;
+    }
+}
+
+/* Para tablets pequeñas */
+@media (max-width: 768px) {
+    .landingContainer {
+        width: 80%;
+        padding: 60px;
+        gap: 40px;
+    }
+    
+    .landingMsg {
+        font-size: 1.5rem;
+    }
+    
+    .landingButtonContainer {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .landingButtonSignUp,
+    .landingButtonSignIn {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+/* Para móviles grandes */
+@media (max-width: 600px) {
+    .landingContainer {
+        width: 90%;
+        padding: 40px 20px;
+        gap: 30px;
+    }
+    
+    .landingMsg {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .landingImg {
+        max-width: 150px;
+    }
+    
+    .landingButtonSignUp,
+    .landingButtonSignIn {
+        padding: 12px 24px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Para móviles pequeños */
+@media (max-width: 480px) {
+    .landingContainer {
+        padding: 30px 15px;
+        gap: 25px;
+    }
+    
+    .landingMsg {
+        font-size: 1.5rem;
+    }
+    
+    .landingImg {
+        max-width: 120px;
+    }
+    
+    .landingButtonSignUp,
+    .landingButtonSignIn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        max-width: 200px;
+    }
 }

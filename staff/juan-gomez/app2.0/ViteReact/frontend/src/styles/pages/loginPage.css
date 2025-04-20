@@ -12,8 +12,8 @@
 
 /* Estilo para imagen en botón */
 .loginImgButton img {
-    width: 150px;
-    /* Ancho fijo de 150px */
+    width: 125px;
+    /* Ancho fijo de 125px */
     height: auto;
     /* Altura automática */
     border-radius: 10px;
@@ -67,20 +67,14 @@
     /* Sombra azul */
     padding: 20px;
     /* Relleno interno de 20px */
-    width: 100%;
-    /* Ancho del 100% */
-    max-width: 600px;
-    /* Ancho máximo de 600px */
+    width: 30%;
+    /* Ancho del 30% */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
     margin: auto;
     /* Centrado automático */
     position: relative;
     /* Posicionamiento relativo */
-    top: 2%;
-    /* Posición desde arriba del 2% */
-    transform: translateY(-2%);
-    /* Ajuste fino de posición vertical */
 }
 
 /* Placeholder para formularios */
@@ -272,4 +266,164 @@
 .login-password-toggle:hover {
     color: rgb(0, 142, 182);
     /* Cambia color a azul */
+}
+
+/* Media Queries para responsive design */
+
+/* Pantallas grandes (1200px o menos) */
+@media (max-width: 1200px) {
+    .loginForm {
+        width: 40%;
+    }
+    
+    .login-password-input-container input {
+        font-size: 1.3rem;
+    }
+    
+    .loginButtonGoToRegister {
+        padding: 14px 28px;
+        font-size: 1.1rem;
+    }
+    
+    .loginForm ::placeholder {
+        font-size: 20px;
+    }
+}
+
+/* Tablets (992px o menos) */
+@media (max-width: 992px) {
+    .loginForm {
+        width: 50%;
+        padding: 18px;
+    }
+    
+    .loginImgButton img {
+        width: 110px;
+        margin-bottom: 15px;
+    }
+    
+    .checkbox {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .checkbox-label {
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablets pequeñas (768px o menos) */
+@media (max-width: 768px) {
+    .loginForm {
+        width: 65%;
+        padding: 15px;
+        gap: 1.3rem;
+    }
+    
+    .login-password-input-container input {
+        font-size: 1.2rem;
+        padding: 8px 35px 8px 8px;
+    }
+    
+    .loginButtonGoToRegister {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+    
+    .loginMsg {
+        font-size: 0.8rem;
+    }
+    
+    .loginForm ::placeholder {
+        font-size: 18px;
+    }
+}
+
+/* Móviles grandes (576px o menos) */
+@media (max-width: 576px) {
+    .loginForm {
+        width: 80%;
+        padding: 12px;
+        gap: 1rem;
+    }
+    
+    .loginImgButton img {
+        width: 95px;
+        margin-bottom: 12px;
+    }
+    
+    .login-password-input-container input {
+        font-size: 1.1rem;
+    }
+    
+    .login-password-toggle {
+        font-size: 1rem;
+    }
+    
+    .checkbox {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .checkbox:checked::after {
+        font-size: 12px;
+    }
+}
+
+/* Móviles pequeños (400px o menos) */
+@media (max-width: 400px) {
+    .loginForm {
+        width: 90%;
+        padding: 10px;
+        border-radius: 12px;
+    }
+    
+    .loginImgButton img {
+        width: 85px;
+    }
+    
+    .loginMsg {
+        font-size: 0.7rem;
+    }
+    
+    .login-password-input-container input {
+        font-size: 1rem;
+        padding: 6px 30px 6px 6px;
+    }
+    
+    .loginButtonGoToRegister {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        max-width: 250px;
+    }
+    
+    .checkbox-container {
+        margin-bottom: 0.8rem;
+    }
+    
+    .checkbox-label {
+        font-size: 0.8rem;
+    }
+}
+
+/* Pantallas muy pequeñas (320px o menos) */
+@media (max-width: 320px) {
+    .loginForm {
+        padding: 8px;
+        gap: 0.8rem;
+    }
+    
+    .loginImgButton img {
+        width: 75px;
+        margin-bottom: 10px;
+    }
+    
+    .loginButtonGoToRegister {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+    
+    .login-password-input-container input {
+        font-size: 0.9rem;
+    }
 }

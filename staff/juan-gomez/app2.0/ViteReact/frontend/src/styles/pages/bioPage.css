@@ -8,8 +8,6 @@
     /* Altura igual al 100% del viewport (ventana visible) */
     width: 100%;
     /* Ancho del 100% del contenedor padre */
-    overflow: hidden;
-    /* Oculta cualquier contenido que desborde el contenedor */
 }
 
 /* Contenedor del encabezado de la biografía */
@@ -263,10 +261,14 @@
     /* Activa Flexbox */
     justify-content: center;
     /* Centra horizontalmente */
-    padding: 2rem;
-    /* Relleno interno de 2rem */
-    margin-top: 2rem;
-    /* Margen superior de 2rem */
+    align-items: start;
+    /* Alinea los elementos al comienzo */
+    margin-top: 6rem;
+    /* Margen superior */
+    width: 100%;
+    /* Ancho del 100% */
+    height: 100%;
+    /* Alto del 100% */
 }
 
 /* Formulario de biografía */
@@ -277,10 +279,6 @@
     /* Organiza elementos en columna */
     align-items: center;
     /* Centra horizontalmente */
-    margin-top: 0.1rem;
-    /* Margen superior mínimo */
-    left: 64rem;
-    /* Posición desde la izquierda (podría ser problemático) */
     font-size: 1rem;
     /* Tamaño de fuente base */
     background-color: white;
@@ -291,14 +289,12 @@
     /* Bordes redondeados */
     box-shadow: 0 4px 10px rgb(0, 142, 182);
     /* Sombra azul */
-    gap: 1rem;
-    /* Espacio entre elementos hijos */
     padding: 20px;
     /* Relleno interno */
-    width: 700px;
-    /* Ancho fijo */
-    height: 700px;
-    /* Altura fija */
+    width: 35%;
+    /* Ancho fijo del 35% */
+    height: 90%;
+    /* Altura fija del 90% */
 }
 
 /* Contenedor de mensajes de biografía */
@@ -313,13 +309,9 @@
     /* Fondo blanco */
     overflow-y: auto;
     /* Scroll vertical si es necesario */
-    overflow-x: hidden;
-    /* No permite scroll horizontal */
-    height: calc(600px - 1px);
-    /* Altura calculada */
-    transition: transform 0.3s ease;
-    /* Transición suave */
-    margin-top: -3rem;
+    max-height: 590px;
+    /* Altura máxima antes de scroll */
+    margin-top: -2rem;
     /* Margen superior negativo (solapa elementos) */
 }
 
@@ -448,14 +440,45 @@
     /* Fondo blanco */
     transition: transform 0.3s ease;
     /* Transición suave */
-    overflow-x: hidden;
-    /* No scroll horizontal */
+    overflow-x: auto;
+    /* Scroll horizontal */
     box-sizing: border-box;
     /* Modelo de caja que incluye padding en el ancho */
     word-wrap: break-word;
     /* Rompe palabras largas */
     white-space: pre-wrap;
     /* Mantiene saltos de línea y espacios */
+}
+
+/* Personalización de scrollbar para mensajes */
+.bio-message::-webkit-scrollbar {
+    height: 8px;
+    /* Alto del scrollbar de 8px */
+}
+
+.bio-message::-webkit-scrollbar-thumb {
+    background-color: rgb(57, 58, 58);
+    /* Color del thumb gris oscuro */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+    transition: transform 0.3s ease;
+    /* Transición suave de transformación */
+}
+
+.bio-message::-webkit-scrollbar-track {
+    background-color: white;
+    /* Color del track blanco */
+    border-radius: 5px;
+    /* Bordes redondeados de 5px */
+}
+
+.bio-message::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    /* Cambia color del thumb a azul */
+    transform: scale(1.02);
+    /* Escala ligeramente el thumb */
+    cursor: grab;
+    /* Cursor tipo grab */
 }
 
 /* Efecto hover para mensajes */
