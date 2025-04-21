@@ -804,3 +804,87 @@
     box-shadow: 0 0 10px rgb(0, 142, 182);
     /* Sombra azul */
 }
+
+/* Media Queries para responsividad */
+@media (max-width: 1200px) {
+    .messagesForm {
+        width: 35%;
+    }
+}
+
+@media (max-width: 992px) {
+    .messagesForm {
+        width: 35%;
+    }
+    
+    .messagesMsg {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .messagesHeaderContainer {
+        padding: 20px;
+        margin-top: 1.5rem;
+    }
+    
+    .messagesForm {
+        width: 60%;
+    }
+    
+    .messagesMsg {
+        font-size: 1.6rem;
+    }
+    
+    .messagesMenuDropContainer {
+        top: 5.2rem;
+        right: -0.1rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .messagesHeaderContainer {
+        padding: 15px;
+        margin-top: 1rem;
+    }
+    
+    .messagesForm {
+        width: 90%;
+        padding: 15px;
+    }
+    
+    .messagesMsg {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+        
+    .messagesMenuButton {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2rem;
+    }
+    
+    .messagesMenuButton-initial {
+        font-size: 1.2rem;
+    }
+    
+    .messagesMenuButton-content i {
+        font-size: 1.2rem;
+    }
+    
+    .messagesMenuDropContainer {
+        top: 4rem;
+        right: -0.1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .messagesMsg {
+        font-size: 1.2rem;
+    }
+    
+    .messagesMenuButton {
+        width: 50px;
+        height: 50px;
+    }
+}

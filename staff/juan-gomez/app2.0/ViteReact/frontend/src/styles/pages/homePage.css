@@ -463,34 +463,30 @@
 
 /* Botón de submit en formulario */
 .homeSendMsgForm input[type='submit'] {
-    display: flex;
-    /* Activa flexbox */
-    flex-direction: column;
-    /* Organiza elementos en columna */
-    align-items: center;
-    /* Centra elementos horizontalmente */
     background-color: rgb(57, 58, 58);
     /* Fondo gris oscuro */
     color: white;
     /* Texto blanco */
-    border: none;
-    /* Sin borde */
     padding: 8px 16px;
     /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
-    font-size: 1rem;
-    /* Tamaño de fuente de 0.9rem */
     border-radius: 5px;
-    /* Bordes redondeados */
+    /* Bordes muy redondeados */
     cursor: pointer;
     /* Cursor tipo pointer */
-    transition: background-color 0.3s ease;
-    /* Transición suave del color de fondo */
-    width: auto;
-    /* Ancho automático */
     font-family: 'Zen Dots';
     /* Fuente personalizada */
-    transition: transform 0.3s ease;
-    /* Transición suave de transformación */
+    font-size: 1rem;
+    /* Tamaño de fuente de 0.9rem */
+    transition: all 0.3s ease;
+    /* Transición suave para todas las propiedades */
+    display: flex;
+    /* Activa flexbox */
+    align-items: center;
+    /* Centra elementos verticalmente */
+    gap: 8px;
+    /* Espacio de 8px entre elementos */
+    border: none;
+    /* Sin borde */
 }
 
 /* Efecto hover para botón de submit */
@@ -1293,6 +1289,1000 @@
     /* Escala la imagen al 102% */
     box-shadow: 0 0 10px rgb(0, 142, 182);
     /* Sombra azul */
+}
+
+/* Contenedor de la página principal */
+.homePageContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Encabezado de la página principal */
+.homeHeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 1%;
+    padding: 40px;
+    margin-top: 3rem;
+}
+
+/* Contenedor de imagen en home */
+.homeImgContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2.9rem;
+}
+
+/* Estilos para la imagen de la página principal */
+.homeImg {
+    width: 100%;
+    max-width: 100px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Efecto hover para la imagen de home */
+.homeImg:hover {
+    transform: scale(1.05);
+}
+
+/* Estilos para el mensaje de la página principal */
+.homeMsg {
+    color: black;
+    font-family: 'Zen Dots';
+    font-size: 2rem;
+    text-shadow: 8px 8px 16px rgb(255, 255, 255);
+}
+
+/* Botón para alternar formulario de mensaje */
+.home-toggleSendMsgFormButton {
+    height: 40px;
+    width: 100px;
+    align-items: center;
+    background-color: rgb(57, 58, 58);
+    border-radius: 5px;
+    font-family: 'Zen Dots';
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+/* Efecto hover para botón de formulario */
+.home-toggleSendMsgFormButton:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05);
+}
+
+/* Estilos base para el botón de menú */
+.homeMenuButton {
+    background-color: rgb(57, 58, 58);
+    color: white;
+    border: none;
+    padding: 0;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Zen Dots';
+    position: relative;
+    overflow: hidden;
+    z-index: 101;
+}
+
+/* Contenedor interno del botón de menú */
+.homeMenuButton-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilo para botón con avatar */
+.homeMenuButton.with-avatar .menuButton-content {
+    background: transparent;
+}
+
+/* Estilos para el avatar en el botón */
+.homeMenuButton-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Estilo para la inicial (cuando no hay avatar) */
+.homeMenuButton-initial {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* Estilo específico para botón de volver */
+.homeMenuButton.back-button {
+    padding: 0;
+}
+
+.homeMenuButton-content i {
+    font-size: 1.5rem;
+}
+
+/* Efecto hover para el botón de menú */
+.homeMenuButton:hover {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 142, 182);
+    transform: scale(1.05);
+}
+
+/* Contenedor del menú desplegable */
+.homeMenuDropContainer {
+    position: absolute;
+    right: 1.1rem;
+    top: 8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    padding: 6px;
+    border-radius: 5px;
+    width: auto;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    z-index: 100;
+}
+
+/* Estilos para botones del menú desplegable */
+.homeProfileButton,
+.homeMessagesButton,
+.homeFavoritesButton,
+.homeLogoutButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(57, 58, 58);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    min-width: 100px;
+    max-width: 100px;
+    font-family: 'Zen Dots';
+    transition: transform 0.3s ease;
+}
+
+/* Efecto hover para botones del menú */
+.homeProfileButton:hover,
+.homeMessagesButton:hover,
+.homeFavoritesButton:hover,
+.homeLogoutButton:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05);
+}
+
+.homeMsgContainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: start;
+    margin-top: 6rem;
+    height: 100%;
+    width: 100%;
+}
+
+/* Formulario para enviar mensajes */
+.homeSendMsgForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+    background-color: white;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    gap: 0.8rem;
+    padding: 20px;
+    width: 35%;
+    height: 90%;
+}
+
+/* Estilos para placeholders en formulario */
+.homeSendMsgForm ::placeholder {
+    font-family: 'Zen Loop';
+    font-size: 22px;
+}
+
+/* Input de texto en formulario */
+.homeSendMsgForm input[type='text'] {
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid rgb(57, 58, 58);
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: white;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+    font-family: 'Zen Loop';
+    font-size: 1.5rem;
+}
+
+/* Efecto hover para input de texto */
+.homeSendMsgForm input[type='text']:hover {
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
+/* Textarea del formulario */
+.homeSendMsgForm textarea {
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid rgb(57, 58, 58);
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: white;
+    margin-bottom: 10px;
+    text-align: left;
+    vertical-align: top;
+    resize: none;
+    transition: transform 0.3s ease;
+    height: 150px;
+    min-height: 150px;
+    width: 100%;
+    overflow-y: auto;
+    font-family: 'Zen Loop';
+    font-size: 1.5rem;
+}
+
+/* Personalización de scrollbar para textarea */
+.homeSendMsgForm textarea::-webkit-scrollbar {
+    width: 8px;
+    margin-right: 8px;
+}
+
+.homeSendMsgForm textarea::-webkit-scrollbar-thumb {
+    background-color: rgb(57, 58, 58);
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.homeSendMsgForm textarea::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.homeSendMsgForm textarea::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.02);
+    cursor: grab;
+}
+
+/* Efecto hover para textarea */
+.homeSendMsgForm textarea:hover {
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
+/* Botón de submit en formulario */
+.homeSendMsgForm input[type='submit'] {
+    background-color: rgb(57, 58, 58);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Zen Dots';
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+}
+
+/* Efecto hover para botón de submit */
+.homeSendMsgForm input[type='submit']:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05);
+}
+
+/* Sección optimizada para imágenes */
+.home-optimized-image-section {
+    width: 100%;
+    margin-bottom: 5px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Controles de imagen */
+.home-image-controls-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Label para subida de imágenes */
+.home-image-upload-label {
+    background-color: rgb(57, 58, 58);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Zen Dots';
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Efecto hover para label de subida */
+.home-image-upload-label:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.05);
+}
+
+/* Sección de carga de imágenes */
+.home-image-upload-section {
+    width: 100%;
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Controles de subida de imágenes */
+.home-image-upload-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Nombre de archivo para imágenes */
+.home-image-upload-filename {
+    font-family: 'Tektur';
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Información compacta de imagen */
+.home-compact-image-info {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: -15px;
+}
+
+/* Vista previa compacta de imagen */
+.home-compact-image-preview {
+    max-width: 100%;
+    max-height: 80px;
+    object-fit: contain;
+}
+
+/* Vista previa ajustada */
+.home-constrained-preview {
+    width: 100%;
+    max-height: 120px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* Contenedor de vista previa */
+.home-image-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Wrapper de vista previa */
+.home-image-preview-wrapper {
+    width: 100%;
+    max-height: 150px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+}
+
+/* Vista previa de imagen */
+.home-image-preview {
+    max-width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+}
+
+/* Miniaturas de imágenes */
+.home-image-thumbnail {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Contenedor de información de imagen */
+.home-image-info-container {
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Nombre de archivo */
+.home-image-filename {
+    font-family: 'Tektur';
+    font-size: 0.85rem;
+    color: #666;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Vista previa ajustada */
+.home-constrained-preview {
+    width: 100%;
+    max-height: 120px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* Botón para eliminar imagen */
+.home-remove-image-button {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Zen Dots';
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Efecto hover para botón de eliminar */
+.home-remove-image-button:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+/* Icono en botón de eliminar */
+.home-remove-image-button i {
+    font-size: 0.75rem;
+}
+
+/* Formulario de mensajes de usuario */
+.homeUserMsgForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    left: 64rem;
+    font-size: 1rem;
+    background-color: white;
+    border: 1px solid rgb(0, 142, 182);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgb(0, 142, 182);
+    gap: 1rem;
+    padding: 20px;
+    width: 35%;
+    height: 90%;
+}
+
+/* Versión centrada del formulario */
+.homeUserMsgForm.centered {
+    left: 50%;
+    width: 35%;
+    height: 90%;
+}
+
+/* Contenedor de mensajes de usuario */
+.homeUserMsgContainer {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(600px - 1px);
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+/* Personalización de scrollbar para contenedor de mensajes */
+.homeUserMsgContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.homeUserMsgContainer::-webkit-scrollbar-thumb {
+    background-color: rgb(57, 58, 58);
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.homeUserMsgContainer::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.homeUserMsgContainer::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.02);
+    cursor: grab;
+}
+
+/* Estilos para mensajes individuales */
+.homeMessage {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 2px solid rgb(57, 58, 58);
+    border-radius: 5px;
+    background-color: white;
+    transition: transform 0.3s ease;
+    overflow-x: auto;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+/* Efecto hover para mensajes */
+.homeMessage:hover {
+    border-color: rgb(0, 142, 182);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+    transform: scale(1.02);
+}
+
+/* Personalización de scrollbar para mensajes */
+.homeMessage::-webkit-scrollbar {
+    height: 8px;
+}
+
+.homeMessage::-webkit-scrollbar-thumb {
+    background-color: rgb(57, 58, 58);
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.homeMessage::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.homeMessage::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 142, 182);
+    transform: scale(1.02);
+    cursor: grab;
+}
+
+/* Estilo para nombre de usuario en mensaje */
+.home-message-user {
+    font-family: 'Zen Dots';
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Estilo para título de mensaje */
+.home-message-title {
+    font-weight: bold;
+}
+
+/* Estilos comunes para texto de mensaje */
+.home-message-title,
+.home-message-text {
+    font-family: 'Zen Loop';
+    font-size: 2rem;
+}
+
+/* Estilos para elementos de mensaje */
+.home-message-user,
+.home-message-title,
+.home-message-text,
+.home-message-date {
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+/* Estilo para fecha de mensaje */
+.home-message-date {
+    font-size: 0.9rem;
+    font-family: 'Tektur';
+    color: #666;
+}
+
+/* Contenedor de acciones en mensajes */
+.home-message-actions {
+    display: flex;
+    gap: 16px;
+}
+
+/* Mensaje cuando no hay mensajes */
+.home-no-messages {
+    text-align: center;
+    font-family: 'Zen Loop';
+    font-size: 1.5rem;
+    color: #666;
+    margin-top: 2rem;
+}
+
+/* Estilos para lista de nombres de usuarios */
+.home-user-names-list {
+    display: inline;
+}
+
+/*Estilos para el nombre de usuario*/
+.home-user-name {
+    display: inline;
+}
+
+/* Separadores para lista de nombres */
+.home-user-name:not(:last-child)::after {
+    content: ", ";
+}
+
+.home-user-name:last-child::after {
+    content: " and ";
+}
+
+/* Estilo para contador de usuarios */
+.home-users-count {
+    font-style: italic;
+    color: #666;
+    display: inline;
+    margin-left: 4px;
+}
+
+/* Tooltip para mostrar usuarios */
+.home-users-tooltip {
+    visibility: hidden;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    background-color: white;
+    color: black;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 142, 182, 0.3);
+    font-family: 'Tektur';
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 100;
+    border: 1px solid rgb(0, 142, 182);
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+/* Triángulo indicador para tooltip */
+.home-users-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 10px;
+    border-width: 6px;
+    border-style: solid;
+}
+
+/* Color para tooltip de likes */
+.home-users-tooltip.likes-tooltip {
+    border-left: 4px solid green;
+}
+
+.home-users-tooltip.likes-tooltip::after {
+    border-color: green transparent transparent transparent;
+}
+
+/* Color para tooltip de dislikes */
+.home-users-tooltip.dislikes-tooltip {
+    border-left: 4px solid red;
+}
+
+.home-users-tooltip.dislikes-tooltip::after {
+    border-color: red transparent transparent transparent;
+}
+
+/* Contenedores para botones de like/dislike */
+.home-like-container,
+.home-dislike-container,
+.home-favorite-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Muestra tooltip al hacer hover */
+.home-like-container:hover .likes-tooltip,
+.home-dislike-container:hover .dislikes-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Estilos para botones de like/dislike */
+.home-like-button,
+.home-dislike-button,
+.home-favorite-button {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 8px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Tektur';
+}
+
+/* Estilo para icono de like vacío */
+.far.fa-thumbs-up {
+    color: black;
+}
+
+/* Estilo para icono de like lleno */
+.fas.fa-thumbs-up {
+    color: green;
+}
+
+/* Efecto hover para botón de like */
+.home-like-button:hover {
+    transform: scale(1.1);
+}
+
+/* Contador de likes */
+.home-message-likes {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Estilo para icono de dislike vacío */
+.far.fa-thumbs-down {
+    color: black;
+}
+
+/* Estilo para icono de dislike lleno */
+.fas.fa-thumbs-down {
+    color: red;
+}
+
+/* Efecto hover para botón de dislike */
+.home-dislike-button:hover {
+    transform: scale(1.1);
+}
+
+.far.fa-heart {
+    color: black;
+}
+
+.fas.fa-heart {
+    color: red;
+}
+
+/* Contador de dislikes */
+.home-message-dislikes {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Contenedor de imagen en mensajes */
+.home-message-image-container {
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Imagen en mensajes */
+.home-message-image {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+/* Efecto hover para imagen en mensajes */
+.home-message-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgb(0, 142, 182);
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 1200px) {
+    .homeSendMsgForm,
+    .homeUserMsgForm {
+        width: 30%;
+    }
+}
+
+@media (max-width: 992px) {
+    .homeSendMsgForm,
+    .homeUserMsgForm {
+        width: 30%;
+    }
+    
+    .homeMsg {
+        font-size: 1.8rem;
+    }
+    
+    .home-message-title,
+    .home-message-text {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .homeHeaderContainer {
+        padding: 20px;
+        margin-top: 1.5rem;
+    }
+    
+    .homeSendMsgForm,
+    .homeUserMsgForm,
+    .homeUserMsgForm.centered {
+        width: 70%;
+    }
+    
+    .homeMsgContainer {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        margin-top: 6rem;
+    }
+    
+    .homeMsg {
+        font-size: 1.6rem;
+    }
+    
+    .home-message-title,
+    .home-message-text {
+        font-size: 1.6rem;
+    }
+    
+    .homeMenuDropContainer {
+        top: 5.2rem;
+        right: -0.1rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .homeHeaderContainer {
+        padding: 15px;
+        margin-top: 1rem;
+    }
+    
+    .homeSendMsgForm,
+    .homeUserMsgForm {
+        width: 90%;
+        padding: 15px;
+    }
+    
+    .homeMsg {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+    
+    .home-message-title,
+    .home-message-text {
+        font-size: 1.4rem;
+    }
+    
+    .homeSendMsgForm input[type='text'],
+    .homeSendMsgForm textarea {
+        font-size: 1.2rem;
+    }
+    
+    .homeSendMsgForm ::placeholder {
+        font-size: 18px;
+    }
+    
+    .home-image-controls-row {
+        flex-direction: column;
+    }
+    
+    .home-image-upload-label,
+    .homeSendMsgForm input[type='submit'] {
+        width: 50%;
+        justify-content: center;
+    }
+    
+    .homeMenuButton {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2rem;
+    }
+    
+    .homeMenuButton-initial {
+        font-size: 1.2rem;
+    }
+    
+    .homeMenuButton-content i {
+        font-size: 1.2rem;
+    }
+    
+    .home-toggleSendMsgFormButton {
+        width: 90px;
+        font-size: 0.9rem;
+    }
+
+    .homeMenuDropContainer {
+        top: 4rem;
+        right: -0.1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .homeMsg {
+        font-size: 1.2rem;
+    }
+    
+    .home-message-title,
+    .home-message-text {
+        font-size: 1.2rem;
+    }
+    
+    .homeSendMsgForm input[type='text'],
+    .homeSendMsgForm textarea {
+        font-size: 1rem;
+    }
+    
+    .homeSendMsgForm ::placeholder {
+        font-size: 16px;
+    }
+    
+    .homeMenuButton {
+        width: 50px;
+        height: 50px;
+    }
 }
 
 
