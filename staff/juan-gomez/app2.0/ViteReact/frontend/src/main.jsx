@@ -10,6 +10,9 @@ import { BrowserRouter } from 'react-router-dom'
 //Importa el componente principal App de tu aplicación//
 import App from './App'
 
+//Importa ModalProvider//
+import { ModalProvider } from './components/ModalContext'
+
 //Importa los estilos globales CSS para toda la aplicación//
 import '../src/styles/base/generals.css'
 
@@ -24,8 +27,11 @@ ReactDOM.createRoot(document.getElementById('app'))
         Permite la navegación mediante URLs sin recargar la página
       */}
       <BrowserRouter>
-        {/* Componente principal de la aplicación */}
-        <App />
+        {/* Modal Provider permite aplicar modales reactivos a la app */}
+        <ModalProvider>
+          {/* Componente principal de la aplicación */}
+          <App />
+        </ModalProvider>
       </BrowserRouter>
     </React.StrictMode>
   )

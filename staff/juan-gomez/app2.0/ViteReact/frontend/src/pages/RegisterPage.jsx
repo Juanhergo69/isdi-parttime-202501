@@ -2,6 +2,8 @@
 import React from 'react'
 //Importa el hook useState de React para manejar estado en componentes funcionales//
 import { useState } from 'react'
+//Importa useModal para manejar renderizados de modales según context provider de React//
+import { useModal } from '../components/ModalContext'
 //Importa el componente Form que contiene la lógica de los formularios//
 import Form from '../components/Forms'
 //Importa el componente personalizado para inputs de contraseña//
@@ -24,10 +26,13 @@ const RegisterPage = ({ navigation }) => {
     //Estado para controlar visibilidad de confirmación de contraseña//
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
+    //Obtenemos la función para mostrar modales//
+    const { createModal } = useModal()
+
     //Función que maneja el envío del formulario (recibe formData como parámetro)//
     const handleSubmit = (formData) => {
         //Ejecuta handleRegister y obtiene success y user del resultado//
-        const { success, user } = handleRegister(formData)
+        const { success, user, error } = handleRegister(formData)
         
         //Si el registro fue exitoso y existe user//
         if (success && user) {
@@ -35,6 +40,9 @@ const RegisterPage = ({ navigation }) => {
             sessionStorage.setItem('id', user.id)
             //Navega a Home usando la función pasada en navigation prop//
             navigation.navigateToHome()
+        } else if (error) {
+            //Mostramos el modal con el mensaje de error//
+            createModal(error)
         }
     }
 

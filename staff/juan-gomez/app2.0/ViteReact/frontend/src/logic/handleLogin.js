@@ -11,36 +11,6 @@ export const getUsers = () => {
     return usersJson ? JSON.parse(usersJson) : [] //Convierte a objeto JS o retorna array vacío//
 }
 
-//Crea y muestra un modal con mensaje//
-export const createModal = (message, onCloseCallback) => {
-    //Crea elemento div para el modal//
-    const modal = document.createElement('div');
-    modal.className = 'modal' //Clase CSS para estilos//
-
-    //HTML interno del modal. Muestra el mensaje recibido//
-    modal.innerHTML = `
-        <div class="modal-content">
-            <p>${message}</p> 
-        </div>
-    `
-
-    //Agrega el modal al body del documento//
-    document.body.appendChild(modal)
-
-    //Función para cerrar el modal//
-    const closeModal = () => {
-        modal.remove() //Elimina el modal del DOM//
-        if (onCloseCallback) onCloseCallback() //Ejecuta callback si existe//
-    }
-
-    //Cierra al hacer click en cualquier parte del modal//
-    modal.addEventListener('click', closeModal)
-    //Cierra automáticamente después de 6 segundos//
-    setTimeout(closeModal, 6000)
-
-    return modal //Devuelve el modal creado//
-}
-
 //Exporta la función handleLogin para que pueda ser utilizada en otros módulos//
 export const handleLogin = (formData) => {
     //Obtiene la lista de usuarios registrados desde el almacenamiento (localStorage)//
@@ -50,29 +20,27 @@ export const handleLogin = (formData) => {
     const user = users.find(user => user.email === formData.email)
 
     //Si no se encontró ningún usuario con ese email (!user es true)//
-    if (!user) {
-        // Muestra un modal de error indicando que el email no está registrado
-        createModal('The email is not registered yet. Please, create an account first')
-        
+    if (!user) { 
         //Retorna un objeto indicando que://
         //- El login no fue exitoso (success: false)//
+        //- Muestra error indicando que el email no está registrado//
         //- Debe redirigir al usuario a la página de registro (shouldRedirect: true)//
         return { 
             success: false,
+            error: 'The email is not registered yet. Please, create an account first',
             shouldRedirect: true
         }
     }
 
     //Si la contraseña proporcionada no coincide con la contraseña almacenada del usuario//
     if (user.password !== formData.password) {
-        //Muestra un modal de error indicando que la contraseña es incorrecta//
-        createModal('Incorrect password, Please, try again')
-        
         //Retorna un objeto indicando que://
         //- El login no fue exitoso (success: false)//
+        //- Muestra un error indicando que la contraseña es incorrecta//
         //- No debe redirigir (shouldRedirect: false) porque solo necesita reintentar//
         return { 
             success: false,
+            error: 'Incorrect password, Please, try again',
             shouldRedirect: false
         }
     }

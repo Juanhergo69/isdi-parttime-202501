@@ -13,12 +13,22 @@ export const getUsers = () => {
 
 //Función para guardar el estado del usuario//
 export const saveUserStatus = (userId, status) => {
-    const users = getUsers();
+    //Obtiene todos los usuarios almacenados actualmente//
+    const users = getUsers()
+
+    //Crea un nuevo array de usuarios con el estado actualizado//
     const updatedUsers = users.map(user => {
+        //Busca el usuario específico por ID//
         if (user.id === userId) {
+            //Si encuentra al usuario, devuelve una copia con el nuevo estado//
             return { ...user, status }
         }
+        //Para otros usuarios, los devuelve sin cambios//
         return user
     })
+
+    //Guarda el array actualizado de usuarios en el localStorage//
+    //Convierte el objeto JavaScript a formato JSON//
+    //Usa la clave 'users' para almacenarlo//
     localStorage.setItem('users', JSON.stringify(updatedUsers))
 }

@@ -56,12 +56,51 @@ a:hover {
     /* Bordes redondeados de 20px */
     width: fit-content;
     /* Ancho según contenido */
-    white-space: nowrap;
-    /* Evita saltos de línea */
 }
 
 /* Efecto hover para el modal */
 .modal:hover {
     cursor: pointer;
     /* Cambia el cursor a pointer */
+}
+
+/* Estilos para contenedor de botones de modal */
+.modal-actions {
+    display: flex;
+    /* Activa flexbox */
+    justify-content: flex-end;
+    /* Coloca al final */
+    gap: 10px;
+    /* Espacio entre elementos */
+    margin-top: 20px;
+    /* Margen superior */
+}
+
+/* Estilos para botón confirm y cancel */
+.modal-confirm,
+.modal-cancel {
+    padding: 8px 16px;
+    /* Relleno interno de 8px arriba/abajo y 16px izquierda/derecha */
+    border: none;
+    /* Sin borde */
+    border-radius: 4px;
+    /* Bordes redondeados */
+    cursor: pointer;
+    /* Cursor tipo pointer */
+}
+
+/* Estilos específicos para botón confirm */
+.modal-confirm {
+    background-color: #4CAF50;
+    /* Color de fondo */
+    color: white;
+    /* Color de texto */
+}
+
+/* Estilos específicos para botón cancel */
+.modal-cancel {
+    background-color: #f44336;
+    /* Color de fondo */
+    color: white;
+    /* Color de texto */
 }

@@ -2,6 +2,8 @@
 import React from 'react'
 //Importa funciones useState y useEffect para crear estados y efectos//
 import { useState, useEffect } from 'react'
+//Importa useModal//
+import { useModal } from '../components/ModalContext'
 //Importa getUsers//
 import { getUsers } from '../logic/getUsers'
 //Importa saveUsers//
@@ -24,13 +26,14 @@ import ProfileStatusForm from '../components/ProfileStatusForm'
 import ProfileForm from '../components/ProfileForm'
 //Importa validateForm//
 import { validateForm } from '../utils/validators'
-//Importa createModal//
-import { createModal } from '../utils/createModal'
 //Importa estilos CSS//
 import '../styles/pages/profilePage.css'
 
 //Define el componente funcional ProfilePage que recibe props de navegación//
 const ProfilePage = ({ navigation }) => {
+    //Obtenemos la función para mostrar modales//
+    const { createModal } = useModal()
+
     //Obtiene la lista completa de usuarios//
     const users = getUsers()
 
@@ -60,7 +63,7 @@ const ProfilePage = ({ navigation }) => {
         password: '',                                              //Contraseña vacía por defecto//
         confirmPassword: ''                                        //Confirmación vacía por defecto//
     })
- 
+
     //Estado para manejar errores de validación//
     const [errors, setErrors] = useState({})
 
@@ -73,7 +76,7 @@ const ProfilePage = ({ navigation }) => {
     //Estado para controlar redirección explícita//
     const [shouldRedirect, setShouldRedirect] = useState(false)
 
-   
+
     //Efecto para manejar redirección//
     useEffect(() => {
         if (shouldRedirect) {
@@ -115,8 +118,8 @@ const ProfilePage = ({ navigation }) => {
             setSelectedImage(file)
             //Llama al handler de cambio de imagen pasando el archivo y un callback//
             handleImageChange(file, (result) => {
-            //Cuando el handler completa la conversión, guarda el resultado (base64) en el estado para previsualización//
-            setImagePreview(result)
+                //Cuando el handler completa la conversión, guarda el resultado (base64) en el estado para previsualización//
+                setImagePreview(result)
             })
         }
     }
@@ -158,7 +161,7 @@ const ProfilePage = ({ navigation }) => {
         const saveProfile = (usersToSave) => {
             saveUsers(usersToSave)                                  //Guarda los usuarios actualizados//
             createModal('Profile updated successfully!', () => {
-            setShouldRedirect(true)                                 //Activa la redirección después de cerrar el modal//
+                setShouldRedirect(true)                             //Activa la redirección después de cerrar el modal//
             })
         }
 
@@ -188,9 +191,7 @@ const ProfilePage = ({ navigation }) => {
 
             //Inicia la lectura del archivo como URL de datos//
             reader.readAsDataURL(selectedImage)
-        }
-        //Manejo cuando se elimina la imagen existente//
-        else if (imagePreview === null) {
+        } else if (imagePreview === null) { //Manejo cuando se elimina la imagen existente//
             //Crea una versión de los usuarios sin el avatar//
             const updatedUsersWithoutAvatar = updatedUsers.map(user => {
                 if (user.id === loggedUserId) {
@@ -224,8 +225,8 @@ const ProfilePage = ({ navigation }) => {
         navigation.navigateToLogin()
     }
 
-     //Función para llamar a una Api externa//
-     const RandomJoke = () => {
+    //Función para llamar a una Api externa//
+    const RandomJoke = () => {
         //Crea una nueva instancia de XMLHttpRequest para hacer peticiones HTTP//
         const xhr = new XMLHttpRequest()
 
@@ -274,23 +275,26 @@ const ProfilePage = ({ navigation }) => {
 
     //Función para borrar completamente la cuenta del usuario//
     const OnDeleteAccount = () => {
-        const confirmDelete = window.confirm(
-            'Are you sure you want to delete your account? ' +
-            'This action cannot be undone and will permanently remove all your data.'
+        //Usamos createModal para mostrar la confirmación//
+        createModal(
+            'Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.',
+            () => {
+                try {
+                    //Intenta eliminar la cuenta//
+                    const success = handleDeleteAccount()
+                    if (success) { //Si lo consigue//
+                        createModal('Account deleted successfully', () => { //Muestra confirmación de éxito//
+                            navigation.navigateTo('RegisterPage')           //Navega a register//
+                        })
+                    }
+                } catch (error) {
+                    //Muestra error si falla la eliminación//
+                    createModal(`Error deleting account: ${error.message}`)
+                }
+            },
+            'Confirm Deletion', //Título personalizado//
+            true //Mostrar botón de cancelar//
         )
-    
-        if (!confirmDelete) return
-    
-        try {
-            const success = handleDeleteAccount()
-            if (success) {
-                createModal('Account deleted successfully', () => {
-                    navigation.navigateTo('RegisterPage')
-                })
-            }
-        } catch (error) {
-            createModal(`Error deleting account: ${error.message}`)
-        }
     }
 
     //Maneja cambios en los inputs del formulario//
@@ -299,18 +303,18 @@ const ProfilePage = ({ navigation }) => {
 
         //Actualiza el estado del formulario manteniendo los valores anteriores//
         setFormData(prev => ({
-        ...prev,
-        [name]: value
-    }))
-
-    //Limpia el error correspondiente si existe//
-    if (errors[name]) {
-        setErrors(prev => ({
             ...prev,
-            [name]: ''
+            [name]: value
         }))
+
+        //Limpia el error correspondiente si existe//
+        if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }))
+        }
     }
-}
 
     //Retorna la estructura JSX del componente//
     return (
@@ -321,7 +325,7 @@ const ProfilePage = ({ navigation }) => {
             - Título de la página
             - Menú de usuario con avatar
             - Botón para mostrar formulario de estado */}
-            <ProfileHeader 
+            <ProfileHeader
                 loggedUser={loggedUser}               //Objeto con datos del usuario logueado//
                 navigation={navigation}               //Objeto para manejar navegación entre páginas//
                 onLogout={onLogout}                   //Función para cerrar sesión//

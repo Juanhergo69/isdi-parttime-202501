@@ -2,6 +2,8 @@
 import React from 'react'
 //Importa los hooks useState y useEffect de React//
 import { useState, useEffect } from 'react'
+//Importa useModal para manejar renderizados de modales según context provider de React//
+import { useModal } from '../components/ModalContext'
 //Importa getMessages//
 import { getMessages } from '../logic/getMessages'
 //Importa getLoggedUserId//
@@ -41,6 +43,9 @@ const HomePage = ({ navigation }) => {
     const [selectedImage, setSelectedImage] = useState(null)
     //Estado para almacenar la previsualización de la imagen
     const [imagePreview, setImagePreview] = useState(null)
+
+    //Obtenemos la función para mostrar modales//
+    const { createModal } = useModal()
 
     //Obtiene todos los usuarios registrados//
     const users = getUsers()
@@ -140,16 +145,16 @@ const HomePage = ({ navigation }) => {
         //- Los datos del formulario//
         //- El ID del usuario logueado//
         //- La imagen seleccionada (puede ser null)//
-        //- Un callback que se ejecutará cuando el mensaje se guarde exitosamente//
-        const success = handleSubmitMessage(formData, loggedUserId, selectedImage, () => {
-            //Callback: resetea el formulario cuando el mensaje se guarda correctamente//
-            resetForm()
+        //- Un callback de resultado que se ejecutará cuando el mensaje se guarde exitosamente//
+        handleSubmitMessage(formData, loggedUserId, selectedImage, (result) => {
+            if (result.success) {
+                createModal(result.message) //Muestra el modal de exito//
+                resetForm()                 //Resetea el formulario cuando el mensaje se guarda correctamente//
+                setMessages(getMessages()) //Actualiza la lista de mensajes//
+            } else {
+                createModal(result.error) //Muestra el modal de error//
+            }
         })
-
-        //Si el handler devuelve éxito (true), actualiza la lista de mensajes//
-        if (success) {
-            setMessages(getMessages())
-        }
     }
 
     //Resetea el formulario de mensaje//

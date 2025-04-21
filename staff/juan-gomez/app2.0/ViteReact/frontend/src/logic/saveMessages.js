@@ -7,5 +7,5 @@ export const STORAGE_KEYS = {
 
 //Guarda la lista de mensajes en localStorage//
 export const saveMessages = (messages) => {
-    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages))
+    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages)) //Convierte a JSON y guarda//
 }

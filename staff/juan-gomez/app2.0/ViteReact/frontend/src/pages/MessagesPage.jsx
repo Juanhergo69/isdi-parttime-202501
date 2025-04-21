@@ -2,10 +2,12 @@
 import React from 'react'
 //Importa función useState para crear estados//
 import { useState, useEffect } from 'react'
+//Importa useModal//
+import { useModal } from '../components/ModalContext.jsx'
 //Importa getUsers//
 import { getUsers } from '../logic/getUsers.js'
 //Importa getLoggedUserId//
-import { getLoggedUserId } from '../logic/getLoggedUserId.js' 
+import { getLoggedUserId } from '../logic/getLoggedUserId.js'
 //Importa getMessages//
 import { getMessages } from '../logic/getMessages.js'
 //Importa deleteMessage//
@@ -18,13 +20,14 @@ import MessagesHeader from '../components/MessagesHeader'
 import MessagesMessageList from '../components/MessagesMessageList'
 //Importa el componenete UserInfoSection específico para messages//
 import MessagesUserInfoSection from '../components/MessagesUserInfoSection'
-//Importa createModal//
-import { createModal } from '../utils/createModal.js' 
 //Importa los estilos CSS para este componente//
 import '../styles/pages/messagesPage.css'
 
 //Define el componente funcional MessagesPage que recibe props de navegación//
 const MessagesPage = ({ navigation }) => {
+    //Obtenemos la función para crear modales//
+    const { createModal } = useModal()
+
     //Estado para controlar la visibilidad del menú desplegable del usuario//
     const [showMenu, setShowMenu] = useState(false)
 
@@ -67,17 +70,27 @@ const MessagesPage = ({ navigation }) => {
         }
     }, [loggedUser, navigation])
 
-     //Función para manejar la eliminación de un mensaje//
-     const handleDelete = (messageId) => {
-        //Muestra un cuadro de confirmación antes de eliminar//
-        if (window.confirm('Are you sure you want to delete this message?')) {
-            //Elimina el mensaje llamando a la función deleteMessage//
-            deleteMessage(messageId)
-            //Actualiza el estado con los mensajes actualizados//
-            setMessages(getMessages())
-            //Muestra un modal de confirmación//
-            createModal('Message deleted successfully!')
-        }
+    //Función para manejar la eliminación de un mensaje//
+    const handleDelete = (messageId) => {
+        //Usamos createModal para mostrar la confirmación//
+        createModal(
+            'Are you sure you want to delete this message?',
+            () => {
+                try {
+                    //Intenta eliminar el mensaje//
+                    deleteMessage(messageId)
+                    //Actualiza el estado con los mensajes actualizados//
+                    setMessages(getMessages());
+                    //Muestra confirmación de éxito//
+                    createModal('Message deleted successfully!')
+                } catch (error) {
+                    //Muestra error si falla la eliminación//
+                    createModal(`Error deleting message: ${error.message}`)
+                }
+            },
+            'Confirm Deletion', //Título personalizado//
+            true //Mostrar botón de cancelar//
+        )
     }
 
     //Maneja el logout del usuario//
@@ -98,7 +111,7 @@ const MessagesPage = ({ navigation }) => {
                 - onLogout: función para cerrar sesión
                 - setShowMenu: función para controlar visibilidad del menú
                 - showMenu: estado que indica si el menú está visible */}
-            <MessagesHeader 
+            <MessagesHeader
                 loggedUser={loggedUser}
                 navigation={navigation}
                 onLogout={onLogout}
@@ -112,13 +125,13 @@ const MessagesPage = ({ navigation }) => {
                 <div className="messagesForm">
                     {/* Sección de información del usuario logueado */}
                     <MessagesUserInfoSection loggedUser={loggedUser} />
-                    
+
                     {/* Componente que muestra la lista de mensajes, recibe props:
                         - userMessages: array con los mensajes del usuario
                         - users: información de usuarios relacionados
                         - handleDelete: función para eliminar mensajes */}
-                    <MessagesMessageList 
-                        userMessages={userMessages} 
+                    <MessagesMessageList
+                        userMessages={userMessages}
                         users={users}
                         handleDelete={handleDelete}
                     />

@@ -28,42 +28,14 @@ export const validateTextarea = (textarea) => {
     return words.length <= 100 //True si tiene 100 palabras o menos//
 }
 
-//Crea y muestra un modal con mensaje//
-export const createModal = (message, onCloseCallback) => {
-    //Crea elemento div para el modal//
-    const modal = document.createElement('div');
-    modal.className = 'modal' //Clase CSS para estilos//
-
-    //HTML interno del modal. Muestra el mensaje recibido//
-    modal.innerHTML = `
-        <div class="modal-content">
-            <p>${message}</p> 
-        </div>
-    `
-
-    //Agrega el modal al body del documento//
-    document.body.appendChild(modal)
-
-    //Función para cerrar el modal//
-    const closeModal = () => {
-        modal.remove() //Elimina el modal del DOM//
-        if (onCloseCallback) onCloseCallback() //Ejecuta callback si existe//
-    }
-
-    //Cierra al hacer click en cualquier parte del modal//
-    modal.addEventListener('click', closeModal)
-    //Cierra automáticamente después de 6 segundos//
-    setTimeout(closeModal, 6000)
-
-    return modal //Devuelve el modal creado//
-}
-
 //Función para almacenar un nuevo mensaje//
 export const storeMsg = (loggedUserUserId, title, msg, date, image = null) => {
     //Valida que título y mensaje no estén vacíos//
     if (!title || !msg) {
-        createModal('All fields are required. The message has not been stored')
-        return
+        return {
+            success: false,                                                     //Si no hay éxito//
+            error: 'All fields are required. The message has not been stored'   //Devuelve mensaje de error//
+        }
     }
 
     //Obtiene todos los mensajes existentes//
@@ -85,6 +57,8 @@ export const storeMsg = (loggedUserUserId, title, msg, date, image = null) => {
     messages.push(objectUserMsg)
     //Guarda todos los mensajes actualizados//
     saveMessages(messages)
+
+    return { success: true } //Devuelve el suceso a verdadero//
 }
 
 export const handleSubmitMessage = (formData, loggedUserId, selectedImage, callback) => {
@@ -94,26 +68,28 @@ export const handleSubmitMessage = (formData, loggedUserId, selectedImage, callb
     //Valida el título del mensaje usando la función validateTitle//
     //Si la validación falla (retorna false)://
     if (!validateTitle(title)) {
-        //Muestra un modal de error con mensaje específico//
-        createModal('Title cannot exceed 5 words')
-        //Retorna false indicando que el envío falló//
-        return false
+        callback({
+            success: false,                         //Si no hay éxito//
+            error: 'Title cannot exceed 5 words'    //Devuelve mensaje de error//
+        })
+        return
     }
 
     //Valida el contenido del mensaje usando la función validateTextarea//
     //Si la validación falla (retorna false)://
     if (!validateTextarea(msg)) {
-        //Muestra un modal de error con mensaje específico//
-        createModal('Message cannot exceed 100 words')
-        //Retorna false indicando que el envío falló//
-        return false
+        callback({
+            success: false,                             //Si no hay éxito//
+            error: 'Message cannot exceed 100 words'    //Devuelve mensaje de error//
+        })
+        return
     }
 
     //Verifica si hay una imagen adjunta para procesar//
     if (selectedImage) {
         //Crea una instancia de FileReader para leer la imagen//
         const reader = new FileReader()
-        
+
         //Define el evento que se ejecutará cuando la lectura se complete//
         reader.onload = (event) => {
             //Guarda el mensaje en el almacenamiento con://
@@ -122,33 +98,47 @@ export const handleSubmitMessage = (formData, loggedUserId, selectedImage, callb
             //- Contenido del mensaje//
             //- Fecha actual//
             //- Imagen convertida a base64 (event.target.result)//
-            storeMsg(loggedUserId, title, msg, new Date(), event.target.result)
-            
-            //Muestra modal de éxito//
-            createModal('Message stored successfully!')
-            
-            //Si existe callback, lo ejecuta pasando true (éxito)//
-            if (callback) callback(true)
+            const storeResult = storeMsg(loggedUserId, title, msg, new Date(), event.target.result)
+
+            //Verifica si el almacenamento del mensaje fue existoso//
+            if (storeResult.success) {
+                //Si fue exitoso, ejecuta el callback con objeto de éxito://
+                callback({
+                    success: true,                                      //Si hay éxito//
+                    message: 'Message stored successfully with image!'  //Devuelve mensaje indicándolo//
+                })
+            } else {
+                //Si falló, pasa directamente el resultado de storeMsg al callback//
+                //(que ya contiene success: false y el mensaje de error)//
+                callback(storeResult)
+            }
         }
-        
-        //Inicia la lectura de la imagen como Data URL (base64)//
+
+        //Manejador de errores para la lectura de la imagen//
+        reader.onerror = () => {
+            //Cuando ocurre un error en la lectura de la imagen,//
+            //ejecuta el callback con objeto de error://
+            callback({
+                success: false,                                         //Si no hay éxito//
+                error: 'Failed to process image. Please try again.'     //Devuelve mensaje de error//
+            })
+        }
+
+        //Inicia el proceso de lectura de la imagen seleccionada//
+        //La convierte a formato Data URL (base64)//
         reader.readAsDataURL(selectedImage)
-        
-        //Retorna true indicando que el proceso se inició correctamente//
-        return true
+    }
 
-    } else {
-        //Caso cuando NO hay imagen adjunta://
-        //Guarda el mensaje sin imagen//
-        storeMsg(loggedUserId, title, msg, new Date())
-        
-        //Muestra modal de éxito//
-        createModal('Message stored successfully!')
-
-        //Si existe callback, lo ejecuta pasando true (éxito)//
-        if (callback) callback(true)
-        
-        //Retorna true indicando éxito en el envío//
-        return true
+    //Caso sin imagen//
+    else {
+        //Intenta almacenar el mensaje sin imagen//
+        const storeResult = storeMsg(loggedUserId, title, msg, new Date());
+        //Ejecuta el callback con://
+        //- Objeto de éxito si storeResult.success es true//
+        //- El mismo storeResult (que contiene el error) si es false//
+        callback(storeResult.success ? {
+            success: true,                              //Si hay éxito//
+            message: 'Message stored successfully!'     //Devuelve mensaje indicándolo//
+        } : storeResult)
     }
 }

@@ -13,7 +13,7 @@ export const getUsers = () => {
 
 //Guarda la lista de usuarios en localStorage//
 export const saveUsers = (users) => {
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)) //Convierte a JSON y guarda//
+  localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)) //Convierte a JSON y guarda//
 }
 
 //Valida formato de email con expresión regular//
@@ -29,36 +29,6 @@ export const validatePassword = (password) => {
   return passwordRegex.test(password)
 }
 
-//Crea y muestra un modal con mensaje//
-export const createModal = (message, onCloseCallback) => {
-  //Crea elemento div para el modal//
-  const modal = document.createElement('div');
-  modal.className = 'modal' //Clase CSS para estilos//
-
-  //HTML interno del modal. Muestra el mensaje recibido//
-  modal.innerHTML = `
-      <div class="modal-content">
-          <p>${message}</p> 
-      </div>
-  `
-
-  //Agrega el modal al body del documento//
-  document.body.appendChild(modal)
-
-  //Función para cerrar el modal//
-  const closeModal = () => {
-      modal.remove() //Elimina el modal del DOM//
-      if (onCloseCallback) onCloseCallback() //Ejecuta callback si existe//
-  }
-
-  //Cierra al hacer click en cualquier parte del modal//
-  modal.addEventListener('click', closeModal)
-  //Cierra automáticamente después de 6 segundos//
-  setTimeout(closeModal, 6000)
-
-  return modal //Devuelve el modal creado//
-}
-
 //Capitaliza la primera letra de un string//
 export const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1) //Coje primer caracter (mayúscula) + resto del string//
@@ -66,50 +36,58 @@ export const capitalizeFirstLetter = (str) => {
 
 //Exporta la función handleRegister para que pueda ser utilizada en otros módulos//
 export const handleRegister = (formData) => {
-    //Valida formato de email//
-    if (!validateEmail(formData.email)) {
-      createModal('Email must contain text + @ + text + valid termination (example .com, .es, .net, etc...)')
-      return { success: false, user: null }
+  //Valida formato de email//
+  if (!validateEmail(formData.email)) {
+    return {
+      success: false,                                                                                       //Si no hay éxito//
+      error: 'Email must contain text + @ + text + valid termination (example .com, .es, .net, etc...)'     //Devuelve mensaje de error//
     }
-  
-    //Valida fortaleza de contraseña//
-    if (!validatePassword(formData.password)) {
-      createModal('Password must contain 6 characters, 1 upper letter, 1 lower letter, 1 number and 1 special character');
-      return { success: false, user: null }
-    }
-  
-    //Verifica que las contraseñas coincidan//
-    if (formData.password !== formData['confirmation-password']) {
-      createModal('Passwords are not the same. Please, try again')
-      return { success: false, user: null }
-    }
-  
-    //Obtiene usuarios existentes//
-    const users = getUsers()
-    //Verifica si el email ya está registrado//
-    const doesUserExist = users.some(user => user.email === formData.email)
-  
-    if (doesUserExist) {
-      createModal('This mail is already in use')
-      return { success: false, user: null }
-    }
-  
-    //Crea nombre de usuario a partir del email//
-    const userName = formData.email.split('@')[0]
-    //Capitaliza la primera letra del nombre de usuario//
-    const capitalizedUserName = capitalizeFirstLetter(userName)
-    //Crea objeto con datos del nuevo usuario//
-    const userCreated = {
-      email: formData.email,
-      password: formData.password,
-      userName: capitalizedUserName,
-      id: Date.now()
-    }
-  
-    //Agrega el nuevo usuario al array//
-    users.push(userCreated)
-    //Guarda los usuarios actualizados//
-    saveUsers(users)
-  
-    return { success: true, user: userCreated }
   }
+
+  //Valida fortaleza de contraseña//
+  if (!validatePassword(formData.password)) {
+    return {
+      success: false,                                                                                                 //Si no hay exito//
+      error: 'Password must contain 6 characters, 1 upper letter, 1 lower letter, 1 number and 1 special character'   //Devuelve mensaje de error//
+    }
+  }
+
+  //Verifica que las contraseñas coincidan//
+  if (formData.password !== formData['confirmation-password']) {
+    return {
+      success: false,                                         //Si no hay éxito//
+      error: 'Passwords are not the same. Please, try again'  //Devuelve mensaje de error//
+    }
+  }
+
+  //Obtiene usuarios existentes//
+  const users = getUsers()
+  //Verifica si el email ya está registrado//
+  const doesUserExist = users.some(user => user.email === formData.email)
+
+  if (doesUserExist) {
+    return {
+      success: false,                       //Si no hay éxito//
+      error: 'This mail is already in use'  //Devuelve mensaje de error//
+    }
+  }
+
+  //Crea nombre de usuario a partir del email//
+  const userName = formData.email.split('@')[0]
+  //Capitaliza la primera letra del nombre de usuario//
+  const capitalizedUserName = capitalizeFirstLetter(userName)
+  //Crea objeto con datos del nuevo usuario//
+  const userCreated = {
+    email: formData.email,
+    password: formData.password,
+    userName: capitalizedUserName,
+    id: Date.now()
+  }
+
+  //Agrega el nuevo usuario al array//
+  users.push(userCreated)
+  //Guarda los usuarios actualizados//
+  saveUsers(users)
+
+  return { success: true, user: userCreated } //Devuelve el éxito y el usuario creado//
+}
