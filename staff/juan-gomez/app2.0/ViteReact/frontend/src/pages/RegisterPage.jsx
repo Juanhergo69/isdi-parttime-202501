@@ -31,9 +31,9 @@ const RegisterPage = ({ navigation }) => {
 
     //Función que maneja el envío del formulario (recibe formData como parámetro)//
     const handleSubmit = (formData) => {
-        //Ejecuta handleRegister y obtiene success y user del resultado//
+        //Ejecuta handleRegister y obtiene success, user y error del resultado//
         const { success, user, error } = handleRegister(formData)
-        
+
         //Si el registro fue exitoso y existe user//
         if (success && user) {
             //Almacena el ID de usuario en sessionStorage//
@@ -52,7 +52,7 @@ const RegisterPage = ({ navigation }) => {
         <div className="registerForm">
             {/* Componente Header con prop para navegación a Landing */}
             <RegisterHeader navigateToLanding={navigation.navigateToLanding} />
-            
+
             {/* Componente Form con configuración de inputs */}
             <Form
                 //Array que define los campos del formulario//
@@ -99,7 +99,7 @@ const RegisterPage = ({ navigation }) => {
                 //Función que maneja el envío del formulario//
                 onSubmit={handleSubmit}
             />
-            
+
             {/* Componente Footer con prop para navegación a Login */}
             <RegisterFooter navigateToLogin={navigation.navigateToLogin} />
         </div>

@@ -148,18 +148,17 @@
     /* Escala el botón al 105% */
 }
 
-/* Para tablets y pantallas medianas */
-@media (max-width: 1024px) {
+/* Media Queries para responsividad */
+@media (max-width: 1200px) {
     .landingContainer {
-        width: 70%;
+        width: 60%;
         padding: 80px;
-        gap: 50px;
     }
-    
+
     .landingMsg {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
-    
+
     .landingButtonSignUp,
     .landingButtonSignIn {
         padding: 14px 28px;
@@ -167,74 +166,102 @@
     }
 }
 
-/* Para tablets pequeñas */
+@media (max-width: 992px) {
+    .landingContainer {
+        width: 70%;
+        padding: 60px;
+        gap: 50px;
+    }
+
+    .landingImg {
+        max-width: 180px;
+    }
+
+    .landingMsg {
+        font-size: 1.3rem;
+    }
+
+    .landingButtonSignUp,
+    .landingButtonSignIn {
+        padding: 12px 24px;
+        font-size: 1.2rem;
+    }
+}
+
 @media (max-width: 768px) {
     .landingContainer {
         width: 80%;
-        padding: 60px;
+        padding: 40px;
         gap: 40px;
     }
-    
-    .landingMsg {
-        font-size: 1.5rem;
+
+    .landingImg {
+        max-width: 160px;
     }
-    
+
+    .landingMsg {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
     .landingButtonContainer {
         flex-direction: column;
         align-items: center;
         gap: 20px;
     }
-    
+
     .landingButtonSignUp,
     .landingButtonSignIn {
         width: 100%;
         max-width: 250px;
-    }
-}
-
-/* Para móviles grandes */
-@media (max-width: 600px) {
-    .landingContainer {
-        width: 90%;
-        padding: 40px 20px;
-        gap: 30px;
-    }
-    
-    .landingMsg {
-        font-size: 1.5rem;
-        margin-bottom: 15px;
-    }
-    
-    .landingImg {
-        max-width: 150px;
-    }
-    
-    .landingButtonSignUp,
-    .landingButtonSignIn {
         padding: 12px 24px;
         font-size: 1.1rem;
     }
 }
 
-/* Para móviles pequeños */
-@media (max-width: 480px) {
+@media (max-width: 560px) {
     .landingContainer {
-        padding: 30px 15px;
+        width: 90%;
+        padding: 30px;
+        gap: 30px;
+    }
+
+    .landingImg {
+        max-width: 140px;
+    }
+
+    .landingMsg {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .landingButtonSignUp,
+    .landingButtonSignIn {
+        max-width: 220px;
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .landingContainer {
+        width: 95%;
+        padding: 20px;
         gap: 25px;
     }
-    
-    .landingMsg {
-        font-size: 1.5rem;
-    }
-    
+
     .landingImg {
         max-width: 120px;
     }
-    
+
+    .landingMsg {
+        font-size: 1rem;
+    }
+
     .landingButtonSignUp,
     .landingButtonSignIn {
-        padding: 10px 20px;
-        font-size: 1rem;
         max-width: 200px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
     }
 }
