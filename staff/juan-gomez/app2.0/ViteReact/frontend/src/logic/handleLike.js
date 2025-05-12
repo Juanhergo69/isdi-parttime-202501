@@ -1,60 +1,37 @@
-//Objeto con constantes para las claves de almacenamiento//
-export const STORAGE_KEYS = {
-    USERS: 'users',       //Clave para usuarios en localStorage//
-    MESSAGES: 'messages', //Clave para mensajes//
-    ID: 'id'              //Clave para ID de usuario//
-}
+//Exporta una función llamada handleLike que permite a un usuario dar "like" a un mensaje//
+export const handleLike = (messageDate, userId) => {
+    //Codifica la fecha del mensaje para usarla de forma segura en la URL//
+    //Esto convierte caracteres especiales para que sean válidos en URLs//
+    const encodedDate = encodeURIComponent(messageDate)
 
-//Obtiene todos los mensajes almacenados//
-export const getMessages = () => {
-    const messagesJson = localStorage.getItem(STORAGE_KEYS.MESSAGES)
-    return messagesJson ? JSON.parse(messagesJson) : [] //Retorna mensajes o array vacío//
-}
-
-//Guarda la lista de mensajes en localStorage//
-export const saveMessages = (messages) => {
-    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages))
-}
-
-//Función para manejar likes en mensajes//
-export const toggleLike = (messageId, userId) => {
-    //Obtiene todos los mensajes//
-    const messages = getMessages()
-    //Busca el mensaje específico por su fecha (que funciona como ID)//
-    const message = messages.find(msg => msg.date === messageId)
-
-    if (message) {
-        //Verifica si el usuario ya dio like//
-        const userLikeIndex = message.likes.indexOf(userId)
-        //Verifica si el usuario ya dio dislike//
-        const userDislikeIndex = message.dislikes.indexOf(userId)
-
-        //Si el usuario no había dado like antes//
-        if (userLikeIndex === -1) {
-            //Agrega el like//
-            message.likes.push(userId)
-            //Si tenía dislike, lo remueve//
-            if (userDislikeIndex !== -1) {
-                message.dislikes.splice(userDislikeIndex, 1)
+    //Realiza una petición HTTP al servidor para registrar el "like"//
+    return fetch(`http://localhost:3001/api/messages/${encodedDate}/like`, {
+        method: 'POST', //Método HTTP POST para crear/modificar recursos//
+        headers: {
+            //Especifica que el cuerpo de la petición está en formato JSON//
+            'Content-Type': 'application/json',
+        },
+        //Convierte el objeto {userId} a string JSON para enviarlo en el cuerpo//
+        body: JSON.stringify({ userId })
+    })
+        //Maneja la respuesta HTTP inicial del servidor//
+        .then(response => {
+            //Verifica si la respuesta no fue exitosa (código de estado 4xx/5xx)//
+            if (!response.ok) {
+                //Lanza un error si falló la petición HTTP//
+                throw new Error('Failed to like message')
             }
-        } else {
-            //Si ya tenía like, lo remueve (toggle)//
-            message.likes.splice(userLikeIndex, 1)
-        }
-        //Guarda los cambios//
-        saveMessages(messages)
-    }
-}
-
-//Handler para likes//
-export const handleLike = (messageId, loggedUserId) => {
-    //Ejecuta la función toggleLike pasando://
-    //- messageId: identifica el mensaje a modificar//
-    //- loggedUserId: identifica al usuario que realiza la acción//
-    //Esta función modifica el estado de like en el almacenamiento de datos//
-    toggleLike(messageId, loggedUserId)
-
-    //Retorna una nueva lista actualizada de todos los mensajes//
-    //llamando a getMessages() después de realizar el cambio//
-    return getMessages()
+            //Convierte la respuesta a formato JSON (devuelve una promesa)//
+            return response.json()
+        })
+        //Maneja los datos JSON recibidos del servidor//
+        .then(data => {
+            //Verifica si la operación fue exitosa según el servidor//
+            if (data.success) {
+                //Retorna los mensajes actualizados si todo fue correcto//
+                return data.messages
+            }
+            //Lanza un error si el servidor indica que falló la operación//
+            throw new Error('Failed to update messages after like')
+        })
 }

@@ -5,63 +5,57 @@ export const STORAGE_KEYS = {
     ID: 'id'              //Clave para ID de usuario//
 }
 
-//Obtiene todos los usuarios almacenados//
-export const getUsers = () => {
-    const usersJson = localStorage.getItem(STORAGE_KEYS.USERS) //Obtiene datos como JSON string//
-    return usersJson ? JSON.parse(usersJson) : [] //Convierte a objeto JS o retorna array vacío//
-}
-
-//Guarda la lista de usuarios en localStorage//
-export const saveUsers = (users) => {
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)) //Convierte a JSON y guarda//
-}
-
-//Obtiene todos los mensajes almacenados//
-export const getMessages = () => {
-    const messagesJson = localStorage.getItem(STORAGE_KEYS.MESSAGES)
-    return messagesJson ? JSON.parse(messagesJson) : [] //Retorna mensajes o array vacío//
-}
-
-//Guarda la lista de mensajes en localStorage//
-export const saveMessages = (messages) => {
-    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages))
-}
-
 //Obtiene el ID del usuario logueado (de localStorage o sessionStorage)//
 export const getLoggedUserId = () => {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.ID)) || //Busca en localStorage//
         JSON.parse(sessionStorage.getItem(STORAGE_KEYS.ID)) //Si no, busca en sessionStorage//
 }
 
-//Función para borrar cuenta de usuario//
+//Exporta una función llamada handleDeleteAccount que maneja el proceso de eliminación de cuenta//
 export const handleDeleteAccount = () => {
-    //1. Obtenemos todos los datos necesarios//
-    const users = getUsers()
-    const messages = getMessages()
+    //Obtiene el ID del usuario actualmente logueado llamando a la función getLoggedUserId//
     const userId = getLoggedUserId()
 
-    if (!userId) { //Si no existe id de usuario//
-        throw new Error('No user logged in') //Mostrar error//
+    //Verifica si no se obtuvo un ID de usuario (usuario no logueado)//
+    if (!userId) {
+        //Rechaza la promesa inmediatamente con un error si no hay usuario logueado//
+        return Promise.reject(new Error('No user logged in'))
     }
 
-    //2. Eliminar al usuario//
-    const updatedUsers = users.filter(user => user.id !== userId) //Filtramos//
-    saveUsers(updatedUsers) //Guardamos lista de usuarios//
-
-    //3. Eliminar mensajes del usuario//
-    const updatedMessages = messages.filter(message => message.userId !== userId)
-
-    //4. Eliminar interacciones del usuario//
-    const finalMessages = updatedMessages.map(message => ({
-        ...message,
-        likes: message.likes.filter(like => like !== userId),
-        dislikes: message.dislikes.filter(dislike => dislike !== userId)
-    }))
-    saveMessages(finalMessages)
-
-    //5. Limpiar almacenamiento//
-    localStorage.removeItem('id')
-    sessionStorage.removeItem('id')
-
-    return true
+    //Realiza una petición HTTP DELETE al endpoint del usuario específico en el servidor//
+    return fetch(`http://localhost:3001/api/users/${userId}`, {
+        method: 'DELETE' //Especifica que es una petición de tipo DELETE//
+    })
+        //Primera promesa: maneja la respuesta del servidor//
+        .then(response => {
+            //Verifica si la respuesta no fue exitosa (status fuera del rango 200-299)//
+            if (!response.ok) {
+                //Lanza un error si la eliminación falló a nivel HTTP//
+                throw new Error('Failed to delete account')
+            }
+            //Convierte la respuesta a formato JSON para procesarla//
+            return response.json()
+        })
+        //Segunda promesa: maneja los datos JSON recibidos//
+        .then(data => {
+            //Verifica si la operación fue exitosa según la respuesta del servidor//
+            if (data.success) {
+                //Limpieza de almacenamiento local://
+                //Elimina el ID del usuario del localStorage//
+                localStorage.removeItem('id')
+                //Elimina el ID del usuario del sessionStorage//
+                sessionStorage.removeItem('id')
+                //Retorna true indicando que la eliminación fue exitosa//
+                return true
+            }
+            //Lanza un error si el servidor indicó que la operación falló//
+            throw new Error('Failed to delete account')
+        })
+        //Manejo de errores: captura cualquier error en la cadena de promesas//
+        .catch(error => {
+            //Registra el error en la consola para propósitos de depuración//
+            console.error('Error deleting account:', error);
+            //Vuelve a lanzar el error para que pueda ser manejado por el llamador//
+            throw error
+        })
 }

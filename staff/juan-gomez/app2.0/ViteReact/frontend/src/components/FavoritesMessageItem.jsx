@@ -1,5 +1,5 @@
 //Define el componente funcional FavoritesMessageItem que recibe las siguientes props://
-const FavoritesMessageItem = ({ 
+const FavoritesMessageItem = ({
     message,            //- message: objeto con los datos del mensaje//
     users,              //- users: array de usuarios para mostrar información relacionada//
     loggedUserId,       //- loggedUserId: ID del usuario actual para controles de interacción//
@@ -9,16 +9,16 @@ const FavoritesMessageItem = ({
     navigation          //- navigation: objeto para manejar navegación//
 }) => {
     //Determina si el usuario actual ha dado like al mensaje//
-    const hasLiked = message.likes?.includes(loggedUserId)
+    const hasLiked = message.likes?.includes(loggedUserId.toString())
     //Determina si el usuario actual ha dado dislike al mensaje//
-    const hasDisliked = message.dislikes?.includes(loggedUserId)
+    const hasDisliked = message.dislikes?.includes(loggedUserId.toString())
     //Determina si el usuario actual ha marcado como favorito el mensaje//
-    const hasFavorited = message.favorite?.includes(loggedUserId)
+    const hasFavorited = message.favorite?.includes(loggedUserId.toString())
     //Cuenta el número total de likes (0 si no hay)//
     const likesCount = message.likes?.length || 0
     //Cuenta el número total de dislikes (0 si no hay)//
     const dislikesCount = message.dislikes?.length || 0
-    
+
     //Mapea los IDs de usuarios que dieron like a sus nombres de usuario//
     const likedUsers = message.likes?.map(likeUserId => {
         //Busca el usuario correspondiente al ID del like//
@@ -26,7 +26,7 @@ const FavoritesMessageItem = ({
         //Devuelve el nombre de usuario o 'Unknown' si no se encuentra//
         return user ? user.userName : 'Unknown'
     }) || [] //Array vacío si no hay likes//
-    
+
     //Mapea los IDs de usuarios que dieron dislike a sus nombres de usuario//
     const dislikedUsers = message.dislikes?.map(dislikeUserId => {
         //Busca el usuario correspondiente al ID del dislike//
@@ -67,7 +67,10 @@ const FavoritesMessageItem = ({
             {message.image && (
                 <div className="favorite-message-image-container">
                     <img
-                        src={message.image}                 //URL de la imagen//
+                        //Verifica si la imagen comienza con 'data:' (ya está en formato data URI)//
+                        //Si es true: usa la imagen directamente (ya está formateado)//
+                        //Si es false: formatea la imagen (asumiendo que es base64) añadiendo el prefijo//
+                        src={message.image.startsWith('data:') ? message.image : `data:image/jpeg;base64,${message.image}`} //URL de la imagen//
                         alt="User uploaded content"         //Texto alternativo//
                         className="favorite-message-image"  //Clase CSS//
                     />
@@ -132,7 +135,7 @@ const FavoritesMessageItem = ({
                         </div>
                     )}
                 </div>
-                
+
                 {/* Contenedor del botón de favorito */}
                 <div className="favorite-favorite-container">
                     <button

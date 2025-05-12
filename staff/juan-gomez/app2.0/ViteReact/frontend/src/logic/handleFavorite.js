@@ -1,52 +1,37 @@
-//Objeto con constantes para las claves de almacenamiento//
-export const STORAGE_KEYS = {
-    USERS: 'users',       //Clave para usuarios en localStorage//
-    MESSAGES: 'messages', //Clave para mensajes//
-    ID: 'id'              //Clave para ID de usuario//
-}
+//Exporta una función constante llamada handleFavorite para manejar el favorito de mensajes//
+export const handleFavorite = (messageDate, userId) => {
+    //Codifica la fecha del mensaje para usarla de forma segura en la URL//
+    //Esto previene problemas con caracteres especiales en la fecha//
+    const encodedDate = encodeURIComponent(messageDate)
 
-//Obtiene todos los mensajes almacenados//
-export const getMessages = () => {
-    const messagesJson = localStorage.getItem(STORAGE_KEYS.MESSAGES)
-    return messagesJson ? JSON.parse(messagesJson) : [] //Retorna mensajes o array vacío//
-}
-
-//Guarda la lista de mensajes en localStorage//
-export const saveMessages = (messages) => {
-    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages))
-}
-
-//Función para manejar favoritos en mensajes//
-export const toggleFavorite = (messageId, userId) => {
-    //Obtiene todos los mensajes//
-    const messages = getMessages()
-    //Busca el mensaje específico por su fecha (que funciona como ID)//
-    const message = messages.find(msg => msg.date === messageId)
-
-    if (message) {
-        //Verifica si el usuario ya dio favorito//
-        const userFavoriteIndex = message.favorite.indexOf(userId)
-        //Si el usuario no había dado favorito antes//
-        if (userFavoriteIndex === -1) {
-            //Agrega el favorito//
-            message.favorite.push(userId)
-        } else {
-            //Si ya tenía favorito, lo remueve//
-            message.favorite.splice(userFavoriteIndex, 1)
-        }
-        //Guarda los cambios//
-        saveMessages(messages)
-    }
-}
-
-//Handler para favoritos//
-export const handleFavorite = (messageId, loggedUserId) => {
-    //Ejecuta la función toggleFavorite pasando://
-    //- messageId: identifica el mensaje a modificar//
-    //- loggedUserId: identifica al usuario que realiza la acción//
-    //Esta función modifica el estado de favorite en el almacenamiento de datos//
-    toggleFavorite(messageId, loggedUserId)
-    //Retorna una nueva lista actualizada de todos los mensajes//
-    //llamando a getMessages() después de realizar el cambio//
-    return getMessages()
+    //Realiza una petición HTTP POST al endpoint de favoritos del servidor//
+    return fetch(`http://localhost:3001/api/messages/${encodedDate}/favorite`, {
+        method: 'POST', //Especifica que es una petición de tipo POST//
+        headers: {
+            //Indica al servidor que estamos enviando datos en formato JSON//
+            'Content-Type': 'application/json',
+        },
+        //Convierte el objeto con el userId a una cadena JSON para enviarlo en el cuerpo//
+        body: JSON.stringify({ userId })
+    })
+        //Primera promesa: maneja la respuesta inicial del servidor//
+        .then(response => {
+            //Verifica si la respuesta HTTP no fue exitosa (status fuera de 200-299)//
+            if (!response.ok) {
+                //Lanza un error si hubo un problema con la petición HTTP//
+                throw new Error('Failed to favorite message')
+            }
+            //Convierte la respuesta del servidor de JSON a objeto JavaScript//
+            return response.json();
+        })
+        //Segunda promesa: maneja los datos JSON recibidos del servidor//
+        .then(data => {
+            //Verifica si la operación fue exitosa según la respuesta del servidor//
+            if (data.success) {
+                //Retorna el array de mensajes actualizado si todo fue exitoso//
+                return data.messages
+            }
+            //Lanza un error si el servidor respondió que la operación falló//
+            throw new Error('Failed to update messages after favorite')
+        })
 }

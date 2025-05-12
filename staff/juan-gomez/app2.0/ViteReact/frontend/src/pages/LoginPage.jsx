@@ -1,3 +1,4 @@
+
 //Importa la librería React para crear componentes//
 import React from 'react'
 //Importa función useState para crear estados//
@@ -23,43 +24,37 @@ import '../styles/components/forms.css'
 const LoginPage = ({ navigation }) => {
   //Estado para controlar visibilidad de contraseña//
   const [showPassword, setShowPassword] = useState(false)
-
   //Obtenemos la función para mostrar modales//
   const { createModal } = useModal()
 
   //Define una función llamada handleSubmit que recibe formData como parámetro//
   const handleSubmit = (formData) => {
-    //Llama a la función handleLogin pasando los datos del formulario//
-    //Y obtiene el resultado de la operación de login//
-    const { success, user, error, shouldRedirect, rememberSession } = handleLogin(formData)
-
-    //Verifica si el login fue exitoso (success === true)//
-    if (success && user) {
-      //Decide qué mecanismo de almacenamiento usar según rememberSession://
-      //- localStorage si el usuario marcó "Remember me" (persistente)//
-      //- sessionStorage si no lo marcó (solo para esta sesión)//
-      const storage = rememberSession ? localStorage : sessionStorage
-
-      //Almacena el ID del usuario en el storage seleccionado//
-      //Esto mantendrá la sesión iniciada//
-      storage.setItem('id', user.id)
-
-      //Redirige al usuario a la página de inicio (Home)//
-      navigation.navigateToHome()
-    } else {
-      //Mostrar modal con error//
-      if (error) {
-        createModal(error)
-      }
-
-      if (shouldRedirect) {
-        //Usa setTimeout para programar la redirección después de que://
-        //1. El modal se haya mostrado completamente//
-        //2. El ciclo actual de eventos de JavaScript termine//
-        //El delay de 0ms asegura que se ejecute en el próximo tick del event loop//
-        setTimeout(() => navigation.navigateToRegister(), 0)
-      }
-    }
+    //Ejecuta la función `handleLogin` pasando los datos del formulario (retorna una Promesa)//
+    handleLogin(formData)
+      //Si el login es exitoso, recibe un objeto con: {success, user, rememberSession}//
+      .then(({ success, user, rememberSession }) => {
+        //Verifica si el login fue exitoso (success=true) y si existe el objeto `user`//
+        if (success && user) {
+          //Decide dónde guardar el ID del usuario://
+          //- Si rememberSession=true usa localStorage (persistente)//
+          //- Si rememberSession=false usa sessionStorage (solo para esta sesión)//
+          const storage = rememberSession ? localStorage : sessionStorage
+          //Almacena el ID del usuario en el storage seleccionado//
+          storage.setItem('id', user.id)
+          //Redirige al usuario a la página de inicio usando el método de navegación//
+          navigation.navigateToHome()
+        }
+      })
+      //Si ocurre un error en el login, recibe un objeto con: {error, shouldRedirect}//
+      .catch(({ error, shouldRedirect }) => {
+        //Muestra un modal de error con el mensaje recibido o uno por defecto//
+        createModal(error || 'Login failed')
+        //Si shouldRedirect=true, redirige a la página de registro//
+        if (shouldRedirect) {
+          //Usa setTimeout para asegurar que el modal se muestre antes de la redirección//
+          setTimeout(() => navigation.navigateToRegister(), 0)
+        }
+      })
   }
 
   //Retorna la estructura JSX del componenete//

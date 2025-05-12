@@ -1,7 +1,7 @@
 //Define el componente funcional FavoritesUserInfoSection que recibe como prop://
 //- loggedUser: objeto con la información del usuario logueado//
 const FavoritesUserInfoSection = ({ loggedUser }) => {
-     //Retorna la estructura JSX que muestra la información del usuario//
+    //Retorna la estructura JSX que muestra la información del usuario//
     return (
         //Contenedor principal de la sección de información del usuario//
         <div className="favorite-user-info-section">
@@ -11,9 +11,13 @@ const FavoritesUserInfoSection = ({ loggedUser }) => {
                 {loggedUser?.avatar ? (
                     //Si tiene avatar, muestra la imagen//
                     <img
-                        src={loggedUser.avatar}
-                        alt={`${loggedUser.userName}'s avatar`}
+                        src={
+                            loggedUser.avatar.startsWith('data:')               //Verifica si el avatar comienza con 'data:' (ya está en formato data URI)//
+                                ? loggedUser.avatar                             //Si es true: usa el avatar directamente (ya está formateado)//
+                                : `data:image/jpeg;base64,${loggedUser.avatar}` //Si es false: formatea el avatar (asumiendo que es base64) añadiendo el prefijo//
+                        }
                         className="favorite-avatar"
+                        alt="User avatar"
                     />
                 ) : (
                     //Si no tiene avatar, muestra un círculo con la inicial//

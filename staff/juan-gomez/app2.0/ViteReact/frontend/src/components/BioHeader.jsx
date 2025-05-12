@@ -46,7 +46,11 @@ const BioHeader = ({
                     {loggedUser?.avatar ? (
                         //Si existe avatar, muestra la imagen//
                         <img
-                            src={loggedUser.avatar}
+                            src={
+                                loggedUser.avatar.startsWith('data:')               //Verifica si el avatar comienza con 'data:' (ya está en formato data URI)
+                                    ? loggedUser.avatar                             //Si es true: usa el avatar directamente (ya está formateado//)
+                                    : `data:image/jpeg;base64,${loggedUser.avatar}` //Si es false: formate el avatar (asumiendo que es base64) añadiendo el prefijo//
+                            }
                             className="bioMenuButton-avatar"
                             alt="User avatar"
                         />

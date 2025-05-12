@@ -25,25 +25,31 @@ const RegisterPage = ({ navigation }) => {
     const [showPassword, setShowPassword] = useState(false);
     //Estado para controlar visibilidad de confirmación de contraseña//
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
     //Obtenemos la función para mostrar modales//
     const { createModal } = useModal()
 
     //Función que maneja el envío del formulario (recibe formData como parámetro)//
     const handleSubmit = (formData) => {
-        //Ejecuta handleRegister y obtiene success, user y error del resultado//
-        const { success, user, error } = handleRegister(formData)
-
-        //Si el registro fue exitoso y existe user//
-        if (success && user) {
-            //Almacena el ID de usuario en sessionStorage//
-            sessionStorage.setItem('id', user.id)
-            //Navega a Home usando la función pasada en navigation prop//
-            navigation.navigateToHome()
-        } else if (error) {
-            //Mostramos el modal con el mensaje de error//
-            createModal(error)
-        }
+        //Llama a la función handleRegister pasando los datos del formulario//
+        //handleRegister devuelve una Promesa que resuelve con la respuesta del servidor//
+        handleRegister(formData)
+            //Maneja la respuesta exitosa del registro//
+            .then(({ success, user }) => {
+                //Verifica si el registro fue exitoso (success = true) y si se recibió el objeto user//
+                if (success && user) {
+                    //Almacena el ID del usuario en sessionStorage (persistencia solo para la sesión actual)//
+                    sessionStorage.setItem('id', user.id)
+                    //Redirige al usuario a la página de inicio usando el método de navegación//
+                    navigation.navigateToHome()
+                }
+            })
+            //Maneja cualquier error que ocurra durante el proceso de registro//
+            .catch(error => {
+                //Muestra un modal de error al usuario://
+                //- Usa el mensaje de error del servidor (error.error) si está disponible//
+                //- Usa un mensaje por defecto si no hay mensaje específico//
+                createModal(error.error || 'Registration failed. Please try again.')
+            })
     }
 
     //Retorna la estructura JSX del componente//
@@ -81,12 +87,12 @@ const RegisterPage = ({ navigation }) => {
                     },
                     {
                         label: 'Confirm password',
-                        inputId: 'confirmation-password',
+                        inputId: 'confirmPassword',
                         isRequired: true,
                         //Segundo componente personalizado para confirmación//
                         customInput: (
                             <RegisterPasswordInput
-                                id="confirmation-password"
+                                id="confirmPassword"
                                 placeholder="*******"
                                 showPassword={showConfirmPassword}
                                 setShowPassword={setShowConfirmPassword}

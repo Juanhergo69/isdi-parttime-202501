@@ -38,28 +38,46 @@ const HomePage = ({ navigation }) => {
     //Estado para controlar la visibilidad del formulario de mensajes//
     const [showMsgForm, setShowMsgForm] = useState(false)
     //Estado para almacenar la lista de mensajes//
-    const [messages, setMessages] = useState(getMessages())
+    const [messages, setMessages] = useState([])
     //Estado para almacenar la imagen seleccionada//
     const [selectedImage, setSelectedImage] = useState(null)
     //Estado para almacenar la previsualización de la imagen
     const [imagePreview, setImagePreview] = useState(null)
-
+    //Estado para almacenar los usuarios//
+    const [users, setUsers] = useState([])
     //Obtenemos la función para mostrar modales//
     const { createModal } = useModal()
-
-    //Obtiene todos los usuarios registrados//
-    const users = getUsers()
     //Obtiene el ID del usuario logueado//
     const loggedUserId = getLoggedUserId()
-    //Busca el usuario logueado en la lista de usuarios//
-    const loggedUser = users.find(user => user.id === loggedUserId)
 
-    //Efecto para redirigir a login si no hay usuario logueado//
+
+    //Efecto para cargar datos inciciales//
     useEffect(() => {
-        if (!loggedUser) {
-            navigation.navigateToLogin()
-        }
-    }, [loggedUser, navigation])
+        //Ejecuta dos promesas en paralelo: `getMessages()` (obtiene mensajes) y `getUsers()` (obtiene usuarios)//
+        Promise.all([getMessages(), getUsers()])
+            // Cuando ambas promesas se completan, recibe sus resultados como un array destructurado
+            .then(([messagesData, usersData]) => {
+                //Actualiza el estado `messages` con los datos de mensajes obtenidos (`messagesData`)//
+                setMessages(messagesData)
+                //Actualiza el estado `users` con los datos de usuarios obtenidos (`usersData`)//
+                setUsers(usersData)
+
+                //Busca al usuario actual en el array `usersData` comparando su ID (convertido a string para compatibilidad con el backend)//
+                const loggedUser = usersData.find(user => user.id === loggedUserId.toString())
+                //Si no se encuentra al usuario logueado//
+                if (!loggedUser) {
+                    //Redirige al usuario a la pantalla de login usando el método `navigateToLogin` del objeto `navigation`//
+                    navigation.navigateToLogin()
+                }
+            })
+            //Si alguna de las promesas falla (error de red, servidor caído, etc.)//
+            .catch(error => {
+                //Muestra un modal de error al usuario con un mensaje genérico//
+                createModal('Failed to load data. Please try again later.')
+                //Registra el error en la consola para debugging (detalla el problema real)//
+                console.error('Error loading data:', error)
+            })
+    }, [loggedUserId, navigation, createModal]) //Dependencias//
 
     //Efecto secundario para cerrar el menú al hacer clic fuera de él//
     useEffect(() => {
@@ -106,29 +124,56 @@ const HomePage = ({ navigation }) => {
 
     //Maneja el like a un mensaje//
     const onLike = (messageId) => {
-        //Llama al handler de like pasando el ID del mensaje y el ID del usuario logueado//
-        //El handler devuelve la lista actualizada de mensajes//
-        const updatedMessages = handleLike(messageId, loggedUserId)
-        //Actualiza el estado de mensajes con la lista actualizada//
-        setMessages(updatedMessages)
+        //Llama a la función `handleLike` pasándole el `messageId` y el `loggedUserId` (convertido a string por compatibilidad)//
+        handleLike(messageId, loggedUserId.toString())
+            //Si la promesa se resuelve correctamente, recibe los `updatedMessages` (mensajes actualizados)//
+            .then(updatedMessages => {
+                //Actualiza el estado de `messages` con los nuevos mensajes (incluyendo el like recién hecho)//
+                setMessages(updatedMessages)
+            })
+            //Si ocurre un error al dar like, entra en el bloque `catch`//
+            .catch(error => {
+                //Muestra un modal de error indicando que falló la acción de dar like//
+                createModal('Failed to like message')
+                //Imprime el error en consola para depuración//
+                console.error('Like error:', error)
+            })
     }
 
     //Maneja el dislike a un mensaje//
     const onDislike = (messageId) => {
-        //Llama al handler de dislike pasando el ID del mensaje y el ID del usuario logueado//
-        //El handler devuelve la lista actualizada de mensajes//
-        const updatedMessages = handleDislike(messageId, loggedUserId)
-        //Actualiza el estado de mensajes con la lista actualizada//
-        setMessages(updatedMessages)
+        //Llama a la función `handleDislike` pasándole el `messageId` y el `loggedUserId` (convertido a string por compatibilidad)//
+        handleDislike(messageId, loggedUserId.toString())
+            //Si la promesa se resuelve correctamente, recibe los `updatedMessages` (mensajes actualizados)//
+            .then(updatedMessages => {
+                //Actualiza el estado de `messages` con los nuevos mensajes (incluyendo el dislike recién hecho)//
+                setMessages(updatedMessages)
+            })
+            //Si ocurre un error al dar dislike, entra en el bloque `catch`//
+            .catch(error => {
+                //Muestra un modal de error indicando que falló la acción de dar dislike//
+                createModal('Failed to dislike message')
+                //Imprime el error en consola para depuración//
+                console.error('Dislike error:', error)
+            })
     }
 
     //Maneja el favorito de un mensaje//
     const onFavorite = (messageId) => {
-        //Llama al handler de favorito pasando el ID del mensaje y el ID del usuario logueado//
-        //El handler devuelve la lista actualizada de mensajes//
-        const updatedMessages = handleFavorite(messageId, loggedUserId)
-        //Actualiza el estado de mensajes con la lista actualizada//
-        setMessages(updatedMessages)
+        //Llama a la función `handleFavorite` pasándole el `messageId` y el `loggedUserId` (convertido a string por compatibilidad)//
+        handleFavorite(messageId, loggedUserId.toString())
+            //Si la promesa se resuelve correctamente, recibe los `updatedMessages` (mensajes actualizados)//
+            .then(updatedMessages => {
+                //Actualiza el estado de `messages` con los nuevos mensajes (incluyendo el favorito recién hecho)//
+                setMessages(updatedMessages)
+            })
+            //Si ocurre un error al dar favorito, entra en el bloque `catch`//
+            .catch(error => {
+                //Muestra un modal de error indicando que falló la acción de dar favorito//
+                createModal('Failed to favorite message')
+                //Imprime el error en consola para depuración//
+                console.error('Favorite error:', error)
+            })
     }
 
     //Maneja el envío del formulario de mensaje//
@@ -141,18 +186,28 @@ const HomePage = ({ navigation }) => {
             msg: e.target.msg.value      //Obtiene el valor del campo mensaje//
         }
 
-        //Llama al handler de envío de mensaje pasando://
-        //- Los datos del formulario//
-        //- El ID del usuario logueado//
-        //- La imagen seleccionada (puede ser null)//
-        //- Un callback de resultado que se ejecutará cuando el mensaje se guarde exitosamente//
+        //Ejecuta la función `handleSubmitMessage` para enviar un nuevo mensaje, pasándole los siguientes parámetros://
+        //- formData: Los datos del formulario (texto del mensaje)//
+        //- loggedUserId: El ID del usuario que envía el mensaje (convertido a string si es necesario)//
+        //- selectedImage: La imagen adjunta (si existe)//
+        //- Una función callback que se ejecutará cuando el servidor responda//
         handleSubmitMessage(formData, loggedUserId, selectedImage, (result) => {
+            //Verifica si el resultado del envío fue exitoso (result.success === true)//
             if (result.success) {
-                createModal(result.message) //Muestra el modal de exito//
-                resetForm()                 //Resetea el formulario cuando el mensaje se guarda correctamente//
-                setMessages(getMessages()) //Actualiza la lista de mensajes//
+                //Muestra un modal de éxito con el mensaje de confirmación (result.message)//
+                createModal(result.message)
+                //Resetea el formulario a sus valores iniciales (limpia los campos)//
+                resetForm()
+                //------ Recarga los mensajes después de enviar uno nuevo------//
+                //Vuelve a llamar a getMessages() para obtener la lista actualizada//
+                getMessages()
+                    //Si la carga es exitosa, actualiza el estado con los nuevos mensajes//
+                    .then(newMessages => setMessages(newMessages))
+                    //Si falla, muestra el error en consola (pero no interrumpe el flujo)//
+                    .catch(error => console.error('Error reloading messages:', error))
             } else {
-                createModal(result.error) //Muestra el modal de error//
+                //Si el envío falló (result.success === false), muestra un modal con el error//
+                createModal(result.error)
             }
         })
     }
@@ -178,6 +233,9 @@ const HomePage = ({ navigation }) => {
         //Navega a la página de login usando la función de navegación proporcionada//
         navigation.navigateToLogin()
     }
+
+    //Obtenemos al usuario logueado//
+    const loggedUser = users.find(user => user.id === loggedUserId.toString());
 
     //Retorna la estructura JSX del componenete//
     return (
@@ -218,7 +276,7 @@ const HomePage = ({ navigation }) => {
                     {/* Contenedor interno de mensajes */}
                     <div className="homeUserMsgContainer">
                         {/* Mapeo de todos los mensajes para renderizarlos */}
-                        {messages.map((message) => {
+                        {Array.isArray(messages) && messages.map((message) => {
                             //Busca el autor del mensaje actual en el array de usuarios//
                             const author = users.find(u => u.id === message.userId)
 

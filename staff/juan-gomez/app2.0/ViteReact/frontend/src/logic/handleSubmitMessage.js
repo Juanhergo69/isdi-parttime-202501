@@ -1,21 +1,3 @@
-//Objeto con constantes para las claves de almacenamiento//
-export const STORAGE_KEYS = {
-    USERS: 'users',       //Clave para usuarios en localStorage//
-    MESSAGES: 'messages', //Clave para mensajes//
-    ID: 'id'              //Clave para ID de usuario//
-}
-
-//Obtiene todos los mensajes almacenados//
-export const getMessages = () => {
-    const messagesJson = localStorage.getItem(STORAGE_KEYS.MESSAGES)
-    return messagesJson ? JSON.parse(messagesJson) : [] //Retorna mensajes o array vacío//
-}
-
-//Guarda la lista de mensajes en localStorage//
-export const saveMessages = (messages) => {
-    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages))
-}
-
 //Valida que un título no exceda 5 palabras//
 export const validateTitle = (title) => {
     const words = title.split(/\s+/).filter(word => word.length > 0) //Divide y filtra palabras vacías//
@@ -28,117 +10,86 @@ export const validateTextarea = (textarea) => {
     return words.length <= 100 //True si tiene 100 palabras o menos//
 }
 
-//Función para almacenar un nuevo mensaje//
-export const storeMsg = (loggedUserUserId, title, msg, date, image = null) => {
-    //Valida que título y mensaje no estén vacíos//
-    if (!title || !msg) {
-        return {
-            success: false,                                                     //Si no hay éxito//
-            error: 'All fields are required. The message has not been stored'   //Devuelve mensaje de error//
-        }
-    }
-
-    //Obtiene todos los mensajes existentes//
-    const messages = getMessages()
-
-    //Crea objeto con los datos del nuevo mensaje//
-    const objectUserMsg = {
-        userId: loggedUserUserId,    //ID del usuario que crea el mensaje//
-        title: title,                //Título del mensaje//
-        msg: msg,                    //Contenido del mensaje//
-        date: date.toLocaleString(), //Fecha formateada como string//
-        likes: [],                   //Array para likes (inicia vacío)//
-        dislikes: [],                //Array para dislikes (inicia vacío)//
-        favorite: [],                //Array para favoritos (inicia vacío)//
-        image: image                 //Imagen adjunta (opcional)//
-    }
-
-    //Agrega el nuevo mensaje al array//
-    messages.push(objectUserMsg)
-    //Guarda todos los mensajes actualizados//
-    saveMessages(messages)
-
-    return { success: true } //Devuelve el suceso a verdadero//
-}
-
-export const handleSubmitMessage = (formData, loggedUserId, selectedImage, callback) => {
-    //Extrae propiedades title y msg del objeto formData usando destructuring//
-    const { title, msg } = formData
-
-    //Valida el título del mensaje usando la función validateTitle//
-    //Si la validación falla (retorna false)://
-    if (!validateTitle(title)) {
+//Exporta una función para manejar el envío de mensajes con validaciones y soporte para imágenes//
+export const handleSubmitMessage = (formData, userId, selectedImage, callback) => {
+    //PRIMERA VALIDACIÓN: Verifica que el título cumpla con los requisitos//
+    if (!validateTitle(formData.title)) {
+        //Ejecuta el callback con el error si la validación falla//
         callback({
-            success: false,                         //Si no hay éxito//
-            error: 'Title cannot exceed 5 words'    //Devuelve mensaje de error//
+            success: false,
+            error: 'Title cannot exceed 5 words'
         })
-        return
+        //Retorna una promesa rechazada para detener el flujo//
+        return Promise.reject('Title validation failed')
     }
 
-    //Valida el contenido del mensaje usando la función validateTextarea//
-    //Si la validación falla (retorna false)://
-    if (!validateTextarea(msg)) {
+    //SEGUNDA VALIDACIÓN: Verifica que el mensaje cumpla con los requisitos//
+    if (!validateTextarea(formData.msg)) {
+        //Ejecuta el callback con el error si la validación falla//
         callback({
-            success: false,                             //Si no hay éxito//
-            error: 'Message cannot exceed 100 words'    //Devuelve mensaje de error//
+            success: false,
+            error: 'Message cannot exceed 100 words'
         })
-        return
+        //Retorna una promesa rechazada para detener el flujo//
+        return Promise.reject('Message validation failed')
     }
 
-    //Verifica si hay una imagen adjunta para procesar//
+    //PREPARACIÓN DEL FORMULARIO: Crea un objeto FormData para enviar al servidor//
+    const formDataToSend = new FormData()
+    //Agrega el ID del usuario al formulario//
+    formDataToSend.append('userId', userId)
+    //Agrega el título del mensaje al formulario//
+    formDataToSend.append('title', formData.title)
+    //Agrega el contenido del mensaje al formulario//
+    formDataToSend.append('msg', formData.msg)
+
+    //Si hay una imagen seleccionada, la agrega al formulario//
     if (selectedImage) {
-        //Crea una instancia de FileReader para leer la imagen//
-        const reader = new FileReader()
+        formDataToSend.append('image', selectedImage);
+    }
 
-        //Define el evento que se ejecutará cuando la lectura se complete//
-        reader.onload = (event) => {
-            //Guarda el mensaje en el almacenamiento con://
-            //- ID de usuario//
-            //- Título del mensaje//
-            //- Contenido del mensaje//
-            //- Fecha actual//
-            //- Imagen convertida a base64 (event.target.result)//
-            const storeResult = storeMsg(loggedUserId, title, msg, new Date(), event.target.result)
-
-            //Verifica si el almacenamento del mensaje fue existoso//
-            if (storeResult.success) {
-                //Si fue exitoso, ejecuta el callback con objeto de éxito://
-                callback({
-                    success: true,                                      //Si hay éxito//
-                    message: 'Message stored successfully with image!'  //Devuelve mensaje indicándolo//
-                })
-            } else {
-                //Si falló, pasa directamente el resultado de storeMsg al callback//
-                //(que ya contiene success: false y el mensaje de error)//
-                callback(storeResult)
+    //PETICIÓN HTTP: Envía los datos al servidor//
+    return fetch('http://localhost:3001/api/messages', {
+        method: 'POST',  // Método HTTP para crear recursos
+        body: formDataToSend  //Usa FormData directamente (no necesita headers para 'Content-Type')//
+    })
+        //PRIMER THEN: Maneja la respuesta HTTP del servidor//
+        .then(response => {
+            //Si la respuesta no es exitosa (status 4xx/5xx)//
+            if (!response.ok) {
+                //Lanza un error para ser capturado en el catch//
+                throw new Error('Failed to submit message')
             }
-        }
-
-        //Manejador de errores para la lectura de la imagen//
-        reader.onerror = () => {
-            //Cuando ocurre un error en la lectura de la imagen,//
-            //ejecuta el callback con objeto de error://
+            //Convierte la respuesta a JSON si fue exitosa//
+            return response.json()
+        })
+        //SEGUNDO THEN: Maneja los datos procesados del servidor//
+        .then(data => {
+            //Si el servidor confirma el éxito de la operación//
+            if (data.success) {
+                //Ejecuta el callback con mensaje de éxito (diferente si hay imagen)//
+                callback({
+                    success: true,
+                    message: selectedImage
+                        ? 'Message stored successfully with image!'
+                        : 'Message stored successfully!'
+                })
+                //Retorna el mensaje creado para uso posterior//
+                return data.message
+            }
+            //Si el servidor indica fallo, lanza error//
+            throw new Error('Failed to process message')
+        })
+        //CATCH: Manejo centralizado de errores//
+        .catch(error => {
+            //Registra el error en consola para depuración//
+            console.error('Error submitting message:', error)
+            //Ejecuta el callback con el error//
             callback({
-                success: false,                                         //Si no hay éxito//
-                error: 'Failed to process image. Please try again.'     //Devuelve mensaje de error//
+                success: false,
+                error: error.message || 'Failed to submit message'
             })
-        }
-
-        //Inicia el proceso de lectura de la imagen seleccionada//
-        //La convierte a formato Data URL (base64)//
-        reader.readAsDataURL(selectedImage)
-    }
-
-    //Caso sin imagen//
-    else {
-        //Intenta almacenar el mensaje sin imagen//
-        const storeResult = storeMsg(loggedUserId, title, msg, new Date());
-        //Ejecuta el callback con://
-        //- Objeto de éxito si storeResult.success es true//
-        //- El mismo storeResult (que contiene el error) si es false//
-        callback(storeResult.success ? {
-            success: true,                              //Si hay éxito//
-            message: 'Message stored successfully!'     //Devuelve mensaje indicándolo//
-        } : storeResult)
-    }
+            //Propaga el error para manejo adicional si es necesario//
+            throw error;
+        })
 }

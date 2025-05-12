@@ -11,9 +11,13 @@ const MessagesUserInfoSection = ({ loggedUser }) => {
                 {loggedUser?.avatar ? (
                     //Si tiene avatar, muestra la imagen//
                     <img
-                        src={loggedUser.avatar}                 //URL de la imagen del avatar//
-                        alt={`${loggedUser.userName}'s avatar`} //Texto alternativo con el nombre de usuario//
-                        className="messages-avatar"             //Clase CSS para estilizar la imagen//
+                        src={
+                            loggedUser.avatar.startsWith('data:')               //Verifica si el avatar comienza con 'data:' (ya está en formato data URI)//
+                                ? loggedUser.avatar                             //Si es true: usa el avatar directamente (ya está formateado)//
+                                : `data:image/jpeg;base64,${loggedUser.avatar}` //Si es false: formatea el avatar (asumiendo que es base64) añadiendo el prefijo//
+                        }
+                        className="messages-avatar"  //Clase CSS para estilizar la imagen//
+                        alt="User avatar"          //Texto alternativo con el nombre de usuario//
                     />
                 ) : (
                     //Si no tiene avatar, muestra un círculo con la inicial//

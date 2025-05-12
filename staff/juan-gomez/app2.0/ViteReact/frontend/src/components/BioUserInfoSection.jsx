@@ -14,7 +14,11 @@ const BioUserInfoSection = ({ viewedUser }) => {
                     //- alt: texto alternativo descriptivo con el nombre de usuario//
                     //- className: clase CSS para estilizar la imagen//
                     <img
-                        src={viewedUser.avatar}
+                        src={
+                            viewedUser.avatar.startsWith('data:')                //Verifica si el avatar comienza con 'data:' (ya está en formato data URI)//
+                                ? viewedUser.avatar                              //Si es true: usa el avatar directamente (ya está formateado)//
+                                : `data:image/jpeg;base64,${viewedUser.avatar}`  //Si es false: formatea el avatar (asumiendo que es base64) añadiendo el prefijo//
+                        }
                         alt={`${viewedUser.userName}'s avatar`}
                         className="bio-avatar"
                     />

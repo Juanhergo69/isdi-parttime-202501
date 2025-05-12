@@ -44,7 +44,14 @@ const HomeHeader = ({
         <div className="homeMenuButton-content">
           {/* Si el usuario tiene avatar, lo muestra */}
           {loggedUser?.avatar ? (
-            <img src={loggedUser.avatar} className="homeMenuButton-avatar" alt="User avatar" />
+            <img
+              src={
+                loggedUser.avatar.startsWith('data:')              //Verifica si el avatar comienza con 'data:' (ya está en formato data URI)// 
+                  ? loggedUser.avatar                              //Si es true: usa el avatar directamente (ya está formateado)//
+                  : `data:image/jpeg;base64,${loggedUser.avatar}`  //Si es false: formatea el avatar (asumiendo que es base64) añadiendo el prefijo//
+              }
+              className="homeMenuButton-avatar"
+              alt="User avatar" />
           ) : (
             //Si no tiene avatar, muestra la inicial del nombre de usuario//
             <span className="homeMenuButton-initial">

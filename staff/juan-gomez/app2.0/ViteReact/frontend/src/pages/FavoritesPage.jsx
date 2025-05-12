@@ -2,6 +2,8 @@
 import React from 'react'
 //Importa funciones useState y useEffect para crear estados y efectos//
 import { useState, useEffect } from 'react'
+//Importa useModal//
+import { useModal } from '../components/ModalContext.jsx'
 //Importa getUsers//
 import { getUsers } from '../logic/getUsers.js'
 //Importa getMessages//
@@ -11,7 +13,7 @@ import { getLoggedUserId } from '../logic/getLoggedUserId.js'
 //Importa handleLike//
 import { handleLike } from '../logic/handleLike.js'
 //Importa handleDislike//
-import { handleDislike } from  '../logic/handleDislike.js'
+import { handleDislike } from '../logic/handleDislike.js'
 //Importa handleFavorite//
 import { handleFavorite } from '../logic/handleFavorite.js'
 //Importa handleLogout//
@@ -29,30 +31,48 @@ import '../styles/pages/favoritesPage.css'
 const FavoritesPage = ({ navigation }) => {
     //Estado para controlar la visibilidad del menú desplegable del usuario//
     const [showMenu, setShowMenu] = useState(false)
-
     //Estado para almacenar y actualizar la lista de mensajes//
-    const [messages, setMessages] = useState(getMessages())
-
+    const [messages, setMessages] = useState([])
     //Obtiene la lista completa de usuarios registrados//
-    const users = getUsers()
-
+    const [users, setUsers] = useState([])
+    //Obtenemos la función para crear modales//
+    const { createModal } = useModal()
     //Obtiene el ID del usuario actualmente logueado//
     const loggedUserId = getLoggedUserId()
 
-    //Busca el usuario logueado//
-    const loggedUser = users.find(user => user.id === loggedUserId)
+    //Efecto para cargar datos iniciales//
+    useEffect(() => {
+        //Promise.all permite ejecutar múltiples promesas en paralelo y esperar a que todas se resuelvan//
+        Promise.all([getMessages(), getUsers()])
+            //Cuando ambas promesas se resuelven, se reciben los datos en un array
+            .then(([messagesData, usersData]) => {
+                //Actualiza el estado de messages con los datos obtenidos de getMessages()//
+                setMessages(messagesData)
+                //Actualiza el estado de users con los datos obtenidos de getUsers()//
+                setUsers(usersData)
+
+                //Busca el usuario logueado en el array de usuarios//
+                //Nota: Se convierte loggedUserId a string porque el backend almacena IDs como strings//
+                const loggedUser = usersData.find(user => user.id === loggedUserId.toString())
+                //Si no se encuentra el usuario logueado, redirige a la pantalla de login//
+                if (!loggedUser) {
+                    navigation.navigateToLogin()
+                }
+            })
+            //Manejo de errores si alguna de las promesas falla//
+            .catch(error => {
+                //Muestra un modal de error al usuario//
+                createModal('Failed to load data. Please try again later.')
+                //Registra el error en la consola para debugging//
+                console.error('Error loading data:', error)
+            })
+        //Dependencias del efecto: se volverá a ejecutar cuando cualquiera de estas cambie//
+    }, [loggedUserId, navigation, createModal])
 
     //Filtra los mensajes para obtener solo los favoritos del usuario logueado//
     const favoriteMessages = messages.filter(message =>
-        message.favorite && message.favorite.includes(loggedUserId)
+        message.favorite && message.favorite.includes(loggedUserId.toString())
     )
-
-     //Efecto para redirigir a login si no hay usuario logueado//
-     useEffect(() => {
-        if (!loggedUser) {
-            navigation.navigateToLogin()
-        }
-    }, [loggedUser, navigation])
 
     //Efecto para cerrar el menú al hacer clic fuera de él//
     useEffect(() => {
@@ -71,40 +91,70 @@ const FavoritesPage = ({ navigation }) => {
         return () => document.removeEventListener('click', handleClickOutside)
     }, [showMenu]) //Dependencia: solo se ejecuta cuando showMenu cambia//
 
-   //Maneja el like a un mensaje//
-   const onLike = (messageId) => {
-       //Llama al handler de like pasando el ID del mensaje y el ID del usuario logueado//
-       //El handler devuelve la lista actualizada de mensajes//
-       const updatedMessages = handleLike(messageId, loggedUserId)
-       //Actualiza el estado de mensajes con la lista actualizada//
-       setMessages(updatedMessages)
-   }
-   
-   //Maneja el dislike a un mensaje//
-   const onDislike = (messageId) => {
-       //Llama al handler de dislike pasando el ID del mensaje y el ID del usuario logueado//
-       //El handler devuelve la lista actualizada de mensajes//
-       const updatedMessages = handleDislike(messageId, loggedUserId)
-       //Actualiza el estado de mensajes con la lista actualizada//
-       setMessages(updatedMessages)
-   }
-   
-   //Maneja el favorito de un mensaje//
-   const onFavorite = (messageId) => {
-       //Llama al handler de favorito pasando el ID del mensaje y el ID del usuario logueado//
-       //El handler devuelve la lista actualizada de mensajes//
-       const updatedMessages = handleFavorite(messageId, loggedUserId)
-       //Actualiza el estado de mensajes con la lista actualizada//
-       setMessages(updatedMessages)
-   }
+    //Maneja el like a un mensaje//
+    const onLike = (messageId) => {
+        //Llama a la función `handleLike` pasándole el `messageId` y el `loggedUserId` (convertido a string por compatibilidad)//
+        handleLike(messageId, loggedUserId.toString())
+            //Si la promesa se resuelve correctamente, recibe los `updatedMessages` (mensajes actualizados)//
+            .then(updatedMessages => {
+                //Actualiza el estado de `messages` con los nuevos mensajes (incluyendo el like recién hecho)//
+                setMessages(updatedMessages)
+            })
+            //Si ocurre un error al dar like, entra en el bloque `catch`//
+            .catch(error => {
+                //Muestra un modal de error indicando que falló la acción de dar like//
+                createModal('Failed to like message')
+                //Imprime el error en consola para depuración//
+                console.error('Like error:', error)
+            })
+    }
 
-   //Maneja el logout del usuario//
-   const onLogout = () => {
-       //Ejecuta el handler de logout que limpia los datos de sesión//
-       handleLogout()
-       //Navega a la página de login usando la función de navegación proporcionada//
-       navigation.navigateToLogin()
-   }
+    //Maneja el dislike a un mensaje//
+    const onDislike = (messageId) => {
+        //Llama a la función `handleDislike` pasándole el `messageId` y el `loggedUserId` (convertido a string por compatibilidad)//
+        handleDislike(messageId, loggedUserId.toString())
+            //Si la promesa se resuelve correctamente, recibe los `updatedMessages` (mensajes actualizados)//
+            .then(updatedMessages => {
+                //Actualiza el estado de `messages` con los nuevos mensajes (incluyendo el dislike recién hecho)//
+                setMessages(updatedMessages)
+            })
+            //Si ocurre un error al dar dislike, entra en el bloque `catch`//
+            .catch(error => {
+                //Muestra un modal de error indicando que falló la acción de dar dislike//
+                createModal('Failed to dislike message')
+                //Imprime el error en consola para depuración//
+                console.error('Dislike error:', error)
+            })
+    }
+
+    //Maneja el favorito de un mensaje//
+    const onFavorite = (messageId) => {
+        //Llama a la función `handleFavorite` pasándole el `messageId` y el `loggedUserId` (convertido a string por compatibilidad)//
+        handleFavorite(messageId, loggedUserId.toString())
+            //Si la promesa se resuelve correctamente, recibe los `updatedMessages` (mensajes actualizados)//
+            .then(updatedMessages => {
+                //Actualiza el estado de `messages` con los nuevos mensajes (incluyendo el favorito recién hecho)//
+                setMessages(updatedMessages)
+            })
+            //Si ocurre un error al dar favorito, entra en el bloque `catch`//
+            .catch(error => {
+                //Muestra un modal de error indicando que falló la acción de dar favorito//
+                createModal('Failed to favorite message')
+                //Imprime el error en consola para depuración//
+                console.error('Favorite error:', error)
+            })
+    }
+
+    //Maneja el logout del usuario//
+    const onLogout = () => {
+        //Ejecuta el handler de logout que limpia los datos de sesión//
+        handleLogout()
+        //Navega a la página de login usando la función de navegación proporcionada//
+        navigation.navigateToLogin()
+    }
+
+    //Busca el usuario logueado//
+    const loggedUser = users.find(user => user.id === loggedUserId.toString())
 
     //Renderiza el componente principal de la página de favoritos//
     return (
@@ -116,7 +166,7 @@ const FavoritesPage = ({ navigation }) => {
                 - onLogout: función para cerrar sesión
                 - setShowMenu: controla visibilidad del menú desplegable
                 - showMenu: estado actual del menú (visible/oculto) */}
-            <FavoritesHeader 
+            <FavoritesHeader
                 loggedUser={loggedUser}
                 navigation={navigation}
                 onLogout={onLogout}
@@ -131,11 +181,11 @@ const FavoritesPage = ({ navigation }) => {
                     {/* Componente de información del usuario que recibe:
                         - loggedUser: datos del usuario
                         - classNamePrefix: prefijo para clases CSS personalizadas */}
-                    <FavoritesUserInfoSection 
-                        loggedUser={loggedUser} 
+                    <FavoritesUserInfoSection
+                        loggedUser={loggedUser}
                         classNamePrefix="favorite"
                     />
-                    
+
                     {/* Componente de lista de mensajes favoritos que recibe props:
                         - favoriteMessages: array de mensajes marcados como favoritos
                         - users: lista de usuarios para mostrar información relacionada
@@ -144,7 +194,7 @@ const FavoritesPage = ({ navigation }) => {
                         - onDislike: función para manejar dislikes
                         - onFavorite: función para gestionar favoritos
                         - navigation: objeto para manejar navegación */}
-                    <FavoritesMessageList 
+                    <FavoritesMessageList
                         favoriteMessages={favoriteMessages}
                         users={users}
                         loggedUserId={loggedUserId}

@@ -5,10 +5,10 @@
 const MessagesMessageItem = ({ message, users, handleDelete }) => {
     //Calcula el número de likes (si no hay, usa 0 como valor por defecto)//
     const likesCount = message.likes?.length || 0
-    
+
     //Calcula el número de dislikes (si no hay, usa 0 como valor por defecto)//
     const dislikesCount = message.dislikes?.length || 0
-    
+
     //Mapea los IDs de usuarios que dieron like a sus nombres de usuario//
     //Si no encuentra el usuario, devuelve 'Unknown'//
     const likedUsers = message.likes?.map(likeUserId => {
@@ -17,7 +17,7 @@ const MessagesMessageItem = ({ message, users, handleDelete }) => {
         //Devuelve el nombre de usuario o 'Unknown' si no se encuentra//
         return user ? user.userName : 'Unknown'
     }) || [] //Si no hay likes, devuelve array vacío//
-    
+
     //Mapea los IDs de usuarios que dieron dislike a sus nombres de usuario//
     //Si no encuentra el usuario, devuelve 'Unknown'//
     const dislikedUsers = message.dislikes?.map(dislikeUserId => {
@@ -33,7 +33,7 @@ const MessagesMessageItem = ({ message, users, handleDelete }) => {
         <div className="message">
             {/* Muestra el título del mensaje */}
             <div className="message-title">Title: {message.title}</div>
-            
+
             {/* Muestra el contenido/texto del mensaje */}
             <div className="message-text">Message: {message.msg}</div>
 
@@ -41,7 +41,10 @@ const MessagesMessageItem = ({ message, users, handleDelete }) => {
             {message.image && (
                 <div className="message-image-container">
                     <img
-                        src={message.image}         //URL de la imagen//
+                        //Verifica si la imagen comienza con 'data:' (ya está en formato data URI)//
+                        //Si es true: usa la imagen directamente (ya está formateado)//
+                        //Si es false: formatea la imagen (asumiento que es base64) añadiendo el prefijo//
+                        src={message.image.startsWith('data:') ? message.image : `data:image/jpeg;base64,${message.image}`} //URL de la imagen//
                         alt="User uploaded content" //Texto alternativo//
                         className="message-image"   //Clase CSS//
                     />

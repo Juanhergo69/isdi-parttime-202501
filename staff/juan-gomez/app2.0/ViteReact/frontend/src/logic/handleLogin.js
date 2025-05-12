@@ -1,58 +1,72 @@
-//Objeto con constantes para las claves de almacenamiento//
-export const STORAGE_KEYS = {
-    USERS: 'users',       //Clave para usuarios en localStorage//
-    MESSAGES: 'messages', //Clave para mensajes//
-    ID: 'id'              //Clave para ID de usuario//
+//Exporta una función llamada validateEmail que maneja los parámetros base de un email//
+export const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
 }
 
-//Obtiene todos los usuarios almacenados//
-export const getUsers = () => {
-    const usersJson = localStorage.getItem(STORAGE_KEYS.USERS) //Obtiene datos como JSON string//
-    return usersJson ? JSON.parse(usersJson) : [] //Convierte a objeto JS o retorna array vacío//
-}
-
-//Exporta la función handleLogin para que pueda ser utilizada en otros módulos//
+//Exporta una función llamada handleLogin que maneja el proceso de inicio de sesión//
 export const handleLogin = (formData) => {
-    //Obtiene la lista de usuarios registrados desde el almacenamiento (localStorage)//
-    const users = getUsers()
-    
-    //Busca un usuario en el array cuyo email coincida con el email proporcionado en el formulario//
-    const user = users.find(user => user.email === formData.email)
-
-    //Si no se encontró ningún usuario con ese email (!user es true)//
-    if (!user) { 
-        //Retorna un objeto indicando que://
-        //- El login no fue exitoso (success: false)//
-        //- Muestra error indicando que el email no está registrado//
-        //- Debe redirigir al usuario a la página de registro (shouldRedirect: true)//
-        return { 
-            success: false,
-            error: 'The email is not registered yet. Please, create an account first',
-            shouldRedirect: true
-        }
+    //Primera validación: verifica el formato del email antes de enviar al servidor//
+    if (!validateEmail(formData.email)) {
+        //Si el email no es válido, rechaza inmediatamente con un objeto de error estructurado//
+        return Promise.reject({
+            success: false,                 //Indica que la operación falló//
+            error: 'Invalid email format',  //Mensaje descriptivo del error//
+            shouldRedirect: false           //Indica que no se debe redirigir al usuario//
+        })
     }
 
-    //Si la contraseña proporcionada no coincide con la contraseña almacenada del usuario//
-    if (user.password !== formData.password) {
-        //Retorna un objeto indicando que://
-        //- El login no fue exitoso (success: false)//
-        //- Muestra un error indicando que la contraseña es incorrecta//
-        //- No debe redirigir (shouldRedirect: false) porque solo necesita reintentar//
-        return { 
-            success: false,
-            error: 'Incorrect password, Please, try again',
-            shouldRedirect: false
-        }
+    //Prepara los datos para enviar al backend://
+    //Crea un objeto con solo los campos necesarios para el login//
+    const loginData = {
+        email: formData.email,                    //Email del usuario//
+        password: formData.password,              //Contraseña//
+        rememberme: formData.rememberme || false  //Opción "recordarme", default false//
     }
 
-    //Si ambas validaciones pasaron (email existe y contraseña correcta)//
-    //Retorna un objeto indicando que://
-    //- El login fue exitoso (success: true)//
-    //- Los datos del usuario encontrado (user: user)//
-    //- Si marcó la opción "Remember me" (rememberSession: formData.rememberme)//
-    return { 
-        success: true, 
-        user: user,
-        rememberSession: formData.rememberme
-    }
+    //Realiza la petición HTTP POST al endpoint de login del servidor//
+    return fetch('http://localhost:3001/api/login', {
+        method: 'POST',                          //Método HTTP para enviar datos//
+        headers: {
+            'Content-Type': 'application/json',  //Indica que enviamos JSON//
+        },
+        body: JSON.stringify(loginData)          //Convierte el objeto a string JSON//
+    })
+        //Primera promesa: maneja la respuesta HTTP del servidor//
+        .then(response => {
+            //Si la respuesta no es exitosa (status 4xx/5xx)//
+            if (!response.ok) {
+                //Intenta parsear el cuerpo del error y rechaza con él//
+                return response.json().then(error => Promise.reject(error))
+            }
+            //Si la respuesta es OK, parsea el JSON de la respuesta//
+            return response.json()
+        })
+        //Segunda promesa: maneja los datos parseados del servidor//
+        .then(data => {
+            //Si el servidor indica que la operación no fue exitosa//
+            if (!data.success) {
+                //Rechaza con los datos del error del servidor//
+                return Promise.reject(data)
+            }
+            //Si todo es correcto, resuelve con los datos del servidor//
+            return data
+        })
+        //Manejo de errores: captura cualquier error en la cadena//
+        .catch(error => {
+            //Registra el error en consola para depuración//
+            console.error('Login error:', error)
+
+            //Asegura que el error tenga una estructura consistente//
+            if (!error || typeof error !== 'object') {
+                //Crea un objeto de error estándar si el error no lo era//
+                return Promise.reject({
+                    success: false,
+                    error: 'Login failed. Please try again later.',
+                    shouldRedirect: false
+                })
+            }
+            //Si el error ya tenía estructura adecuada, lo rechaza tal cual//
+            return Promise.reject(error)
+        })
 }
