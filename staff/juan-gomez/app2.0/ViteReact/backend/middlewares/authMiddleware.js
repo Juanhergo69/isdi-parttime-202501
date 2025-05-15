@@ -29,8 +29,12 @@ const authMiddleware = {
             })
         }
 
-        //Adjunta el objeto del usuario a la solicitud para uso en rutas posteriores//
-        req.user = user
+        //Se asigna constante sanitizedUser sobre el objeto usuario//
+        const sanitizedUser = { ...user }
+        //Se elimina el campo password sobre sanitizedUser//
+        delete sanitizedUser.password
+        //Adjunta el objeto de sanitizedUser a la solicitud para uso en rutas posteriores//
+        req.user = sanitizedUser
         //Llama a next() para continuar con el siguiente middleware/ruta//
         next()
     },

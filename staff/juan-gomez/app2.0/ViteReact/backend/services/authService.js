@@ -20,7 +20,7 @@ class AuthService {
             }
 
             //Busca el usuario por email usando el modelo User//
-            const user = User.getByEmail(email)
+            const user = User.getCompleteByEmail(email)
 
             //Verifica si el usuario existe//
             if (!user) {
@@ -44,9 +44,9 @@ class AuthService {
 
             //Si todo es correcto, resuelve la promesa con éxito//
             resolve({
-                success: true,          //Indica operación exitosa//
-                user,                   //Devuelve los datos del usuario//
-                rememberSession: false  //Flag para manejo de sesión persistente//
+                success: true,               //Indica operación exitosa//
+                user: User.toSafeUser(user), //Devuelve los datos del usuario sin password//
+                rememberSession: false       //Flag para manejo de sesión persistente//
             })
         })
     }
@@ -101,12 +101,19 @@ class AuthService {
                 status: ``//Valor inicial vacío//
             })
 
-            //Si todo es correcto, resuelve la promesa con el nuevo usuario//
+            //Si todo es correcto, resuelve la promesa con el nuevo usuario, eliminando la password//
             resolve({
                 success: true,
-                user: newUser
+                user: AuthService.sanitizeUser(newUser)
             })
         })
+    }
+
+    //Método estático para eliminar del objeto usuario el campo de contraseña//
+    static sanitizeUser(user) {
+        const sanitized = { ...user }
+        delete sanitized.password
+        return sanitized
     }
 }
 

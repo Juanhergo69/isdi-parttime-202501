@@ -3,26 +3,40 @@ const { getUsers, saveUsers } = require('../utils/fileUtils')
 
 //Define la clase User que maneja todas las operaciones con usuarios//
 class User {
-    //Método estático para obtener todos los usuarios//
-    static getAll() {
-        //Llama a la función getUsers para obtener y retornar todos los usuarios//
-        return getUsers()
+    //Método estático para eliminar la password del objeto usuario//
+    static toSafeUser(user) {
+        const safeUser = { ...user }
+        delete safeUser.password
+        return safeUser
     }
 
-    //Método estático para buscar un usuario por su ID//
+    //Método estático para obtener todos los usuarios, eliminando la password//
+    static getAll() {
+        const users = getUsers()
+        return users.map(user => User.toSafeUser(user))
+    }
+
+    //Método estático para buscar un usuario por su ID, eliminando la password//
     static getById(id) {
         //Obtiene todos los usuarios//
         const users = getUsers()
-        //Busca y retorna el usuario con el ID coincidente//
-        return users.find(user => user.id === id)
+        const user = users.find(user => user.id === id)
+        return user ? User.toSafeUser(user) : null
     }
 
-    //Método estático para buscar un usuario por su email//
+    //Método estático para buscar un usuario por su email, completo con password//
+    static getCompleteByEmail(email) {
+        const users = getUsers()
+        return users.find(user => user.email === email)
+
+    }
+
+    //Método estático para buscar un usuario por su email, eliminando la password//
     static getByEmail(email) {
         //Obtiene todos los usuarios//
         const users = getUsers()
-        //Busca y retorna el usuario con el email coincidente//
-        return users.find(user => user.email === email)
+        const user = users.find(user => user.email === email)
+        return user ? User.toSafeUser(user) : null
     }
 
     //Método estático para crear un nuevo usuario//
@@ -38,8 +52,8 @@ class User {
         users.push(newUser)
         //Guarda el array actualizado en el archivo//
         saveUsers(users)
-        //Retorna el nuevo usuario creado//
-        return newUser
+        //Retorna el nuevo usuario creado, eliminando la password//
+        return User.toSafeUser(newUser)
     }
 
     //Método estático para actualizar un usuario existente//
@@ -62,8 +76,8 @@ class User {
         users[userIndex] = updatedUser
         //Guarda los cambios en el archivo//
         saveUsers(users);
-        //Retorna el usuario actualizado//
-        return updatedUser
+        //Retorna el usuario actualizado, eliminando la password//
+        return User.toSafeUser(updatedUser)
     }
 
     //Método estático para eliminar un usuario//
