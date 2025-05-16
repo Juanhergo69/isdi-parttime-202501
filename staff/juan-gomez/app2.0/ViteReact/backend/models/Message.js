@@ -1,156 +1,268 @@
-//Importa funciones auxiliares para leer y escribir mensajes en archivos//
-const { getMessages, saveMessages } = require('../utils/fileUtils')
+//Importa la configuración de la base de datos desde las constantes//
+const { DB_CONFIG } = require('../config/constants')
+//Importa la función para obtener la conexión a la base de datos//
+const { getDB } = require('../config/db')
 
-//Define la clase Message que maneja todas las operaciones con mensajes//
+//Define la clase Message que contendrá todos los métodos estáticos para interactuar con los mensajes//
 class Message {
     //Método estático para obtener todos los mensajes//
     static getAll() {
-        //Obtiene y retorna todos los mensajes usando la función getMessages//
-        return getMessages()
+        //Retorna una nueva promesa para manejar operaciones asíncronas//
+        return new Promise((resolve, reject) => {
+            //Accede a la colección de mensajes en la base de datos//
+            getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                //Busca todos los documentos en la colección//
+                .find()
+                //Convierte los resultados a un array//
+                .toArray()
+                .then(messages => {
+                    //Normaliza los mensajes para asegurar estructura consistente//
+                    const normalizedMessages = messages.map(msg => ({
+                        userId: msg.userId,           //ID del usuario que creó el mensaje//
+                        title: msg.title,             //Título del mensaje//
+                        msg: msg.msg,                 //Contenido del mensaje//
+                        date: msg.date,               //Fecha del mensaje//
+                        image: msg.image || null,     //Imagen adjunta (null si no existe)//
+                        likes: msg.likes || [],       //Array de likes (vacío si no existe)//
+                        dislikes: msg.dislikes || [], //Array de dislikes (vacío si no existe)//
+                        favorite: msg.favorite || []  //Array de favoritos (vacío si no existe)//
+                    }))
+                    //Resuelve la promesa con los mensajes normalizados//
+                    resolve(normalizedMessages)
+                })
+                //Rechaza la promesa si hay algún error//
+                .catch(reject)
+        })
     }
 
-    //Método estático para obtener mensajes de un usuario específico//
+    //Método estático para obtener mensajes por ID de usuario//
     static getByUserId(userId) {
-        //Obtiene todos los mensajes//
-        const messages = getMessages()
-        //Filtra y retorna solo los mensajes del usuario especificado//
-        return messages.filter(message => message.userId === userId)
+        return new Promise((resolve, reject) => {
+            //Accede a la colección de mensajes//
+            getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                //Busca mensajes que coincidan con el userId//
+                .find({ userId })
+                //Convierte los resultados a array//
+                .toArray()
+                //Resuelve con los mensajes encontrados//
+                .then(resolve)
+                //Rechaza si hay error//
+                .catch(reject)
+        })
     }
 
     //Método estático para obtener un mensaje por su fecha (que actúa como ID único)//
     static getById(date) {
-        //Obtiene todos los mensajes//
-        const messages = getMessages()
-        //Busca y retorna el mensaje con la fecha coincidente//
-        return messages.find(message => message.date === date)
+        return new Promise((resolve, reject) => {
+            //Accede a la colección de mensajes//
+            getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                //Busca un único mensaje que coincida con la fecha//
+                .findOne({ date })
+                //Resuelve con el mensaje encontrado//
+                .then(resolve)
+                //Rechaza si hay error//
+                .catch(reject)
+        })
     }
 
     //Método estático para crear un nuevo mensaje//
     static create(messageData) {
-        //Obtiene todos los mensajes actuales//
-        const messages = getMessages()
-        //Crea un nuevo objeto mensaje con datos básicos y arrays vacíos para interacciones//
-        const newMessage = {
-            ...messageData,  //Copia todos los datos del mensaje//
-            likes: [],       //Inicializa array de likes vacío//
-            dislikes: [],    //Inicializa array de dislikes vacío//
-            favorite: []     //Inicializa array de favoritos vacío//
-        }
-        //Agrega el nuevo mensaje al array de mensajes//
-        messages.push(newMessage)
-        //Guarda todos los mensajes en el archivo//
-        saveMessages(messages)
-        //Retorna el nuevo mensaje creado//
-        return newMessage
+        return new Promise((resolve, reject) => {
+            //Crea un nuevo objeto de mensaje con valores por defecto para arrays de interacción//
+            const newMessage = {
+                ...messageData,     //Copia todas las propiedades del mensaje recibido//
+                likes: [],          //Inicializa array de likes vacío//
+                dislikes: [],       //Inicializa array de dislikes vacío//
+                favorite: []        //Inicializa array de favoritos vacío//
+            }
+
+            //Accede a la colección de mensajes//
+            getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                //Inserta el nuevo mensaje en la colección//
+                .insertOne(newMessage)
+                //Resuelve con el mensaje creado//
+                .then(() => resolve(newMessage))
+                //Rechaza si hay error//
+                .catch(reject)
+        })
     }
 
     //Método estático para actualizar un mensaje existente//
     static update(date, updateData) {
-        //Obtiene todos los mensajes//
-        const messages = getMessages()
-        //Encuentra el índice del mensaje a actualizar//
-        const messageIndex = messages.findIndex(message => message.date === date)
-
-        //Si no encuentra el mensaje, retorna null//
-        if (messageIndex === -1) return null
-
-        //Crea una copia del mensaje original con los datos actualizados//
-        const updatedMessage = {
-            ...messages[messageIndex],  //Copia los datos existentes//
-            ...updateData               //Aplica las actualizaciones//
-        }
-
-        //Reemplaza el mensaje antiguo con el actualizado//
-        messages[messageIndex] = updatedMessage
-        //Guarda los cambios en el archivo//
-        saveMessages(messages)
-        //Retorna el mensaje actualizado//
-        return updatedMessage
+        return new Promise((resolve, reject) => {
+            //Accede a la colección de mensajes//
+            getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                //Busca y actualiza el mensaje con la fecha especificada//
+                .findOneAndUpdate(
+                    { date },                         //Filtro por fecha//
+                    { $set: updateData },             //Datos a actualizar//
+                    { returnDocument: 'after' }       //Devuelve el documento actualizado//
+                )
+                //Resuelve con el mensaje actualizado//
+                .then(result => resolve(result.value))
+                //Rechaza si hay error//
+                .catch(reject)
+        })
     }
 
     //Método estático para eliminar un mensaje//
     static delete(date) {
-        //Obtiene todos los mensajes//
-        const messages = getMessages()
-        //Filtra los mensajes, eliminando el que coincide con la fecha//
-        const updatedMessages = messages.filter(message => message.date !== date)
-        //Guarda los mensajes restantes//
-        saveMessages(updatedMessages)
-        //Retorna true si se eliminó un mensaje, false si no//
-        return updatedMessages.length !== messages.length
+        return new Promise((resolve, reject) => {
+            //Accede a la colección de mensajes//
+            getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                //Elimina el mensaje con la fecha especificada//
+                .deleteOne({ date })
+                //Resuelve con true si se eliminó, false si no//
+                .then(result => resolve(result.deletedCount > 0))
+                //Rechaza si hay error//
+                .catch(reject)
+        })
     }
 
-    //Método estático para manejar likes/dislikes//
+    //Método estático para manejar reacciones (like/dislike)//
     static toggleReaction(date, userId, reactionType) {
-        //Obtiene todos los mensajes//
-        const messages = getMessages()
-        //Encuentra el índice del mensaje//
-        const messageIndex = messages.findIndex(message => message.date === date)
+        return new Promise((resolve, reject) => {
+            //Primero obtiene el mensaje por su fecha//
+            this.getById(date)
+                .then(message => {
+                    //Si no existe el mensaje, resuelve con null//
+                    if (!message) return resolve(null)
 
-        //Si no encuentra el mensaje, retorna null//
-        if (messageIndex === -1) return null
+                    //Obtiene el array de reacciones del tipo especificado//
+                    const reactionArray = message[reactionType] || []
+                    //Determina el tipo de reacción opuesta//
+                    const oppositeReaction = reactionType === 'likes' ? 'dislikes' : 'likes'
+                    //Obtiene el array de reacciones opuestas//
+                    const oppositeArray = message[oppositeReaction] || []
 
-        //Obtiene el mensaje específico//
-        const message = messages[messageIndex];
-        //Obtiene el array de reacciones (likes o dislikes)//
-        const reactionArray = message[reactionType]
-        //Determina el tipo de reacción opuesta//
-        const oppositeReaction = reactionType === 'likes' ? 'dislikes' : 'likes'
-        //Obtiene el array de la reacción opuesta//
-        const oppositeArray = message[oppositeReaction]
+                    //Prepara el objeto de actualización//
+                    const updateQuery = {
+                        $set: {
+                            //Preserva todos los campos importantes del mensaje//
+                            title: message.title,
+                            msg: message.msg,
+                            image: message.image,
+                            date: message.date,
+                            userId: message.userId
+                        }
+                    }
 
-        //Busca si el usuario ya tiene esta reacción//
-        const userReactionIndex = reactionArray.indexOf(userId)
+                    //Si el usuario ya había reaccionado de esta manera//
+                    if (reactionArray.includes(userId)) {
+                        //Prepara operación para quitar la reacción//
+                        updateQuery.$pull = { [reactionType]: userId }
+                    } else {
+                        //Prepara operación para añadir la reacción//
+                        updateQuery.$addToSet = { [reactionType]: userId }
+                        //Si el usuario tenía la reacción opuesta//
+                        if (oppositeArray.includes(userId)) {
+                            //Prepara operación para quitar la reacción opuesta//
+                            updateQuery.$pull = { [oppositeReaction]: userId }
+                        }
+                    }
 
-        if (userReactionIndex === -1) {
-            //Si no tiene la reacción, la añade//
-            reactionArray.push(userId)
-
-            //Elimina la reacción opuesta si existe//
-            const oppositeIndex = oppositeArray.indexOf(userId)
-            if (oppositeIndex !== -1) {
-                oppositeArray.splice(oppositeIndex, 1)
-            }
-        } else {
-            //Si ya tiene la reacción, la quita//
-            reactionArray.splice(userReactionIndex, 1)
-        }
-
-        //Guarda los cambios//
-        saveMessages(messages)
-        //Retorna todos los mensajes actualizados//
-        return messages
+                    //Ejecuta la actualización en la base de datos//
+                    return getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                        .updateOne({ date }, updateQuery)
+                })
+                //Después de actualizar, obtiene todos los mensajes actualizados//
+                .then(() => this.getAll())
+                //Resuelve con la lista completa de mensajes//
+                .then(messages => resolve(messages))
+                //Rechaza si hay error//
+                .catch(reject)
+        })
     }
 
     //Método estático para manejar favoritos//
     static toggleFavorite(date, userId) {
-        //Obtiene todos los mensajes//
-        const messages = getMessages()
-        //Encuentra el índice del mensaje//
-        const messageIndex = messages.findIndex(message => message.date === date)
+        return new Promise((resolve, reject) => {
+            //Primero obtiene el mensaje por su fecha//
+            this.getById(date)
+                .then(message => {
+                    //Si no existe el mensaje, resuelve con null//
+                    if (!message) return resolve(null)
 
-        //Si no encuentra el mensaje, retorna null//
-        if (messageIndex === -1) return null
+                    //Prepara el objeto de actualización//
+                    const updateQuery = {
+                        $set: {
+                            //Preserva todos los campos del mensaje//
+                            title: message.title,
+                            msg: message.msg,
+                            image: message.image,
+                            date: message.date,
+                            userId: message.userId
+                        }
+                    }
 
-        //Obtiene el array de favoritos del mensaje//
-        const favorites = messages[messageIndex].favorite
-        //Busca si el usuario ya marcó como favorito//
-        const userFavoriteIndex = favorites.indexOf(userId)
+                    //Si el usuario ya tenía el mensaje como favorito//
+                    if (message.favorite.includes(userId)) {
+                        //Prepara operación para quitar de favoritos//
+                        updateQuery.$pull = { favorite: userId }
+                    } else {
+                        //Prepara operación para añadir a favoritos//
+                        updateQuery.$addToSet = { favorite: userId }
+                    }
 
-        if (userFavoriteIndex === -1) {
-            //Si no está en favoritos, lo añade//
-            favorites.push(userId)
-        } else {
-            //Si ya está en favoritos, lo quita//
-            favorites.splice(userFavoriteIndex, 1)
-        }
+                    //Ejecuta la actualización en la base de datos//
+                    return getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                        .updateOne({ date }, updateQuery)
+                })
+                //Después de actualizar, obtiene todos los mensajes actualizados//
+                .then(() => this.getAll())
+                //Resuelve con la lista completa de mensajes//
+                .then(messages => resolve(messages))
+                //Rechaza si hay error//
+                .catch(reject)
+        })
+    }
 
-        //Guarda los cambios//
-        saveMessages(messages)
-        //Retorna todos los mensajes actualizados//
-        return messages
+    //Método estático para eliminar todos los mensajes de un usuario//
+    static deleteAllByUserId(userId) {
+        return new Promise((resolve, reject) => {
+            // Accede a la colección de mensajes
+            getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                //Elimina todos los mensajes del usuario especificado//
+                .deleteMany({ userId })
+                .then(result => {
+                    //Registra en consola cuántos mensajes se eliminaron//
+                    console.log(`Deleted ${result.deletedCount} messages for user ${userId}`)
+                    //Resuelve con true indicando éxito//
+                    resolve(true)
+                })
+                //Rechaza si hay error//
+                .catch(reject)
+        })
+    }
+
+    //Método estático para remover un usuario de todas las interacciones//
+    static removeUserFromAllInteractions(userId) {
+        return new Promise((resolve, reject) => {
+            //Accede a la colección de mensajes//
+            getDB().collection(DB_CONFIG.COLLECTIONS.MESSAGES)
+                //Actualiza todos los mensajes//
+                .updateMany(
+                    {},  //Filtro vacío para aplicar a todos los documentos//
+                    {
+                        //Operación para remover el userId de todos los arrays de interacción//
+                        $pull: {
+                            likes: userId,      //Remueve de likes//
+                            dislikes: userId,   //Remueve de dislikes//
+                            favorite: userId    //Remueve de favoritos//
+                        }
+                    }
+                )
+                .then(result => {
+                    //Registra en consola cuántos mensajes se actualizaron//
+                    console.log(`Removed user ${userId} from interactions in ${result.modifiedCount} messages`)
+                    //Resuelve con true indicando éxito//
+                    resolve(true)
+                })
+                //Rechaza si hay error//
+                .catch(reject)
+        })
     }
 }
 
-//Exporta la clase Message para ser usada en otros archivos//
+//Exporta la clase Message para ser utilizada en otros módulos//
 module.exports = Message
