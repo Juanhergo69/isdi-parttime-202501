@@ -2,6 +2,10 @@
 const { DB_CONFIG } = require('../config/constants')
 //Importa la función para obtener la conexión a la base de datos//
 const { getDB } = require('../config/db')
+//Importa bcrypt//
+const bcrypt = require('bcrypt')
+//Genera factor de costo (10 ofrece buen rendimiento y seguridad)//
+const SALT_WORK_FACTOR = 10
 
 //Define la clase User que contendrá métodos para interactuar con usuarios//
 class User {
@@ -13,6 +17,54 @@ class User {
         delete safeUser.password;
         //Retorna el usuario seguro (sin contraseña)//
         return safeUser
+    }
+
+    //Método estático para hashear una contraseña de forma segura//
+    static hashPassword(password) {
+        //Retorna una nueva Promesa para manejar la operación asíncrona//
+        return new Promise((resolve, reject) => {
+            //Genera un salt (valor aleatorio) para el hashing//
+            //SALT_WORK_FACTOR determina la complejidad del hash (coste computacional)//
+            bcrypt.genSalt(SALT_WORK_FACTOR)
+
+                //Cuando la generación del salt se completa exitosamente://
+                .then(salt => {
+                    //Usa el salt generado para crear el hash de la contraseña//
+                    return bcrypt.hash(password, salt)
+                })
+
+                //Cuando el hashing de la contraseña se completa://
+                .then(hash => {
+                    //Resuelve la Promesa con el hash resultante//
+                    //(este es el valor que debe almacenarse en la base de datos)//
+                    resolve(hash)
+                })
+
+                //Si ocurre algún error durante el proceso://
+                .catch(reject) //Rechaza la Promesa propagando el error//
+        })
+    }
+
+    //Método estático para comparar una contraseña en texto plano con un hash almacenado//
+    static comparePassword(candidatePassword, hashedPassword) {
+        // Retorna una nueva Promesa para manejar la operación asíncrona
+        return new Promise((resolve, reject) => {
+            //Usa el método compare de bcrypt para comparar://
+            //- candidatePassword: Contraseña proporcionada (texto plano)//
+            //- hashedPassword: Contraseña hasheada almacenada en la base de datos//
+            bcrypt.compare(candidatePassword, hashedPassword)
+
+                //Cuando la comparación se completa://
+                .then(isMatch => {
+                    //Resuelve la Promesa con el resultado booleano de la comparación://
+                    //- true: si las contraseñas coinciden//
+                    //- false: si no coinciden//
+                    resolve(isMatch)
+                })
+
+                //Si ocurre algún error durante la comparación://
+                .catch(reject) //Rechaza la Promesa propagando el error//
+        })
     }
 
     //Método estático para obtener todos los usuarios//
@@ -70,23 +122,27 @@ class User {
         })
     }
 
-    // Método estático para obtener un usuario completo por email (incluyendo contraseña)
+    //Método estático para obtener un usuario completo por email (incluyendo contraseña)//
     static getCompleteByEmail(email) {
+        // Retorna una nueva Promesa para manejar la operación asíncrona
         return new Promise((resolve, reject) => {
-            // Accede a la colección de usuarios
+            //Obtiene la conexión a la base de datos y accede a la colección de usuarios//
+            //usando la configuración definida en DB_CONFIG.COLLECTIONS.USERS//
             getDB().collection(DB_CONFIG.COLLECTIONS.USERS)
-                // Busca un usuario con el email especificado
-                .findOne({ email })
+
+                //Busca un único documento que coincida con el criterio://
+                //{ email: email.toLowerCase() } - convierte el email a minúsculas para búsqueda case-insensitive//
+                .findOne({ email: email.toLowerCase() })
+
+                //Cuando la búsqueda se completa://
                 .then(user => {
-                    // Si no se encuentra el usuario, resuelve con null
-                    if (!user) {
-                        return resolve(null)
-                    }
-                    //Resuelve con el usuario encontrado (incluye todos los campos)//
+                    //Resuelve la Promesa con el objeto de usuario completo encontrado//
+                    //(incluye todos los campos, incluso la contraseña hasheada)//
                     resolve(user)
                 })
-                //Rechaza si hay error//
-                .catch(reject)
+
+                //Si ocurre algún error durante el proceso://
+                .catch(reject) //Rechaza la Promesa propagando el error recibido//
         })
     }
 
@@ -108,46 +164,105 @@ class User {
 
     //Método estático para crear un nuevo usuario//
     static create(userData) {
+        //Retorna una nueva Promesa para manejar la operación asíncrona//
         return new Promise((resolve, reject) => {
-            //Prepara el nuevo usuario con datos recibidos//
-            const newUser = {
-                ...userData,                     //Copia todas las propiedades del usuario//
-                id: Date.now().toString()        //Asigna un ID basado en timestamp actual//
-            }
+            //Primero hasheamos la contraseña del usuario//
+            this.hashPassword(userData.password)
+                //Cuando el hashing se completa exitosamente://
+                .then(hashedPassword => {
+                    //Creamos un objeto newUser combinando://
+                    const newUser = {
+                        ...userData,                //Todos los datos originales del usuario//
+                        password: hashedPassword,   //Reemplaza la contraseña por el hash//
+                        id: Date.now().toString()   //Asigna un nuevo ID basado en el timestamp actual//
+                    }
 
-            //Accede a la colección de usuarios//
-            getDB().collection(DB_CONFIG.COLLECTIONS.USERS)
-                //Inserta el nuevo usuario en la colección//
-                .insertOne(newUser)
-                //Si se inserta correctamente, devuelve versión segura del usuario//
-                .then(result => resolve(User.toSafeUser(newUser)))
-                //Rechaza si hay error//
+                    //Accedemos a la colección de usuarios en la base de datos//
+                    getDB().collection(DB_CONFIG.COLLECTIONS.USERS)
+                        //Insertamos el nuevo documento de usuario//
+                        .insertOne(newUser)
+                        //Cuando la inserción se completa exitosamente://
+                        .then(() => {
+                            //Resolvemos la Promesa con una versión segura del usuario//
+                            //(eliminando información sensible como la contraseña)//
+                            resolve(User.toSafeUser(newUser))
+                        })
+                        //Si hay error en la inserción, rechazamos la Promesa//
+                        .catch(reject)
+                })
+                //Si hay error en el hashing de la contraseña, rechazamos la Promesa//
                 .catch(reject)
         })
     }
 
     //Método estático para actualizar un usuario existente//
     static update(id, updateData) {
+        //Retorna una nueva Promesa para manejar operaciones asíncronas//
         return new Promise((resolve, reject) => {
-            //Accede a la colección de usuarios//
+            //Verifica si el objeto updateData contiene una propiedad 'password'//
+            if (updateData.password) {
+                //Si hay contraseña, la hasheamos antes de guardar//
+                this.hashPassword(updateData.password)
+                    //Cuando el hashing se completa con éxito://
+                    .then(hashedPassword => {
+                        //Creamos un nuevo objeto con todos los datos de actualización//
+                        //pero reemplazando la contraseña en texto plano por el hash//
+                        const updatedData = {
+                            ...updateData,             //Copia todas las propiedades existentes//
+                            password: hashedPassword   //Sobreescribe la contraseña con el hash//
+                        }
+
+                        //Llamamos al método que realiza la actualización en la base de datos//
+                        //pasando el ID y los datos actualizados (con contraseña hasheada)//
+                        this.performUpdate(id, updatedData)
+                            //Si la actualización es exitosa, resolvemos la Promesa//
+                            .then(resolve)
+                            //Si hay error en la actualización, rechazamos la Promesa//
+                            .catch(reject)
+                    })
+                    //Si hay error en el hashing de la contraseña, rechazamos la Promesa//
+                    .catch(reject)
+            } else {
+                //Si NO hay contraseña en los datos de actualización://
+                //Llamamos directamente al método de actualización//
+                //pasando el ID y los datos originales sin modificar//
+                this.performUpdate(id, updateData)
+                    //Si la actualización es exitosa, resolvemos la Promesa//
+                    .then(resolve)
+                    //Si hay error en la actualización, rechazamos la Promesa//
+                    .catch(reject)
+            }
+        })
+    }
+
+    //Método estático para realizar la operación de actualización en la base de datos//
+    static performUpdate(id, updateData) {
+        //Retorna una nueva Promesa para manejar la operación asíncrona//
+        return new Promise((resolve, reject) => {
+            //Accede a la colección de usuarios en la base de datos//
             getDB().collection(DB_CONFIG.COLLECTIONS.USERS)
-                //Busca y actualiza el usuario con el ID especificado//
+                //Ejecuta la operación findOneAndUpdate de MongoDB//
                 .findOneAndUpdate(
-                    { id },                         //Filtro por ID//
-                    { $set: updateData },           //Datos a actualizar//
-                    { returnDocument: 'after' }     //Devuelve el documento actualizado//
+                    //Filtro: Busca el documento con el id proporcionado//
+                    { id },
+                    //Operación de actualización: $set actualiza solo los campos especificados//
+                    { $set: updateData },
+                    //Devuelve el documento después de la actualización//
+                    { returnDocument: 'after' }
                 )
+                //Maneja el resultado de la operación de actualización//
                 .then(result => {
-                    //Si se encontró y actualizó el usuario//
+                    //Verifica si se encontró y actualizó un documento (result.value existe)//
                     if (result.value) {
-                        //Devuelve versión segura del usuario actualizado//
+                        //Si existe, resuelve la Promesa con la versión "segura" del usuario//
+                        //(eliminando información sensible como la contraseña)//
                         resolve(User.toSafeUser(result.value))
                     } else {
-                        //Si no se encontró el usuario, devuelve null//
+                        //Si no se encontró el documento, resuelve con null//
                         resolve(null)
                     }
                 })
-                //Rechaza si hay error//
+                //Captura cualquier error durante el proceso//
                 .catch(reject)
         })
     }

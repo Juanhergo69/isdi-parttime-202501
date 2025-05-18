@@ -67,7 +67,10 @@ const userHandler = {
             })
             .catch(error => {
                 //Si falla (datos inválidos), devuelve error 400//
-                res.status(400).json(error)
+                res.status(400).json({
+                    success: false,
+                    error: error.error || 'Failed to update user'
+                })
             })
     },
 

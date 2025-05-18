@@ -23,42 +23,49 @@ class AuthService {
 
             //Busca el usuario completo por email en la base de datos (incluyendo password)//
             User.getCompleteByEmail(email)
+                //Cuando la búsqueda del usuario se completa://
                 .then(user => {
-                    //Verifica si no se encontró ningún usuario con ese email//
+                    //Verifica si no se encontró ningún usuario con ese email://
                     if (!user) {
-                        //Rechaza la Promise si el usuario no existe//
+                        //Si el usuario no existe, rechaza la Promise con un objeto de error://
                         return reject({
-                            success: false,
-                            error: 'The email is not registered yet. Please, create an account first',
-                            shouldRedirect: true  //Sugiere redirigir a página de registro//
+                            success: false,                                                             //Indica que el login falló//
+                            error: 'The email is not registered yet. Please, create an account first',  //Mensaje para el usuario//
+                            shouldRedirect: true                                                        //Sugiere al frontend redirigir a la página de registro//
                         })
                     }
 
-                    //Compara la contraseña proporcionada con la almacenada en la base de datos//
-                    if (user.password !== password) {
-                        //Rechaza si las contraseñas no coinciden//
-                        return reject({
-                            success: false,
-                            error: 'Incorrect password, Please, try again',
-                            shouldRedirect: false
-                        })
-                    }
+                    //Si el usuario existe, compara la contraseña proporcionada con el hash almacenado://
+                    return User.comparePassword(password, user.password)
+                        //Cuando la comparación de contraseñas se completa://
+                        .then(isMatch => {
+                            //Verifica si las contraseñas NO coinciden://
+                            if (!isMatch) {
+                                //Si la contraseña es incorrecta, rechaza la Promise://
+                                return reject({
+                                    success: false,                                  //Indica fallo de autenticación//
+                                    error: 'Incorrect password, Please, try again',  //Mensaje para el usuario//
+                                    shouldRedirect: false                            //Indica que no debe redirigir//
+                                })
+                            }
 
-                    //Si todo es correcto, resuelve la Promise con los datos del usuario//
-                    //usando User.toSafeUser para eliminar información sensible como password//
-                    resolve({
-                        success: true,  // Indica operación exitosa
-                        user: User.toSafeUser(user),  //Devuelve usuario sin datos sensibles//
-                        rememberSession: false        //Indica si se debe recordar la sesión//
-                    })
+                            //Si las credenciales son correctas, resuelve la Promise con éxito://
+                            resolve({
+                                success: true,                //Indica autenticación exitosa//
+                                user: User.toSafeUser(user),  //Devuelve el usuario sin datos sensibles//
+                                rememberSession: false        //Indica si se debe mantener la sesión//
+                            })
+                        })
                 })
+                //Si ocurre algún error durante el proceso de login://
                 .catch(error => {
-                    //Captura cualquier error durante el proceso de búsqueda del usuario//
-                    console.error('Login error:', error)          //Log del error en consola//
+                    //Registra el error en la consola para debugging://
+                    console.error('Login error:', error)
+                    //Rechaza la Promise con un error genérico://
                     reject({
-                        success: false,
+                        success: false,                           //Indica fallo en el proceso//
                         error: 'An error occurred during login',  //Mensaje genérico para el cliente//
-                        shouldRedirect: false
+                        shouldRedirect: false                     //Indica que no debe redirigir//
                     })
                 })
         })
@@ -113,7 +120,7 @@ class AuthService {
                     //Crea el nuevo usuario en la base de datos con los datos proporcionados//
                     return User.create({
                         email: email.toLowerCase(),     //Guarda el email en minúsculas//
-                        password,                       //Contraseña ya validada//
+                        password,                       //Contraseña ya validada (se hasheará en el modelo)//
                         userName: capitalizedUserName,  //Nombre capitalizado//
                         avatar: null,                   //Avatar inicialmente nulo//
                         status: ''                      //Estado inicial vacío//
