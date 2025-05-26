@@ -1,80 +1,78 @@
-//Importa la clase MongoClient del paquete 'mongodb' para interactuar con MongoDB//
-const { MongoClient } = require('mongodb')
-
-//Importa la configuración de la base de datos desde el archivo constants.js//
+//Importa el módulo mongoose para interactuar con MongoDB//
+const mongoose = require('mongoose')
+//Importa la configuración de la base de datos desde el archivo constants
 const { DB_CONFIG } = require('./constants')
 
-//Variable para almacenar la instancia del cliente de MongoDB//
-let client
+//Variable para almacenar la conexión a la base de datos (singleton)//
+let dbConnection = null
 
-//Variable para almacenar la instancia de la base de datos//
-let db
-
-//Función para establecer la conexión con la base de datos MongoDB//
+//Función para conectar a la base de datos//
 const connectDB = () => {
-    //Retorna una nueva Promesa para manejar la conexión de forma asíncrona//
+    //Retorna una promesa para manejar la conexión asíncrona//
     return new Promise((resolve, reject) => {
-        //Si ya existe una conexión a la base de datos, resuelve la promesa con la instancia existente//
-        if (db) {
-            return resolve(db)
+        //Si ya existe una conexión, la retorna inmediatamente (patrón singleton)//
+        if (dbConnection) {
+            return resolve(dbConnection)
         }
 
-        //Intenta conectar con el servidor MongoDB usando la URI de conexión//
-        MongoClient.connect(DB_CONFIG.URI)
-            .then((mongoClient) => {
-                //Almacena el cliente de MongoDB en la variable 'client'//
-                client = mongoClient
-                //Obtiene la base de datos específica usando el nombre definido en DB_CONFIG//
-                db = client.db(DB_CONFIG.DB_NAME)
-                //Mensaje de confirmación de conexión exitosa//
-                console.log('Connected to MongoDB')
-                //Resuelve la promesa con la instancia de la base de datos//
-                resolve(db)
+        //Configura Mongoose para que falle en consultas con campos no definidos en el esquema//
+        mongoose.set('strictQuery', true)
+
+        //Construye la URL de conexión usando la URI y el nombre de la base de datos//
+        const dbUri = `${DB_CONFIG.URI}/${DB_CONFIG.DB_NAME}`
+
+        //Intenta conectar a MongoDB usando la URL construida//
+        mongoose.connect(dbUri)
+            .then(() => {
+                //Si la conexión es exitosa, muestra mensaje y almacena la conexión//
+                console.log('Connected to MongoDB with Mongoose')
+                dbConnection = mongoose.connection
+                resolve(dbConnection)
             })
             .catch(error => {
-                //Si hay un error en la conexión, muestra el error en consola//
+                //Si hay error, lo muestra y rechaza la promesa//
                 console.error('MongoDB connection error:', error)
-                //Rechaza la promesa con el error//
                 reject(error)
             })
     })
 }
 
-//Función para obtener la instancia de la base de datos//
+//Función para obtener la conexión existente//
 const getDB = () => {
-    //Si no hay una instancia de base de datos, lanza un error//
-    if (!db) throw new Error('Database not initialized. Call connectDB first.')
-    //Retorna la instancia de la base de datos//
-    return db
+    //Si no hay conexión, lanza un error//
+    if (!dbConnection) throw new Error('Database not initialized. Call connectDB first.')
+    //Retorna la conexión existente//
+    return dbConnection
 }
 
-//Función para cerrar la conexión con la base de datos//
+//Función para cerrar la conexión a la base de datos//
 const closeDB = () => {
-    //Verifica si existe una instancia del cliente//
-    if (client) {
-        //Cierra la conexión y retorna una promesa//
-        return client.close()
-            .then(() => {
-                //Mensaje de confirmación de cierre de conexión//
-                console.log('MongoDB connection closed')
-                //Limpia las variables de instancia//
-                db = null
-                client = null
-            })
-            .catch(error => {
-                //Si hay un error al cerrar la conexión, lo muestra en consola//
-                console.error('Error closing MongoDB connection:', error)
-                //Propaga el error//
-                throw error
-            })
-    }
-    //Si no hay cliente, retorna una promesa resuelta//
-    return Promise.resolve()
+    return new Promise((resolve, reject) => {
+        //Si hay una conexión activa//
+        if (dbConnection) {
+            //Intenta desconectar//
+            mongoose.disconnect()
+                .then(() => {
+                    //Si se desconecta correctamente, muestra mensaje y limpia la variable//
+                    console.log('MongoDB connection closed')
+                    dbConnection = null
+                    resolve()
+                })
+                .catch(error => {
+                    //Si hay error al desconectar, lo muestra y rechaza la promesa//
+                    console.error('Error closing MongoDB connection:', error)
+                    reject(error)
+                })
+        } else {
+            //Si no hay conexión, resuelve inmediatamente//
+            resolve()
+        }
+    })
 }
 
-//Exporta las funciones para que puedan ser utilizadas en otros módulos//
+//Exporta las funciones para ser usadas en otros módulos//
 module.exports = {
-    connectDB,  //Función para conectar a la base de datos//
-    getDB,      //Función para obtener la instancia de la base de datos//
-    closeDB     //Función para cerrar la conexión con la base de datos//
+    connectDB,  //Para establecer la conexión//
+    getDB,      //Para obtener la conexión existente//
+    closeDB     //Para cerrar la conexión//
 }

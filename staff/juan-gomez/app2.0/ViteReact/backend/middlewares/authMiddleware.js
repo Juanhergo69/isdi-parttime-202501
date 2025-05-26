@@ -1,64 +1,71 @@
-//Importa el modelo User para interactuar con los datos de usuario//
+//Importa el modelo de usuario desde el archivo de esquemas//
+const { UserModel } = require('../models/schemas')
+//Importa la clase User que contiene los métodos estáticos//
 const User = require('../models/User')
 
 //Objeto que contiene los middlewares de autenticación//
 const authMiddleware = {
     //Middleware para verificar si el usuario está autenticado//
     isAuthenticated: (req, res, next) => {
-        //Obtiene el ID del usuario desde los headers de la solicitud//
+        //Obtiene el ID de usuario del encabezado de la petición//
         const userId = req.headers['x-user-id']
 
-        //Verifica si el header de usuario existe//
+        //Si no hay ID de usuario en los headers, responde con error 401//
         if (!userId) {
-            //Si no existe, responde con error 401 (No autorizado)//
             return res.status(401).json({
                 success: false,
                 error: 'Unauthorized'
             })
         }
 
-        //Busca el usuario en la base de datos por su ID//
-        const user = User.getById(userId)
+        //Busca el usuario en la base de datos usando el ID//
+        UserModel.findOne({ id: userId })
+            .then(user => {
+                //Si no se encuentra el usuario, responde con error 401//
+                if (!user) {
+                    return res.status(401).json({
+                        success: false,
+                        error: 'Unauthorized'
+                    })
+                }
 
-        //Verifica si el usuario existe//
-        if (!user) {
-            //Si no existe, responde con error 401 (No autorizado)//
-            return res.status(401).json({
-                success: false,
-                error: 'Unauthorized'
+                //Sanitiza la información del usuario (elimina datos sensibles)//
+                const sanitizedUser = User.toSafeUser(user)
+                //Agrega el usuario sanitizado al objeto request//
+                req.user = sanitizedUser
+                //Pasa al siguiente middleware o controlador//
+                next()
             })
-        }
-
-        //Se asigna constante sanitizedUser sobre el objeto usuario//
-        const sanitizedUser = { ...user }
-        //Se elimina el campo password sobre sanitizedUser//
-        delete sanitizedUser.password
-        //Adjunta el objeto de sanitizedUser a la solicitud para uso en rutas posteriores//
-        req.user = sanitizedUser
-        //Llama a next() para continuar con el siguiente middleware/ruta//
-        next()
+            .catch(error => {
+                //Si hay un error en la consulta, lo registra y responde con error 500//
+                console.error('Authentication error:', error)
+                res.status(500).json({
+                    success: false,
+                    error: 'Internal server error'
+                })
+            })
     },
 
-    //Middleware para verificar si el usuario es dueño del recurso solicitado//
+    //Middleware para verificar si el usuario es dueño del recurso//
     isOwner: (req, res, next) => {
-        //Obtiene el ID del usuario desde los headers//
+        //Obtiene el ID de usuario del encabezado//
         const userId = req.headers['x-user-id']
-        //Obtiene el ID del recurso desde los parámetros o cuerpo de la solicitud//
+        //Obtiene el ID del recurso de los parámetros o del cuerpo de la petición//
         const resourceUserId = req.params.userId || req.body.userId
 
-        //Compara ambos IDs//
+        //Compara si el ID del usuario autenticado coincide con el ID del recurso//
         if (userId !== resourceUserId) {
-            //Si no coinciden, responde con error 403 (Prohibido)//
+            //Si no coinciden, responde con error 403 (prohibido)//
             return res.status(403).json({
                 success: false,
                 error: 'Forbidden'
             })
         }
 
-        //Si coinciden, continúa con el siguiente middleware/ruta//
+        //Si todo está bien, pasa al siguiente middleware o controlador//
         next()
     }
 }
 
-//Exporta los middlewares para ser usados en las rutas//
+//Exporta el objeto con los middlewares para ser usado en otras partes de la aplicación//
 module.exports = authMiddleware
