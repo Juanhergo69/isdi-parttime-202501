@@ -1,0 +1,49 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@layer base {
+    body {
+        @apply bg-retro-dark text-white;
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-retro-purple rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-retro-pink;
+}
+
+input,
+textarea,
+select {
+    @apply text-black;
+    /* Color del texto */
+    @apply bg-white;
+    /* Fondo del input */
+    @apply border border-gray-300;
+    /* Borde */
+}
+
+/* Estilo para inputs con error */
+input.error {
+    @apply border-red-500;
+}
+
+/* Placeholder visible */
+input::placeholder {
+    @apply text-gray-400;
+}
