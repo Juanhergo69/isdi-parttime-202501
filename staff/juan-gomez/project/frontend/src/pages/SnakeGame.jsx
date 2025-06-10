@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { submitScore } from '../logic/games/services/scoreService'
+import { submitScore, getHighScore } from '../logic/scoreService'
 
 const GRID_SIZE = 25
 const CELL_SIZE = 25
@@ -22,6 +22,24 @@ const SnakeGame = () => {
     const [showInstructions, setShowInstructions] = useState(true)
     const gameLoopRef = useRef()
     const speedRef = useRef(INITIAL_SPEED)
+
+    useEffect(() => {
+        const loadHighScore = async () => {
+            if (user && gameId) {
+                try {
+                    const savedHighScore = await getHighScore(gameId, user.id)
+                    setHighScore(savedHighScore)
+                } catch (error) {
+                    console.error("Error loading high score:", error)
+                    setHighScore(0)
+                }
+            } else {
+                setHighScore(0)
+            }
+        }
+
+        loadHighScore()
+    }, [user, gameId])
 
     const generateFood = useCallback(() => {
         const newFood = {
@@ -81,7 +99,9 @@ const SnakeGame = () => {
                 setFood(generateFood())
                 setScore(prev => {
                     const newScore = prev + 10
-                    if (newScore > highScore) setHighScore(newScore)
+                    if (newScore > highScore) {
+                        setHighScore(newScore)
+                    }
                     return newScore
                 })
 
@@ -95,6 +115,7 @@ const SnakeGame = () => {
             return newSnake
         })
     }, [direction, food, gameOver, generateFood, isPaused, score, highScore, showInstructions])
+
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -146,8 +167,8 @@ const SnakeGame = () => {
                     avatar: user.avatar
                 }
             ).catch(error => {
-                console.error('Error saving score:', error)
-            })
+                console.error('Error saving score:', error);
+            });
         }
     }, [gameOver, highScore, gameId, user])
 

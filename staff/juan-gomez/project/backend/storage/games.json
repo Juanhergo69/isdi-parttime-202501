@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Snake",
+    "description": "Classic Nokia Snake game",
+    "image": "/images/Snake.jpg",
+    "likes": [],
+    "dislikes": [],
+    "highscores": [],
+    "messages": []
+  },
+  {
+    "id": 2,
+    "name": "Tetris",
+    "description": "From Russia with love",
+    "image": "/images/Tetris.jpg",
+    "likes": [],
+    "dislikes": [],
+    "highscores": [],
+    "messages": []
+  }
+]

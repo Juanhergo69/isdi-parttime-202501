@@ -23,7 +23,6 @@ function LoginPage() {
             ...prev,
             [name]: type === 'checkbox' ? checked : value,
         }))
-        // Clear error when user types
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }))
         }
@@ -39,7 +38,7 @@ function LoginPage() {
             )
             navigate('/home')
         } catch (error) {
-            showModal('Login Error', error.message, () => { }, () => navigate('/register'))
+            showModal('Login Error', error.message)
         }
     }
 

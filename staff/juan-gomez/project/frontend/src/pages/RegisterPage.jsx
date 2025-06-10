@@ -20,7 +20,6 @@ function RegisterPage() {
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
-        // Clear error when user types
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }))
         }
@@ -33,7 +32,6 @@ function RegisterPage() {
             await register(formData)
             navigate('/home')
         } catch (error) {
-            // Mapear mensajes de error a campos específicos
             const errorMapping = {
                 'Please enter a valid email address': { field: 'email', message: error.message },
                 'Password must contain at least one uppercase letter, one number, and one special character': { field: 'password', message: error.message },

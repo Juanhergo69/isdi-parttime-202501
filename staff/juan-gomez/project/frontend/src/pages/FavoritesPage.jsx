@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useFavorites } from '../contexts/FavoritesContext'
 import { useNavigate } from 'react-router-dom'
-import { getAllGames } from '../logic/games/repositories/gameRepository'
+import { fetchAllGames, fetchGameDetails } from '../logic/gamesAPI'
 import Avatar from '../components/ui/Avatar'
 import GameCard from '../components/GameCard'
 import HighScores from '../components/HighScores'
@@ -11,37 +11,53 @@ import Button from '../components/ui/Button'
 
 function FavoritesPage() {
     const { user } = useAuth()
-    const { favoriteGames, isLoading, refreshFavorites } = useFavorites()
+    const { favoriteGames, refreshFavorites, isLoading: favoritesLoading } = useFavorites()
     const navigate = useNavigate()
     const [selectedGame, setSelectedGame] = useState(null)
     const [displayMode, setDisplayMode] = useState(null)
     const [allGames, setAllGames] = useState([])
+    const [loadingGames, setLoadingGames] = useState(true)
 
     useEffect(() => {
-        const loadGames = () => {
-            const games = getAllGames()
-            setAllGames(games)
+        const loadGames = async () => {
+            try {
+                const games = await fetchAllGames()
+                setAllGames(games)
+            } catch (error) {
+                console.error('Failed to load games:', error)
+            } finally {
+                setLoadingGames(false)
+            }
         }
 
         loadGames()
-
-        const handleGamesUpdate = () => {
-            loadGames()
-            refreshFavorites()
-        }
-
-        window.addEventListener('retroGamesUpdated', handleGamesUpdate)
-        return () => window.removeEventListener('retroGamesUpdated', handleGamesUpdate)
     }, [refreshFavorites])
 
-    const handleGameSelect = (game, mode) => {
-        if (game && mode) {
-            const currentGame = allGames.find(game => game.id === game.id) || game
-            setSelectedGame(currentGame)
-            setDisplayMode(mode)
-        } else {
+    const handleGameSelect = async (gameId, mode) => {
+        if (!gameId || !mode) {
             setSelectedGame(null)
             setDisplayMode(null)
+            return
+        }
+
+        try {
+            const currentGame = await fetchGameDetails(gameId)
+
+            setAllGames(prevGames =>
+                prevGames.map(game =>
+                    game.id === currentGame.id ? currentGame : game
+                )
+            )
+
+            setSelectedGame(currentGame)
+            setDisplayMode(mode)
+        } catch (error) {
+            console.error('Failed to load game details:', error)
+            const localGame = allGames.find(game => game.id === gameId)
+            if (localGame) {
+                setSelectedGame(localGame)
+                setDisplayMode(mode)
+            }
         }
     }
 
@@ -49,15 +65,15 @@ function FavoritesPage() {
         return allGames.filter(game => favoriteGames.includes(game.id))
     }
 
-    if (isLoading) {
+    const currentFavorites = getCurrentFavorites()
+
+    if (favoritesLoading || loadingGames) {
         return (
             <div className="min-h-screen bg-retro-dark p-4 flex items-center justify-center">
-                <div className="text-retro-yellow font-retro">Loading your favorites...</div>
+                <div className="text-retro-yellow font-retro">Loading...</div>
             </div>
         )
     }
-
-    const currentFavorites = getCurrentFavorites()
 
     return (
         <div className="min-h-screen bg-retro-dark p-4">
@@ -113,6 +129,8 @@ function FavoritesPage() {
                                         game={game}
                                         userId={user?.id}
                                         onSelect={handleGameSelect}
+                                        isShowingScores={selectedGame?.id === game.id && displayMode === 'scores'}
+                                        isShowingMessages={selectedGame?.id === game.id && displayMode === 'messages'}
                                     />
                                 ))}
                             </div>

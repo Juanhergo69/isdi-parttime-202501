@@ -1,49 +1,49 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { registerUser, loginUser, logoutUser } from '../logic/auth/index'
-import { findUserById } from '../logic/user/repositories/userRepository'
-import { getAllGames, saveAllGames } from '../logic/games/repositories/gameRepository'
+import { registerUser, loginUser, fetchCurrentUser } from '../logic/authAPI'
 
 const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [authChecked, setAuthChecked] = useState(false)
     const navigate = useNavigate()
 
     const isAuthenticated = () => {
-        const storedUser = localStorage.getItem('retroUser') || sessionStorage.getItem('retroUser')
-        return !!storedUser
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+        return !!token
+    }
+
+    const loadUser = async () => {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+        if (!token) {
+            setAuthChecked(true)
+            return
+        }
+
+        try {
+            const userData = await fetchCurrentUser()
+            setUser(userData)
+        } catch (error) {
+            console.error('Error loading user:', error)
+            if (error.message === 'Unauthorized') {
+                localStorage.removeItem('token')
+                sessionStorage.removeItem('token')
+            }
+        } finally {
+            setAuthChecked(true)
+        }
     }
 
     useEffect(() => {
-        const loadUser = async () => {
-            const storedUser = localStorage.getItem('retroUser') || sessionStorage.getItem('retroUser')
-
-            if (storedUser) {
-                try {
-                    const { id } = JSON.parse(storedUser)
-                    const fullUserData = await findUserById(id)
-                    if (fullUserData) {
-                        setUser(fullUserData)
-                    } else {
-                        logoutUser()
-                    }
-                } catch (error) {
-                    console.error('Error loading user:', error)
-                    logoutUser()
-                }
-            }
-            setLoading(false)
-        }
         loadUser()
     }, [])
 
     const register = async (userData) => {
         try {
-            const newUser = await registerUser(userData)
-            setUser(newUser)
-            sessionStorage.setItem('retroUser', JSON.stringify({ id: newUser.id }))
+            const { token, user } = await registerUser(userData)
+            localStorage.setItem('token', token)
+            setUser(user)
             navigate('/home')
         } catch (error) {
             throw error
@@ -52,56 +52,46 @@ export function AuthProvider({ children }) {
 
     const login = async (credentials, rememberMe) => {
         try {
-            const loggedInUser = await loginUser(credentials, rememberMe)
-            setUser(loggedInUser)
-            const storage = rememberMe ? localStorage : sessionStorage
-            storage.setItem('retroUser', JSON.stringify({ id: loggedInUser.id }))
+            const { token, user } = await loginUser(credentials)
+
+            if (rememberMe) {
+                localStorage.setItem('token', token)
+            } else {
+                sessionStorage.setItem('token', token)
+            }
+
+            setUser(user)
             navigate('/home')
         } catch (error) {
             throw error
         }
     }
 
-    const logout = () => {
-        logoutUser()
+    const logout = (options = {}) => {
+        const { redirect = true } = options
+
+        localStorage.removeItem('token')
+        sessionStorage.removeItem('token')
         setUser(null)
-        navigate('/login')
+
+        if (redirect) {
+            navigate('/login')
+        }
     }
 
     const updateUser = (updatedUserData) => {
-        setUser(prev => {
-            const updatedUser = { ...prev, ...updatedUserData }
-
-            // Actualizar highscores con el nuevo nombre
-            const games = getAllGames()
-            const updatedGames = games.map(game => {
-                if (game.highscores?.some(hs => hs.userId === updatedUser.id)) {
-                    return {
-                        ...game,
-                        highscores: game.highscores.map(hs =>
-                            hs.userId === updatedUser.id
-                                ? { ...hs, username: updatedUser.username, avatar: updatedUser.avatar }
-                                : hs
-                        )
-                    }
-                }
-                return game
-            })
-
-            saveAllGames(updatedGames)
-
-            return updatedUser
-        })
+        setUser(prev => ({ ...prev, ...updatedUserData }))
     }
 
     const value = {
         user,
-        loading,
+        authChecked,
         isAuthenticated,
         register,
         login,
         logout,
-        updateUser
+        updateUser,
+        loadUser
     }
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

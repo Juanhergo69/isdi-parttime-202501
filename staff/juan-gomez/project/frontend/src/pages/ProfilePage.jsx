@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useModal } from '../contexts/ModalContext'
+import { useNavigate } from 'react-router-dom'
 import {
+    fetchUserProfile,
     updateUserProfile,
     updateUserAvatar,
-    removeUserAvatar,
-    deleteUserAccount,
-} from '../logic/user/services/userService'
+    deleteUserAccount
+} from '../logic/userAPI'
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
 import AvatarEditor from '../components/AvatarEditor'
-import { useNavigate } from 'react-router-dom'
 
 function ProfilePage() {
     const navigate = useNavigate()
@@ -25,53 +25,141 @@ function ProfilePage() {
     })
     const [errors, setErrors] = useState({})
 
-    useEffect(() => {
-        if (user) {
+    const loadUserData = async () => {
+        try {
+            if (user?.username && user?.email) {
+                setFormData({
+                    username: user.username,
+                    email: user.email,
+                    currentPassword: '',
+                    newPassword: '',
+                    confirmPassword: '',
+                })
+                return
+            }
+
+            const userData = await fetchUserProfile()
             setFormData({
-                username: user.username,
-                email: user.email,
+                username: userData.username,
+                email: userData.email,
                 currentPassword: '',
                 newPassword: '',
                 confirmPassword: '',
             })
+        } catch (error) {
+            console.error('Error loading user data:', error)
+
+            if (error.response?.status === 401 || error.response?.status === 404) {
+                logout({ redirect: false })
+                navigate('/login')
+                return
+            }
+
+            if (error.response?.status !== 401 && error.response?.status !== 404) {
+                showModal('Error', 'Failed to load user data')
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (user) {
+            loadUserData()
         }
     }, [user])
 
     const handleChange = (e) => {
         const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
-        // Clear error when user types
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }))
+
         if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: '' }))
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }))
         }
+    }
+
+    const validateForm = () => {
+        const newErrors = {}
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/
+
+        if (!formData.username.trim()) {
+            newErrors.username = 'Username is required'
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Invalid email format'
+        }
+
+        if (formData.newPassword) {
+            if (!formData.currentPassword) {
+                newErrors.currentPassword = 'Current password is required'
+            }
+
+            if (!passwordRegex.test(formData.newPassword)) {
+                newErrors.newPassword = 'Password must contain: 8+ chars, 1 uppercase, 1 number, 1 special char'
+            }
+
+            if (formData.newPassword !== formData.confirmPassword) {
+                newErrors.confirmPassword = 'Passwords do not match'
+            }
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0
     }
 
     const handleProfileUpdate = async (e) => {
         e.preventDefault()
 
-        try {
-            if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
-                throw new Error('New passwords do not match')
-            }
+        if (!validateForm()) {
+            return
+        }
 
+        try {
             const updates = {}
+
             if (formData.username !== user.username) updates.username = formData.username
             if (formData.email !== user.email) updates.email = formData.email
             if (formData.newPassword) {
-                if (!formData.currentPassword) {
-                    throw new Error('Current password is required to change password')
-                }
-                if (formData.currentPassword !== user.password) {
-                    throw new Error('Current Password is not correct')
-                }
-                updates.password = formData.newPassword
+                updates.currentPassword = formData.currentPassword
+                updates.newPassword = formData.newPassword
             }
 
             const updatedUser = await updateUserProfile(user.id, updates)
             updateUser(updatedUser)
-            showModal('Success', 'Profile updated successfully!', () => navigate('/home'))
+
+            if (formData.newPassword) {
+                setFormData(prev => ({
+                    ...prev,
+                    currentPassword: '',
+                    newPassword: '',
+                    confirmPassword: ''
+                }))
+            }
+
+            showModal('Success', 'Profile updated successfully!')
         } catch (error) {
-            showModal('Error', error.message)
+            let errorMessage = 'Failed to update profile'
+
+            if (error.response) {
+                if (error.response.status === 400) {
+                    errorMessage = error.response.data.message || 'Validation error'
+                    if (error.response.data.message?.includes('Password must contain')) {
+                        errorMessage = error.response.data.message;
+                    }
+                } else if (error.response.status === 401) {
+                    errorMessage = 'Session expired. Please login again.'
+                    logout();
+                    navigate('/login')
+                }
+            }
+            showModal('Error', errorMessage)
         }
     }
 
@@ -81,38 +169,43 @@ function ProfilePage() {
             updateUser(updatedUser)
             showModal('Success', 'Avatar updated successfully!')
         } catch (error) {
-            showModal('Error', error.message)
+            showModal('Error', error.response?.data?.message || 'Failed to update avatar')
         }
     }
 
     const handleAvatarRemove = async () => {
         try {
-            const updatedUser = await removeUserAvatar(user.id)
+            const updatedUser = await updateUserAvatar(user.id, null)
             updateUser(updatedUser)
             showModal('Success', 'Avatar removed successfully!')
         } catch (error) {
-            showModal('Error', error.message)
+            showModal('Error', error.response?.data?.message || 'Failed to remove avatar')
         }
     }
 
     const handleDeleteAccount = () => {
         showModal(
             'Confirm Account Deletion',
-            'Are you sure you want to delete your account? This action cannot be undone.',
+            'Are you sure you want to delete your account? This will remove all your data permanently.',
             async () => {
                 try {
                     await deleteUserAccount(user.id)
                     logout()
-                    navigate('/')
                 } catch (error) {
-                    showModal('Error', error.message)
+                    let errorMessage = 'Failed to delete account'
+
+                    if (error.response?.status === 401) {
+                        errorMessage = 'Session expired. Please login again.'
+                    } else if (error.response?.status === 403) {
+                        errorMessage = 'You are not authorized to delete this account'
+                    } else if (error.response?.status === 404) {
+                        errorMessage = 'User not found'
+                    }
+
+                    showModal('Error', errorMessage)
                 }
             }
         )
-    }
-
-    if (!user) {
-        return <div>Loading...</div>
     }
 
     return (

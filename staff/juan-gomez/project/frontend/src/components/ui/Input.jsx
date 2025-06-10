@@ -13,10 +13,7 @@ const Input = ({
     ...props
 }) => {
     const [showPassword, setShowPassword] = useState(false)
-
-    // Determinar si es un campo de contraseña
     const isPasswordField = type === 'password'
-    // Tipo de input basado en si es contraseña y si se debe mostrar
     const inputType = isPasswordField && showPassword ? 'text' : type
 
     return (

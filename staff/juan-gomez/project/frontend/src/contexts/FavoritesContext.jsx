@@ -1,10 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import {
-    getUserFavorites,
-    addUserFavorite,
-    removeUserFavorite
-} from '../logic/user/repositories/userRepository'
+import { fetchUserFavorites, addUserFavorite, removeUserFavorite } from '../logic/favoritesAPI'
 
 const FavoritesContext = createContext()
 
@@ -14,15 +10,16 @@ export function FavoritesProvider({ children }) {
     const [isLoading, setIsLoading] = useState(true)
 
     const refreshFavorites = async () => {
-        if (user) {
-            try {
-                const favorites = await getUserFavorites(user.id)
-                setFavoriteGames(favorites || [])
-            } catch (error) {
-                console.error("Error loading favorites:", error)
-                setFavoriteGames([])
-            }
-        } else {
+        if (!user) {
+            setFavoriteGames([])
+            return
+        }
+
+        try {
+            const favorites = await fetchUserFavorites(user.id)
+            setFavoriteGames(favorites)
+        } catch (error) {
+            console.error("Error refreshing favorites:", error)
             setFavoriteGames([])
         }
     }
@@ -31,11 +28,12 @@ export function FavoritesProvider({ children }) {
         if (!user) return false
 
         try {
-            await addUserFavorite(user.id, gameId)
-            await refreshFavorites()
+            const updatedFavorites = await addUserFavorite(user.id, gameId)
+            setFavoriteGames(updatedFavorites)
             return true
         } catch (error) {
             console.error("Error adding favorite:", error)
+            await refreshFavorites()
             return false
         }
     }
@@ -44,21 +42,20 @@ export function FavoritesProvider({ children }) {
         if (!user) return false
 
         try {
-            await removeUserFavorite(user.id, gameId)
-            await refreshFavorites()
+            const updatedFavorites = await removeUserFavorite(user.id, gameId)
+            setFavoriteGames(updatedFavorites)
             return true
         } catch (error) {
             console.error("Error removing favorite:", error)
+            await refreshFavorites()
             return false
         }
     }
 
     const toggleFavorite = async (gameId) => {
-        if (isFavorite(gameId)) {
-            return await removeFavorite(gameId)
-        } else {
-            return await addFavorite(gameId)
-        }
+        return isFavorite(gameId)
+            ? await removeFavorite(gameId)
+            : await addFavorite(gameId)
     }
 
     const isFavorite = (gameId) => {
@@ -66,8 +63,11 @@ export function FavoritesProvider({ children }) {
     }
 
     useEffect(() => {
-        refreshFavorites()
-        setIsLoading(false)
+        const initialize = async () => {
+            await refreshFavorites()
+            setIsLoading(false)
+        }
+        initialize()
     }, [user])
 
     return (
@@ -86,9 +86,5 @@ export function FavoritesProvider({ children }) {
 }
 
 export function useFavorites() {
-    const context = useContext(FavoritesContext)
-    if (!context) {
-        throw new Error('useFavorites must be used within a FavoritesProvider')
-    }
-    return context
+    return useContext(FavoritesContext)
 }

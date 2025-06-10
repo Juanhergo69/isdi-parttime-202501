@@ -1,78 +1,95 @@
 import { useAuth } from '../contexts/AuthContext'
-import { useEffect, useState } from 'react'
 import { useModal } from '../contexts/ModalContext'
-import { getAllGames, deleteUserMessage, updateGame } from '../logic/games/repositories/gameRepository'
+import { useEffect, useState } from 'react'
 import { formatMessageTime } from '../utils/helpers'
+import { fetchUserData } from '../logic/fetchUserData'
+import { fetchGameMessages, postGameMessage, deleteGameMessage } from '../logic/gameMessages'
 
 function Messages({ game }) {
     const { user } = useAuth()
     const { showModal } = useModal()
     const [newMessage, setNewMessage] = useState('')
-    const [messages, setMessages] = useState(game.messages || [])
-    const [currentGameId, setCurrentGameId] = useState(game.id)
+    const [messages, setMessages] = useState(null)
+    const [userCache, setUserCache] = useState({})
 
-    // Sincronizar cuando cambia el juego o sus mensajes
-    useEffect(() => {
-        if (game.id !== currentGameId) {
-            setCurrentGameId(game.id)
-            setMessages(game.messages || [])
-        } else {
-            setMessages(prev => {
-                // Mantener los mensajes locales si son más recientes
-                const currentGameMessages = game.messages || []
-                if (JSON.stringify(prev) !== JSON.stringify(currentGameMessages)) {
-                    return currentGameMessages
+    const updateMessagesWithLatestUserData = async (messages) => {
+        const uniqueUserIds = [...new Set(messages.map(msg => msg.userId))]
+        const uncachedUserIds = uniqueUserIds.filter(id => !userCache[id])
+        const newUserCache = { ...userCache }
+        const fetchPromises = uncachedUserIds.map(userId =>
+            fetchUserData(userId).then(userData => {
+                if (userData) {
+                    newUserCache[userId] = {
+                        username: userData.username,
+                        avatar: userData.avatar
+                    }
                 }
-                return prev
             })
-        }
-    }, [game, currentGameId])
+        )
+        await Promise.all(fetchPromises)
 
-    // Sistema de sincronización mejorado
+        setUserCache(newUserCache)
+
+        return messages.map(msg => ({
+            ...msg,
+            username: newUserCache[msg.userId]?.username || 'User',
+            avatar: newUserCache[msg.userId]?.avatar
+        }))
+    }
+
     useEffect(() => {
-        const handleGamesUpdate = () => {
-            const games = getAllGames();
-            const updatedGame = games.find(g => g.id === game.id);
-            if (updatedGame) {
-                setMessages(updatedGame.messages || []);
-            }
-        };
+        let isMounted = true
 
-        window.addEventListener('retroGamesUpdated', handleGamesUpdate);
-        return () => window.removeEventListener('retroGamesUpdated', handleGamesUpdate);
-    }, [game.id]);
+        const loadMessages = async () => {
+            const messagesArray = await fetchGameMessages(game.id)
+            if (isMounted) {
+                const updatedMessages = await updateMessagesWithLatestUserData(messagesArray)
+                setMessages(updatedMessages)
+            }
+        }
+        loadMessages()
+
+        return () => {
+            isMounted = false
+        }
+    }, [game.id])
+
+    if (messages === null) {
+        return null
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (!newMessage.trim() || !user) return
 
-        const newMsgObj = {
+        const optimisticMessage = {
             userId: user.id,
-            username: user.username,
-            avatar: user.avatar,
             text: newMessage.trim(),
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            username: user.username,
+            avatar: user.avatar
         }
 
         try {
-            // Optimistic update
-            const updatedMessages = [...messages, newMsgObj]
-            setMessages(updatedMessages)
+            setUserCache(prev => ({
+                ...prev,
+                [user.id]: {
+                    username: user.username,
+                    avatar: user.avatar
+                }
+            }))
+
+            setMessages(prev => [...prev, optimisticMessage])
             setNewMessage('')
 
-            // Actualización persistente
-            const updatedGame = await updateGame(game.id, {
-                messages: updatedMessages
+            await postGameMessage(game.id, {
+                userId: user.id,
+                text: newMessage.trim()
             })
 
-            // Disparar evento de actualización global
-            window.dispatchEvent(new Event('retroGamesUpdated'))
-
-            return updatedGame
         } catch (error) {
             console.error('Error saving message:', error)
-            // Revertir en caso de error
-            setMessages(messages)
+            setMessages(prev => prev.filter(msg => msg.timestamp !== optimisticMessage.timestamp))
         }
     }
 
@@ -81,24 +98,29 @@ function Messages({ game }) {
 
         showModal(
             'Delete Message',
-            'Are you sure you want to delete this message? This action cannot be undone.',
+            'Are you sure you want to delete this message?',
             async () => {
                 try {
-                    // Optimistic update
-                    const filteredMessages = messages.filter(msg =>
-                        !(msg.userId === user.id && msg.timestamp === timestamp)
-                    )
-                    setMessages(filteredMessages)
-
-                    // Actualización persistente
-                    const updatedGame = await deleteUserMessage(game.id, user.id, timestamp)
-                    window.dispatchEvent(new Event('retroGamesUpdated'))
-
-                    return updatedGame
+                    const result = await deleteGameMessage(game.id, user.id, timestamp)
+                    if (result.success) {
+                        setMessages(result.game.messages || [])
+                    } else {
+                        throw new Error(result.message || 'Delete failed')
+                    }
                 } catch (error) {
-                    console.error('Error deleting message:', error)
-                    // Revertir en caso de error
-                    setMessages(messages)
+                    console.error('Delete error:', error)
+                    try {
+                        const messagesArray = await fetchGameMessages(game.id)
+                        setMessages(messagesArray)
+                    } catch (fetchError) {
+                        console.error('Failed to refresh messages:', fetchError)
+                    }
+                    showModal(
+                        'Error',
+                        error.response?.data?.message ||
+                        error.message ||
+                        'Could not delete message. Please try again.'
+                    )
                 }
             }
         )
@@ -126,10 +148,14 @@ function Messages({ game }) {
     }
 
     const renderMessage = (msg, index) => {
+        const userData = userCache[msg.userId] || {}
+        const displayUsername = userData.username || msg.username || 'User'
+        const displayAvatar = userData.avatar !== undefined ? userData.avatar : msg.avatar
+
         const isCurrentUser = user?.id === msg.userId
         const messageDate = new Date(msg.timestamp)
         const now = new Date()
-        const isRecent = (now - messageDate) < 5 * 60 * 1000 // 5 minutos
+        const isRecent = (now - messageDate) < 5 * 60 * 1000
 
         return (
             <div
@@ -137,12 +163,12 @@ function Messages({ game }) {
                 className={`p-4 ${isCurrentUser ? 'bg-retro-green/10' : ''} ${isRecent ? 'animate-pulse' : ''}`}
             >
                 <div className="flex items-start space-x-3">
-                    {renderAvatar(msg)}
+                    {renderAvatar({ ...msg, username: displayUsername, avatar: displayAvatar })}
                     <div className="flex-1">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                                 <span className="font-retro text-retro-yellow">
-                                    {msg.username || 'User'}
+                                    {displayUsername}
                                 </span>
                                 <span
                                     className="text-xs text-retro-gray"
@@ -182,35 +208,6 @@ function Messages({ game }) {
         )
     }
 
-    if (!messages || messages.length === 0) {
-        return (
-            <div className="bg-retro-dark-secondary p-4 rounded-lg border-2 border-retro-green">
-                <form onSubmit={handleSubmit} className="mb-4">
-                    <div className="flex">
-                        <input
-                            type="text"
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            placeholder="Write a message..."
-                            className="flex-1 bg-retro-dark border-2 border-retro-yellow text-white px-3 py-2 rounded-l focus:outline-none"
-                            maxLength={500}
-                        />
-                        <button
-                            type="submit"
-                            className="bg-retro-green hover:bg-retro-green-dark text-white font-retro px-4 py-2 rounded-r"
-                            disabled={!newMessage.trim()}
-                        >
-                            Send
-                        </button>
-                    </div>
-                </form>
-                <p className="text-retro-gray font-retro text-center py-4">
-                    No messages yet! Be the first to comment!
-                </p>
-            </div>
-        )
-    }
-
     return (
         <div className="bg-retro-dark-secondary rounded-lg border-2 border-retro-green overflow-hidden">
             <form onSubmit={handleSubmit} className="p-4 border-b border-retro-gray/50">
@@ -234,7 +231,13 @@ function Messages({ game }) {
             </form>
 
             <div className="divide-y divide-retro-gray/50 max-h-[500px] overflow-y-auto">
-                {messages.map(renderMessage)}
+                {messages.length > 0 ? (
+                    messages.map(renderMessage)
+                ) : (
+                    <p className="text-retro-gray font-retro text-center py-4">
+                        No messages yet! Be the first to comment!
+                    </p>
+                )}
             </div>
         </div>
     )

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useFavorites } from '../contexts/FavoritesContext'
-import { getAllGames } from '../logic/games/repositories/gameRepository'
 import { useNavigate } from 'react-router-dom'
+import { fetchAllGames, fetchGameDetails } from '../logic/gamesAPI'
 import Avatar from '../components/ui/Avatar'
 import GameCard from '../components/GameCard'
 import HighScores from '../components/HighScores'
@@ -11,29 +11,29 @@ import Button from '../components/ui/Button'
 
 function HomePage() {
     const { user, logout } = useAuth()
-    const { favoriteGames, isLoading: favoritesLoading } = useFavorites()
+    const { favoriteGames } = useFavorites()
     const navigate = useNavigate()
     const [games, setGames] = useState([])
+    const [error, setError] = useState()
     const [selectedGameId, setSelectedGameId] = useState(null)
     const [showSettingsMenu, setShowSettingsMenu] = useState(false)
     const [displayMode, setDisplayMode] = useState(null)
-    const selectedGame = games.find(game => game.id === selectedGameId) || null;
+    const selectedGame = games.find(game => game.id === selectedGameId) || null
 
-    // Cargar juegos y manejar actualizaciones
     useEffect(() => {
-        const loadGames = () => {
-            const loadedGames = getAllGames()
-            setGames(loadedGames)
+        const loadGames = async () => {
+            try {
+                const gamesData = await fetchAllGames()
+                setGames(gamesData)
+                setError(null)
+            } catch (err) {
+                console.error('Error loading games:', err)
+                setError('Failed to load games. Please try again later.')
+                setGames([])
+            }
         }
 
         loadGames()
-
-        const handleGamesUpdate = () => {
-            loadGames()
-        }
-
-        window.addEventListener('retroGamesUpdated', handleGamesUpdate)
-        return () => window.removeEventListener('retroGamesUpdated', handleGamesUpdate)
     }, [])
 
     const handleLogout = () => {
@@ -44,22 +44,34 @@ function HomePage() {
         setShowSettingsMenu(!showSettingsMenu)
     }
 
-    const handleGameSelect = (game, mode) => {
-        if (game && mode) {
-            setSelectedGameId(game.id);
-            setDisplayMode(mode);
-        } else {
-            setSelectedGameId(null);
-            setDisplayMode(null);
+    const handleGameSelect = async (gameId, mode) => {
+        if (!gameId || !mode) {
+            setSelectedGameId(null)
+            setDisplayMode(null)
+            return
         }
-    };
 
-    if (favoritesLoading) {
-        return (
-            <div className="min-h-screen bg-retro-dark p-4 flex items-center justify-center">
-                <div className="text-retro-yellow font-retro">Loading...</div>
-            </div>
-        )
+        try {
+            const updatedGame = await fetchGameDetails(gameId)
+
+            setGames(prevGames =>
+                prevGames.map(game =>
+                    game.id === updatedGame.id ? updatedGame : game
+                )
+            )
+
+            setSelectedGameId(updatedGame.id)
+            setDisplayMode(mode)
+            setError(null)
+        } catch (error) {
+            console.error('Error loading game:', error)
+            setError('Failed to load game data. Please try again.')
+            const localGame = games.find(game => game.id === gameId)
+            if (localGame) {
+                setSelectedGameId(localGame.id)
+                setDisplayMode(mode)
+            }
+        }
     }
 
     return (
@@ -145,6 +157,12 @@ function HomePage() {
                     </div>
                 </header>
 
+                {error && (
+                    <div className="mb-4 p-4 bg-retro-pink/20 text-retro-yellow border border-retro-pink rounded">
+                        {error}
+                    </div>
+                )}
+
                 <div className="mb-12">
                     <h2 className="text-retro-yellow font-retro text-2xl mb-4">
                         Every pixel echoes a legend
@@ -160,16 +178,22 @@ function HomePage() {
                     <h2 className="text-retro-green font-retro text-2xl mb-6">
                         Available Games
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {games.map(game => (
-                            <GameCard
-                                key={game.id}
-                                game={game}
-                                userId={user?.id}
-                                onSelect={handleGameSelect}
-                            />
-                        ))}
-                    </div>
+                    {games.length === 0 ? (
+                        <p className="text-retro-gray">No games available</p>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {games.map(game => (
+                                <GameCard
+                                    key={game.id}
+                                    game={game}
+                                    userId={user?.id}
+                                    onSelect={handleGameSelect}
+                                    isShowingScores={selectedGameId === game.id && displayMode === 'scores'}
+                                    isShowingMessages={selectedGameId === game.id && displayMode === 'messages'}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </section>
 
                 {selectedGame && (

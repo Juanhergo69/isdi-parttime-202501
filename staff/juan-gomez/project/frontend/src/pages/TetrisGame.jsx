@@ -1,14 +1,14 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { submitScore } from '../logic/games/services/scoreService';
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { submitScore, getHighScore } from '../logic/scoreService/'
 
-const COLS = 10;
-const ROWS = 20;
-const CELL_SIZE = 30;
-const INITIAL_SPEED = 800;
-const SPEED_DECREMENT = 50;
-const LINES_PER_LEVEL = 10;
+const COLS = 10
+const ROWS = 20
+const CELL_SIZE = 30
+const INITIAL_SPEED = 800
+const SPEED_DECREMENT = 50
+const LINES_PER_LEVEL = 10
 
 const SHAPES = [
     [[1, 1, 1, 1]],         //I//
@@ -34,76 +34,94 @@ const COLORS = [
 const TetrisGame = () => {
     const location = useLocation()
     const gameId = parseInt(location.pathname.split('/')[2])
-    const navigate = useNavigate();
-    const { user } = useAuth();
-    const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
-    const [currentPiece, setCurrentPiece] = useState(null);
-    const [nextPiece, setNextPiece] = useState(null);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [gameOver, setGameOver] = useState(false);
-    const [isPaused, setIsPaused] = useState(false);
-    const [score, setScore] = useState(0);
-    const [highScore, setHighScore] = useState(0);
-    const [level, setLevel] = useState(1);
-    const [lines, setLines] = useState(0);
-    const [showInstructions, setShowInstructions] = useState(true);
-    const gameLoopRef = useRef();
-    const speedRef = useRef(INITIAL_SPEED);
+    const navigate = useNavigate()
+    const { user } = useAuth()
+    const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(0)))
+    const [currentPiece, setCurrentPiece] = useState(null)
+    const [nextPiece, setNextPiece] = useState(null)
+    const [position, setPosition] = useState({ x: 0, y: 0 })
+    const [gameOver, setGameOver] = useState(false)
+    const [isPaused, setIsPaused] = useState(false)
+    const [score, setScore] = useState(0)
+    const [highScore, setHighScore] = useState(0)
+    const [level, setLevel] = useState(1)
+    const [lines, setLines] = useState(0)
+    const [showInstructions, setShowInstructions] = useState(true)
+    const gameLoopRef = useRef()
+    const speedRef = useRef(INITIAL_SPEED)
+
+    useEffect(() => {
+        const loadHighScore = async () => {
+            if (user && gameId) {
+                try {
+                    const savedHighScore = await getHighScore(gameId, user.id)
+                    setHighScore(savedHighScore)
+                } catch (error) {
+                    console.error("Error loading high score:", error)
+                    setHighScore(0)
+                }
+            } else {
+                setHighScore(0)
+            }
+        };
+
+        loadHighScore()
+    }, [user, gameId])
 
     const createEmptyBoard = useCallback(() => {
-        return Array.from({ length: ROWS }, () => Array(COLS).fill(0));
-    }, []);
+        return Array.from({ length: ROWS }, () => Array(COLS).fill(0))
+    }, [])
 
     const getRandomPiece = useCallback(() => {
-        const shapeIndex = Math.floor(Math.random() * SHAPES.length);
+        const shapeIndex = Math.floor(Math.random() * SHAPES.length)
         return {
             shape: SHAPES[shapeIndex],
             color: COLORS[shapeIndex + 1],
             width: SHAPES[shapeIndex][0].length,
             height: SHAPES[shapeIndex].length
-        };
-    }, []);
+        }
+    }, [])
 
     const initGame = useCallback(() => {
-        const emptyBoard = createEmptyBoard();
-        setBoard(emptyBoard);
-        setScore(0);
-        setLevel(1);
-        setLines(0);
-        setGameOver(false);
-        setIsPaused(false);
-        speedRef.current = INITIAL_SPEED;
+        const emptyBoard = createEmptyBoard()
+        setBoard(emptyBoard)
+        setScore(0)
+        setLevel(1)
+        setLines(0)
+        setGameOver(false)
+        setIsPaused(false)
+        speedRef.current = INITIAL_SPEED
 
-        const firstPiece = getRandomPiece();
-        const secondPiece = getRandomPiece();
+        const firstPiece = getRandomPiece()
+        const secondPiece = getRandomPiece()
 
-        setCurrentPiece(firstPiece);
-        setNextPiece(secondPiece);
+        setCurrentPiece(firstPiece)
+        setNextPiece(secondPiece)
         setPosition({
             x: Math.floor(COLS / 2) - Math.floor(firstPiece.width / 2),
             y: 0
-        });
-    }, [createEmptyBoard, getRandomPiece]);
+        })
+    }, [createEmptyBoard, getRandomPiece])
 
     const checkCollision = useCallback((pieceShape, x, y) => {
         for (let row = 0; row < pieceShape.length; row++) {
             for (let col = 0; col < pieceShape[row].length; col++) {
                 if (pieceShape[row][col] !== 0) {
-                    const newX = x + col;
-                    const newY = y + row;
+                    const newX = x + col
+                    const newY = y + row
 
                     if (newX < 0 || newX >= COLS || newY >= ROWS ||
                         (newY >= 0 && board[newY][newX] !== 0)) {
-                        return true;
+                        return true
                     }
                 }
             }
         }
-        return false;
-    }, [board]);
+        return false
+    }, [board])
 
     const rotatePiece = useCallback(() => {
-        if (!currentPiece || gameOver || isPaused) return;
+        if (!currentPiece || gameOver || isPaused) return
 
         const newShape = currentPiece.shape[0].map((_, i) =>
             currentPiece.shape.map(row => row[i]).reverse()
@@ -115,208 +133,208 @@ const TetrisGame = () => {
                 shape: newShape,
                 width: newShape[0].length,
                 height: newShape.length
-            }));
+            }))
         }
-    }, [currentPiece, position, gameOver, isPaused, checkCollision]);
+    }, [currentPiece, position, gameOver, isPaused, checkCollision])
 
     const checkLines = useCallback((currentBoard) => {
         let linesCleared = 0;
-        const newBoard = currentBoard.map(row => [...row]);
+        const newBoard = currentBoard.map(row => [...row])
 
         for (let row = ROWS - 1; row >= 0; row--) {
             if (newBoard[row].every(cell => cell !== 0)) {
-                newBoard.splice(row, 1);
-                newBoard.unshift(Array(COLS).fill(0));
-                linesCleared++;
-                row++;
+                newBoard.splice(row, 1)
+                newBoard.unshift(Array(COLS).fill(0))
+                linesCleared++
+                row++
             }
         }
 
-        return { clearedBoard: newBoard, linesCleared };
-    }, []);
+        return { clearedBoard: newBoard, linesCleared }
+    }, [])
 
     const placePiece = useCallback(() => {
-        if (!currentPiece || gameOver) return;
+        if (!currentPiece || gameOver) return
 
-        const newBoard = board.map(row => [...row]);
-        let piecePlaced = false;
+        const newBoard = board.map(row => [...row])
+        let piecePlaced = false
 
         for (let row = 0; row < currentPiece.shape.length; row++) {
             for (let col = 0; col < currentPiece.shape[row].length; col++) {
                 if (currentPiece.shape[row][col] !== 0) {
-                    const y = position.y + row;
-                    const x = position.x + col;
+                    const y = position.y + row
+                    const x = position.x + col
 
                     if (y < 0) {
-                        setGameOver(true);
-                        return;
+                        setGameOver(true)
+                        return
                     }
 
-                    newBoard[y][x] = currentPiece.color;
-                    piecePlaced = true;
+                    newBoard[y][x] = currentPiece.color
+                    piecePlaced = true
                 }
             }
         }
 
         if (piecePlaced) {
-            const { clearedBoard, linesCleared } = checkLines(newBoard);
-            setBoard(clearedBoard);
+            const { clearedBoard, linesCleared } = checkLines(newBoard)
+            setBoard(clearedBoard)
 
             if (linesCleared > 0) {
-                setLines(prev => prev + linesCleared);
-                const points = [0, 100, 300, 500, 800][linesCleared] * level;
+                setLines(prev => prev + linesCleared)
+                const points = [0, 100, 300, 500, 800][linesCleared] * level
                 setScore(prev => {
-                    const newScore = prev + points;
-                    if (newScore > highScore) setHighScore(newScore);
-                    return newScore;
-                });
+                    const newScore = prev + points
+                    if (newScore > highScore) setHighScore(newScore)
+                    return newScore
+                })
 
                 if (lines + linesCleared >= level * LINES_PER_LEVEL) {
-                    setLevel(prev => prev + 1);
-                    speedRef.current = Math.max(INITIAL_SPEED - (level * SPEED_DECREMENT), 100);
+                    setLevel(prev => prev + 1)
+                    speedRef.current = Math.max(INITIAL_SPEED - (level * SPEED_DECREMENT), 100)
                 }
             }
 
-            setCurrentPiece(nextPiece);
-            setNextPiece(getRandomPiece());
-            const newX = Math.floor(COLS / 2) - Math.floor(nextPiece.width / 2);
-            setPosition({ x: newX, y: 0 });
+            setCurrentPiece(nextPiece)
+            setNextPiece(getRandomPiece())
+            const newX = Math.floor(COLS / 2) - Math.floor(nextPiece.width / 2)
+            setPosition({ x: newX, y: 0 })
 
             if (checkCollision(nextPiece.shape, newX, 0)) {
-                setGameOver(true);
+                setGameOver(true)
             }
         }
-    }, [currentPiece, board, position, nextPiece, gameOver, getRandomPiece, checkLines, level, lines, highScore, checkCollision]);
+    }, [currentPiece, board, position, nextPiece, gameOver, getRandomPiece, checkLines, level, lines, highScore, checkCollision])
 
     const movePiece = useCallback((direction) => {
-        if (!currentPiece || gameOver || isPaused) return false;
+        if (!currentPiece || gameOver || isPaused) return false
 
-        let newX = position.x;
-        let newY = position.y;
+        let newX = position.x
+        let newY = position.y
 
         switch (direction) {
-            case 'left': newX--; break;
-            case 'right': newX++; break;
-            case 'down': newY++; break;
-            default: break;
+            case 'left': newX--; break
+            case 'right': newX++; break
+            case 'down': newY++; break
+            default: break
         }
 
         if (!checkCollision(currentPiece.shape, newX, newY)) {
-            setPosition({ x: newX, y: newY });
-            return true;
+            setPosition({ x: newX, y: newY })
+            return true
         }
 
         if (direction === 'down') {
-            placePiece();
-            return false;
+            placePiece()
+            return false
         }
 
-        return false;
-    }, [currentPiece, position, gameOver, isPaused, checkCollision, placePiece]);
+        return false
+    }, [currentPiece, position, gameOver, isPaused, checkCollision, placePiece])
 
     const hardDrop = useCallback(() => {
-        if (!currentPiece || gameOver || isPaused) return;
+        if (!currentPiece || gameOver || isPaused) return
 
-        let newY = position.y;
+        let newY = position.y
         while (
             newY < ROWS - currentPiece.height &&
             !checkCollision(currentPiece.shape, position.x, newY + 1)
         ) {
-            newY++;
+            newY++
         }
 
-        const newBoard = board.map(row => [...row]);
+        const newBoard = board.map(row => [...row])
 
         for (let row = 0; row < currentPiece.shape.length; row++) {
             for (let col = 0; col < currentPiece.shape[row].length; col++) {
                 if (currentPiece.shape[row][col] !== 0) {
-                    const y = newY + row;
-                    const x = position.x + col;
+                    const y = newY + row
+                    const x = position.x + col
                     if (y >= 0 && y < ROWS && x >= 0 && x < COLS) {
-                        newBoard[y][x] = currentPiece.color;
+                        newBoard[y][x] = currentPiece.color
                     }
                 }
             }
         }
 
-        const { clearedBoard, linesCleared } = checkLines(newBoard);
-        setBoard(clearedBoard);
+        const { clearedBoard, linesCleared } = checkLines(newBoard)
+        setBoard(clearedBoard)
 
         if (linesCleared > 0) {
-            setLines(prev => prev + linesCleared);
-            const points = [0, 100, 300, 500, 800][linesCleared] * level;
+            setLines(prev => prev + linesCleared)
+            const points = [0, 100, 300, 500, 800][linesCleared] * level
             setScore(prev => {
-                const newScore = prev + points;
-                if (newScore > highScore) setHighScore(newScore);
-                return newScore;
-            });
+                const newScore = prev + points
+                if (newScore > highScore) setHighScore(newScore)
+                return newScore
+            })
 
             if (lines + linesCleared >= level * LINES_PER_LEVEL) {
-                setLevel(prev => prev + 1);
-                speedRef.current = Math.max(INITIAL_SPEED - (level * SPEED_DECREMENT), 100);
+                setLevel(prev => prev + 1)
+                speedRef.current = Math.max(INITIAL_SPEED - (level * SPEED_DECREMENT), 100)
             }
         }
 
-        setCurrentPiece(nextPiece);
-        setNextPiece(getRandomPiece());
-        const nextX = Math.floor(COLS / 2) - Math.floor(nextPiece.width / 2);
-        setPosition({ x: nextX, y: 0 });
+        setCurrentPiece(nextPiece)
+        setNextPiece(getRandomPiece())
+        const nextX = Math.floor(COLS / 2) - Math.floor(nextPiece.width / 2)
+        setPosition({ x: nextX, y: 0 })
 
         if (checkCollision(nextPiece.shape, nextX, 0)) {
-            setGameOver(true);
+            setGameOver(true)
         }
-    }, [currentPiece, position, gameOver, isPaused, checkCollision, board, checkLines, level, lines, highScore, nextPiece, getRandomPiece]);
+    }, [currentPiece, position, gameOver, isPaused, checkCollision, board, checkLines, level, lines, highScore, nextPiece, getRandomPiece])
 
     const dropPiece = useCallback(() => {
-        if (gameOver || isPaused || showInstructions) return;
+        if (gameOver || isPaused || showInstructions) return
         movePiece('down');
-    }, [movePiece, gameOver, isPaused, showInstructions]);
+    }, [movePiece, gameOver, isPaused, showInstructions])
 
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if (gameOver || showInstructions) return;
+            if (gameOver || showInstructions) return
 
             switch (e.key.toLowerCase()) {
                 case 'arrowleft':
                 case 'a':
-                    movePiece('left');
-                    break;
+                    movePiece('left')
+                    break
                 case 'arrowright':
                 case 'd':
-                    movePiece('right');
-                    break;
+                    movePiece('right')
+                    break
                 case 'arrowdown':
                 case 's':
-                    movePiece('down');
-                    break;
+                    movePiece('down')
+                    break
                 case 'arrowup':
                 case 'w':
-                    rotatePiece();
-                    break;
+                    rotatePiece()
+                    break
                 case ' ':
-                    e.preventDefault();
-                    hardDrop();
-                    break;
+                    e.preventDefault()
+                    hardDrop()
+                    break
                 case 'p':
-                    setIsPaused(prev => !prev);
-                    break;
+                    setIsPaused(prev => !prev)
+                    break
             }
-        };
+        }
 
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [movePiece, rotatePiece, gameOver, showInstructions, hardDrop]);
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [movePiece, rotatePiece, gameOver, showInstructions, hardDrop])
 
     useEffect(() => {
         if (!gameOver && !showInstructions && !isPaused) {
-            gameLoopRef.current = setInterval(dropPiece, speedRef.current);
+            gameLoopRef.current = setInterval(dropPiece, speedRef.current)
             return () => {
                 if (gameLoopRef.current) {
-                    clearInterval(gameLoopRef.current);
+                    clearInterval(gameLoopRef.current)
                 }
-            };
+            }
         }
-    }, [dropPiece, gameOver, showInstructions, isPaused]);
+    }, [dropPiece, gameOver, showInstructions, isPaused])
 
     useEffect(() => {
         if (gameOver && user && gameId && highScore > 0) {
@@ -335,16 +353,16 @@ const TetrisGame = () => {
     }, [gameOver, highScore, gameId, user])
 
     const renderBoard = () => {
-        const displayBoard = board.map(row => [...row]);
+        const displayBoard = board.map(row => [...row])
 
         if (currentPiece && !gameOver && !isPaused) {
             for (let row = 0; row < currentPiece.shape.length; row++) {
                 for (let col = 0; col < currentPiece.shape[row].length; col++) {
                     if (currentPiece.shape[row][col] !== 0) {
-                        const y = position.y + row;
-                        const x = position.x + col;
+                        const y = position.y + row
+                        const x = position.x + col
                         if (y >= 0 && y < ROWS && x >= 0 && x < COLS) {
-                            displayBoard[y][x] = currentPiece.color;
+                            displayBoard[y][x] = currentPiece.color
                         }
                     }
                 }
@@ -360,11 +378,11 @@ const TetrisGame = () => {
                     />
                 ))}
             </div>
-        ));
-    };
+        ))
+    }
 
     const renderNextPiece = () => {
-        if (!nextPiece) return null;
+        if (!nextPiece) return null
 
         return (
             <div className="flex flex-col items-center">
@@ -380,13 +398,13 @@ const TetrisGame = () => {
                     </div>
                 ))}
             </div>
-        );
-    };
+        )
+    }
 
     const startGame = () => {
-        setShowInstructions(false);
-        initGame();
-    };
+        setShowInstructions(false)
+        initGame()
+    }
 
     return (
         <div className="fixed inset-0 bg-retro-dark flex flex-col">
@@ -545,7 +563,7 @@ const TetrisGame = () => {
                 </div>
             )}
         </div>
-    );
-};
+    )
+}
 
-export default TetrisGame;
+export default TetrisGame

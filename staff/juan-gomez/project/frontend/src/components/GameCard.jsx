@@ -1,36 +1,24 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useFavorites } from '../contexts/FavoritesContext'
-import { likeGame, dislikeGame } from '../logic/games/services/interactionService'
+import { likeGame } from '../logic/gameLikes'
+import { dislikeGame } from '../logic/gameDislikes'
+import { toggleGameFavorite } from '../logic/gameFavorites'
 
-function GameCard({ game, userId, onSelect }) {
-    const [localGame, setLocalGame] = useState({
-        ...game,
-        likes: game.likes || [],
-        dislikes: game.dislikes || [],
-    })
-    const [showScores, setShowScores] = useState(false)
-    const [showMessages, setShowMessages] = useState(false)
+function GameCard({ game, userId, onSelect, isShowingScores = false, isShowingMessages = false }) {
+    const [localGame, setLocalGame] = useState(game)
     const navigate = useNavigate()
-    const {
-        toggleFavorite,
-        isFavorite,
-        refreshFavorites
-    } = useFavorites()
+    const { toggleFavorite, isFavorite } = useFavorites()
 
     const userLiked = localGame.likes.includes(userId)
     const userDisliked = localGame.dislikes.includes(userId)
-    const userFavorited = isFavorite(localGame.id) // Cambiamos esta línea
+    const userFavorited = isFavorite(localGame.id)
 
     const handleLike = async (e) => {
         e.stopPropagation()
         try {
-            const updatedGame = await likeGame(userId, localGame.id)
-            setLocalGame({
-                ...updatedGame,
-                likes: updatedGame.likes || [],
-                dislikes: updatedGame.dislikes || []
-            })
+            const updatedGame = await likeGame(game.id, userId)
+            setLocalGame(updatedGame)
         } catch (error) {
             console.error('Error liking game:', error)
         }
@@ -39,12 +27,8 @@ function GameCard({ game, userId, onSelect }) {
     const handleDislike = async (e) => {
         e.stopPropagation()
         try {
-            const updatedGame = await dislikeGame(userId, localGame.id)
-            setLocalGame({
-                ...updatedGame,
-                likes: updatedGame.likes || [],
-                dislikes: updatedGame.dislikes || []
-            })
+            const updatedGame = await dislikeGame(game.id, userId)
+            setLocalGame(updatedGame)
         } catch (error) {
             console.error('Error disliking game:', error)
         }
@@ -53,8 +37,7 @@ function GameCard({ game, userId, onSelect }) {
     const handleFavorite = async (e) => {
         e.stopPropagation()
         try {
-            await toggleFavorite(localGame.id)
-            refreshFavorites()
+            await toggleGameFavorite(game.id, toggleFavorite)
         } catch (error) {
             console.error('Error toggling favorite:', error)
         }
@@ -67,25 +50,16 @@ function GameCard({ game, userId, onSelect }) {
 
     const handleScoresClick = (e) => {
         e.stopPropagation()
-        const newShowScores = !showScores
-        setShowScores(newShowScores)
-        setShowMessages(false)
-        onSelect(newShowScores ? localGame : null, newShowScores ? 'scores' : null)
+        onSelect(isShowingScores ? null : game.id, isShowingScores ? null : 'scores')
     }
 
     const handleMessagesClick = (e) => {
         e.stopPropagation()
-        const newShowMessages = !showMessages
-        setShowMessages(newShowMessages)
-        setShowScores(false)
-        onSelect(newShowMessages ? localGame : null, newShowMessages ? 'messages' : null)
+        onSelect(isShowingMessages ? null : game.id, isShowingMessages ? null : 'messages')
     }
 
     return (
-        <div
-            className="bg-white rounded-lg overflow-hidden shadow-retro hover:shadow-retro-lg transition-shadow cursor-pointer"
-            onClick={() => onSelect(localGame)}
-        >
+        <div className="bg-white rounded-lg overflow-hidden shadow-retro hover:shadow-retro-lg transition-shadow cursor-pointer">
             <div className="relative pt-[56.25%] bg-gray-100">
                 {localGame.image ? (
                     <img
@@ -177,15 +151,15 @@ function GameCard({ game, userId, onSelect }) {
                         </button>
                         <button
                             onClick={handleScoresClick}
-                            className={`text-retro-blue hover:underline text-sm ${showScores ? 'font-bold' : ''}`}
+                            className={`text-retro-blue hover:underline text-sm ${isShowingScores ? 'font-bold' : ''}`}
                         >
-                            {showScores ? 'Hide Scores' : 'Scores'}
+                            {isShowingScores ? 'Hide Scores' : 'Scores'}
                         </button>
                         <button
                             onClick={handleMessagesClick}
-                            className={`text-retro-green hover:underline text-sm ${showMessages ? 'font-bold' : ''}`}
+                            className={`text-retro-green hover:underline text-sm ${isShowingMessages ? 'font-bold' : ''}`}
                         >
-                            {showMessages ? 'Hide Chat' : 'Chat'}
+                            {isShowingMessages ? 'Hide Chat' : 'Chat'}
                         </button>
                     </div>
                 </div>
