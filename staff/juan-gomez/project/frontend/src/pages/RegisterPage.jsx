@@ -4,6 +4,15 @@ import { useAuth } from '../contexts/AuthContext'
 import { useModal } from '../contexts/ModalContext'
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
+import {
+    InvalidEmailError,
+    InvalidPasswordError,
+    PasswordsDontMatchError,
+    EmailInUseError,
+    UsernameTakenError,
+    RequiredFieldsError,
+    getErrorMessage
+} from 'common'
 
 function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -28,23 +37,48 @@ function RegisterPage() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        if (formData.password !== formData.confirmPassword) {
+            setErrors({ confirmPassword: 'Passwords do not match' })
+            return
+        }
+
         try {
             await register(formData)
             navigate('/home')
         } catch (error) {
-            const errorMapping = {
-                'Please enter a valid email address': { field: 'email', message: error.message },
-                'Password must contain at least one uppercase letter, one number, and one special character': { field: 'password', message: error.message },
-                'Passwords do not match': { field: 'confirmPassword', message: error.message },
-                'Username or email already exists': { field: 'username', message: 'Username or email already in use' }
+            console.error('Registration error:', error)
+
+            if (error instanceof RequiredFieldsError) {
+                showModal('Missing Information', error.message)
+                return
             }
 
-            const matchedError = errorMapping[error.message]
-            if (matchedError) {
-                setErrors({ [matchedError.field]: matchedError.message })
-            } else {
-                showModal('Registration Error', error.message)
+            if (error instanceof InvalidEmailError) {
+                setErrors({ email: error.message })
+                return
             }
+
+            if (error instanceof InvalidPasswordError) {
+                setErrors({ password: error.message })
+                return
+            }
+
+            if (error instanceof PasswordsDontMatchError) {
+                setErrors({ confirmPassword: error.message })
+                return
+            }
+
+            if (error instanceof EmailInUseError) {
+                showModal('Email Already Registered', error.message)
+                return
+            }
+
+            if (error instanceof UsernameTakenError) {
+                showModal('Username Taken', error.message)
+                return
+            }
+
+            showModal('Registration Error', getErrorMessage(error))
         }
     }
 

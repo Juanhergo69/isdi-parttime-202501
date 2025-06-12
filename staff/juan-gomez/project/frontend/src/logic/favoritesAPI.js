@@ -1,12 +1,12 @@
 import api from '../api/axiosConfig'
+import { getErrorMessage } from 'common'
 
 export const fetchUserFavorites = async (userId) => {
     try {
         const response = await api.get(`/users/${userId}/favorites`)
         return Array.isArray(response.data) ? response.data : []
     } catch (error) {
-        console.error("Error loading favorites:", error)
-        throw error
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -18,8 +18,7 @@ export const addUserFavorite = async (userId, gameId) => {
         })
         return response.data.favorites || []
     } catch (error) {
-        console.error("Error adding favorite:", error)
-        throw error
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -31,7 +30,6 @@ export const removeUserFavorite = async (userId, gameId) => {
         })
         return response.data.favorites || []
     } catch (error) {
-        console.error("Error removing favorite:", error)
-        throw error
+        throw new Error(getErrorMessage(error))
     }
 }

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getErrorMessage } from 'common'
 
 const api = axios.create({
     baseURL: '/api',
@@ -24,8 +25,18 @@ api.interceptors.response.use(
             localStorage.removeItem('token')
             sessionStorage.removeItem('token')
         }
+
+        if (error.response?.data?.errorCode) {
+            const { errorCode, message } = error.response.data
+            error.message = message || getErrorMessage({ errorCode })
+        } else if (error.response?.data?.message) {
+            error.message = error.response.data.message
+        } else {
+            error.message = getErrorMessage(error)
+        }
+
         return Promise.reject(error)
     }
-);
+)
 
 export default api

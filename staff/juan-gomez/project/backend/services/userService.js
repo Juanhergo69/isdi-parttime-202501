@@ -1,50 +1,36 @@
 import { readFile, writeFile } from '../utils/fileStorage.js'
-
-const getUserData = () => readFile('users.json')
-const saveUserData = (data) => writeFile('users.json', data)
-
-export const findUserById = (id) => {
-    const users = getUserData()
-    return users.find(user => user.id === id)
-}
-
-export const findUserByEmail = (email) => {
-    const users = getUserData()
-    return users.find(user => user.email === email)
-}
-
-export const findUserByUsername = (username) => {
-    const users = getUserData()
-    return users.find(user => user.username === username)
-}
-
-export const createUser = (userData) => {
-    const users = getUserData();
-    const newUser = {
-        id: Date.now(),
-        username: userData.username,
-        email: userData.email,
-        password: userData.password,
-        avatar: null,
-        favorites: []
-    }
-
-    users.push(newUser)
-    saveUserData(users)
-    return newUser
-}
+import * as userRepository from '../data/userRepository.js'
+import { UserNotFoundError, UsernameTakenError, EmailInUseError } from 'common'
 
 export const updateUser = (id, updates) => {
-    const users = getUserData()
+    const users = userRepository.getUserData()
     const userIndex = users.findIndex(user => user.id === id)
 
     if (userIndex === -1) {
-        throw new Error('User not found')
+        throw new UserNotFoundError()
+    }
+
+    if (updates.username && updates.username !== users[userIndex].username) {
+        const usernameExists = users.some(user =>
+            user.username === updates.username && user.id !== id
+        )
+        if (usernameExists) {
+            throw new UsernameTakenError()
+        }
+    }
+
+    if (updates.email && updates.email !== users[userIndex].email) {
+        const emailExists = users.some(user =>
+            user.email === updates.email && user.id !== id
+        )
+        if (emailExists) {
+            throw new EmailInUseError()
+        }
     }
 
     const updatedUser = { ...users[userIndex], ...updates }
     users[userIndex] = updatedUser
-    saveUserData(users)
+    userRepository.saveUserData(users)
     return updatedUser
 }
 
@@ -65,28 +51,28 @@ const deleteUserInteractions = (userId) => {
 
 export const deleteUser = (id) => {
     const userId = parseInt(id)
-    const users = getUserData()
+    const users = userRepository.getUserData()
     const userIndex = users.findIndex(user => user.id === userId)
 
     if (userIndex === -1) {
-        throw new Error('User not found')
+        throw new UserNotFoundError()
     }
 
     users.splice(userIndex, 1)
-    saveUserData(users)
+    userRepository.saveUserData(users)
 
     deleteUserInteractions(userId)
 }
 
 export const addUserFavorite = (userId, gameId) => {
-    const users = getUserData()
+    const users = userRepository.getUserData()
     const userIndex = users.findIndex(user => user.id === userId)
 
-    if (userIndex === -1) throw new Error('User not found')
+    if (userIndex === -1) throw new UserNotFoundError()
 
     if (!users[userIndex].favorites.includes(gameId)) {
         users[userIndex].favorites = [...users[userIndex].favorites, gameId]
-        saveUserData(users)
+        userRepository.saveUserData(users)
     }
 
     const { password, ...userData } = users[userIndex]
@@ -94,23 +80,23 @@ export const addUserFavorite = (userId, gameId) => {
 }
 
 export const removeUserFavorite = (userId, gameId) => {
-    const users = getUserData()
+    const users = userRepository.getUserData()
     const userIndex = users.findIndex(user => user.id === userId)
 
-    if (userIndex === -1) throw new Error('User not found')
+    if (userIndex === -1) throw new UserNotFoundError()
 
     users[userIndex].favorites = users[userIndex].favorites.filter(
         id => id !== gameId
     )
 
-    saveUserData(users)
+    userRepository.saveUserData(users)
 
     const { password, ...userData } = users[userIndex]
     return userData
 }
 
 export const getUserFavorites = (userId) => {
-    const user = findUserById(userId)
+    const user = userRepository.findUserById(userId)
     return user ? user.favorites || [] : []
 }
 

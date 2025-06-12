@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import * as authService from '../services/authService.js'
-import * as userService from '../services/userService.js'
+import * as userRepository from '../data/userRepository.js'
 
 export const register = async (req, res, next) => {
     try {
@@ -59,7 +59,7 @@ export const login = async (req, res, next) => {
 
 export const getCurrentUser = async (req, res, next) => {
     try {
-        const user = await userService.findUserById(req.user.id)
+        const user = await userRepository.findUserById(req.user.id)
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' })

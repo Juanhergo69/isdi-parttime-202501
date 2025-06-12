@@ -446,7 +446,7 @@ const TetrisGame = () => {
 
                     {gameOver && (
                         <div className="absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center">
-                            <h2 className="text-retro-pink font-retro text-4xl mb-6">GAME OVER</h2>
+                            <h2 className="text-retro-pink font-retro text-4xl mb-6 text-center">GAME OVER</h2>
                             <p className="text-white text-xl mb-4">Your score: {score}</p>
                             <button
                                 onClick={initGame}

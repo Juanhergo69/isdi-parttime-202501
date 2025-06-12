@@ -1,4 +1,5 @@
 import api from '../api/axiosConfig';
+import { getErrorMessage } from 'common'
 
 export const submitScore = async (userId, gameId, score, userData = {}) => {
     try {
@@ -10,8 +11,7 @@ export const submitScore = async (userId, gameId, score, userData = {}) => {
         })
         return response.data
     } catch (error) {
-        console.error('Score submission failed:', error.response?.data || error.message)
-        throw error
+        throw new Error(getErrorMessage(error))
     }
 }
 

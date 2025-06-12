@@ -1,8 +1,10 @@
 import * as userService from '../services/userService.js'
+import * as userRepository from '../data/userRepository.js'
+import bcrypt from 'bcrypt'
 
 export const getUserById = async (req, res, next) => {
     try {
-        const user = userService.findUserById(parseInt(req.params.id))
+        const user = await userRepository.findUserById(parseInt(req.params.id))
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
@@ -21,49 +23,76 @@ export const updateUser = async (req, res, next) => {
         const currentUser = req.user
 
         if (!currentUser) {
-            return res.status(401).json({ message: 'Authentication required' })
+            return res.status(401).json({
+                message: 'Authentication required',
+                errorCode: 'UNAUTHORIZED'
+            })
         }
 
         if (parseInt(id) !== currentUser.id) {
-            return res.status(403).json({ message: 'Unauthorized to update this profile' })
+            return res.status(403).json({
+                message: 'Unauthorized to update this profile',
+                errorCode: 'FORBIDDEN'
+            })
         }
 
-        const user = await userService.findUserById(parseInt(id))
+        const user = await userRepository.findUserById(parseInt(id))
         if (!user) {
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({
+                message: 'User not found',
+                errorCode: 'USER_NOT_FOUND'
+            })
         }
 
         if (updates.username && updates.username !== user.username) {
-            const existingUser = await userService.findUserByUsername(updates.username)
+            const existingUser = await userRepository.findUserByUsername(updates.username)
             if (existingUser) {
-                return res.status(400).json({ message: 'Username already taken' })
+                return res.status(409).json({
+                    message: 'Username already taken',
+                    errorCode: 'USERNAME_TAKEN'
+                })
             }
         }
 
         if (updates.email && updates.email !== user.email) {
-            const existingUser = await userService.findUserByEmail(updates.email)
+            const existingUser = await userRepository.findUserByEmail(updates.email)
             if (existingUser) {
-                return res.status(400).json({ message: 'Email already in use' })
+                return res.status(409).json({
+                    message: 'Email already in use',
+                    errorCode: 'EMAIL_IN_USE'
+                })
             }
         }
 
         if (updates.newPassword) {
             if (!updates.currentPassword) {
-                return res.status(400).json({ message: 'Current password is required' });
+                return res.status(400).json({
+                    message: 'Current password is required',
+                    errorCode: 'REQUIRED_FIELDS'
+                })
             }
 
-            if (updates.currentPassword !== user.password) {
-                return res.status(400).json({ message: 'Current password is incorrect' });
+            const isCurrentPasswordValid = await userRepository.comparePasswords(
+                updates.currentPassword,
+                user.password
+            )
+
+            if (!isCurrentPasswordValid) {
+                return res.status(400).json({
+                    message: 'Current password is incorrect',
+                    errorCode: 'INVALID_PASSWORD'
+                })
             }
 
             const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/
             if (!passwordRegex.test(updates.newPassword)) {
                 return res.status(400).json({
-                    message: 'Password must contain at least 8 characters, one uppercase letter, one number and one special character'
+                    message: 'Password must contain at least 8 characters, one uppercase letter, one number and one special character',
+                    errorCode: 'INVALID_PASSWORD'
                 })
             }
 
-            updates.password = updates.newPassword
+            updates.password = await bcrypt.hash(updates.newPassword, 10)
             delete updates.currentPassword
             delete updates.newPassword
         }
@@ -83,7 +112,10 @@ export const updateUser = async (req, res, next) => {
         res.json(userWithoutPassword)
     } catch (error) {
         console.error('Error updating user:', error)
-        res.status(500).json({ message: 'Internal server error' })
+        res.status(500).json({
+            message: 'Internal server error',
+            errorCode: 'INTERNAL_ERROR'
+        })
     }
 }
 
@@ -147,7 +179,7 @@ export const removeFavorite = async (req, res, next) => {
 
 export const getUserFavorites = async (req, res, next) => {
     try {
-        const user = await userService.findUserById(parseInt(req.params.id))
+        const user = await userRepository.findUserById(parseInt(req.params.id))
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }

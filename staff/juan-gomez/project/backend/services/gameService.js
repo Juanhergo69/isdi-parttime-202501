@@ -1,4 +1,6 @@
 import { readFile, writeFile } from '../utils/fileStorage.js'
+import { GameNotFoundError, MessageNotFoundError } from 'common'
+
 
 const getGameData = () => readFile('games.json')
 const saveGameData = (data) => writeFile('games.json', data)
@@ -18,7 +20,7 @@ export const getGameById = (id) => {
     const games = getGameData()
     const game = games.find(game => game.id === id)
 
-    if (!game) throw new Error('Game not found')
+    if (!game) throw new GameNotFoundError()
 
     return {
         ...game,
@@ -33,7 +35,7 @@ export const updateGame = (id, updates) => {
     const games = getGameData()
     const gameIndex = games.findIndex(game => game.id === id)
 
-    if (gameIndex === -1) throw new Error('Game not found')
+    if (gameIndex === -1) throw new GameNotFoundError()
 
     const updatedGame = {
         ...games[gameIndex],
@@ -53,7 +55,7 @@ export const toggleInteraction = (gameId, userId, interactionType, oppositeType)
     const games = getGameData()
     const gameIndex = games.findIndex(game => game.id === gameId)
 
-    if (gameIndex === -1) throw new Error('Game not found')
+    if (gameIndex === -1) throw new GameNotFoundError()
 
     const game = games[gameIndex]
     const interactions = [...(game[interactionType] || [])]
@@ -87,7 +89,7 @@ export const addMessage = (gameId, message) => {
     const games = getGameData()
     const gameIndex = games.findIndex(game => game.id === gameId)
 
-    if (gameIndex === -1) throw new Error('Game not found')
+    if (gameIndex === -1) throw new GameNotFoundError()
 
     const messages = [...(games[gameIndex].messages || [])]
     messages.push({
@@ -110,7 +112,7 @@ export const deleteMessage = (gameId, userId, timestamp) => {
     const games = getGameData()
     const gameIndex = games.findIndex(game => game.id === gameId)
 
-    if (gameIndex === -1) throw new Error('Game not found')
+    if (gameIndex === -1) throw new GameNotFoundError()
 
     const messages = games[gameIndex].messages || []
 
@@ -123,7 +125,7 @@ export const deleteMessage = (gameId, userId, timestamp) => {
     })
 
     if (messageIndex === -1) {
-        throw new Error('Message not found or not authorized')
+        throw new MessageNotFoundError()
     }
 
     const updatedMessages = [...messages]
@@ -143,7 +145,7 @@ export const updateHighscore = (gameId, userId, score) => {
     const games = getGameData()
     const gameIndex = games.findIndex(game => game.id === gameId)
 
-    if (gameIndex === -1) throw new Error('Game not found')
+    if (gameIndex === -1) throw new GameNotFoundError()
 
     let highscores = [...(games[gameIndex].highscores || [])]
     const existingScoreIndex = highscores.findIndex(hs => hs.userId === userId)
@@ -178,7 +180,7 @@ export const updateHighscore = (gameId, userId, score) => {
 export const getUserHighScore = (gameId, userId) => {
     const games = getGameData()
     const game = games.find(game => game.id === gameId)
-    if (!game) throw new Error('Game not found')
+    if (!game) throw new GameNotFoundError()
 
     const userScore = game.highscores.find(hs => hs.userId === userId)
     return userScore ? userScore.score : 0

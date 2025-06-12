@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import * as userService from '../services/userService.js'
+import * as userRepository from '../data/userRepository.js'
 
 export const authenticate = async (req, res, next) => {
     try {
@@ -10,7 +10,7 @@ export const authenticate = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
-        const user = userService.findUserById(decoded.userId)
+        const user = userRepository.findUserById(decoded.userId)
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' })

@@ -1,49 +1,65 @@
-import * as userService from './userService.js'
+import * as userRepository from '../data/userRepository.js'
 import { validatePassword, validateEmail } from '../utils/helpers.js'
+import {
+    ValidationError,
+    InvalidEmailError,
+    InvalidPasswordError,
+    PasswordsDontMatchError,
+    RequiredFieldsError,
+    EmailInUseError,
+    UsernameTakenError,
+    UnauthorizedError
+} from 'common'
 
 export const register = async (userData) => {
     const { username, email, password, confirmPassword } = userData
 
     if (!username || !email || !password || !confirmPassword) {
-        throw { status: 400, message: 'All fields are required' }
+        throw new RequiredFieldsError('All fields are required')
     }
 
     if (password !== confirmPassword) {
-        throw { status: 400, message: 'Passwords do not match' }
+        throw new PasswordsDontMatchError()
     }
 
     try {
         validateEmail(email);
         validatePassword(password)
     } catch (error) {
-        throw { status: 400, message: error.message }
+        if (error.message.includes('email')) {
+            throw new InvalidEmailError()
+        } else if (error.message.includes('Password')) {
+            throw new InvalidPasswordError()
+        }
+        throw new ValidationError(error.message)
     }
 
-    const existingUserByEmail = await userService.findUserByEmail(email)
+    const existingUserByEmail = await userRepository.findUserByEmail(email)
     if (existingUserByEmail) {
-        throw { status: 409, message: 'Email already in use' }
+        throw new EmailInUseError()
     }
 
-    const existingUserByUsername = await userService.findUserByUsername(username)
+    const existingUserByUsername = await userRepository.findUserByUsername(username)
     if (existingUserByUsername) {
-        throw { status: 409, message: 'Username already taken' }
+        throw new UsernameTakenError()
     }
 
-    return userService.createUser({ username, email, password })
+    return userRepository.createUser({ username, email, password })
 }
 
 export const login = async (email, password) => {
     if (!email || !password) {
-        throw { status: 400, message: 'Email and password are required' }
+        throw new ValidationError('Email and password are required')
     }
 
-    const user = await userService.findUserByEmail(email)
+    const user = await userRepository.findUserByEmail(email)
     if (!user) {
-        throw { status: 401, message: 'Account not found' }
+        throw new UnauthorizedError('Account not found')
     }
 
-    if (user.password !== password) {
-        throw { status: 401, message: 'Incorrect password' }
+    const isPasswordValid = await userRepository.comparePasswords(password, user.password)
+    if (!isPasswordValid) {
+        throw new UnauthorizedError('Incorrect password')
     }
 
     const { password: _, ...userWithoutPassword } = user

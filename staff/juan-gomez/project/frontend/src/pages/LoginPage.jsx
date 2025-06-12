@@ -5,6 +5,13 @@ import { useModal } from '../contexts/ModalContext'
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
 import Checkbox from '../components/ui/Checkbox'
+import {
+    InvalidEmailError,
+    InvalidPasswordError,
+    UserNotFoundError,
+    UnauthorizedError,
+    getErrorMessage
+} from 'common'
 
 function LoginPage() {
     const [credentials, setCredentials] = useState({
@@ -38,7 +45,29 @@ function LoginPage() {
             )
             navigate('/home')
         } catch (error) {
-            showModal('Login Error', error.message)
+            console.error('Login error:', error)
+
+            if (error instanceof InvalidEmailError) {
+                setErrors({ email: error.message })
+                return
+            }
+
+            if (error instanceof InvalidPasswordError) {
+                setErrors({ password: error.message })
+                return
+            }
+
+            if (error instanceof UserNotFoundError) {
+                showModal('Account Not Found', error.message)
+                return
+            }
+
+            if (error instanceof UnauthorizedError) {
+                showModal('Login Failed', 'Invalid email or password')
+                return
+            }
+
+            showModal('Login Error', getErrorMessage(error))
         }
     }
 

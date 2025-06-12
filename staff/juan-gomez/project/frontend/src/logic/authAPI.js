@@ -1,32 +1,41 @@
 import api from '../api/axiosConfig'
+import {
+    InvalidEmailError,
+    InvalidPasswordError,
+    PasswordsDontMatchError,
+    RequiredFieldsError,
+    EmailInUseError,
+    UsernameTakenError,
+    UserNotFoundError,
+    UnauthorizedError,
+    InvalidTokenError
+} from 'common'
 
 export const registerUser = async (userData) => {
     try {
         const response = await api.post('/register', userData)
         return response.data
     } catch (error) {
-        let errorMessage = 'Registration failed'
-
         if (error.response) {
-            switch (error.response.data.message) {
-                case 'Email already registered':
-                    errorMessage = 'This email is already registered'
-                    break
-                case 'Username already taken':
-                    errorMessage = 'This username is already taken'
-                    break
-                case 'Passwords do not match':
-                    errorMessage = 'The passwords do not match'
-                    break
-                case 'Password must contain at least one uppercase letter, one number, and one special character':
-                    errorMessage = 'Password must contain: 1 uppercase, 1 number, 1 special character'
-                    break
+            // Mapear errores específicos del backend
+            switch (error.response.data.errorCode) {
+                case 'REQUIRED_FIELDS':
+                    throw new RequiredFieldsError()
+                case 'INVALID_EMAIL':
+                    throw new InvalidEmailError()
+                case 'INVALID_PASSWORD':
+                    throw new InvalidPasswordError()
+                case 'PASSWORDS_DONT_MATCH':
+                    throw new PasswordsDontMatchError()
+                case 'EMAIL_IN_USE':
+                    throw new EmailInUseError()
+                case 'USERNAME_TAKEN':
+                    throw new UsernameTakenError()
                 default:
-                    errorMessage = error.response.data.message || 'Registration failed'
+                    throw error
             }
         }
-
-        throw new Error(errorMessage)
+        throw error
     }
 }
 
@@ -35,22 +44,24 @@ export const loginUser = async (credentials) => {
         const response = await api.post('/login', credentials)
         return response.data
     } catch (error) {
-        let errorMessage = 'Login failed'
-
         if (error.response) {
-            switch (error.response.data.message) {
-                case 'Account not found':
-                    errorMessage = 'No account found with this email'
-                    break
-                case 'Incorrect password':
-                    errorMessage = 'The password is incorrect'
-                    break
+            // Mapear errores específicos del backend
+            switch (error.response.data.errorCode) {
+                case 'INVALID_EMAIL':
+                    throw new InvalidEmailError()
+                case 'INVALID_PASSWORD':
+                    throw new InvalidPasswordError()
+                case 'USER_NOT_FOUND':
+                    throw new UserNotFoundError()
+                case 'UNAUTHORIZED':
+                    throw new UnauthorizedError('Invalid email or password')
+                case 'INVALID_TOKEN':
+                    throw new InvalidTokenError()
                 default:
-                    errorMessage = error.response.data.message || 'Login failed'
+                    throw error
             }
         }
-
-        throw new Error(errorMessage)
+        throw error
     }
 }
 
@@ -60,8 +71,8 @@ export const fetchCurrentUser = async () => {
         return response.data
     } catch (error) {
         if (error.response?.status === 401) {
-            throw new Error('Unauthorized')
+            throw new Error(getErrorMessage({ errorCode: 'UNAUTHORIZED' }))
         }
-        throw error
+        throw new Error(getErrorMessage(error))
     }
 }

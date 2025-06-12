@@ -11,6 +11,17 @@ import {
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
 import AvatarEditor from '../components/AvatarEditor'
+import {
+    UserNotFoundError,
+    InvalidPasswordError,
+    PasswordsDontMatchError,
+    RequiredFieldsError,
+    UnauthorizedError,
+    ForbiddenError,
+    UsernameTakenError,
+    EmailInUseError,
+    getErrorMessage
+} from 'common'
 
 function ProfilePage() {
     const navigate = useNavigate()
@@ -49,15 +60,13 @@ function ProfilePage() {
         } catch (error) {
             console.error('Error loading user data:', error)
 
-            if (error.response?.status === 401 || error.response?.status === 404) {
+            if (error instanceof UnauthorizedError || error instanceof UserNotFoundError) {
                 logout({ redirect: false })
                 navigate('/login')
                 return
             }
 
-            if (error.response?.status !== 401 && error.response?.status !== 404) {
-                showModal('Error', 'Failed to load user data')
-            }
+            showModal('Error', getErrorMessage(error))
         }
     }
 
@@ -91,7 +100,7 @@ function ProfilePage() {
         }
 
         if (!formData.email.trim()) {
-            newErrors.email = 'Email is required';
+            newErrors.email = 'Email is required'
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
             newErrors.email = 'Invalid email format'
         }
@@ -110,7 +119,7 @@ function ProfilePage() {
             }
         }
 
-        setErrors(newErrors);
+        setErrors(newErrors)
         return Object.keys(newErrors).length === 0
     }
 
@@ -145,21 +154,52 @@ function ProfilePage() {
 
             showModal('Success', 'Profile updated successfully!')
         } catch (error) {
-            let errorMessage = 'Failed to update profile'
+            console.error('Profile update error:', error)
 
-            if (error.response) {
-                if (error.response.status === 400) {
-                    errorMessage = error.response.data.message || 'Validation error'
-                    if (error.response.data.message?.includes('Password must contain')) {
-                        errorMessage = error.response.data.message;
-                    }
-                } else if (error.response.status === 401) {
-                    errorMessage = 'Session expired. Please login again.'
-                    logout();
-                    navigate('/login')
-                }
+            if (error instanceof RequiredFieldsError) {
+                showModal('Missing Information', error.message)
+                return
             }
-            showModal('Error', errorMessage)
+
+            if (error instanceof InvalidPasswordError) {
+                setErrors({
+                    currentPassword: 'Current password is incorrect'
+                })
+                return
+            }
+
+            if (error instanceof PasswordsDontMatchError) {
+                setErrors({ confirmPassword: error.message })
+                return
+            }
+
+            if (error instanceof UsernameTakenError) {
+                showModal('Username Taken', error.message)
+                setFormData(prev => ({ ...prev, username: user.username }))
+                return
+            }
+
+            if (error instanceof EmailInUseError) {
+                showModal('Email Already Registered', error.message)
+                setFormData(prev => ({ ...prev, email: user.email }))
+                return
+            }
+
+            if (error instanceof UnauthorizedError) {
+                showModal('Session Expired', error.message)
+                logout()
+                navigate('/login')
+                return
+            }
+
+            if (error instanceof UserNotFoundError) {
+                showModal('User Not Found', error.message)
+                logout()
+                navigate('/login')
+                return
+            }
+
+            showModal('Error', getErrorMessage(error))
         }
     }
 
@@ -169,7 +209,16 @@ function ProfilePage() {
             updateUser(updatedUser)
             showModal('Success', 'Avatar updated successfully!')
         } catch (error) {
-            showModal('Error', error.response?.data?.message || 'Failed to update avatar')
+            console.error('Avatar update error:', error)
+
+            if (error instanceof UnauthorizedError) {
+                showModal('Session Expired', error.message)
+                logout()
+                navigate('/login')
+                return
+            }
+
+            showModal('Error', getErrorMessage(error))
         }
     }
 
@@ -179,7 +228,16 @@ function ProfilePage() {
             updateUser(updatedUser)
             showModal('Success', 'Avatar removed successfully!')
         } catch (error) {
-            showModal('Error', error.response?.data?.message || 'Failed to remove avatar')
+            console.error('Avatar remove error:', error)
+
+            if (error instanceof UnauthorizedError) {
+                showModal('Session Expired', error.message)
+                logout()
+                navigate('/login')
+                return
+            }
+
+            showModal('Error', getErrorMessage(error))
         }
     }
 
@@ -192,17 +250,28 @@ function ProfilePage() {
                     await deleteUserAccount(user.id)
                     logout()
                 } catch (error) {
-                    let errorMessage = 'Failed to delete account'
+                    console.error('Account deletion error:', error)
 
-                    if (error.response?.status === 401) {
-                        errorMessage = 'Session expired. Please login again.'
-                    } else if (error.response?.status === 403) {
-                        errorMessage = 'You are not authorized to delete this account'
-                    } else if (error.response?.status === 404) {
-                        errorMessage = 'User not found'
+                    if (error instanceof UnauthorizedError) {
+                        showModal('Session Expired', error.message)
+                        logout()
+                        navigate('/login')
+                        return
                     }
 
-                    showModal('Error', errorMessage)
+                    if (error instanceof ForbiddenError) {
+                        showModal('Permission Denied', error.message)
+                        return
+                    }
+
+                    if (error instanceof UserNotFoundError) {
+                        showModal('User Not Found', error.message)
+                        logout()
+                        navigate('/login')
+                        return
+                    }
+
+                    showModal('Error', getErrorMessage(error))
                 }
             }
         )
