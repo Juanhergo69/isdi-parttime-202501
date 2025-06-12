@@ -1,7 +1,4 @@
 import { readFile, writeFile } from "../utils/fileStorage.js"
-import bcrypt from 'bcrypt'
-
-const SALT_ROUNDS = 10
 
 export const getUserData = () => readFile('users.json')
 export const saveUserData = (data) => writeFile('users.json', data)
@@ -23,14 +20,13 @@ export const findUserByUsername = (username) => {
     return users.find(user => user.username === username)
 }
 
-export const createUser = async (userData) => {
+export const createUser = (userData) => {
     const users = getUserData();
-    const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUNDS)
     const newUser = {
         id: Date.now(),
         username: userData.username,
         email: userData.email,
-        password: hashedPassword,
+        password: userData.password,
         avatar: null,
         favorites: []
     }
@@ -40,6 +36,18 @@ export const createUser = async (userData) => {
     return newUser
 }
 
-export const comparePasswords = async (plainPassword, hashedPassword) => {
-    return await bcrypt.compare(plainPassword, hashedPassword)
+
+export const updateUser = (id, updates) => {
+    const users = getUserData();
+    const userIndex = users.findIndex(user => user.id === id)
+
+    if (userIndex === -1) {
+        throw new UserNotFoundError()
+    }
+
+    const updatedUser = { ...users[userIndex], ...updates }
+    users[userIndex] = updatedUser
+    saveUserData(users)
+
+    return updatedUser
 }

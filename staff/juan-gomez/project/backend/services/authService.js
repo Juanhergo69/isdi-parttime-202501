@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt'
 import * as userRepository from '../data/userRepository.js'
 import { validatePassword, validateEmail } from '../utils/helpers.js'
 import {
@@ -10,6 +11,12 @@ import {
     UsernameTakenError,
     UnauthorizedError
 } from 'common'
+
+const SALT_ROUNDS = 10
+
+export const comparePasswords = async (plainPassword, hashedPassword) => {
+    return await bcrypt.compare(plainPassword, hashedPassword)
+}
 
 export const register = async (userData) => {
     const { username, email, password, confirmPassword } = userData
@@ -44,7 +51,8 @@ export const register = async (userData) => {
         throw new UsernameTakenError()
     }
 
-    return userRepository.createUser({ username, email, password })
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
+    return userRepository.createUser({ username, email, password: hashedPassword })
 }
 
 export const login = async (email, password) => {
@@ -57,7 +65,7 @@ export const login = async (email, password) => {
         throw new UnauthorizedError('Account not found')
     }
 
-    const isPasswordValid = await userRepository.comparePasswords(password, user.password)
+    const isPasswordValid = await comparePasswords(password, user.password)
     if (!isPasswordValid) {
         throw new UnauthorizedError('Incorrect password')
     }

@@ -1,8 +1,25 @@
+import bcrypt from 'bcrypt'
 import { readFile, writeFile } from '../utils/fileStorage.js'
 import * as userRepository from '../data/userRepository.js'
-import { UserNotFoundError, UsernameTakenError, EmailInUseError } from 'common'
+import {
+    UserNotFoundError,
+    UsernameTakenError,
+    EmailInUseError,
+    ForbiddenError,
+    InvalidPasswordError
+} from 'common'
 
-export const updateUser = (id, updates) => {
+export const getUserById = (id) => {
+    const user = userRepository.findUserById(id)
+    if (!user) throw new UserNotFoundError()
+    return user
+}
+
+export const updateUser = async (id, updates, currentUserId) => {
+    if (id !== currentUserId) {
+        throw new ForbiddenError()
+    }
+
     const users = userRepository.getUserData()
     const userIndex = users.findIndex(user => user.id === id)
 
@@ -10,68 +27,59 @@ export const updateUser = (id, updates) => {
         throw new UserNotFoundError()
     }
 
-    if (updates.username && updates.username !== users[userIndex].username) {
-        const usernameExists = users.some(user =>
-            user.username === updates.username && user.id !== id
-        )
-        if (usernameExists) {
+    const user = users[userIndex]
+
+    if (updates.username && updates.username !== user.username) {
+        const existingUser = userRepository.findUserByUsername(updates.username)
+        if (existingUser) {
             throw new UsernameTakenError()
         }
     }
 
-    if (updates.email && updates.email !== users[userIndex].email) {
-        const emailExists = users.some(user =>
-            user.email === updates.email && user.id !== id
-        )
-        if (emailExists) {
+    if (updates.email && updates.email !== user.email) {
+        const existingUser = userRepository.findUserByEmail(updates.email)
+        if (existingUser) {
             throw new EmailInUseError()
         }
     }
 
-    const updatedUser = { ...users[userIndex], ...updates }
-    users[userIndex] = updatedUser
-    userRepository.saveUserData(users)
-    return updatedUser
-}
+    if (updates.password) {
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/
+        if (!passwordRegex.test(updates.password)) {
+            throw new InvalidPasswordError()
+        }
 
-const deleteUserInteractions = (userId) => {
-    const games = readFile('games.json')
-
-    const updatedGames = games.map(game => {
-        game.likes = game.likes.filter(id => id !== userId)
-        game.dislikes = game.dislikes.filter(id => id !== userId)
-        game.highscores = game.highscores.filter(score => score.userId !== userId)
-        game.messages = game.messages.filter(msg => msg.userId !== userId)
-
-        return game
-    })
-
-    writeFile('games.json', updatedGames)
-}
-
-export const deleteUser = (id) => {
-    const userId = parseInt(id)
-    const users = userRepository.getUserData()
-    const userIndex = users.findIndex(user => user.id === userId)
-
-    if (userIndex === -1) {
-        throw new UserNotFoundError()
+        updates.password = await bcrypt.hash(updates.password, 10)
     }
 
-    users.splice(userIndex, 1)
-    userRepository.saveUserData(users)
+    const allowedUpdates = ['username', 'email', 'avatar', 'password']
+    const filteredUpdates = Object.keys(updates)
+        .filter(key => allowedUpdates.includes(key))
+        .reduce((obj, key) => {
+            obj[key] = updates[key]
+            return obj
+        }, {})
 
-    deleteUserInteractions(userId)
+
+    return userRepository.updateUser(id, filteredUpdates)
 }
 
-export const addUserFavorite = (userId, gameId) => {
+export const addUserFavorite = (userId, gameId, currentUserId) => {
+    if (userId !== currentUserId) {
+        throw new ForbiddenError()
+    }
+
     const users = userRepository.getUserData()
     const userIndex = users.findIndex(user => user.id === userId)
 
     if (userIndex === -1) throw new UserNotFoundError()
 
+    if (!users[userIndex].favorites) {
+        users[userIndex].favorites = []
+    }
+
     if (!users[userIndex].favorites.includes(gameId)) {
-        users[userIndex].favorites = [...users[userIndex].favorites, gameId]
+        users[userIndex].favorites.push(gameId)
         userRepository.saveUserData(users)
     }
 
@@ -79,11 +87,19 @@ export const addUserFavorite = (userId, gameId) => {
     return userData
 }
 
-export const removeUserFavorite = (userId, gameId) => {
+export const removeUserFavorite = (userId, gameId, currentUserId) => {
+    if (userId !== currentUserId) {
+        throw new ForbiddenError()
+    }
+
     const users = userRepository.getUserData()
     const userIndex = users.findIndex(user => user.id === userId)
 
     if (userIndex === -1) throw new UserNotFoundError()
+
+    if (!users[userIndex].favorites) {
+        users[userIndex].favorites = []
+    }
 
     users[userIndex].favorites = users[userIndex].favorites.filter(
         id => id !== gameId
@@ -97,6 +113,33 @@ export const removeUserFavorite = (userId, gameId) => {
 
 export const getUserFavorites = (userId) => {
     const user = userRepository.findUserById(userId)
-    return user ? user.favorites || [] : []
+    if (!user) throw new UserNotFoundError()
+    return user.favorites || []
+}
+
+export const deleteUser = (id, currentUserId) => {
+    if (id !== currentUserId) {
+        throw new ForbiddenError()
+    }
+
+    const users = userRepository.getUserData()
+    const userIndex = users.findIndex(user => user.id === id)
+
+    if (userIndex === -1) {
+        throw new UserNotFoundError()
+    }
+
+    users.splice(userIndex, 1)
+    userRepository.saveUserData(users)
+
+    const games = readFile('games.json')
+    const updatedGames = games.map(game => ({
+        ...game,
+        likes: game.likes?.filter(userId => userId !== id) || [],
+        dislikes: game.dislikes?.filter(userId => userId !== id) || [],
+        highscores: game.highscores?.filter(score => score.userId !== id) || [],
+        messages: game.messages?.filter(msg => msg.userId !== id) || []
+    }))
+    writeFile('games.json', updatedGames)
 }
 
