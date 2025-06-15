@@ -13,7 +13,7 @@ export const fetchUserFavorites = async (userId) => {
 export const addUserFavorite = async (userId, gameId) => {
     try {
         const response = await api.post('/users/favorites/add', {
-            userId,
+            userId: userId.toString(),
             gameId
         })
         return response.data.favorites || []
@@ -25,7 +25,7 @@ export const addUserFavorite = async (userId, gameId) => {
 export const removeUserFavorite = async (userId, gameId) => {
     try {
         const response = await api.post('/users/favorites/remove', {
-            userId,
+            userId: userId.toString(),
             gameId
         })
         return response.data.favorites || []

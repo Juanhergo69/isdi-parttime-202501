@@ -12,7 +12,10 @@ export const fetchGameMessages = async (gameId) => {
 
 export const postGameMessage = async (gameId, messageData) => {
     try {
-        const response = await api.post(`/games/${gameId}/messages`, messageData)
+        const response = await api.post(`/games/${gameId}/messages`, {
+            ...messageData,
+            userId: messageData.userId.toString() // Asegurar que es string
+        })
         return response.data.messages || []
     } catch (error) {
         console.error('Error saving message:', error)
@@ -24,7 +27,7 @@ export const deleteGameMessage = async (gameId, userId, timestamp) => {
     try {
         const response = await api.delete(`/games/${gameId}/messages`, {
             data: {
-                userId,
+                userId: userId.toString(), // Asegurar que es string
                 timestamp
             },
             headers: {

@@ -7,7 +7,7 @@ export const register = async (req, res, next) => {
         const user = await authService.register(req.body)
 
         const token = jwt.sign(
-            { userId: user.id },
+            { userId: user.id.toString() },
             process.env.JWT_SECRET || 'your-secret-key',
             { expiresIn: '1d' }
         )
@@ -35,7 +35,7 @@ export const login = async (req, res, next) => {
         const user = await authService.login(email, password)
 
         const token = jwt.sign(
-            { userId: user.id },
+            { userId: user.id.toString() },
             process.env.JWT_SECRET || 'your-secret-key',
             { expiresIn: '1d' }
         )

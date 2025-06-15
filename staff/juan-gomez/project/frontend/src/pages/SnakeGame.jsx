@@ -159,7 +159,7 @@ const SnakeGame = () => {
     useEffect(() => {
         if (gameOver && user && gameId && highScore > 0) {
             submitScore(
-                user.id,
+                user.id.toString(),
                 gameId,
                 highScore,
                 {

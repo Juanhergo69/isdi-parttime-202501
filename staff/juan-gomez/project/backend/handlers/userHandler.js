@@ -4,7 +4,7 @@ import { RequiredFieldsError, InvalidPasswordError } from 'common'
 
 export const getUserById = async (req, res, next) => {
     try {
-        const user = await userService.getUserById(parseInt(req.params.id))
+        const user = await userService.getUserById(req.params.id)
         const { password, ...userWithoutPassword } = user
         res.json(userWithoutPassword)
     } catch (error) {
@@ -23,7 +23,7 @@ export const updateUser = async (req, res, next) => {
                 throw new RequiredFieldsError('Current password is required')
             }
 
-            const user = await userService.getUserById(parseInt(id))
+            const user = await userService.getUserById(id)
             const isMatch = await authService.comparePasswords(
                 updates.currentPassword,
                 user.password
@@ -39,7 +39,7 @@ export const updateUser = async (req, res, next) => {
         }
 
         const updatedUser = await userService.updateUser(
-            parseInt(id),
+            id,
             updates,
             currentUserId
         )
@@ -61,7 +61,7 @@ export const addFavorite = async (req, res, next) => {
         }
 
         const updatedUser = await userService.addUserFavorite(
-            parseInt(userId),
+            userId,
             parseInt(gameId),
             currentUserId
         )
@@ -85,7 +85,7 @@ export const removeFavorite = async (req, res, next) => {
         }
 
         const updatedUser = await userService.removeUserFavorite(
-            parseInt(userId),
+            userId,
             parseInt(gameId),
             currentUserId
         )
@@ -101,7 +101,7 @@ export const removeFavorite = async (req, res, next) => {
 
 export const getUserFavorites = async (req, res, next) => {
     try {
-        const favorites = await userService.getUserFavorites(parseInt(req.params.id))
+        const favorites = await userService.getUserFavorites(req.params.id)
         res.json(favorites)
     } catch (error) {
         next(error)
@@ -113,7 +113,7 @@ export const deleteUser = async (req, res, next) => {
         const { id } = req.params
         const currentUserId = req.user.id
 
-        userService.deleteUser(parseInt(id), currentUserId)
+        userService.deleteUser(id, currentUserId)
 
         res.clearCookie('token')
         res.status(204).end()

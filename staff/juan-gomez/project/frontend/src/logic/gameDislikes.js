@@ -2,7 +2,9 @@ import api from '../api/axiosConfig'
 
 export const dislikeGame = async (gameId, userId) => {
     try {
-        const response = await api.post(`/games/${gameId}/dislike`, { userId })
+        const response = await api.post(`/games/${gameId}/dislike`, {
+            userId: userId.toString() // Asegurar que es string
+        })
         return response.data
     } catch (error) {
         console.error('Error disliking game:', error)
