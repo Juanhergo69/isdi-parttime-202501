@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt'
 import * as userRepository from '../data/userRepository.js'
-import { validatePassword, validateEmail } from '../utils/helpers.js'
 import {
     ValidationError,
     InvalidEmailError,
@@ -11,6 +10,7 @@ import {
     UsernameTakenError,
     UnauthorizedError
 } from 'common'
+import { validateEmail, validatePassword } from '../utils/helpers.js'
 
 const SALT_ROUNDS = 10
 
@@ -30,15 +30,15 @@ export const register = async (userData) => {
     }
 
     try {
-        validateEmail(email);
+        validateEmail(email)
+    } catch (error) {
+        throw new InvalidEmailError()
+    }
+
+    try {
         validatePassword(password)
     } catch (error) {
-        if (error.message.includes('email')) {
-            throw new InvalidEmailError()
-        } else if (error.message.includes('Password')) {
-            throw new InvalidPasswordError()
-        }
-        throw new ValidationError(error.message)
+        throw new InvalidPasswordError()
     }
 
     const existingUserByEmail = await userRepository.findUserByEmail(email)
@@ -52,7 +52,11 @@ export const register = async (userData) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
-    return userRepository.createUser({ username, email, password: hashedPassword })
+    return await userRepository.createUser({
+        username,
+        email,
+        password: hashedPassword
+    })
 }
 
 export const login = async (email, password) => {
@@ -70,7 +74,11 @@ export const login = async (email, password) => {
         throw new UnauthorizedError('Incorrect password')
     }
 
-    const { password: _, ...userWithoutPassword } = user
-    return userWithoutPassword
+    const userObj = user.toObject()
+    userObj.id = user._id.toString()
+    delete userObj._id
+    delete userObj.password
+
+    return userObj
 }
 

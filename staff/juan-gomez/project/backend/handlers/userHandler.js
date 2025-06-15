@@ -5,8 +5,11 @@ import { RequiredFieldsError, InvalidPasswordError } from 'common'
 export const getUserById = async (req, res, next) => {
     try {
         const user = await userService.getUserById(req.params.id)
-        const { password, ...userWithoutPassword } = user
-        res.json(userWithoutPassword)
+        const userObj = user.toObject()
+        userObj.id = user._id.toString()
+        delete userObj._id
+        delete userObj.password
+        res.json(userObj)
     } catch (error) {
         next(error)
     }
@@ -38,14 +41,12 @@ export const updateUser = async (req, res, next) => {
             delete updates.newPassword
         }
 
-        const updatedUser = await userService.updateUser(
-            id,
-            updates,
-            currentUserId
-        )
-
-        const { password, ...userWithoutPassword } = updatedUser
-        res.json(userWithoutPassword)
+        const updatedUser = await userService.updateUser(id, updates, currentUserId)
+        const userObj = updatedUser.toObject()
+        userObj.id = updatedUser._id.toString()
+        delete userObj._id
+        delete userObj.password
+        res.json(userObj)
     } catch (error) {
         next(error)
     }
@@ -57,7 +58,7 @@ export const addFavorite = async (req, res, next) => {
         const currentUserId = req.user.id
 
         if (!userId || !gameId) {
-            throw new RequiredFieldsError('userId and gameId are required');
+            throw new RequiredFieldsError('userId and gameId are required')
         }
 
         const updatedUser = await userService.addUserFavorite(
@@ -81,7 +82,7 @@ export const removeFavorite = async (req, res, next) => {
         const currentUserId = req.user.id
 
         if (!userId || !gameId) {
-            throw new RequiredFieldsError('userId and gameId are required');
+            throw new RequiredFieldsError('userId and gameId are required')
         }
 
         const updatedUser = await userService.removeUserFavorite(
@@ -101,8 +102,8 @@ export const removeFavorite = async (req, res, next) => {
 
 export const getUserFavorites = async (req, res, next) => {
     try {
-        const favorites = await userService.getUserFavorites(req.params.id)
-        res.json(favorites)
+        const user = await userService.getUserById(req.params.id)
+        res.json(user.favorites || [])
     } catch (error) {
         next(error)
     }
@@ -113,7 +114,7 @@ export const deleteUser = async (req, res, next) => {
         const { id } = req.params
         const currentUserId = req.user.id
 
-        userService.deleteUser(id, currentUserId)
+        await userService.deleteUser(id, currentUserId)
 
         res.clearCookie('token')
         res.status(204).end()

@@ -23,15 +23,15 @@ export const validatePassword = (password) => {
 }
 
 export const formatMessageTime = (date) => {
-    const now = new Date();
-    const diffInMs = now - date;
-    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const now = new Date()
+    const diffInMs = now - date
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60))
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
 
-    if (diffInMinutes < 1) return 'Just now';
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    if (diffInHours < 8760) return date.toLocaleDateString([], { month: 'short', day: 'numeric' }); // 365 * 24
+    if (diffInMinutes < 1) return 'Just now'
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`
+    if (diffInHours < 24) return `${diffInHours}h ago`
+    if (diffInHours < 8760) return date.toLocaleDateString([], { month: 'short', day: 'numeric' })
 
-    return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
-};
+    return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })
+}

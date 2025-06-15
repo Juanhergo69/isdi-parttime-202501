@@ -1,187 +1,106 @@
-import { readFile, writeFile } from '../utils/fileStorage.js'
-import { GameNotFoundError, MessageNotFoundError } from 'common'
+import Game from '../models/Game.js'
+import mongoose from 'mongoose'
+import {
+    GameNotFoundError,
+    MessageNotFoundError
+} from 'common'
 
-
-const getGameData = () => readFile('games.json')
-const saveGameData = (data) => writeFile('games.json', data)
-
-export const getAllGames = () => {
-    const games = getGameData()
-    return games.map(game => ({
-        ...game,
-        likes: game.likes || [],
-        dislikes: game.dislikes || [],
-        highscores: game.highscores || [],
-        messages: game.messages || []
-    }))
+export const getAllGames = async () => {
+    return await Game.find({})
 }
 
-export const getGameById = (id) => {
-    const games = getGameData()
-    const game = games.find(game => game.id === id)
+export const getGameById = async (id) => {
+    const game = await Game.findOne({ id })
+    if (!game) throw new GameNotFoundError()
+    return game
+}
 
+export const toggleInteraction = async (gameId, userId, interactionType, oppositeType) => {
+    const game = await Game.findOne({ id: gameId })
     if (!game) throw new GameNotFoundError()
 
-    return {
-        ...game,
-        likes: game.likes || [],
-        dislikes: game.dislikes || [],
-        highscores: game.highscores || [],
-        messages: game.messages || []
+    const userIdObj = new mongoose.Types.ObjectId(userId)
+
+    if (game[oppositeType].includes(userIdObj)) {
+        await Game.updateOne(
+            { id: gameId },
+            { $pull: { [oppositeType]: userIdObj } }
+        )
     }
+
+    const operation = game[interactionType].includes(userIdObj) ? '$pull' : '$addToSet'
+    await Game.updateOne(
+        { id: gameId },
+        { [operation]: { [interactionType]: userIdObj } }
+    )
+
+    return await Game.findOne({ id: gameId })
 }
 
-export const updateGame = (id, updates) => {
-    const games = getGameData()
-    const gameIndex = games.findIndex(game => game.id === id)
+export const addMessage = async (gameId, message) => {
+    const game = await Game.findOne({ id: gameId })
+    if (!game) throw new GameNotFoundError()
 
-    if (gameIndex === -1) throw new GameNotFoundError()
-
-    const updatedGame = {
-        ...games[gameIndex],
-        ...updates,
-        likes: updates.likes || games[gameIndex].likes || [],
-        dislikes: updates.dislikes || games[gameIndex].dislikes || [],
-        highscores: updates.highscores || games[gameIndex].highscores || [],
-        messages: updates.messages || games[gameIndex].messages || []
-    }
-
-    games[gameIndex] = updatedGame
-    saveGameData(games)
-    return updatedGame
-}
-
-export const toggleInteraction = (gameId, userId, interactionType, oppositeType) => {
-    const games = getGameData()
-    const gameIndex = games.findIndex(game => game.id === gameId)
-
-    if (gameIndex === -1) throw new GameNotFoundError()
-
-    const game = games[gameIndex]
-    const interactions = [...(game[interactionType] || [])]
-    const oppositeInteractions = [...(game[oppositeType] || [])]
-
-    const userIndex = interactions.indexOf(userId)
-    const oppositeUserIndex = oppositeInteractions.indexOf(userId)
-
-    if (oppositeUserIndex !== -1) {
-        oppositeInteractions.splice(oppositeUserIndex, 1)
-    }
-
-    if (userIndex === -1) {
-        interactions.push(userId)
-    } else {
-        interactions.splice(userIndex, 1)
-    }
-
-    const updatedGame = {
-        ...game,
-        [interactionType]: interactions,
-        [oppositeType]: oppositeInteractions
-    }
-
-    games[gameIndex] = updatedGame
-    saveGameData(games)
-    return updatedGame
-}
-
-export const addMessage = (gameId, message) => {
-    const games = getGameData()
-    const gameIndex = games.findIndex(game => game.id === gameId)
-
-    if (gameIndex === -1) throw new GameNotFoundError()
-
-    const messages = [...(games[gameIndex].messages || [])]
-    messages.push({
-        userId: message.userId,
+    const newMessage = {
+        user: new mongoose.Types.ObjectId(message.userId),
         text: message.text,
         timestamp: message.timestamp
-    })
-
-    const updatedGame = {
-        ...games[gameIndex],
-        messages
     }
 
-    games[gameIndex] = updatedGame
-    saveGameData(games)
-    return updatedGame
+    await Game.updateOne(
+        { id: gameId },
+        { $push: { messages: newMessage } }
+    )
+
+    return await Game.findOne({ id: gameId })
 }
 
-export const deleteMessage = (gameId, userId, timestamp) => {
-    const games = getGameData()
-    const gameIndex = games.findIndex(game => game.id === gameId)
-
-    if (gameIndex === -1) throw new GameNotFoundError()
-
-    const messages = games[gameIndex].messages || []
+export const deleteMessage = async (gameId, userId, timestamp) => {
+    const game = await Game.findOne({ id: gameId })
+    if (!game) throw new GameNotFoundError()
 
     const targetTime = new Date(timestamp).getTime()
-
-    const messageIndex = messages.findIndex(msg => {
+    const messageIndex = game.messages.findIndex(msg => {
         const msgTime = new Date(msg.timestamp).getTime()
-        return msg.userId === userId &&
-            Math.abs(msgTime - targetTime) < 1000
+        return msg.user.toString() === userId && Math.abs(msgTime - targetTime) < 1000
     })
 
     if (messageIndex === -1) {
         throw new MessageNotFoundError()
     }
 
-    const updatedMessages = [...messages]
-    updatedMessages.splice(messageIndex, 1)
+    game.messages.splice(messageIndex, 1)
+    await game.save()
 
-    const updatedGame = {
-        ...games[gameIndex],
-        messages: updatedMessages
-    }
-
-    games[gameIndex] = updatedGame
-    saveGameData(games)
-    return updatedGame
+    return game
 }
 
-export const updateHighscore = (gameId, userId, score) => {
-    const games = getGameData()
-    const gameIndex = games.findIndex(game => game.id === gameId)
-
-    if (gameIndex === -1) throw new GameNotFoundError()
-
-    let highscores = [...(games[gameIndex].highscores || [])]
-    const existingScoreIndex = highscores.findIndex(hs => hs.userId === userId)
-
-    if (existingScoreIndex !== -1) {
-        if (score > highscores[existingScoreIndex].score) {
-            highscores[existingScoreIndex] = {
-                userId,
-                score
-            }
-        }
-    } else {
-        highscores.push({
-            userId,
-            score
-        })
-    }
-
-    highscores.sort((a, b) => b.score - a.score)
-    highscores = highscores.slice(0, 10)
-
-    const updatedGame = {
-        ...games[gameIndex],
-        highscores
-    }
-
-    games[gameIndex] = updatedGame
-    saveGameData(games)
-    return updatedGame
-}
-
-export const getUserHighScore = (gameId, userId) => {
-    const games = getGameData()
-    const game = games.find(game => game.id === gameId)
+export const updateHighscore = async (gameId, userId, score) => {
+    const game = await Game.findOne({ id: gameId })
     if (!game) throw new GameNotFoundError()
 
-    const userScore = game.highscores.find(hs => hs.userId === userId)
+    const userIdObj = new mongoose.Types.ObjectId(userId)
+    const existingScoreIndex = game.highscores.findIndex(hs => hs.user.equals(userIdObj))
+
+    if (existingScoreIndex !== -1) {
+        if (score > game.highscores[existingScoreIndex].score) {
+            game.highscores[existingScoreIndex].score = score
+        }
+    } else {
+        game.highscores.push({ user: userIdObj, score })
+    }
+
+    game.highscores.sort((a, b) => b.score - a.score)
+    game.highscores = game.highscores.slice(0, 10)
+
+    await game.save()
+    return game
+}
+
+export const getUserHighScore = async (gameId, userId) => {
+    const game = await Game.findOne({ id: gameId })
+    if (!game) throw new GameNotFoundError()
+
+    const userScore = game.highscores.find(hs => hs.user.toString() === userId)
     return userScore ? userScore.score : 0
 }
