@@ -79,6 +79,6 @@ export const login = async (email, password) => {
     delete userObj._id
     delete userObj.password
 
-    return userObj
+    return user
 }
 
