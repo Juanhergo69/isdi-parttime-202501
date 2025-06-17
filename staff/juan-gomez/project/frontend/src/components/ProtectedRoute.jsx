@@ -12,7 +12,7 @@ function ProtectedRoute({ children }) {
             navigate('/login', {
                 state: { from: location },
                 replace: true
-            });
+            })
         }
     }, [authChecked, isAuthenticated, navigate, location])
 

@@ -1,4 +1,4 @@
-import api from '../api/axiosConfig';
+import api from '../api/axiosConfig'
 import { getErrorMessage } from 'common'
 
 export const submitScore = async (userId, gameId, score, userData = {}) => {
@@ -18,7 +18,7 @@ export const submitScore = async (userId, gameId, score, userData = {}) => {
 export const getHighScore = async (gameId, userId) => {
     try {
         const response = await api.get(`/games/${gameId}/scores/${userId.toString()}`)
-        return response.data.highScore || 0;
+        return response.data.highScore || 0
     } catch (error) {
         console.error('Error fetching high score:', error.response?.data || error.message)
         return 0

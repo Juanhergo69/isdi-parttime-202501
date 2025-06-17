@@ -23,7 +23,6 @@ export const updateUserProfile = async (userId, updates) => {
         const response = await api.put(`/users/${userId}`, updates)
         return response.data
     } catch (error) {
-        // Manejo específico de errores del backend
         if (error.response?.data?.errorCode === 'USERNAME_TAKEN') {
             throw new UsernameTakenError()
         }

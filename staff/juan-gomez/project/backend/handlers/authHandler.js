@@ -9,7 +9,7 @@ export const register = async (req, res, next) => {
             { userId: user._id.toString() },
             process.env.JWT_SECRET || 'your-secret-key',
             { expiresIn: '1d' }
-        );
+        )
 
         const userObj = user.toObject()
         userObj.id = user._id.toString()
@@ -41,7 +41,7 @@ export const login = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-};
+}
 
 export const getCurrentUser = async (req, res, next) => {
     try {

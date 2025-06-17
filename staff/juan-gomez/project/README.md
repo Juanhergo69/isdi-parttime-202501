@@ -42,9 +42,11 @@ The website will allow you to register, play the variety of games available, rat
 - react-router
 - Express
 - Node
+- Axios
 - Mongo+Mongoose
 - Mocha Chai
-- Bcrypt / Token Library (jose, jwt, etc)
+- Bcrypt 
+- Token Library (jwt)
 
 ### Data Models
 
@@ -64,34 +66,50 @@ game{
   cover: string
   highScore: {
     score: number,
-    user: userId
+    user: userId(_id)
   }
-  like: userId
-  dislike: userId,
+  like: userId(_id),
+  dislike: userId(_id),
   comments: {
-    author: userId,
+    author: userId(_id)
     comment: string,
-    date: published
+    date: DateNow() with formatted function
   }
 }
 
-_Data models describe how the database saves documents._
+User model:
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    password: { type: String, required: true },
+    avatar: { type: String, default: null },
+    favorites: [{ type: Number }]
+}, { timestamps: true })
 
-[Learn more about data modeling here.](https://www.mongodb.com/resources/basics/databases/data-modeling)
-
-***(e.g.)* User Model**
-- *(e.g.)* id (ObjectId)
-- *(e.g.)* username (string)
-- *(e.g.)* password (string)
-- *(e.g.)* avatar (string)
-
-_Additional data models as needed._
+Game model:
+const gameSchema = new mongoose.Schema({
+    id: { type: Number, required: true, unique: true },
+    name: { type: String, required: true },
+    description: String,
+    image: String,
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    highscores: [{
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        score: { type: Number, required: true }
+    }],
+    messages: [{
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        text: { type: String, required: true },
+        timestamp: { type: Date, default: Date.now }
+    }]
+})
 
 ### Test Coverage
 
 </br>
 
-_Include a table or screenshot of your backend test coverage here._
+![Aqui mi imagen](./frontend/public/images/CoverageReport.jpg)
 
 ## Project
 

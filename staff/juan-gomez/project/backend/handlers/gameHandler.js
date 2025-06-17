@@ -17,7 +17,7 @@ export const getAllGames = async (req, res, next) => {
                 text: msg.text,
                 timestamp: msg.timestamp
             })) || []
-        }));
+        }))
         res.json(formattedGames)
     } catch (error) {
         next(error)
@@ -56,7 +56,7 @@ export const likeGame = async (req, res, next) => {
             userId,
             'likes',
             'dislikes'
-        );
+        )
         res.json(game)
     } catch (error) {
         next(error)
@@ -71,7 +71,7 @@ export const dislikeGame = async (req, res, next) => {
             userId,
             'dislikes',
             'likes'
-        );
+        )
         res.json(game)
     } catch (error) {
         next(error)
@@ -133,7 +133,7 @@ export const getUserHighScore = async (req, res, next) => {
     try {
         const game = await gameService.getGameById(parseInt(req.params.id))
         const userScore = game.highscores.find(hs => hs.user.toString() === req.params.userId)
-        const highScore = userScore ? userScore.score : 0;
+        const highScore = userScore ? userScore.score : 0
         res.json({ highScore })
     } catch (error) {
         next(error)

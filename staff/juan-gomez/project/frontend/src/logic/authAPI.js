@@ -17,7 +17,6 @@ export const registerUser = async (userData) => {
         return response.data
     } catch (error) {
         if (error.response) {
-            // Mapear errores específicos del backend
             switch (error.response.data.errorCode) {
                 case 'REQUIRED_FIELDS':
                     throw new RequiredFieldsError()
@@ -45,7 +44,6 @@ export const loginUser = async (credentials) => {
         return response.data
     } catch (error) {
         if (error.response) {
-            // Mapear errores específicos del backend
             switch (error.response.data.errorCode) {
                 case 'INVALID_EMAIL':
                     throw new InvalidEmailError()

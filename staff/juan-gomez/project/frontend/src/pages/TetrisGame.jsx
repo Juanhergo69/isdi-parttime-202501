@@ -18,7 +18,7 @@ const SHAPES = [
     [[0, 5, 5], [5, 5, 0]], //S//
     [[0, 6, 0], [6, 6, 6]], //T//
     [[7, 7, 0], [0, 7, 7]]  //Z//
-];
+]
 
 const COLORS = [
     'bg-transparent',
@@ -29,7 +29,7 @@ const COLORS = [
     'bg-green-500',  //S//
     'bg-purple-600', //T//
     'bg-red-500'     //Z//
-];
+]
 
 const TetrisGame = () => {
     const location = useLocation()
@@ -63,7 +63,7 @@ const TetrisGame = () => {
             } else {
                 setHighScore(0)
             }
-        };
+        }
 
         loadHighScore()
     }, [user, gameId])
@@ -125,7 +125,7 @@ const TetrisGame = () => {
 
         const newShape = currentPiece.shape[0].map((_, i) =>
             currentPiece.shape.map(row => row[i]).reverse()
-        );
+        )
 
         if (!checkCollision(newShape, position.x, position.y)) {
             setCurrentPiece(prev => ({
@@ -138,7 +138,7 @@ const TetrisGame = () => {
     }, [currentPiece, position, gameOver, isPaused, checkCollision])
 
     const checkLines = useCallback((currentBoard) => {
-        let linesCleared = 0;
+        let linesCleared = 0
         const newBoard = currentBoard.map(row => [...row])
 
         for (let row = ROWS - 1; row >= 0; row--) {
@@ -287,7 +287,7 @@ const TetrisGame = () => {
 
     const dropPiece = useCallback(() => {
         if (gameOver || isPaused || showInstructions) return
-        movePiece('down');
+        movePiece('down')
     }, [movePiece, gameOver, isPaused, showInstructions])
 
     useEffect(() => {

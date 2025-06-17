@@ -10,7 +10,6 @@
     }
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
     @apply w-2 h-2;
 }
@@ -31,19 +30,14 @@ input,
 textarea,
 select {
     @apply text-black;
-    /* Color del texto */
     @apply bg-white;
-    /* Fondo del input */
     @apply border border-gray-300;
-    /* Borde */
 }
 
-/* Estilo para inputs con error */
 input.error {
     @apply border-red-500;
 }
 
-/* Placeholder visible */
 input::placeholder {
     @apply text-gray-400;
 }

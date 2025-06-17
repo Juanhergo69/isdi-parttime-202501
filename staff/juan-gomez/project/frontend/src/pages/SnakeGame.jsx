@@ -167,8 +167,8 @@ const SnakeGame = () => {
                     avatar: user.avatar
                 }
             ).catch(error => {
-                console.error('Error saving score:', error);
-            });
+                console.error('Error saving score:', error)
+            })
         }
     }, [gameOver, highScore, gameId, user])
 
