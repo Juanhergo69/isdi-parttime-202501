@@ -6,6 +6,15 @@ function LandingPage() {
 
     return (
         <div className="min-h-screen bg-retro-dark flex flex-col items-center justify-center p-4">
+            {/* Contenedor para la imagen con efecto hover */}
+            <div className="mb-8 transition-transform duration-300 hover:scale-105">
+                <img
+                    src="/images/Rgw.jpg"
+                    alt="Retro Gaming World Logo"
+                    className="max-w-xs md:max-w-sm lg:max-w-md rounded-lg shadow-retro"
+                />
+            </div>
+
             <h1 className="text-retro-pink font-retro text-5xl md:text-6xl lg:text-7xl mb-8 text-center">
                 Retro Gaming World
             </h1>
