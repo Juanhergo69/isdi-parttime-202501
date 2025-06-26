@@ -4,7 +4,7 @@ const initialGames = [
     {
         id: 1,
         name: 'Snake',
-        description: 'Classic Nokia Snake game',
+        description: 'Slither. Eat. Grow. Repeat',
         image: '/images/Snake.jpg',
         likes: [],
         dislikes: [],
@@ -14,8 +14,18 @@ const initialGames = [
     {
         id: 2,
         name: 'Tetris',
-        description: 'From Russia with love',
+        description: 'Fit fast. Think faster',
         image: '/images/Tetris.jpg',
+        likes: [],
+        dislikes: [],
+        highscores: [],
+        messages: []
+    },
+    {
+        id: 3,
+        name: 'Pacman',
+        description: 'Eat dots. Dodge ghosts',
+        image: '/images/Pacman.jpg',
         likes: [],
         dislikes: [],
         highscores: [],

@@ -11,6 +11,7 @@ import FavoritesPage from './pages/FavoritesPage'
 import NotFoundPage from './pages/NotFoundPage'
 import SnakeGame from './pages/SnakeGame'
 import TetrisGame from './pages/TetrisGame'
+import PacmanGame from './pages/PacmanGame'
 import ProtectedRoute from './components/ProtectedRoute'
 import Modal from './components/Modal'
 
@@ -66,6 +67,16 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TetrisGame />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Ruta para Pacman (gameId = 3) */}
+              <Route
+                path="/games/3"
+                element={
+                  <ProtectedRoute>
+                    <PacmanGame />
                   </ProtectedRoute>
                 }
               />
