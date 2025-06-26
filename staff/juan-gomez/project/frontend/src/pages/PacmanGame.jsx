@@ -93,18 +93,18 @@ const PacmanGame = () => {
     }
 
     const isValidPacmanMove = useCallback((x, y) => {
-        const gridX = Math.floor(x);
-        const gridY = Math.floor(y);
+        const gridX = Math.floor(x)
+        const gridY = Math.floor(y)
 
         if (gridY === 10 && (x < 0 || x >= GRID_SIZE)) {
-            return true;
+            return true
         }
 
         if (gridX < 0 || gridX >= GRID_SIZE || gridY < 0 || gridY >= GRID_SIZE) {
-            return false;
+            return false
         }
 
-        return MAZE_LAYOUT[gridY][gridX] === 0;
+        return MAZE_LAYOUT[gridY][gridX] === 0
     }, [])
 
     const isValidGhostMove = useCallback((x, y) => {
@@ -207,24 +207,40 @@ const PacmanGame = () => {
         loadHighScore()
     }, [user, gameId])
 
-    const resetGame = useCallback((keepScore = false) => {
+    const handlePacmanDeath = useCallback(() => {
+        setGameOver(true)
+        setPowerPelletActive(false)
+        clearTimeout(powerPelletTimerRef.current)
+    }, [])
+
+    const advanceLevel = useCallback(() => {
         const { dots, powerPellets } = initializeBoard()
         setPacman({ x: 10, y: 15, direction: 'RIGHT', nextDirection: 'RIGHT' })
         setGhosts(generateGhosts())
         setDots(dots)
         setPowerPellets(powerPellets)
-        setGameOver(false)
-        if (!keepScore) {
-            setScore(0)
-            setLevel(1)
-        }
         setPowerPelletActive(false)
         clearTimeout(powerPelletTimerRef.current)
+        setLevel(prevLevel => prevLevel + 1)
+        speedRef.current = Math.max(INITIAL_SPEED - (level * 10), 50)
+    }, [initializeBoard, generateGhosts, level])
+
+    const resetGame = useCallback(() => {
+        const { dots, powerPellets } = initializeBoard()
+        setPacman({ x: 10, y: 15, direction: 'RIGHT', nextDirection: 'RIGHT' })
+        setGhosts(generateGhosts())
+        setDots(dots)
+        setPowerPellets(powerPellets)
+        setScore(0)
+        setLevel(1)
+        setPowerPelletActive(false)
+        clearTimeout(powerPelletTimerRef.current)
+        setGameOver(false)
         setShowInstructions(false)
     }, [initializeBoard, generateGhosts])
 
     const movePacman = useCallback(() => {
-        if (gameOver || isPaused || showInstructions) return;
+        if (gameOver || isPaused || showInstructions) return
 
         setPacman(prev => {
             const nextDir = prev.nextDirection
@@ -334,15 +350,15 @@ const PacmanGame = () => {
     }, [gameOver, isPaused, showInstructions, pacman.x, pacman.y, pacman.justTeleported, highScore])
 
     const moveGhosts = useCallback(() => {
-        if (gameOver || isPaused || showInstructions) return;
+        if (gameOver || isPaused || showInstructions) return
 
         setGhosts(prevGhosts => {
             return prevGhosts.map(ghost => {
                 if (Math.random() > ghost.speed) {
-                    return ghost;
+                    return ghost
                 }
 
-                let newDirection = ghost.direction;
+                let newDirection = ghost.direction
                 let possibleDirections = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
                 const oppositeDir = {
@@ -445,11 +461,11 @@ const PacmanGame = () => {
                                     const distA = Math.sqrt(
                                         Math.pow(pacman.x - (ghost.x + DIRECTIONS[a].x), 2) +
                                         Math.pow(pacman.y - (ghost.y + DIRECTIONS[a].y), 2)
-                                    );
+                                    )
                                     const distB = Math.sqrt(
                                         Math.pow(pacman.x - (ghost.x + DIRECTIONS[b].x), 2) +
                                         Math.pow(pacman.y - (ghost.y + DIRECTIONS[b].y), 2)
-                                    );
+                                    )
                                     return distA - distB
                                 })
                             }
@@ -516,7 +532,7 @@ const PacmanGame = () => {
         if (collidingGhost) {
             if (collidingGhost.isScared) {
                 setScore(prevScore => {
-                    const newScore = prevScore + 200;
+                    const newScore = prevScore + 200
                     if (newScore > highScore) setHighScore(newScore)
                     return newScore
                 })
@@ -538,23 +554,14 @@ const PacmanGame = () => {
                 )
             } else {
                 setGameOver(true)
+                return
             }
         }
 
         if (dots.length === 0 && powerPellets.length === 0) {
-            setLevel(prevLevel => prevLevel + 1)
-
-            const { dots, powerPellets } = initializeBoard()
-            setPacman({ x: 10, y: 15, direction: 'RIGHT', nextDirection: 'RIGHT' })
-            setGhosts(generateGhosts())
-            setDots(dots)
-            setPowerPellets(powerPellets)
-            setPowerPelletActive(false)
-            clearTimeout(powerPelletTimerRef.current)
-
-            speedRef.current = Math.max(INITIAL_SPEED - (level * 10), 50)
+            advanceLevel()
         }
-    }, [gameOver, isPaused, showInstructions, ghosts, pacman.x, pacman.y, highScore, generateGhosts, dots.length, powerPellets.length, initializeBoard, level])
+    }, [gameOver, isPaused, showInstructions, ghosts, pacman.x, pacman.y, highScore, dots.length, powerPellets.length, handlePacmanDeath, advanceLevel])
 
     useEffect(() => {
         const handleKeyDown = (e) => {

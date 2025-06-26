@@ -33,7 +33,7 @@ The website will allow you to register, play the variety of games available, rat
 [Aqui mi link](https://www.figma.com/design/fToTgRo8hcjUxl2uNbJs0u/Retro-Gaming-World?node-id=0-1&t=hKUJGRAyuKRCMGuu-1) 
 
 ## Technical Description
-//Nada (de momento)//
+
 ### Technologies & Libraries
 
 - React
