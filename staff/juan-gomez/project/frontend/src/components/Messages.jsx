@@ -12,42 +12,49 @@ function Messages({ game }) {
     const [messages, setMessages] = useState(null)
     const [userCache, setUserCache] = useState({})
 
-    const updateMessagesWithLatestUserData = async (messages) => {
+    const updateUserCache = async (messages) => {
         const uniqueUserIds = [...new Set(messages.map(msg => msg.userId))]
-        const uncachedUserIds = uniqueUserIds.filter(id => !userCache[id])
         const newUserCache = { ...userCache }
-        const fetchPromises = uncachedUserIds.map(userId =>
-            fetchUserData(userId).then(userData => {
-                if (userData) {
-                    newUserCache[userId] = {
-                        username: userData.username,
-                        avatar: userData.avatar
-                    }
-                }
-            })
+        const uncachedUserIds = uniqueUserIds.filter(id => !newUserCache[id])
+
+        const usersData = await Promise.all(
+            uncachedUserIds.map(userId => fetchUserData(userId))
         )
-        await Promise.all(fetchPromises)
+
+        usersData.forEach((userData, index) => {
+            if (userData) {
+                newUserCache[uncachedUserIds[index]] = {
+                    username: userData.username,
+                    avatar: userData.avatar
+                }
+            }
+        })
 
         setUserCache(newUserCache)
+        return newUserCache
+    }
 
-        return messages.map(msg => ({
+    const loadMessages = async () => {
+        const messagesArray = await fetchGameMessages(game.id)
+        const updatedCache = await updateUserCache(messagesArray)
+
+        const updatedMessages = messagesArray.map(msg => ({
             ...msg,
-            username: newUserCache[msg.userId]?.username || 'User',
-            avatar: newUserCache[msg.userId]?.avatar
+            username: updatedCache[msg.userId]?.username || msg.username || 'User',
+            avatar: updatedCache[msg.userId]?.avatar || msg.avatar
         }))
+
+        setMessages(updatedMessages)
     }
 
     useEffect(() => {
         let isMounted = true
 
-        const loadMessages = async () => {
-            const messagesArray = await fetchGameMessages(game.id)
-            if (isMounted) {
-                const updatedMessages = await updateMessagesWithLatestUserData(messagesArray)
-                setMessages(updatedMessages)
-            }
+        const initialize = async () => {
+            await loadMessages()
         }
-        loadMessages()
+
+        initialize()
 
         return () => {
             isMounted = false
@@ -103,15 +110,14 @@ function Messages({ game }) {
                 try {
                     const result = await deleteGameMessage(game.id, user.id, timestamp)
                     if (result.success) {
-                        setMessages(result.game.messages || [])
+                        await loadMessages()
                     } else {
                         throw new Error(result.message || 'Delete failed')
                     }
                 } catch (error) {
                     console.error('Delete error:', error)
                     try {
-                        const messagesArray = await fetchGameMessages(game.id)
-                        setMessages(messagesArray)
+                        await loadMessages()
                     } catch (fetchError) {
                         console.error('Failed to refresh messages:', fetchError)
                     }
@@ -148,9 +154,8 @@ function Messages({ game }) {
     }
 
     const renderMessage = (msg, index) => {
-        const userData = userCache[msg.userId] || {}
-        const displayUsername = userData.username || msg.username || 'User'
-        const displayAvatar = userData.avatar !== undefined ? userData.avatar : msg.avatar
+        const displayUsername = msg.username || 'User'
+        const displayAvatar = msg.avatar
 
         const isCurrentUser = user?.id === msg.userId
         const messageDate = new Date(msg.timestamp)
@@ -160,18 +165,18 @@ function Messages({ game }) {
         return (
             <div
                 key={`${msg.userId}-${msg.timestamp}-${index}`}
-                className={`p-4 ${isCurrentUser ? 'bg-retro-green/10' : ''} ${isRecent ? 'animate-pulse' : ''}`}
+                className={`p-4 ${isCurrentUser ? 'bg-retro-green/20' : ''} ${isRecent ? 'animate-pulse' : ''}`}
             >
                 <div className="flex items-start space-x-3">
                     {renderAvatar({ ...msg, username: displayUsername, avatar: displayAvatar })}
                     <div className="flex-1">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
-                                <span className="font-retro text-retro-yellow">
+                                <span className="font-retro text-gray-800">
                                     {displayUsername}
                                 </span>
                                 <span
-                                    className="text-xs text-retro-gray"
+                                    className="text-xs text-gray-500"
                                     title={messageDate.toLocaleString()}
                                 >
                                     {formatMessageTime(messageDate)}
@@ -180,7 +185,7 @@ function Messages({ game }) {
                             {isCurrentUser && (
                                 <button
                                     onClick={() => handleDeleteMessage(msg.timestamp)}
-                                    className="text-retro-gray hover:text-retro-pink transition-colors p-1 rounded-full hover:bg-retro-dark/50"
+                                    className="text-gray-500 hover:text-retro-pink transition-colors p-1 rounded-full hover:bg-gray-100"
                                     aria-label="Delete message"
                                     title="Delete message"
                                 >
@@ -201,7 +206,7 @@ function Messages({ game }) {
                                 </button>
                             )}
                         </div>
-                        <p className="text-white mt-1 break-words">{msg.text}</p>
+                        <p className="text-gray-800 mt-1 break-words">{msg.text}</p>
                     </div>
                 </div>
             </div>
@@ -209,15 +214,15 @@ function Messages({ game }) {
     }
 
     return (
-        <div className="bg-retro-dark-secondary rounded-lg border-2 border-retro-green overflow-hidden">
-            <form onSubmit={handleSubmit} className="p-4 border-b border-retro-gray/50">
+        <div className="bg-white rounded-lg border-2 border-retro-green overflow-hidden">
+            <form onSubmit={handleSubmit} className="p-4 border-b border-gray-200">
                 <div className="flex">
                     <input
                         type="text"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Write a message..."
-                        className="flex-1 bg-retro-dark border-2 border-retro-yellow text-white px-3 py-2 rounded-l focus:outline-none"
+                        className="flex-1 bg-gray-100 border-2 border-retro-yellow text-gray-800 px-3 py-2 rounded-l focus:outline-none focus:ring-2 focus:ring-retro-yellow"
                         maxLength={500}
                     />
                     <button
@@ -230,11 +235,11 @@ function Messages({ game }) {
                 </div>
             </form>
 
-            <div className="divide-y divide-retro-gray/50 max-h-[500px] overflow-y-auto">
+            <div className="divide-y divide-gray-200 max-h-[300px] overflow-y-auto">
                 {messages.length > 0 ? (
                     messages.map(renderMessage)
                 ) : (
-                    <p className="text-retro-gray font-retro text-center py-4">
+                    <p className="text-gray-500 font-retro text-center py-4">
                         No messages yet! Be the first to comment!
                     </p>
                 )}

@@ -5,15 +5,13 @@ import { useNavigate } from 'react-router-dom'
 import { fetchAllGames, fetchGameDetails } from '../logic/gamesAPI'
 import Avatar from '../components/ui/Avatar'
 import GameCard from '../components/GameCard'
-import HighScores from '../components/HighScores'
-import Messages from '../components/Messages'
 import Button from '../components/ui/Button'
 
 function FavoritesPage() {
     const { user } = useAuth()
     const { favoriteGames, refreshFavorites, isLoading: favoritesLoading } = useFavorites()
     const navigate = useNavigate()
-    const [selectedGame, setSelectedGame] = useState(null)
+    const [selectedGameId, setSelectedGameId] = useState(null)
     const [displayMode, setDisplayMode] = useState(null)
     const [allGames, setAllGames] = useState([])
     const [loadingGames, setLoadingGames] = useState(true)
@@ -35,27 +33,25 @@ function FavoritesPage() {
 
     const handleGameSelect = async (gameId, mode) => {
         if (!gameId || !mode) {
-            setSelectedGame(null)
+            setSelectedGameId(null)
             setDisplayMode(null)
             return
         }
 
         try {
             const currentGame = await fetchGameDetails(gameId)
-
             setAllGames(prevGames =>
                 prevGames.map(game =>
                     game.id === currentGame.id ? currentGame : game
                 )
             )
-
-            setSelectedGame(currentGame)
+            setSelectedGameId(currentGame.id)
             setDisplayMode(mode)
         } catch (error) {
             console.error('Failed to load game details:', error)
             const localGame = allGames.find(game => game.id === gameId)
             if (localGame) {
-                setSelectedGame(localGame)
+                setSelectedGameId(localGame.id)
                 setDisplayMode(mode)
             }
         }
@@ -120,46 +116,20 @@ function FavoritesPage() {
                         </Button>
                     </div>
                 ) : (
-                    <>
-                        <section className="mb-12">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {currentFavorites.map(game => (
-                                    <GameCard
-                                        key={game.id}
-                                        game={game}
-                                        userId={user?.id}
-                                        onSelect={handleGameSelect}
-                                        isShowingScores={selectedGame?.id === game.id && displayMode === 'scores'}
-                                        isShowingMessages={selectedGame?.id === game.id && displayMode === 'messages'}
-                                    />
-                                ))}
-                            </div>
-                        </section>
-
-                        {selectedGame && (
-                            <section className="mb-12">
-                                {displayMode === 'scores' && (
-                                    <>
-                                        <h2 className="text-retro-blue font-retro text-2xl mb-4">
-                                            {selectedGame.name} Highscores
-                                        </h2>
-                                        <HighScores game={selectedGame} />
-                                    </>
-                                )}
-                                {displayMode === 'messages' && (
-                                    <>
-                                        <h2 className="text-retro-green font-retro text-2xl mb-4">
-                                            {selectedGame.name} Chat
-                                        </h2>
-                                        <Messages game={{
-                                            ...selectedGame,
-                                            messages: allGames.find(game => game.id === selectedGame.id)?.messages || []
-                                        }} />
-                                    </>
-                                )}
-                            </section>
-                        )}
-                    </>
+                    <section className="mb-12">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+                            {currentFavorites.map(game => (
+                                <GameCard
+                                    key={game.id}
+                                    game={game}
+                                    userId={user?.id}
+                                    onSelect={handleGameSelect}
+                                    isShowingScores={selectedGameId === game.id && displayMode === 'scores'}
+                                    isShowingMessages={selectedGameId === game.id && displayMode === 'messages'}
+                                />
+                            ))}
+                        </div>
+                    </section>
                 )}
             </div>
         </div>

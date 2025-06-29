@@ -30,17 +30,36 @@ const initialGames = [
         dislikes: [],
         highscores: [],
         messages: []
+    },
+    {
+        id: 4,
+        name: 'Super Pang',
+        description: 'Burst or be busted!',
+        image: '/images/Superpang.jpg',
+        likes: [],
+        dislikes: [],
+        highscores: [],
+        messages: []
     }
 ]
 
 export async function initializeGames() {
     try {
-        const count = await Game.countDocuments()
-        if (count === 0) {
-            await Game.insertMany(initialGames)
-            console.log('✅ Juegos iniciales insertados')
+        const existingGames = await Game.find({})
+
+        const existingGameNames = existingGames.map(game => game.name)
+
+        const newGames = initialGames.filter(
+            game => !existingGameNames.includes(game.name)
+        )
+
+        if (newGames.length > 0) {
+            await Game.insertMany(newGames)
+            console.log(`✅ ${newGames.length} new games inserted: ${newGames.map(g => g.name).join(', ')}`)
+        } else {
+            console.log('✅ There are no new games to insert')
         }
     } catch (error) {
-        console.error('❌ Error inicializando juegos:', error)
+        console.error('❌ Error initializing games:', error)
     }
 }

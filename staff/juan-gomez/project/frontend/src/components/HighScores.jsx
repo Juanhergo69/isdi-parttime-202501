@@ -48,10 +48,10 @@ function HighScores({ game }) {
     }
 
     return (
-        <div className="bg-retro-dark-secondary rounded-lg border-2 border-retro-blue overflow-hidden">
+        <div className="bg-white rounded-lg border-2 border-retro-blue overflow-hidden">
             <table className="w-full font-retro">
                 <thead>
-                    <tr className="bg-retro-purple text-retro-yellow">
+                    <tr className="bg-retro-blue text-white">
                         <th className="p-3 text-left">Rank</th>
                         <th className="p-3 text-left">Player</th>
                         <th className="p-3 text-right">Score</th>
@@ -62,19 +62,19 @@ function HighScores({ game }) {
                         highscores.map((hs, index) => (
                             <tr
                                 key={`${hs.userId}-${hs.score}-${index}`}
-                                className={`border-b border-retro-gray/50 ${user?.id === hs.userId
-                                    ? 'bg-retro-blue/10 text-retro-yellow'
-                                    : 'text-white'
+                                className={`border-b border-gray-200 ${user?.id === hs.userId
+                                    ? 'bg-retro-blue/20'
+                                    : ''
                                     }`}
                             >
-                                <td className="p-3 font-bold">{index + 1}</td>
+                                <td className="p-3 font-bold text-gray-800">{index + 1}</td>
                                 <td className="p-3">
                                     <div className="flex items-center space-x-3">
                                         {hs.avatar ? (
                                             <img
                                                 src={hs.avatar}
                                                 alt={hs.username || 'Player'}
-                                                className="w-8 h-8 rounded-full border-2 border-retro-green"
+                                                className="w-8 h-8 rounded-full border-2 border-retro-yellow"
                                             />
                                         ) : (
                                             <div className="w-8 h-8 rounded-full bg-retro-pink flex items-center justify-center border-2 border-retro-yellow">
@@ -83,15 +83,15 @@ function HighScores({ game }) {
                                                 </span>
                                             </div>
                                         )}
-                                        <span className="font-medium">{hs.username || 'Player'}</span>
+                                        <span className="font-medium text-gray-800">{hs.username || 'Player'}</span>
                                     </div>
                                 </td>
-                                <td className="p-3 text-right font-mono text-lg">{hs.score}</td>
+                                <td className="p-3 text-right font-mono text-lg text-retro-blue font-bold">{hs.score}</td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="3" className="p-4 text-center text-retro-gray font-retro">
+                            <td colSpan="3" className="p-4 text-center text-gray-500 font-retro">
                                 No highscores yet!
                             </td>
                         </tr>

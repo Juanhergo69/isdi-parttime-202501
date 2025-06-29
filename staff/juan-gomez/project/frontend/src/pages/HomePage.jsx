@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { fetchAllGames, fetchGameDetails } from '../logic/gamesAPI'
 import Avatar from '../components/ui/Avatar'
 import GameCard from '../components/GameCard'
-import HighScores from '../components/HighScores'
-import Messages from '../components/Messages'
 import Button from '../components/ui/Button'
 
 function HomePage() {
@@ -18,7 +16,6 @@ function HomePage() {
     const [selectedGameId, setSelectedGameId] = useState(null)
     const [showSettingsMenu, setShowSettingsMenu] = useState(false)
     const [displayMode, setDisplayMode] = useState(null)
-    const selectedGame = games.find(game => game.id === selectedGameId) || null
 
     useEffect(() => {
         const loadGames = async () => {
@@ -53,13 +50,11 @@ function HomePage() {
 
         try {
             const updatedGame = await fetchGameDetails(gameId)
-
             setGames(prevGames =>
                 prevGames.map(game =>
                     game.id === updatedGame.id ? updatedGame : game
                 )
             )
-
             setSelectedGameId(updatedGame.id)
             setDisplayMode(mode)
             setError(null)
@@ -181,7 +176,7 @@ function HomePage() {
                     {games.length === 0 ? (
                         <p className="text-retro-gray">No games available</p>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                             {games.map(game => (
                                 <GameCard
                                     key={game.id}
@@ -195,27 +190,6 @@ function HomePage() {
                         </div>
                     )}
                 </section>
-
-                {selectedGame && (
-                    <section className="mb-12">
-                        {displayMode === 'scores' && (
-                            <>
-                                <h2 className="text-retro-blue font-retro text-2xl mb-4">
-                                    {selectedGame.name} Highscores
-                                </h2>
-                                <HighScores game={selectedGame} />
-                            </>
-                        )}
-                        {displayMode === 'messages' && (
-                            <>
-                                <h2 className="text-retro-green font-retro text-2xl mb-4">
-                                    {selectedGame.name} Chat
-                                </h2>
-                                <Messages game={selectedGame} />
-                            </>
-                        )}
-                    </section>
-                )}
             </div>
         </div>
     )

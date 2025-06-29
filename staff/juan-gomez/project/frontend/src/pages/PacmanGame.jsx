@@ -812,10 +812,9 @@ const PacmanGame = () => {
                                         bottom: 0,
                                         left: 0,
                                         right: 0,
-                                        height: '50%',
+                                        height: '70%',
                                         borderBottom: '3px solid black',
                                         borderRadius: '0 0 30px 30px',
-                                        height: '60%'
                                     }}></div>
                                 )}
 
@@ -826,10 +825,9 @@ const PacmanGame = () => {
                                         top: 0,
                                         left: 0,
                                         right: 0,
-                                        height: '50%',
+                                        height: '70%',
                                         borderTop: '3px solid black',
                                         borderRadius: '30px 30px 0 0',
-                                        height: '70%'
                                     }}></div>
                                 )}
                             </div>

@@ -12,6 +12,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import SnakeGame from './pages/SnakeGame'
 import TetrisGame from './pages/TetrisGame'
 import PacmanGame from './pages/PacmanGame'
+import SuperPangGame from './pages/SuperPangGame'
 import ProtectedRoute from './components/ProtectedRoute'
 import Modal from './components/Modal'
 
@@ -77,6 +78,16 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <PacmanGame />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Ruta para SuperPang (gameId = 4) */}
+              <Route
+                path="/games/4"
+                element={
+                  <ProtectedRoute>
+                    <SuperPangGame />
                   </ProtectedRoute>
                 }
               />
