@@ -227,7 +227,13 @@ const PacmanGame = () => {
 
     const resetGame = useCallback(() => {
         const { dots, powerPellets } = initializeBoard()
-        setPacman({ x: 10, y: 15, direction: 'RIGHT', nextDirection: 'RIGHT' })
+        setPacman({
+            x: 10,
+            y: 15,
+            direction: 'RIGHT',
+            nextDirection: 'RIGHT',
+            justTeleported: false
+        })
         setGhosts(generateGhosts())
         setDots(dots)
         setPowerPellets(powerPellets)
@@ -243,6 +249,10 @@ const PacmanGame = () => {
         if (gameOver || isPaused || showInstructions) return
 
         setPacman(prev => {
+            if (prev.justTeleported) {
+                return { ...prev, justTeleported: false }
+            }
+
             const nextDir = prev.nextDirection
             let nextX = prev.x + DIRECTIONS[nextDir].x
             let nextY = prev.y + DIRECTIONS[nextDir].y
@@ -257,18 +267,20 @@ const PacmanGame = () => {
             if (Math.floor(moveY) === 10) {
                 if (moveX < 0) {
                     return {
-                        x: GRID_SIZE - 1,
+                        x: GRID_SIZE - 0.1,
                         y: moveY,
                         direction: newDirection,
-                        nextDirection: prev.nextDirection
+                        nextDirection: prev.nextDirection,
+                        justTeleported: true
                     }
                 }
                 else if (moveX >= GRID_SIZE) {
                     return {
-                        x: 0,
+                        x: 0.1,
                         y: moveY,
                         direction: newDirection,
-                        nextDirection: prev.nextDirection
+                        nextDirection: prev.nextDirection,
+                        justTeleported: true
                     }
                 }
             }
@@ -283,7 +295,8 @@ const PacmanGame = () => {
                 x: moveX,
                 y: moveY,
                 direction: newDirection,
-                nextDirection: prev.nextDirection
+                nextDirection: prev.nextDirection,
+                justTeleported: false
             }
         })
     }, [gameOver, isPaused, showInstructions, isValidPacmanMove])
@@ -510,16 +523,20 @@ const PacmanGame = () => {
     const checkCollisions = useCallback(() => {
         if (gameOver || isPaused || showInstructions) return
 
-        const pacmanLeft = pacman.x * CELL_SIZE + CELL_SIZE * 0.1
-        const pacmanRight = pacmanLeft + CELL_SIZE * 0.8
-        const pacmanTop = pacman.y * CELL_SIZE + CELL_SIZE * 0.1
-        const pacmanBottom = pacmanTop + CELL_SIZE * 0.8
+        const collisionMargin = 0.3
+
+        const hitboxSize = 0.8 - collisionMargin
+
+        const pacmanLeft = pacman.x + (1 - hitboxSize) / 2
+        const pacmanRight = pacmanLeft + hitboxSize
+        const pacmanTop = pacman.y + (1 - hitboxSize) / 2
+        const pacmanBottom = pacmanTop + hitboxSize
 
         const collidingGhost = ghosts.find(ghost => {
-            const ghostLeft = ghost.x * CELL_SIZE + CELL_SIZE * 0.1
-            const ghostRight = ghostLeft + CELL_SIZE * 0.8
-            const ghostTop = ghost.y * CELL_SIZE + CELL_SIZE * 0.1
-            const ghostBottom = ghostTop + CELL_SIZE * 0.8
+            const ghostLeft = ghost.x + (1 - hitboxSize) / 2
+            const ghostRight = ghostLeft + hitboxSize
+            const ghostTop = ghost.y + (1 - hitboxSize) / 2
+            const ghostBottom = ghostTop + hitboxSize
 
             return !(
                 pacmanRight < ghostLeft ||
@@ -553,7 +570,7 @@ const PacmanGame = () => {
                     })
                 )
             } else {
-                setGameOver(true)
+                handlePacmanDeath()
                 return
             }
         }
