@@ -48,22 +48,22 @@ function LoginPage() {
             console.error('Login error:', error)
 
             if (error instanceof InvalidEmailError) {
-                setErrors({ email: error.message })
+                showModal('Login error', error.message)
                 return
             }
 
             if (error instanceof InvalidPasswordError) {
-                setErrors({ password: error.message })
+                showModal('Login error', error.message)
                 return
             }
 
             if (error instanceof UserNotFoundError) {
-                showModal('Account Not Found', error.message)
+                showModal('Login error', error.message)
                 return
             }
 
             if (error instanceof UnauthorizedError) {
-                showModal('Login Failed', 'Invalid email or password')
+                showModal('Login error', 'Invalid email or password')
                 return
             }
 

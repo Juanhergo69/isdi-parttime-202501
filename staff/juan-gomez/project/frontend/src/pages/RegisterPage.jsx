@@ -37,11 +37,6 @@ function RegisterPage() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (formData.password !== formData.confirmPassword) {
-            setErrors({ confirmPassword: 'Passwords do not match' })
-            return
-        }
-
         try {
             await register(formData)
             navigate('/home')
@@ -49,32 +44,32 @@ function RegisterPage() {
             console.error('Registration error:', error)
 
             if (error instanceof RequiredFieldsError) {
-                showModal('Missing Information', error.message)
+                showModal('Registration error', error.message)
                 return
             }
 
             if (error instanceof InvalidEmailError) {
-                setErrors({ email: error.message })
+                showModal('Registration error', error.message)
                 return
             }
 
             if (error instanceof InvalidPasswordError) {
-                setErrors({ password: error.message })
+                showModal('Registration error', error.message)
                 return
             }
 
             if (error instanceof PasswordsDontMatchError) {
-                setErrors({ confirmPassword: error.message })
+                showModal('Registration error', error.message)
                 return
             }
 
             if (error instanceof EmailInUseError) {
-                showModal('Email Already Registered', error.message)
+                showModal('Registration error', error.message)
                 return
             }
 
             if (error instanceof UsernameTakenError) {
-                showModal('Username Taken', error.message)
+                showModal('Registration error', error.message)
                 return
             }
 
