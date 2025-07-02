@@ -92,7 +92,7 @@ function HighScores({ game }) {
                     ) : (
                         <tr>
                             <td colSpan="3" className="p-4 text-center text-gray-500 font-retro">
-                                No highscores yet!
+                                No scores yet!
                             </td>
                         </tr>
                     )}

@@ -40,6 +40,26 @@ const initialGames = [
         dislikes: [],
         highscores: [],
         messages: []
+    },
+    {
+        id: 5,
+        name: 'Connect Four',
+        description: 'Four wins the war!',
+        image: '/images/Connectfour.jpg',
+        likes: [],
+        dislikes: [],
+        highscores: [],
+        messages: []
+    },
+    {
+        id: 6,
+        name: 'Arkanoid',
+        description: 'Smash. Bounce. Survive. Arkanoid',
+        image: '/images/Arkanoid.jpg',
+        likes: [],
+        dislikes: [],
+        highscores: [],
+        messages: []
     }
 ]
 

@@ -174,7 +174,7 @@ function GameCard({ game, userId, onSelect, isShowingScores = false, isShowingMe
                     {isShowingScores && (
                         <div className="bg-white rounded-lg shadow-md p-4 border-2 border-retro-blue">
                             <h4 className="text-retro-blue font-retro text-lg mb-2">
-                                {localGame.name} Highscores
+                                {localGame.name} Scores
                             </h4>
                             <HighScores game={localGame} />
                         </div>

@@ -13,6 +13,8 @@ import SnakeGame from './pages/SnakeGame'
 import TetrisGame from './pages/TetrisGame'
 import PacmanGame from './pages/PacmanGame'
 import SuperPangGame from './pages/SuperPangGame'
+import ConnectFourGame from './pages/ConnectFourGame'
+import ArkanoidGame from './pages/ArkanoidGame'
 import ProtectedRoute from './components/ProtectedRoute'
 import Modal from './components/Modal'
 
@@ -88,6 +90,26 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <SuperPangGame />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Ruta para ConnectFour (gameId = 5) */}
+              <Route
+                path="/games/5"
+                element={
+                  <ProtectedRoute>
+                    <ConnectFourGame />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Ruta para Arkanoid (gameId = 6) */}
+              <Route
+                path="/games/6"
+                element={
+                  <ProtectedRoute>
+                    <ArkanoidGame />
                   </ProtectedRoute>
                 }
               />
